@@ -3,3 +3,4 @@ backend/.env
 backend/prisma
 
 frontend/node_modules
+frontend/.angular
