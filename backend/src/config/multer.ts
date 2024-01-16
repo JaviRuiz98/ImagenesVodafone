@@ -20,8 +20,8 @@ const storageImagenProcesada = createStorageConfig('imagen_procesamiento');
 // Middleware de Multer
 
 
-const uploadImagenRepresentativa = multer({ storage: storageImagenRepresentativa }).array('movilImage');
-const uploadImagenProcesada = multer({ storage: storageImagenProcesada }).array('movilImage');
+const uploadImagenRepresentativa = multer({ storage: storageImagenRepresentativa }).array('imagenRepresentativa');
+const uploadImagenProcesada = multer({ storage: storageImagenProcesada }).array('imagenProcesada');
 
 // Exportar los middleware
 export { uploadImagenRepresentativa, uploadImagenProcesada };
