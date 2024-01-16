@@ -1,3 +1,7 @@
 backend/node_modules
+backend/.env
+backend/prisma
+backend/build
+
 frontend/node_modules
 frontend/.angular
