@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import{ PageEvent } from './selector-imagenes';
+import { PageEvent } from '../../interfaces/selector-imagenes';
 import { SelectorImagenesService } from 'src/app/servicios/selector-imagenes/selector-imagenes.service';
 @Component({
   selector: 'app-selector-imagenes',
