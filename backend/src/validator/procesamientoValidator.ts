@@ -10,7 +10,7 @@ export async function procesamientoValidator(req: Request, res: Response, next: 
 
     const expositorio:expositorios = req.body; 
 
-    if (!files['imagenProcesada'] || files['imagenProcesada'].length === 0) {
+    if (!files['imagenesProcesamiento'] || files['imagenesProcesamiento'].length === 0) {
         res.status(400).json({ error: 'An array of images is required' });
     }
 

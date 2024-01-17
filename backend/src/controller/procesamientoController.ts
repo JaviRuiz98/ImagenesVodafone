@@ -16,7 +16,7 @@ export async function procesarImagenes(req: Request, res: Response) {
 
    
     //obtengo la imagen a procesar
-    const imagenProcesadaPath = (files['imagenProcesada'] as Express.Multer.File[]).map(file => file.path)[0];
+    const imagenProcesadaPath = (files['imagenesProcesamiento'] as Express.Multer.File[]).map(file => file.path)[0];
     if (!imagenProcesadaPath) {
       
        res.status(500).json({ error: 'La imagen procesada no existe' });

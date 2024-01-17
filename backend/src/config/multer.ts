@@ -15,17 +15,17 @@ const createStorageConfig = (folderPath: string) => {
 };
 
 function getDestination(folderPath: string): string {
- return  path.join(__dirname, '..', '..', 'assets', 'images', folderPath);
+ return  path.join(__dirname, '..', '..', 'assets', 'imagenes', folderPath);
 }
 // Crear configuraciones de almacenamiento específicas
-const storageImagenReferencia = createStorageConfig('imagenReferencia');
-const storageImagenProcesada = createStorageConfig('imagenProcesamiento');
+const storageImagenReferencia = createStorageConfig('imagenesReferencia');
+const storageImagenProcesada = createStorageConfig('imagenesProcesamiento');
 
 // Middleware de Multer
 
 
-const uploadImagenRepresentativa = multer({ storage: storageImagenReferencia }).array('imagenReferencia');
-const uploadImagenProcesada = multer({ storage: storageImagenProcesada }).array('imagenProcesada');
+const uploadImagenRepresentativa = multer({ storage: storageImagenReferencia }).array('imagenesReferencia');
+const uploadImagenProcesada = multer({ storage: storageImagenProcesada }).array('imagenesProcesamiento');
 
 // Exportar los middleware
 export { uploadImagenRepresentativa, uploadImagenProcesada, getDestination };
