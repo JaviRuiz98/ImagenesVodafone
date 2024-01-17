@@ -34,7 +34,7 @@ export const expositorioService = {
             throw new Error(`No se encontró ninguna imagen con ID ${id_image}`);
           }
       
-          image.url = `${getDestination('imagenReferencia')}/${image.url}`;
+          image.url = `${getDestination('imagenesReferencia')}/${image.url}`;
           return image;
         } catch (error) {
           console.log("Error:", error);
