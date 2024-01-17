@@ -1,0 +1,51 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Helvetica", Helvetica, Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.drop-area {
+    border: 5px dashed #ddd;
+    height: 25rem; 
+    width: 40rem; 
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.drop-area.active {
+    background: #b8d4fe;
+    color: black;
+    border: 2px dashed #618ac9;
+}
+
+.drop-area h2 {
+    font-size: 100%; 
+    color: #000;
+}
+.drop-area span {
+    font-size: 80%;
+    font-weight: 600;
+    margin: 1%;
+    color: #000
+}
+.drop-area button{
+    padding: 5px 25px;
+    font-size: 80%;
+    border: 0;
+    outline: none;
+    background-color: #618ac9;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 1%;
+}
