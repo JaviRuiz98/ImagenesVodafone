@@ -5,7 +5,7 @@ import { tiendas } from '@prisma/client';
 export async function getAllTiendas(req: Request, res: Response) {
 
     try{
-        const tiendaId: number | undefined = req.query.userId ? parseInt(req.query.tiendaId as string) : undefined;
+        const tiendaId: number | undefined = req.query.tiendaId ? parseInt(req.query.tiendaId as string) : undefined;
         const tiendas: tiendas[] = await tiendaService.getAllById(tiendaId);
         res.status(200).json(tiendas);
     }
