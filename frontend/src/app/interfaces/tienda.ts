@@ -1,6 +1,6 @@
 import { mueble } from "./muebles";
 
-export interface tiendas {
+export interface tienda {
     id_tienda: number;
     sfid: number;
     muebles: mueble[];
