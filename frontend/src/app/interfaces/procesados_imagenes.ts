@@ -1,3 +1,5 @@
+
+
 export interface procesados_imagenes {
     id_procesado_imagen: number;
     id_imagen: number;
