@@ -12,3 +12,4 @@ router.use('/imagenesProcesada',  express.static(getDestination('imagenProcesami
 router.get('/imagenesReferencia/:nombre', getImagenesReferencia );
 router.get('/imagenesProcesada/:nombre', getImagenesProcesado );
 
+export default router;

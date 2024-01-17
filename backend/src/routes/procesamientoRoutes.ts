@@ -7,3 +7,5 @@ import { procesamientoValidator } from '../validator/procesamientoValidator';
 const router: Router = express.Router();
 
 router.post('/procesamiento',  uploadImagenProcesada, procesamientoValidator, procesarImagenes);
+
+export default router;

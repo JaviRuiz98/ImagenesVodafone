@@ -8,4 +8,4 @@ const router = express.Router();
 router.get('/tiendas',getAllTiendas);
 router.get('/tiendas/:sfid', validateGetTiendasBySfid, getTiendaBySfid);
 
- 
+export default router;

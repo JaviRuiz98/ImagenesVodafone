@@ -40,6 +40,7 @@ export async function procesarImagenes(req: Request, res: Response) {
     const cleanedResponse = openAiResult.replace(/[\n\r]/g, '');
     if (!isValidOpenAiResponse(cleanedResponse)) {
       res.status(500).json({ error: 'Respuesta inválida' });
+      return;
     }
 
     const similarityObject = JSON.parse(cleanedResponse);
@@ -50,6 +51,7 @@ export async function procesarImagenes(req: Request, res: Response) {
   } catch (error) {
     console.error('Error al procesar imágenes:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
+    throw error;
     
   }
 }
