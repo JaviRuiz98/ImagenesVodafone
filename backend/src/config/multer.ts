@@ -18,8 +18,8 @@ function getDestination(folderPath: string): string {
  return  path.join(__dirname, '..', '..', 'assets', 'images', folderPath);
 }
 // Crear configuraciones de almacenamiento específicas
-const storageImagenReferencia = createStorageConfig('imagen_referencia');
-const storageImagenProcesada = createStorageConfig('imagen_procesamiento');
+const storageImagenReferencia = createStorageConfig('imagenReferencia');
+const storageImagenProcesada = createStorageConfig('imagenProcesamiento');
 
 // Middleware de Multer
 
