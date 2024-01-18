@@ -48,6 +48,8 @@ function prompt_telefonosEsperados_1(dispositivos:number): string{
     Tampoco empieces viendo de que es un json, directamente empieza usando { y termina con }.`;
 }
 
+//--------------------------------------------------------------------------------------------------------------------------------------------------
+
 const prompt_carteles_r1 = `Dame una probabilidad de que el cartel de la primera imagen esté contenida en la otra imagen en formato json por favor. 
 Si no puedes hacerlo di que es error en probab_estar_contenido y todo comentario añadelo en comentarios. 
 Todo mensaje de comentarios es opcional y debe estar contenido dentro de la estructura json.
@@ -55,6 +57,8 @@ Tampoco empieces avisando de que es un json, directamente empieza usando { y ter
 Para decir que la probabilidad de estar contenido es muy alta debe ser el mismo cartel o ser igual por lo menos en un 95%.
 Es importante ver que el texto del cartel debe coincidir.
 Solo con este estilo: {"probab_estar_contenido": "muy alta/alta/media/baja/muy baja/ninguna/error", "comentarios": "comentarios"}`
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------
 
 export function getPromptCarteles(nombre_prompt: string): string{
     switch (nombre_prompt) {

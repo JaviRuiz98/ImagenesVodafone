@@ -18,8 +18,7 @@ export const tiendaService = {
                             include:{
                                 expositores: {
                                     include: {
-                                        imagenes: true,
-                                        
+                                        imagenes: true,                                        
                                         }
                                     }
                                 }

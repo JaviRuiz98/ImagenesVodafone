@@ -15,7 +15,8 @@ const nombrePromptMoviles = 'a'
 export async function procesarImagenes(req: Request, res: Response) {
   try {
     const file = req.file //as { [fieldname: string]: Express.Multer.File[] };
-    const idExpositor: number = req.body.idExpositor;
+    const idExpositor: number = parseInt(req.body.idExpositor);
+    
    
     //obtengo la imagen a procesar
     const imagenProcesadaPath = file?.path//(files['imagenesProcesamiento'] as Express.Multer.File[]).map(file => file.path)[0];
