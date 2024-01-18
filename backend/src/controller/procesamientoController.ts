@@ -2,9 +2,9 @@ import { Request, Response } from 'express';
 import { ChatMessage } from '../interfaces/procesamientoInterfaces';
 import * as fs from 'fs';
 import openai from '../config/openAi';
-import { imagenes } from '@prisma/client';
+import { imagenes, expositorios } from '@prisma/client';
 import { expositorioService } from '../services/expositorioService';
-import { expositorioProcesado } from '../interfaces/expositorioImagenesProcesadas';
+
 
 const max_tokens = 500;
 const temperature = 0;
@@ -12,51 +12,47 @@ const temperature = 0;
 export async function procesarImagenes(req: Request, res: Response) {
   try {
     const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-    const expositorios: expositorioProcesado[] = req.body;
+    const expositorios: expositorios = req.body;
 
-    const procesarExpositorio = async (expositorio: expositorioProcesado) => {
-      try {
-        //obtengo la imagen a procesar
-        const imagenProcesada = files['imagenProcesada'].find(imagen => imagen.originalname === expositorio.imagen_procesada.url);
-        if (!imagenProcesada) {
-          return { error: 'La imagen procesada no existe' };
-        }
-        //obtengo la imagen de referencia
-        const imagenReferencia:imagenes = await expositorioService.getImage(expositorio.id_imagen);
-        if (!imagenReferencia) {
-          return { error: 'La imagen referencia no existe' };
-        }
-        //llamada a OpenAI
-        const filePaths = [imagenReferencia.url, imagenProcesada.path];
-        const openAiResult = await getOpenAiResults(filePaths, 'prompt_ejemplo');
-        if (!openAiResult) {
-          return { error: 'Error en el procesamiento de imágenes' };
-        }
-        //Comprobación de la válidez de la respuesta (falta por implementar)
-        const cleanedResponse = openAiResult.replace(/[\n\r]/g, '');
-        if (!isValidOpenAiResponse(cleanedResponse)) {
-          return { error: 'Error de formato en la respuesta de OpenAI' };
-        }
+   
+    //obtengo la imagen a procesar
+    const imagenProcesadaPath = (files['imagenesProcesamiento'] as Express.Multer.File[]).map(file => file.path)[0];
+    if (!imagenProcesadaPath) {
+      
+       res.status(500).json({ error: 'La imagen procesada no existe' });
+       return;
+    }
 
-        const similarityObject = JSON.parse(cleanedResponse);
-        //Guardar en la base de datos (falta por implementar)
-        
-        return similarityObject;
+    //obtengo la imagen de referencia
+    const imagenReferencia:imagenes = await expositorioService.getImage(expositorios.id_imagen);
+    if (!imagenReferencia) {
+      res.status(500).json({ error: 'La imagen referencia no existe' });
+      return;
+    }
+    //llamada a OpenAI
+    const filePaths = [imagenReferencia.url, imagenProcesadaPath];
+    const openAiResult = await getOpenAiResults(filePaths, 'prompt_ejemplo');
+    if (!openAiResult) {
+      res.status(500).json({ error: 'Error al procesar imágenes' });
+      return;
+    }
+    //Comprobación de la válidez de la respuesta (falta por implementar)
+    const cleanedResponse = openAiResult.replace(/[\n\r]/g, '');
+    if (!isValidOpenAiResponse(cleanedResponse)) {
+      res.status(500).json({ error: 'Respuesta inválida' });
+      return;
+    }
 
-      } catch (error: any) {
-        console.error('Error procesando expositorio:', error);
-        return { error: error.message };
-      }
-    };
+    const similarityObject = JSON.parse(cleanedResponse);
+    //Guardar en la base de datos (falta por implementar)
+    
 
-    const promesasExpositorios = expositorios.map(expositorio => procesarExpositorio(expositorio));
-    const resultados = await Promise.allSettled(promesasExpositorios);
-    const expositoriosProcesados = resultados.map(resultado => resultado.status === 'fulfilled' ? resultado.value : { error: 'Error procesando expositorio' });
-
-    res.status(200).json(expositoriosProcesados);
+    return res.status(200).json(similarityObject);
   } catch (error) {
     console.error('Error al procesar imágenes:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
+    throw error;
+    
   }
 }
 

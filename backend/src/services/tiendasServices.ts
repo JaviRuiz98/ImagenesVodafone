@@ -11,6 +11,7 @@ export const tiendaService = {
                     orderBy: {
                         id_tienda: 'asc'
                     },
+
                     where : whereClause,
                     include:{
                         muebles:{
@@ -18,21 +19,15 @@ export const tiendaService = {
                                 expositorios: {
                                     include: {
                                         imagenes: true,
-                                        dispositivos: true,
-                                        procesados_imagenes: {
-                                            include: {
-                                                imagenes: true,
-                                                respuestas_carteles: true,
-                                                respuestas_movil: true
-                                            }
+                                        
                                         }
                                     }
                                 }
                             }
                         }
                     
-                    }
-                }, 
+                }
+                
             );
         }  catch(error){
             console.log(error);
@@ -58,14 +53,7 @@ export const tiendaService = {
                                 expositorios: {
                                     include: {
                                         imagenes: true,
-                                        dispositivos: true,
-                                        procesados_imagenes: {
-                                            include: {
-                                                imagenes: true,
-                                                respuestas_carteles: true,
-                                                respuestas_movil: true
-                                            }
-                                        }
+                                   
                                     }
                                 }
                             }

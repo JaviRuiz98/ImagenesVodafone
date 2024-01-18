@@ -1,7 +1,6 @@
 
 import { Request, Response, NextFunction } from 'express';
 import { expositorioService } from '../services/expositorioService';
-import { expositorioProcesado } from '../interfaces/expositorioImagenesProcesadas';
 import { expositorios } from '@prisma/client';
 
 
@@ -9,9 +8,9 @@ export async function procesamientoValidator(req: Request, res: Response, next: 
 
     const files = req.files as { [fieldname: string]: Express.Multer.File[] };
 
-    const expositorio:expositorioProcesado = req.body; 
+    const expositorio:expositorios = req.body; 
 
-    if (!files['imagenProcesada'] || files['imagenProcesada'].length === 0) {
+    if (!files['imagenesProcesamiento'] || files['imagenesProcesamiento'].length === 0) {
         res.status(400).json({ error: 'An array of images is required' });
     }
 

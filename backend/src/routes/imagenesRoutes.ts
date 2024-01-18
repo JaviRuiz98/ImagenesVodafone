@@ -6,9 +6,10 @@ import { getImagenesProcesado, getImagenesReferencia } from '../controller/image
 const router: Router = express.Router();
 
 
-router.use('/imagenesReferencia',  express.static(getDestination('imagen_referencia')));
-router.use('/imagenesProcesada',  express.static(getDestination('imagen_procesamiento')));
+router.use('/imagenesReferencia',  express.static(getDestination('imagenesReferencia')));
+router.use('/imagenesProcesamiento',  express.static(getDestination('imagenesProcesamiento')));
 
 router.get('/imagenesReferencia/:nombre', getImagenesReferencia );
-router.get('/imagenesProcesada/:nombre', getImagenesProcesado );
+router.get('/imagenesProcesamiento/:nombre', getImagenesProcesado );
 
+export default router;

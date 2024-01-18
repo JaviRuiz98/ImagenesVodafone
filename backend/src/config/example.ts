@@ -39,12 +39,15 @@
                                     "url": "http://example.com/imagen.jpg"
                                 },
                                 "respuestas_carteles": 
+                                [
                                     {
                                         "id_respuesta_movil": 500,
                                         "id_procesado_imagen": 400,
                                         "probabilidad": "0.95"
                                     }
+                                ],
                                 
+                                "respuestas_movil": [],
                                 
                             }, 
                             //procesado 2
