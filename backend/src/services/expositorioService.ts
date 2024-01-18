@@ -1,14 +1,14 @@
-import { expositorios, imagenes } from "@prisma/client";
+import { expositores, imagenes } from "@prisma/client";
 import db  from "../config/database";
 import { getDestination } from "../config/multer";
 
-export const expositorioService = {
+export const expositoresService = {
 
-    async getById(id_expositorio: number): Promise<expositorios | null> {
+    async getById(id_expositor: number): Promise<expositores | null> {
         try{
-            return db.expositorios.findUnique({
+            return db.expositores.findUnique({
                 where: {
-                    id_expositorio: id_expositorio
+                    id_expositor: id_expositor
                 }
             })
         }
@@ -44,11 +44,11 @@ export const expositorioService = {
         }
       },
 
-      async  getDispositivosCount(idExpositorio: number): Promise<number> {
+      async  getDispositivosCount(idExpositor: number): Promise<number> {
         try {
           const count = await db.dispositivos.count({
             where: {
-              id_expositorio: idExpositorio
+              id_expositor: idExpositor
             }
           });
           
