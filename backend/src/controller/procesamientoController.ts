@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import openai from '../config/openAi';
 import { imagenes, expositorios } from '@prisma/client';
 import { expositorioService } from '../services/expositorioService';
-import { getPrompt } from '../config/prompts';
+import { getPrompt, getPromptMoviles } from '../config/prompts';
 
 const max_tokens = 500;
 const temperature = 0;
@@ -32,15 +32,25 @@ export async function procesarImagenes(req: Request, res: Response) {
         return;
     }
 
-    //obtengo la imagen de referencia
-    const imagenReferencia:imagenes = await expositorioService.getImage(existingExpositorio.id_imagen);
+
+    //obtengo la imagen de referencia y la cantidad de dispositivos 
+    const [imagenReferencia, dispositivosCount] = await Promise.all([
+      expositorioService.getImage(existingExpositorio.id_imagen),
+      expositorioService.getDispositivosCount(existingExpositorio.id_expositorio)
+    ]);
+
+
     if (!imagenReferencia) {
       res.status(500).json({ error: 'La imagen referencia no existe' });
       return;
     }
+   
+    const prompt: string = dispositivosCount ===0 ? promptCarteles : getPromptMoviles(dispositivosCount);
+
+
     //llamada a OpenAI
     const filePaths = [imagenReferencia.url, imagenProcesadaPath];
-    const openAiResult = await getOpenAiResults(filePaths, promptCarteles);
+    const openAiResult = await getOpenAiResults(filePaths, prompt);
     if (!openAiResult) {
       res.status(500).json({ error: 'Error al procesar imágenes' });
       return;

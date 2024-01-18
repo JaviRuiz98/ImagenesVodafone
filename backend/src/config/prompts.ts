@@ -54,3 +54,11 @@ export function getPrompt(nombre_prompt: string): string {
             return 'Dame error en este formato: {"numero_telefonos": "0", "error_solicitud": "error", "comentarios": "Prompt mal especificado"}';  
     }
 };
+
+export function getPromptMoviles(dispositivos: number): string{
+    return `Eres un experto contando la cantidad de teléfonos móviles presentes en una mesa. Debes encontrar ${dispositivos} dispositivos
+    Adjunto una imagen con unos moviles expuestos para ser vendidos. Dime por favor cuantos moviles hay en formato json. 
+    Si no puedes hacerlo di que error_solicitud es error, si lo haces di que exitoso. En caso de que sea error di que el numero de telefonos es 0.
+    La respuesta solo debe contener esto: {"numero_telefonos": "numero", "error_solicitud": "exitoso/error", "comentarios": "comentarios"}
+    Tampoco empieces viendo de que es un json, directamente empieza usando { y termina con }.`;
+}
