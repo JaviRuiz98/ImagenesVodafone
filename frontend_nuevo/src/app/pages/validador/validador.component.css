@@ -1,14 +1,43 @@
-  
-.separador-vertical::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 50%;
-    border-left: 1px solid #ccc;
-  }
+.paginaCompleta {
+  display: flex; 
+  align-items: center; 
+  flex-direction: column;
+  width: 100%;
+}
 
-  .contenedor {
-    position: relative;
-    padding: 0 2rem; /* Espacio extra para evitar superposición de borde */
-  }
+.contornoPanel {
+  width: 81%; 
+  display: flex; 
+  flex-direction: column; 
+  justify-content: center;
+}
+
+.panelCompleto{
+  display: flex; 
+  justify-content: center; 
+  width: 100%; 
+  margin-top: 0%; 
+  height: 550px;
+}
+.panelIzquierda {
+  display: flex; 
+  justify-content: center; 
+  width: 50%; 
+  background-color: rgba(210, 209, 209, 0.9);
+}
+.panelDerecha{
+  display: flex; 
+  justify-content: center; 
+  width: 50%; 
+  background-color: rgba(232, 232, 232, 0.9);
+}
+
+.anchoAltoSubirFotos {
+  width: 95%;
+  height: 95%;
+  margin: auto; 
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  box-sizing: border-box; 
+}
