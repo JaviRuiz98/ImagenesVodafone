@@ -2,18 +2,18 @@ import { Request, Response } from 'express';
 import { ChatMessage } from '../interfaces/procesamientoInterfaces';
 import * as fs from 'fs';
 import openai from '../config/openAi';
-import { imagenes, expositorios } from '@prisma/client';
+import { expositorios } from '@prisma/client';
 import { expositorioService } from '../services/expositorioService';
-import { getPrompt, getPromptMoviles } from '../config/prompts';
+import { getPromptMoviles, getPromptCarteles } from '../config/prompts';
 
+// Constantes y configuracion de procesado
 const max_tokens = 500;
 const temperature = 0;
+const promptCarteles = getPromptCarteles('prompt_carteles_r1');
+const nombrePromptMoviles = 'a'
 
 export async function procesarImagenes(req: Request, res: Response) {
   try {
-    //Constantes y configuracion de procesado
-    const promptCarteles = getPrompt('prompt_r1');
-
     const files = req.files as { [fieldname: string]: Express.Multer.File[] };
     const idExpositorio: number = req.body.idExpositorio;
    
@@ -45,7 +45,7 @@ export async function procesarImagenes(req: Request, res: Response) {
       return;
     }
    
-    const prompt: string = dispositivosCount ===0 ? promptCarteles : getPromptMoviles(dispositivosCount);
+    const prompt: string = dispositivosCount ===0 ? promptCarteles : getPromptMoviles(nombrePromptMoviles, dispositivosCount);
 
 
     //llamada a OpenAI

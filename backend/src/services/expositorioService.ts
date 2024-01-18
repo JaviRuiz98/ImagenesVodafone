@@ -56,6 +56,8 @@ export const expositorioService = {
         } catch (error) {
          
           throw error;
+        } finally {
+          await db.$disconnect();
         }
       }
       
