@@ -4,13 +4,13 @@ import * as fs from 'fs';
 import openai from '../config/openAi';
 import { expositores } from '@prisma/client';
 import { expositoresService } from '../services/expositorService';
-import { getPromptMoviles, getPromptCarteles } from '../config/prompts';
+import { getPromptDispositivos, getPromptCarteles } from '../config/prompts';
 
 // Constantes y configuracion de procesado
 const max_tokens = 500;
 const temperature = 0;
 const promptCarteles = getPromptCarteles('prompt_carteles_r1');
-const nombrePromptMoviles = 'a'
+const nombrePromptDispositivos = 'prompt_telefonosEsperados_1';
 
 export async function procesarImagenes(req: Request, res: Response) {
   try {
@@ -46,7 +46,7 @@ export async function procesarImagenes(req: Request, res: Response) {
       return;
     }
    
-    const prompt: string = dispositivosCount ===0 ? promptCarteles : getPromptMoviles(nombrePromptMoviles, dispositivosCount);
+    const prompt: string = dispositivosCount ===0 ? promptCarteles : getPromptDispositivos(nombrePromptDispositivos, dispositivosCount);
 
 
     //llamada a OpenAI
@@ -58,7 +58,7 @@ export async function procesarImagenes(req: Request, res: Response) {
     }
     //Comprobación de la válidez de la respuesta (falta por implementar)
     const cleanedResponse = openAiResult.replace(/[\n\r]/g, '');
-    if (!isValidOpenAiResponse(cleanedResponse)) {
+    if (!isValidOpenAiResponse(cleanedResponse, dispositivosCount === 0 ? 'carteles' : 'dispositivos')) {
       res.status(500).json({ error: 'Respuesta inválida' });
       return;
     }
@@ -126,6 +126,23 @@ async function getOpenAiResults(filePaths: string[], instrucciones: string) {
     return fs.promises.readFile(filePath, 'base64');
   }
 
-  function isValidOpenAiResponse  (_response: string): boolean {
-    return true;
+  function isValidOpenAiResponse  (response: string, tipoRespuesta: 'carteles' | 'dispositivos'): boolean {
+    try {
+      const responseObject = JSON.parse(response);
+      
+      if (tipoRespuesta === 'carteles') {
+        console.log(responseObject);
+        return true;
+       
+     
+      } else if (tipoRespuesta === 'dispositivos') {
+        console.log(responseObject);
+        return true;
+      }
+  
+      return false;
+    } catch (error) {
+      console.error('Error, no es un formato JSON:', error);
+      return false; 
+    }
   }

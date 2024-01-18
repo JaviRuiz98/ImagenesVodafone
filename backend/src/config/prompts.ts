@@ -40,7 +40,7 @@ Un ejemplo de una respuesta válida es:
 }
 Asegúrate de que tu respuesta siga estrictamente el formato definido. Empieza con { y acaba con }.`;
 
-function prompt_telefonosEsperados_1(dispositivos:number): string{
+function prompt_dispositivosEsperados_1(dispositivos:number): string{
     return `Eres un experto contando la cantidad de teléfonos móviles presentes en una mesa. Debes encontrar ${dispositivos} dispositivos
     Adjunto una imagen con unos moviles expuestos para ser vendidos. Dime por favor cuantos moviles hay en formato json. 
     Si no puedes hacerlo di que error_solicitud es error, si lo haces di que exitoso. En caso de que sea error di que el numero de telefonos es 0.
@@ -69,7 +69,7 @@ export function getPromptCarteles(nombre_prompt: string): string{
     } 
 }
 
-export function getPromptMoviles(nombre_prompt: string, dispositivosEsperados: number): string {
+export function getPromptDispositivos(nombre_prompt: string, dispositivosEsperados: number): string {
     switch (nombre_prompt) {
         case 'prompt_r1': 
             return prompt_r1;
@@ -80,7 +80,7 @@ export function getPromptMoviles(nombre_prompt: string, dispositivosEsperados: n
         case 'prompt_c1':
             return prompt_c1;
         case 'prompt_telefonosEsperados_1':
-            return prompt_telefonosEsperados_1(dispositivosEsperados);
+            return prompt_dispositivosEsperados_1(dispositivosEsperados);
         default: 
             return 'Dame error en este formato: {"numero_telefonos": "0", "error_solicitud": "error", "comentarios": "Prompt mal especificado"}';  
     }
