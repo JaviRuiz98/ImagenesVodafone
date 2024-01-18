@@ -2,18 +2,20 @@ import { Request, Response } from 'express';
 import { ChatMessage } from '../interfaces/procesamientoInterfaces';
 import * as fs from 'fs';
 import openai from '../config/openAi';
-import { imagenes, expositorios } from '@prisma/client';
+import { expositorios } from '@prisma/client';
 import { expositorioService } from '../services/expositorioService';
+import { getPromptMoviles, getPromptCarteles } from '../config/prompts';
 
-
+// Constantes y configuracion de procesado
 const max_tokens = 500;
 const temperature = 0;
+const promptCarteles = getPromptCarteles('prompt_carteles_r1');
+const nombrePromptMoviles = 'a'
 
 export async function procesarImagenes(req: Request, res: Response) {
   try {
     const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-    const expositorios: expositorios = req.body;
-
+    const idExpositorio: number = req.body.idExpositorio;
    
     //obtengo la imagen a procesar
     const imagenProcesadaPath = (files['imagenesProcesamiento'] as Express.Multer.File[]).map(file => file.path)[0];
@@ -23,15 +25,32 @@ export async function procesarImagenes(req: Request, res: Response) {
        return;
     }
 
-    //obtengo la imagen de referencia
-    const imagenReferencia:imagenes = await expositorioService.getImage(expositorios.id_imagen);
+    const existingExpositorio: expositorios | null = await expositorioService.getById(idExpositorio);
+
+    if (!existingExpositorio) {
+        res.status(404).json({ error: 'Expositorio not found' });
+        return;
+    }
+
+
+    //obtengo la imagen de referencia y la cantidad de dispositivos 
+    const [imagenReferencia, dispositivosCount] = await Promise.all([
+      expositorioService.getImage(existingExpositorio.id_imagen),
+      expositorioService.getDispositivosCount(existingExpositorio.id_expositorio)
+    ]);
+
+
     if (!imagenReferencia) {
       res.status(500).json({ error: 'La imagen referencia no existe' });
       return;
     }
+   
+    const prompt: string = dispositivosCount ===0 ? promptCarteles : getPromptMoviles(nombrePromptMoviles, dispositivosCount);
+
+
     //llamada a OpenAI
     const filePaths = [imagenReferencia.url, imagenProcesadaPath];
-    const openAiResult = await getOpenAiResults(filePaths, 'prompt_ejemplo');
+    const openAiResult = await getOpenAiResults(filePaths, prompt);
     if (!openAiResult) {
       res.status(500).json({ error: 'Error al procesar imágenes' });
       return;

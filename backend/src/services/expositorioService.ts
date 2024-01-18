@@ -42,7 +42,25 @@ export const expositorioService = {
         } finally {
           await db.$disconnect();
         }
+      },
+
+      async  getDispositivosCount(idExpositorio: number): Promise<number> {
+        try {
+          const count = await db.dispositivos.count({
+            where: {
+              id_expositorio: idExpositorio
+            }
+          });
+          
+          return count;
+        } catch (error) {
+         
+          throw error;
+        } finally {
+          await db.$disconnect();
+        }
       }
+      
 
 
 
