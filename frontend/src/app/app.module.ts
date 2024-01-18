@@ -19,7 +19,8 @@ import { ElementoSimpleComponent } from './componentes/elemento-simple/elemento-
 import { ElementoDobleComponent } from './componentes/elemento-doble/elemento-doble.component';
 import { BarraMenuComponent } from './componentes/barra-menu/barra-menu.component';
 import { MarcoElementoComponent } from './componentes/marco-elemento/marco-elemento.component';
- 
+import { SelectorImagenesComponent } from './componentes/selector-imagenes/selector-imagenes.component';
+
 
 @NgModule({
   declarations: [
@@ -28,7 +29,7 @@ import { MarcoElementoComponent } from './componentes/marco-elemento/marco-eleme
     ElementoSimpleComponent,
     ElementoDobleComponent,
     BarraMenuComponent,
-    MarcoElementoComponent
+    MarcoElementoComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,8 +37,8 @@ import { MarcoElementoComponent } from './componentes/marco-elemento/marco-eleme
     AppRoutingModule,
     CardModule,
     DividerModule,
-    PanelModule
-
+    PanelModule,
+    SelectorImagenesComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

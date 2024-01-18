@@ -1,9 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-
-
-
-
 @Component({
   selector: 'app-marco-elemento',
   templateUrl: './marco-elemento.component.html',
@@ -11,20 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 
 
-
-
 export class MarcoElementoComponent  implements OnInit{
-
-
-  
 
   constructor() { }
 
-
-
   ngOnInit(): void {
   }
-
-
-
 }
