@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '../../interfaces/selector-imagenes';
-<<<<<<< Updated upstream
-import { SelectorImagenesService } from 'src/app/servicios/selector-imagenes/selector-imagenes.service';
-=======
 import { SelectorImagenesService } from '../../servicios/selector-imagenes/selector-imagenes.service';
->>>>>>> Stashed changes
+
 @Component({
   selector: 'app-selector-imagenes',
   templateUrl: './selector-imagenes.component.html',
