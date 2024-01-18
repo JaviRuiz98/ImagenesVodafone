@@ -3,7 +3,7 @@ import { ChatMessage } from '../interfaces/procesamientoInterfaces';
 import * as fs from 'fs';
 import openai from '../config/openAi';
 import { expositores } from '@prisma/client';
-import { expositoresService } from '../services/expositorioService';
+import { expositoresService } from '../services/expositorService';
 import { getPromptMoviles, getPromptCarteles } from '../config/prompts';
 
 // Constantes y configuracion de procesado

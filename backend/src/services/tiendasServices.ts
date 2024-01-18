@@ -16,7 +16,7 @@ export const tiendaService = {
                     include:{
                         muebles:{
                             include:{
-                                expositorios: {
+                                expositores: {
                                     include: {
                                         imagenes: true,
                                         
@@ -50,7 +50,7 @@ export const tiendaService = {
                     include:{
                         muebles:{
                             include:{
-                                expositorios: {
+                                expositores: {
                                     include: {
                                         imagenes: true,
                                    
