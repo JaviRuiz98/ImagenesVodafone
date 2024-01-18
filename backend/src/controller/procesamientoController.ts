@@ -2,8 +2,8 @@ import { Request, Response } from 'express';
 import { ChatMessage } from '../interfaces/procesamientoInterfaces';
 import * as fs from 'fs';
 import openai from '../config/openAi';
-import { expositorios } from '@prisma/client';
-import { expositorioService } from '../services/expositorioService';
+import { expositores } from '@prisma/client';
+import { expositoresService } from '../services/expositorioService';
 import { getPromptMoviles, getPromptCarteles } from '../config/prompts';
 
 // Constantes y configuracion de procesado
@@ -15,7 +15,7 @@ const nombrePromptMoviles = 'a'
 export async function procesarImagenes(req: Request, res: Response) {
   try {
     const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-    const idExpositorio: number = req.body.idExpositorio;
+    const idExpositor: number = req.body.idExpositor;
    
     //obtengo la imagen a procesar
     const imagenProcesadaPath = (files['imagenesProcesamiento'] as Express.Multer.File[]).map(file => file.path)[0];
@@ -25,7 +25,7 @@ export async function procesarImagenes(req: Request, res: Response) {
        return;
     }
 
-    const existingExpositorio: expositorios | null = await expositorioService.getById(idExpositorio);
+    const existingExpositorio: expositores | null = await expositoresService.getById(idExpositor);
 
     if (!existingExpositorio) {
         res.status(404).json({ error: 'Expositorio not found' });
@@ -35,8 +35,8 @@ export async function procesarImagenes(req: Request, res: Response) {
 
     //obtengo la imagen de referencia y la cantidad de dispositivos 
     const [imagenReferencia, dispositivosCount] = await Promise.all([
-      expositorioService.getImage(existingExpositorio.id_imagen),
-      expositorioService.getDispositivosCount(existingExpositorio.id_expositorio)
+      expositoresService.getImage(existingExpositorio.id_imagen),
+      expositoresService.getDispositivosCount(existingExpositorio.id_expositor)
     ]);
 
 
