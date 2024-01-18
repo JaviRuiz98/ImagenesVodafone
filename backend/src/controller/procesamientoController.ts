@@ -14,11 +14,11 @@ const nombrePromptMoviles = 'a'
 
 export async function procesarImagenes(req: Request, res: Response) {
   try {
-    const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+    const file = req.file //as { [fieldname: string]: Express.Multer.File[] };
     const idExpositor: number = req.body.idExpositor;
    
     //obtengo la imagen a procesar
-    const imagenProcesadaPath = (files['imagenesProcesamiento'] as Express.Multer.File[]).map(file => file.path)[0];
+    const imagenProcesadaPath = file?.path//(files['imagenesProcesamiento'] as Express.Multer.File[]).map(file => file.path)[0];
     if (!imagenProcesadaPath) {
       
        res.status(500).json({ error: 'La imagen procesada no existe' });
