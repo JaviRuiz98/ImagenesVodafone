@@ -1,0 +1,14 @@
+  
+.separador-vertical::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 50%;
+    border-left: 1px solid #ccc;
+  }
+
+  .contenedor {
+    position: relative;
+    padding: 0 2rem; /* Espacio extra para evitar superposición de borde */
+  }
