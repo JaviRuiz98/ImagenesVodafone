@@ -18,12 +18,12 @@ import { imagenes } from '../interfaces/imagenes';
 
 
 
-export class TiendasServicesService {
+export class TiendasServices {
 
   
   tienda: tienda = {
     id_tienda: 0,
-    sfid: 0,
+    sfid: " ",
     muebles: []
   }
 
@@ -33,10 +33,10 @@ export class TiendasServicesService {
 
   constructor(private http: HttpClient){ }
 
-  getTienda(sfid: number): Observable<tienda> {
+  getTienda(sfid: string): Observable<tienda[]> {
 
     const params =  { sfid: sfid };
-    return this.http.get<tienda>(`${this.API_URI}/tienda`, { params: params });
+    return this.http.get<tienda[]>(`${this.API_URI}/tiendas`, { params: params });
 
   }
 

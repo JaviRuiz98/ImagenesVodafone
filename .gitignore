@@ -9,3 +9,5 @@ docker-compose.yml
 
 
 frontend/node_modules
+
+frontend/.angular

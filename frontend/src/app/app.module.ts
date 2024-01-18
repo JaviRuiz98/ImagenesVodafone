@@ -21,6 +21,7 @@ import { BarraMenuComponent } from './componentes/barra-menu/barra-menu.componen
 import { MarcoElementoComponent } from './componentes/marco-elemento/marco-elemento.component';
 import { SelectorImagenesComponent } from './componentes/selector-imagenes/selector-imagenes.component';
 
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { SelectorImagenesComponent } from './componentes/selector-imagenes/selec
     CardModule,
     DividerModule,
     PanelModule,
+    HttpClientModule,
     SelectorImagenesComponent
   ],
   providers: [],
