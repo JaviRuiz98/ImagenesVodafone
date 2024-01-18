@@ -4,16 +4,18 @@ import * as fs from 'fs';
 import openai from '../config/openAi';
 import { imagenes, expositorios } from '@prisma/client';
 import { expositorioService } from '../services/expositorioService';
-
+import { getPrompt } from '../config/prompts';
 
 const max_tokens = 500;
 const temperature = 0;
 
 export async function procesarImagenes(req: Request, res: Response) {
   try {
-    const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-    const expositorios: expositorios = req.body;
+    //Constantes y configuracion de procesado
+    const promptCarteles = getPrompt('prompt_r1');
 
+    const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+    const idExpositorio: number = req.body.idExpositorio;
    
     //obtengo la imagen a procesar
     const imagenProcesadaPath = (files['imagenesProcesamiento'] as Express.Multer.File[]).map(file => file.path)[0];
@@ -23,15 +25,22 @@ export async function procesarImagenes(req: Request, res: Response) {
        return;
     }
 
+    const existingExpositorio: expositorios | null = await expositorioService.getById(idExpositorio);
+
+    if (!existingExpositorio) {
+        res.status(404).json({ error: 'Expositorio not found' });
+        return;
+    }
+
     //obtengo la imagen de referencia
-    const imagenReferencia:imagenes = await expositorioService.getImage(expositorios.id_imagen);
+    const imagenReferencia:imagenes = await expositorioService.getImage(existingExpositorio.id_imagen);
     if (!imagenReferencia) {
       res.status(500).json({ error: 'La imagen referencia no existe' });
       return;
     }
     //llamada a OpenAI
     const filePaths = [imagenReferencia.url, imagenProcesadaPath];
-    const openAiResult = await getOpenAiResults(filePaths, 'prompt_ejemplo');
+    const openAiResult = await getOpenAiResults(filePaths, promptCarteles);
     if (!openAiResult) {
       res.status(500).json({ error: 'Error al procesar imágenes' });
       return;
