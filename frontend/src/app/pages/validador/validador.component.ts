@@ -6,7 +6,6 @@ import { tienda } from 'src/app/interfaces/tienda';
  
 
 
-const sfid = "FRANQ982";
 
 @Component({
   selector: 'app-validador',
@@ -25,7 +24,7 @@ export class ValidadorComponent implements OnInit{
     muebles: []
   }
 
-
+  sfid = "FRANQ982";
 
 
   constructor( private tiendasService: TiendasServices) {}
@@ -41,7 +40,7 @@ export class ValidadorComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.inicializaImagenesReferencia(sfid);
+    this.inicializaImagenesReferencia(this.sfid);
 
   }
 

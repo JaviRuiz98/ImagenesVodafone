@@ -1,7 +1,14 @@
 <div class="paginaCompleta">
-  <app-barra-menu [tiendaTitle]="tienda.sfid"></app-barra-menu>
+  <app-barra-menu [tiendaTitle]="sfid"></app-barra-menu>
   <div *ngFor="let item of tienda.muebles" ngClass="contornoPanel">
-    <p-panel header="Elemento/mueble {{item.nombre_mueble!==undefined ? ' - '+item.nombre_mueble : item.id_mueble}}" [style]="{'border': '1px solid black', 'margin-bottom': '20px'}">
+    <p-panel class="custom-header-panel" [style]="{'border': '1px solid black', 'margin-bottom': '20px'}">
+      <ng-template pTemplate="header">
+        <div class="custom-header">
+          Elemento/mueble {{item.nombre_mueble !== undefined ? ' - ' + item.nombre_mueble : item.id_mueble}}
+        </div>
+      </ng-template>
+   
+   
         <div class="panelCompleto">
          
           <div class="panelIzquierda" >
@@ -11,7 +18,7 @@
             <ng-template #dosFotos>
 
               <div class="grid anchoAltoSubirFotos">
-                <div class="col-6">
+                <div class="col-6" style="margin-right: 5px;">
                   <img [src]="'http://localhost:3000/imagenesReferencia/' + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url" class="imagenDoble">
                 </div>
                 <div class="col-6">
