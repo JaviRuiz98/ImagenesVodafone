@@ -6,6 +6,7 @@ import { expositores } from '@prisma/client';
 import { expositoresService } from '../services/expositorService';
 import { getPromptDispositivos, getPromptCarteles } from '../config/prompts';
 import { procesamientoService } from '../services/procesamientoService';
+import { promptObject } from '../interfaces/promptObject';
 
 // Constantes y configuracion de procesado
 const IA_utilizada = 'openai';
@@ -48,9 +49,9 @@ export async function procesarImagenes(req: Request, res: Response) {
       return;
     }
    
-    let tipoProcesado: string = getTipoProcesadoDeNumeroDispositivos(dispositivosCount);
+    const tipoProcesado: 'carteles' | 'dispositivos' = getTipoProcesadoDeNumeroDispositivos(dispositivosCount);
 
-    const promptObject = getPromptObject(tipoProcesado, dispositivosCount, nombrePromptCarteles, nombrePromptDispositivos);
+    const promptObject: promptObject = getPromptObject(tipoProcesado, dispositivosCount, nombrePromptCarteles, nombrePromptDispositivos);
 
     //llamada a OpenAI
     const filePaths = [imagenReferencia.url, imagenProcesadaPath];
@@ -68,7 +69,7 @@ export async function procesarImagenes(req: Request, res: Response) {
 
     const similarityObject = JSON.parse(cleanedResponse);
     //Guardar en la base de datos (falta por implementar)
-    procesamientoService.create(tipoProcesado, existingExpositorio.id_imagen, existingExpositorio.id_expositor, similarityObject.comentarios, parseBool(similarityObject.valido), IA_utilizada, promptObject.nombre_prompt);
+    procesamientoService.create( existingExpositorio.id_imagen, existingExpositorio.id_expositor, similarityObject.comentarios, parseBool(similarityObject.valido), IA_utilizada, promptObject.nombre_prompt);
     
 
     return res.status(200).json(similarityObject);
@@ -81,7 +82,7 @@ export async function procesarImagenes(req: Request, res: Response) {
 }
 
 
-function getTipoProcesadoDeNumeroDispositivos(dispositivosCount: number): string {
+function getTipoProcesadoDeNumeroDispositivos(dispositivosCount: number): 'carteles' | 'dispositivos' {
   if (dispositivosCount === 0) {
     return 'carteles';
   } else {
@@ -89,13 +90,14 @@ function getTipoProcesadoDeNumeroDispositivos(dispositivosCount: number): string
   }
 }
 
-function getPromptObject(tipoProcesado: string, dispositivosCount: number, nombrePromptCarteles: string, nombrePromptDispositivos: string): {nombre_prompt: string, prompt : string} {
+
+function getPromptObject(tipoProcesado: string, dispositivosCount: number, nombrePromptCarteles: string, nombrePromptDispositivos: string): promptObject {
   // Prompt object es un objeto que contiene el nombre del prompt y el prompt correspondiente
 
   const nombre_prompt: string = tipoProcesado === 'carteles' ? nombrePromptCarteles : nombrePromptDispositivos;
   const prompt : string = tipoProcesado === 'carteles' ? getPromptCarteles(nombrePromptCarteles) : getPromptDispositivos(nombrePromptDispositivos, dispositivosCount);
 
-  const promptObject = {
+  const promptObject: promptObject = {
     nombre_prompt,
     prompt
   };
@@ -103,10 +105,6 @@ function getPromptObject(tipoProcesado: string, dispositivosCount: number, nombr
   return promptObject;
 }
 
-function parseBool(value: string): boolean {
-  const value_bool = value == 'true';
-  return value_bool;
-}
 
 
 async function getOpenAiResults(filePaths: string[], instrucciones: string) {
