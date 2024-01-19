@@ -29,26 +29,16 @@ export class ProcesamientoServicesService {
   constructor(private http: HttpClient){ }
 
 
-  getRespuestasCarteles(id_tienda: number): Observable<respuesta_carteles[]> {
-    const params =  { id_tienda: id_tienda };
-    return this.http.get<respuesta_carteles[]>(`${this.API_URI}/respuestasCarteles`, { params: params });
-  }
 
-  getRespuestasMoviles(id_tienda: number): Observable<respuesta_movil[]> {
-    const params =  { id_tienda: id_tienda };
-    return this.http.get<respuesta_movil[]>(`${this.API_URI}/respuestasMoviles`, { params: params });
-  }
+  postProcesamientoImagenes(id_expositor:number,imageFile: File  ): Observable<procesados_imagenes> {
 
-  postProcesamientoImagenes(procesado: procesados_imagenes): Observable<procesados_imagenes> {
+    const formData = new FormData();
+    formData.append('idExpositor', id_expositor.toString());
+    formData.append('imagenesProcesamiento', imageFile);
 
-    return this.http.post<procesados_imagenes>(`${this.API_URI}/procesamientoImagenes`, procesado);
+    return this.http.post<procesados_imagenes>(`${this.API_URI}/procesamientoImagenes`, formData);
 
   }
-
-
-
-
-
 
 
 }
