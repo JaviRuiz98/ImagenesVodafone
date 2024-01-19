@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { TiendasServices } from 'src/app/servicios/tiendas-services.service';
+import { TiendasServices } from 'src/app/servicios/tiendas/tiendas.service';
+
 
 
 import { tienda } from 'src/app/interfaces/tienda';
