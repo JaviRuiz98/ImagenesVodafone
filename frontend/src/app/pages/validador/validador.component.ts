@@ -32,7 +32,7 @@ export class ValidadorComponent implements OnInit{
   inicializaImagenesReferencia(sfid: string ) {
     this.tiendasService.getTienda(sfid).subscribe( ( data: tienda[] ) => {
       this.tienda = data[0];
-      console.log(this.tienda.muebles.length);
+      console.log(this.tienda.muebles);
       console.log(this.tienda.muebles[0].expositores[0].imagenes.url);
 
     })

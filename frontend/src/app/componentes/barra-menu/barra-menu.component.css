@@ -24,7 +24,7 @@ body.scrolled .scrolling-bar::before {
 .barra {
   position: fixed; 
   top: 0; 
-  width: 80%; 
+  width: 82%; 
   height: 50px; 
   background-color: red;
   display: flex; 
