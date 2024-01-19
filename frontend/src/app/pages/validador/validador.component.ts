@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TiendasServices } from 'src/app/servicios/tiendas-services.service';
+import { TiendasServices } from 'src/app/servicios/tiendas/tiendas-services.service';
 
 
 import { tienda } from 'src/app/interfaces/tienda';
@@ -16,7 +16,8 @@ import { tienda } from 'src/app/interfaces/tienda';
 
 
 export class ValidadorComponent implements OnInit{
-
+  url_imagenes_referencias: string = 'http://localhost:3000/imagenesReferencia/';
+  url_imagenes_procesadas: string = 'http://localhost:3000/imagenesProcesadas/';
 
   tienda: tienda = {
     id_tienda: 0,
@@ -30,10 +31,10 @@ export class ValidadorComponent implements OnInit{
   constructor( private tiendasService: TiendasServices) {}
 
   inicializaImagenesReferencia(sfid: string ) {
-    this.tiendasService.getTienda(sfid).subscribe( ( data: tienda[] ) => {
-      this.tienda = data[0];
-      console.log(this.tienda.muebles.length);
-      console.log(this.tienda.muebles[0].expositores[0].imagenes.url);
+    this.tiendasService.getTienda(sfid).subscribe( ( data: tienda ) => {
+      this.tienda = data;
+      console.log("tienda",this.tienda);
+      console.log("data", data);
 
     })
 

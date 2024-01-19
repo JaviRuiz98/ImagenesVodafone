@@ -2,12 +2,13 @@ import { Request, Response } from 'express';
 import { ChatMessage } from '../interfaces/procesamientoInterfaces';
 import * as fs from 'fs';
 import openai from '../config/openAi';
-import { expositores } from '@prisma/client';
 import { expositoresService } from '../services/expositorService';
 import { getPromptDispositivos, getPromptCarteles } from '../config/prompts';
 import { procesamientoService, respuestaService } from '../services/procesamientoService';
 import { promptObject } from '../interfaces/promptObject';
 import { parseBool } from '../utils/funcionesCompartidasController';
+import { imagenService } from '../services/imagenService';
+
 
 // Constantes y configuracion de procesado
 const IA_utilizada = 'openai';
@@ -23,16 +24,23 @@ export async function procesarImagenes(req: Request, res: Response) {
     
    
     //obtengo la imagen a procesar
-    const imagenProcesadaPath = file?.path//(files['imagenesProcesamiento'] as Express.Multer.File[]).map(file => file.path)[0];
-    if (!imagenProcesadaPath) {
+    const imagenProcesada = file//(files['imagenesProcesamiento'] as Express.Multer.File[]).map(file => file.path)[0];
+
+    if (!imagenProcesada ||!imagenProcesada.path || !imagenProcesada.filename) {
       
        res.status(500).json({ error: 'La imagen procesada no existe' });
        return;
     }
+    
+    //creo la imagen nueva y compruebo que existe el expositor (falta tipar)
+    const [nuevaImagen, existingExpositor]  = await Promise.all([
+      imagenService.create(imagenProcesada.filename),
+      expositoresService.getById(idExpositor),
+    ]);
+ 
+    
 
-    const existingExpositorio: expositores | null = await expositoresService.getById(idExpositor);
-
-    if (!existingExpositorio) {
+    if (!existingExpositor) {
         res.status(404).json({ error: 'Expositorio not found' });
         return;
     }
@@ -40,8 +48,8 @@ export async function procesarImagenes(req: Request, res: Response) {
 
     //obtengo la imagen de referencia y la cantidad de dispositivos 
     const [imagenReferencia, dispositivosCount] = await Promise.all([
-      expositoresService.getImage(existingExpositorio.id_imagen),
-      expositoresService.getDispositivosCount(existingExpositorio.id_expositor)
+      expositoresService.getImage(existingExpositor.id_imagen),
+      expositoresService.getDispositivosCount(existingExpositor.id_expositor)
     ]);
 
 
@@ -55,7 +63,7 @@ export async function procesarImagenes(req: Request, res: Response) {
     const promptObject: promptObject = getPromptObject(tipoProcesado, dispositivosCount, nombrePromptCarteles, nombrePromptDispositivos);
 
     //llamada a OpenAI
-    const filePaths = [imagenReferencia.url, imagenProcesadaPath];
+    const filePaths = [imagenReferencia.url, imagenProcesada.path];
     const openAiResult = await getOpenAiResults(filePaths, promptObject.prompt);
     if (!openAiResult) {
       res.status(500).json({ error: 'Error al procesar imágenes' });
@@ -71,8 +79,8 @@ export async function procesarImagenes(req: Request, res: Response) {
     const similarityObject = JSON.parse(cleanedResponse);
     //Guardar en la base de datos (falta por implementar)
     const id_procesado_imagen = await procesamientoService.create( //devuelve el id del procesado de imagen para usarlo en el almacenamiento de la respuesta
-      existingExpositorio.id_imagen, 
-      existingExpositorio.id_expositor, 
+      nuevaImagen.id_imagen, 
+      existingExpositor.id_expositor, 
       similarityObject.comentarios, 
       parseBool(similarityObject.valido), 
       IA_utilizada, 
