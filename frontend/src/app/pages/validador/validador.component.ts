@@ -28,19 +28,16 @@ export class ValidadorComponent implements OnInit{
     muebles: []
   }
 
-  array_elementos: any[] = [];
-  array_imagenes: any[] = [];
-  constructor( private selectorImagenesService: SelectorImagenesService, private tiendasService: TiendasServices, private procesamientoServicesService: ProcesamientoServicesService) {
 
-   }
+
+
+  constructor( private tiendasService: TiendasServices) {}
 
   inicializaImagenesReferencia(sfid: string ) {
     this.tiendasService.getTienda(sfid).subscribe( ( data: tienda[] ) => {
       this.tienda = data[0];
       console.log(this.tienda.muebles.length);
-      console.log(this.tienda.muebles[0].expositorios[0].imagenes.url);
-
-      this.tienda.muebles.map
+      console.log(this.tienda.muebles[0].expositores[0].imagenes.url);
 
     })
 

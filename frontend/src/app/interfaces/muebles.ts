@@ -1,5 +1,5 @@
-import { expositorios } from "./expositorios";
+import { expositores } from "./expositor";
 export interface mueble {
     id_mueble: number;
-    expositorios: expositorios[];
+    expositores: expositores[];
 }

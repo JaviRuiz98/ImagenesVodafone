@@ -39,9 +39,6 @@ export class ProcesamientoServicesService {
     return this.http.get<respuesta_movil[]>(`${this.API_URI}/respuestasMoviles`, { params: params });
   }
 
-
-  
-
   postProcesamientoImagenes(procesado: procesados_imagenes): Observable<procesados_imagenes> {
 
     return this.http.post<procesados_imagenes>(`${this.API_URI}/procesamientoImagenes`, procesado);

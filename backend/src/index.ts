@@ -18,7 +18,7 @@ app.use('/', imagesRoutes);
 app.use('/', procesamientoRoutes);
 
 app.get('/', (_req: Request, res: Response) => {
-    res.send('Hello World! prueba 2');
+    res.send('Hello World! ');
 })
 
 

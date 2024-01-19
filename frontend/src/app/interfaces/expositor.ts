@@ -1,8 +1,8 @@
 
 import { imagenes } from "./imagenes";
 import { dispositivos } from "./dispositivos";
-export interface expositorios {
-    id_expositorio: number;
+export interface expositores {
+    id_expositor: number;
     id_mueble: number;
     imagenes: imagenes;
     dispositivos: dispositivos[];
