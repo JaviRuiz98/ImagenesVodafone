@@ -5,8 +5,9 @@ import openai from '../config/openAi';
 import { expositores } from '@prisma/client';
 import { expositoresService } from '../services/expositorService';
 import { getPromptDispositivos, getPromptCarteles } from '../config/prompts';
-import { procesamientoService } from '../services/procesamientoService';
+import { procesamientoService, respuestaService } from '../services/procesamientoService';
 import { promptObject } from '../interfaces/promptObject';
+import { parseBool } from '../utils/funcionesCompartidasController';
 
 // Constantes y configuracion de procesado
 const IA_utilizada = 'openai';
@@ -69,8 +70,20 @@ export async function procesarImagenes(req: Request, res: Response) {
 
     const similarityObject = JSON.parse(cleanedResponse);
     //Guardar en la base de datos (falta por implementar)
-    procesamientoService.create( existingExpositorio.id_imagen, existingExpositorio.id_expositor, similarityObject.comentarios, parseBool(similarityObject.valido), IA_utilizada, promptObject.nombre_prompt);
+    const id_procesado_imagen = await procesamientoService.create( //devuelve el id del procesado de imagen para usarlo en el almacenamiento de la respuesta
+      existingExpositorio.id_imagen, 
+      existingExpositorio.id_expositor, 
+      similarityObject.comentarios, 
+      parseBool(similarityObject.valido), 
+      IA_utilizada, 
+      promptObject.nombre_prompt);
     
+    //Almacenar los datos de las respuestas
+    if (tipoProcesado === 'carteles') {
+      respuestaService.createRespuestaCartel(id_procesado_imagen, similarityObject.probab_estar_contenido);
+    } else if (tipoProcesado === 'dispositivos') {
+      respuestaService.createRespuestaDispositivo(id_procesado_imagen, dispositivosCount, parseInt(similarityObject.dispositivos_contados));
+    }
 
     return res.status(200).json(similarityObject);
   } catch (error) {

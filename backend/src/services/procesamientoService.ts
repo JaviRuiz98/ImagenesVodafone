@@ -15,9 +15,32 @@ export const procesamientoService = {
                 prompt_usado: prompt_usado,
             }
         });
-        console.log(procesamiento);
+        
+        return procesamiento.id_procesado_imagen
     }, 
-    
 
+}
 
+export const respuestaService = {
+    async createRespuestaCartel (id_procesado_imagen: number, probabilidad: 'muy alta' | 'alta' | 'media' | 'baja' | 'muy baja' | 'ninguna' | 'error') {
+        const respuesta_carteles = await db.respuestas_carteles.create({
+            data: {                
+                id_procesado_imagen: id_procesado_imagen,
+                probabilidad: probabilidad,
+            }
+        });
+        console.log(respuesta_carteles);
+        
+    },
+
+    async createRespuestaDispositivo (id_procesado_imagen: number, huecos_esperados: number, dispositivos_contados: number) {
+        const respuesta_dispositivos = await db.respuestas_dispositivos.create({
+            data: {                
+                id_procesado_imagen: id_procesado_imagen,
+                huecos_esperados: huecos_esperados,
+                dispositivos_contados: dispositivos_contados,
+            }
+        });
+        console.log(respuesta_dispositivos);
+    }
 }

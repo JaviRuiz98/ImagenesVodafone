@@ -54,7 +54,7 @@ function prompt_dispositivosEsperados_2(num_dispositivos:number): string{
     Dime por favor cuantos moviles hay en la foto real en formato json. 
     Si no puedes hacerlo di que valido es false, si lo haces di que true. En caso de que sea error di que el numero de telefonos es 0.
     En caso de que no cuentes los mismos móviles de los esperados indica que posiciones faltan o hay de más en los comentarios.
-    La respuesta solo debe contener esto: {"numero_telefonos": "numero", "valido": "true/false", "comentarios": "comentarios"}
+    La respuesta solo debe contener esto: {"dispositivos_contados": "numero", "valido": "true/false", "comentarios": "comentarios"}
     Tampoco empieces viendo de que es un json, directamente empieza usando { y termina con }.`;
 }
 
