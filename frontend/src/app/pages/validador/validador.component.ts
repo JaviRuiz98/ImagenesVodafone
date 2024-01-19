@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SelectorImagenesComponent } from 'src/app/componentes/selector-imagenes/selector-imagenes.component';
 import { TiendasServices } from 'src/app/servicios/tiendas-services.service';
-import { SelectorImagenesService } from 'src/app/servicios/selector-imagenes/selector-imagenes.service';
-import { ProcesamientoServicesService } from 'src/app/servicios/procesamiento-services.service';
 
 
 import { tienda } from 'src/app/interfaces/tienda';

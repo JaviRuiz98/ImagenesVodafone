@@ -1,5 +1,5 @@
 <div class="paginaCompleta">
-  <app-barra-menu></app-barra-menu>
+  <app-barra-menu [tiendaTitle]="tienda.sfid"></app-barra-menu>
   <div *ngFor="let item of tienda.muebles" ngClass="contornoPanel">
     <p-panel header="Elemento/mueble {{item.id_mueble}}" [style]="{'border': '1px solid black', 'margin-bottom': '20px'}">
         <div class="panelCompleto">
@@ -23,7 +23,7 @@
           </div>
           <div class="panelDerecha">
             <div *ngIf="item.expositores.length == 1 else subir2Fotos" >
-              
+            <app-selector-imagenes class="anchoAltoSubirFotos"></app-selector-imagenes>
             </div>
             <ng-template #subir2Fotos>
             

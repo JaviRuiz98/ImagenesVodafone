@@ -15,22 +15,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ValidadorComponent } from './pages/validador/validador.component';
-import { ElementoSimpleComponent } from './componentes/elemento-simple/elemento-simple.component';
-import { ElementoDobleComponent } from './componentes/elemento-doble/elemento-doble.component';
 import { BarraMenuComponent } from './componentes/barra-menu/barra-menu.component';
 import { MarcoElementoComponent } from './componentes/marco-elemento/marco-elemento.component';
 import { SelectorImagenesComponent } from './componentes/selector-imagenes/selector-imagenes.component';
-
 import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
     ValidadorComponent,
-    ElementoSimpleComponent,
-    ElementoDobleComponent,
-    BarraMenuComponent,
-    MarcoElementoComponent,
+   
   ],
   imports: [
     BrowserModule,
@@ -40,7 +34,9 @@ import { HttpClientModule } from '@angular/common/http';
     DividerModule,
     PanelModule,
     HttpClientModule,
-    SelectorImagenesComponent
+    SelectorImagenesComponent,
+    BarraMenuComponent,
+    MarcoElementoComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]
