@@ -5,12 +5,14 @@ import openai from '../config/openAi';
 import { expositores } from '@prisma/client';
 import { expositoresService } from '../services/expositorService';
 import { getPromptDispositivos, getPromptCarteles } from '../config/prompts';
+import { procesamientoService } from '../services/procesamientoService';
 
 // Constantes y configuracion de procesado
+const IA_utilizada = 'openai';
 const max_tokens = 500;
 const temperature = 0;
-const promptCarteles = getPromptCarteles('prompt_carteles_r1');
-const nombrePromptDispositivos = 'prompt_telefonosEsperados_1';
+const nombrePromptCarteles = 'prompt_carteles_r1';
+const nombrePromptDispositivos = 'prompt_telefonosEsperados_2';
 
 export async function procesarImagenes(req: Request, res: Response) {
   try {
@@ -46,25 +48,27 @@ export async function procesarImagenes(req: Request, res: Response) {
       return;
     }
    
-    const prompt: string = dispositivosCount ===0 ? promptCarteles : getPromptDispositivos(nombrePromptDispositivos, dispositivosCount);
+    let tipoProcesado: string = getTipoProcesadoDeNumeroDispositivos(dispositivosCount);
 
+    const promptObject = getPromptObject(tipoProcesado, dispositivosCount, nombrePromptCarteles, nombrePromptDispositivos);
 
     //llamada a OpenAI
     const filePaths = [imagenReferencia.url, imagenProcesadaPath];
-    const openAiResult = await getOpenAiResults(filePaths, prompt);
+    const openAiResult = await getOpenAiResults(filePaths, promptObject.prompt);
     if (!openAiResult) {
       res.status(500).json({ error: 'Error al procesar imágenes' });
       return;
     }
     //Comprobación de la válidez de la respuesta (falta por implementar)
     const cleanedResponse = openAiResult.replace(/[\n\r]/g, '');
-    if (!isValidOpenAiResponse(cleanedResponse, dispositivosCount === 0 ? 'carteles' : 'dispositivos')) {
+    if (!isValidOpenAiResponse(cleanedResponse, tipoProcesado)) {
       res.status(500).json({ error: 'Respuesta inválida' });
       return;
     }
 
     const similarityObject = JSON.parse(cleanedResponse);
     //Guardar en la base de datos (falta por implementar)
+    procesamientoService.create(tipoProcesado, existingExpositorio.id_imagen, existingExpositorio.id_expositor, similarityObject.comentarios, parseBool(similarityObject.valido), IA_utilizada, promptObject.nombre_prompt);
     
 
     return res.status(200).json(similarityObject);
@@ -77,6 +81,32 @@ export async function procesarImagenes(req: Request, res: Response) {
 }
 
 
+function getTipoProcesadoDeNumeroDispositivos(dispositivosCount: number): string {
+  if (dispositivosCount === 0) {
+    return 'carteles';
+  } else {
+    return 'dispositivos';
+  }
+}
+
+function getPromptObject(tipoProcesado: string, dispositivosCount: number, nombrePromptCarteles: string, nombrePromptDispositivos: string): {nombre_prompt: string, prompt : string} {
+  // Prompt object es un objeto que contiene el nombre del prompt y el prompt correspondiente
+
+  const nombre_prompt: string = tipoProcesado === 'carteles' ? nombrePromptCarteles : nombrePromptDispositivos;
+  const prompt : string = tipoProcesado === 'carteles' ? getPromptCarteles(nombrePromptCarteles) : getPromptDispositivos(nombrePromptDispositivos, dispositivosCount);
+
+  const promptObject = {
+    nombre_prompt,
+    prompt
+  };
+
+  return promptObject;
+}
+
+function parseBool(value: string): boolean {
+  const value_bool = value == 'true';
+  return value_bool;
+}
 
 
 async function getOpenAiResults(filePaths: string[], instrucciones: string) {
@@ -126,19 +156,19 @@ async function getOpenAiResults(filePaths: string[], instrucciones: string) {
     return fs.promises.readFile(filePath, 'base64');
   }
 
-  function isValidOpenAiResponse  (response: string, tipoRespuesta: 'carteles' | 'dispositivos'): boolean {
+  function isValidOpenAiResponse  (response: string, tipoProcesado: string): boolean {
     try {
       const responseObject = JSON.parse(response);
       
-      if (tipoRespuesta === 'carteles') {
+      if (tipoProcesado === 'carteles') {
         console.log(responseObject);
         return true;
        
      
-      } else if (tipoRespuesta === 'dispositivos') {
+      } else if (tipoProcesado === 'dispositivos') {
         console.log(responseObject);
         return true;
-      }
+      } 
   
       return false;
     } catch (error) {

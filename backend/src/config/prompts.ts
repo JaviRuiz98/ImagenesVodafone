@@ -40,11 +40,21 @@ Un ejemplo de una respuesta válida es:
 }
 Asegúrate de que tu respuesta siga estrictamente el formato definido. Empieza con { y acaba con }.`;
 
-function prompt_dispositivosEsperados_1(dispositivos:number): string{
-    return `Eres un experto contando la cantidad de teléfonos móviles presentes en una mesa. Debes encontrar ${dispositivos} dispositivos
+function prompt_dispositivosEsperados_1(num_dispositivos:number): string{
+    return `Eres un experto contando la cantidad de teléfonos móviles presentes en una mesa. Debes encontrar ${num_dispositivos} dispositivos
     Adjunto una imagen con unos moviles expuestos para ser vendidos. Dime por favor cuantos moviles hay en formato json. 
     Si no puedes hacerlo di que error_solicitud es error, si lo haces di que exitoso. En caso de que sea error di que el numero de telefonos es 0.
     La respuesta solo debe contener esto: {"numero_telefonos": "numero", "error_solicitud": "exitoso/error", "comentarios": "comentarios"}
+    Tampoco empieces viendo de que es un json, directamente empieza usando { y termina con }.`;
+}
+
+function prompt_dispositivosEsperados_2(num_dispositivos:number): string{
+    return `Eres un experto contando la cantidad de teléfonos móviles presentes en una mesa. 
+    Adjunto una imagen con unos moviles expuestos para ser vendidos. Debes encontrar ${num_dispositivos} dispositivos, estos están en la imagen de modelo pintados con una región verde. 
+    Dime por favor cuantos moviles hay en la foto real en formato json. 
+    Si no puedes hacerlo di que valido es false, si lo haces di que true. En caso de que sea error di que el numero de telefonos es 0.
+    En caso de que no cuentes los mismos móviles de los esperados indica que posiciones faltan o hay de más en los comentarios.
+    La respuesta solo debe contener esto: {"numero_telefonos": "numero", "valido": "true/false", "comentarios": "comentarios"}
     Tampoco empieces viendo de que es un json, directamente empieza usando { y termina con }.`;
 }
 
@@ -81,6 +91,8 @@ export function getPromptDispositivos(nombre_prompt: string, dispositivosEsperad
             return prompt_c1;
         case 'prompt_telefonosEsperados_1':
             return prompt_dispositivosEsperados_1(dispositivosEsperados);
+        case 'prompt_telefonosEsperados_2':
+            return prompt_dispositivosEsperados_2(dispositivosEsperados);
         default: 
             return 'Dame error en este formato: {"numero_telefonos": "0", "error_solicitud": "error", "comentarios": "Prompt mal especificado"}';  
     }
