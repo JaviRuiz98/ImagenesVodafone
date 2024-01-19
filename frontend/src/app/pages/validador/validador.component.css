@@ -41,3 +41,15 @@
   align-items: center;
   box-sizing: border-box;
 }
+.imagenSimple{
+  height: 80%;
+  width: auto;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+.imagenDoble{
+  width: 100%;
+  margin-right: 5%;
+
+}

@@ -4,19 +4,26 @@
     <p-panel header="Elemento/mueble {{item.id_mueble}}" [style]="{'border': '1px solid black', 'margin-bottom': '20px'}">
         <div class="panelCompleto">
          
-          <div class="panelIzquierda">
-            <div *ngIf="item.expositores.length == 1 else dosFotos" >
-                <img [src]="'http://localhost:3000/imagenesReferencia/' + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url">
+          <div class="panelIzquierda" >
+            <div *ngIf="item.expositores.length == 1 else dosFotos" class="anchoAltoSubirFotos" >
+                <img [src]="'http://localhost:3000/imagenesReferencia/' + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url" class="imagenSimple">
             </div>
             <ng-template #dosFotos>
-              <div class="grid">
-                  
+
+              <div class="grid anchoAltoSubirFotos">
+                <div class="col-6">
+                  <img [src]="'http://localhost:3000/imagenesReferencia/' + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url" class="imagenDoble">
+                </div>
+                <div class="col-6">
+                  <img [src]="'http://localhost:3000/imagenesReferencia/' + item.expositores[1].imagenes.url" [alt]="item.expositores[1].imagenes.url" class="imagenDoble">
+                </div>
               </div>
+              
             </ng-template> 
           </div>
           <div class="panelDerecha">
             <div *ngIf="item.expositores.length == 1 else subir2Fotos" >
-              <app-selector-imagenes class="anchoAltoSubirFotos"></app-selector-imagenes>
+              
             </div>
             <ng-template #subir2Fotos>
             
