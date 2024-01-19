@@ -7,6 +7,8 @@ import { expositoresService } from '../services/expositorService';
 import { getPromptDispositivos, getPromptCarteles } from '../config/prompts';
 import { procesamientoService } from '../services/procesamientoService';
 import { promptObject } from '../interfaces/promptObject';
+import { parseBool } from '../utils/funcionesCompartidasController';
+
 
 // Constantes y configuracion de procesado
 const IA_utilizada = 'openai';

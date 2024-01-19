@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 
 import { tienda } from '../interfaces/tienda';  
 import { mueble } from '../interfaces/muebles';
-import { expositorios } from '../interfaces/expositorios';
+import { expositores } from '../interfaces/expositor';
 import { imagenes } from '../interfaces/imagenes';
 
 @Injectable({
@@ -46,9 +46,9 @@ export class TiendasServices {
     return this.http.get<mueble[]>(`${this.API_URI}/muebles`);
   }
  
-  getExpositorios(id_mueble: number): Observable<expositorios[]> {
+  getExpositorios(id_mueble: number): Observable<expositores[]> {
     const params =  { id_mueble: id_mueble };
-    return this.http.get<expositorios[]>(`${this.API_URI}/expositorios`, { params: params });
+    return this.http.get<expositores[]>(`${this.API_URI}/expositorios`, { params: params });
   }
 
   getImagene(id_expositorio: number): Observable<imagenes[]> {

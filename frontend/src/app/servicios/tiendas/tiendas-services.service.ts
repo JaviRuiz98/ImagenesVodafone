@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 
 import { tienda } from '../../interfaces/tienda';  
 import { mueble } from '../../interfaces/muebles';
-import { expositorios } from '../../interfaces/expositorios';
+import { expositorios } from '../../interfaces/expositor';
 import { imagenes } from '../../interfaces/imagenes';
 
 @Injectable({
