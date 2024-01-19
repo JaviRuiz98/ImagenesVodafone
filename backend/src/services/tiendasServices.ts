@@ -52,8 +52,13 @@ export const tiendaService = {
                                 expositores: {
                                     include: {
                                         imagenes: true,
-                                   
-                                    }
+                                        procesados_imagenes: {
+                                            include: {
+                                                respuestas_carteles: true,
+                                                respuestas_dispositivos: true
+                                            }
+                                        }                                   
+                                    }                            
                                 }
                             }
                         }
