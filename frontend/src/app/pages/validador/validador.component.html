@@ -1,7 +1,7 @@
 <div class="paginaCompleta">
   <app-barra-menu [tiendaTitle]="tienda.sfid"></app-barra-menu>
   <div *ngFor="let item of tienda.muebles" ngClass="contornoPanel">
-    <p-panel header="Elemento/mueble {{item.id_mueble}}" [style]="{'border': '1px solid black', 'margin-bottom': '20px'}">
+    <p-panel header="Elemento/mueble {{item.nombre_mueble!==undefined ? ' - '+item.nombre_mueble : item.id_mueble}}" [style]="{'border': '1px solid black', 'margin-bottom': '20px'}">
         <div class="panelCompleto">
          
           <div class="panelIzquierda" >
