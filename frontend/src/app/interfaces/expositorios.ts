@@ -4,6 +4,6 @@ import { dispositivos } from "./dispositivos";
 export interface expositorios {
     id_expositorio: number;
     id_mueble: number;
-    imagen: imagenes;
+    imagenes: imagenes;
     dispositivos: dispositivos[];
 }

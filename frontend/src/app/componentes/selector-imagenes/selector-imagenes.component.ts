@@ -80,4 +80,7 @@ export class SelectorImagenesComponent implements OnInit {
       }    
     })
   }
+  mandarImagenes(){
+    
+  }
 }
