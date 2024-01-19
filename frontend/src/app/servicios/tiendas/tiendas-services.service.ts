@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 
 import { tienda } from '../../interfaces/tienda';  
 import { mueble } from '../../interfaces/muebles';
-import { expositorios } from '../../interfaces/expositor';
+import { expositores } from '../../interfaces/expositor';
 import { imagenes } from '../../interfaces/imagenes';
 
 @Injectable({
@@ -18,12 +18,12 @@ import { imagenes } from '../../interfaces/imagenes';
 
 
 
-export class TiendasServicesService {
+export class TiendasServices {
 
   
   tienda: tienda = {
     id_tienda: 0,
-    sfid: 0,
+    sfid: "",
     muebles: []
   }
 
