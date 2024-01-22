@@ -13,7 +13,7 @@ import { tienda } from 'src/app/interfaces/tienda';
 
 export class ValidadorComponent implements OnInit{
   url_imagenes_referencias: string = 'http://localhost:3000/imagenesReferencia/';
-  url_imagenes_procesadas: string = 'http://localhost:3000/imagenesProcesadas/';
+
 
   tienda: tienda = {
     id_tienda: 0,
@@ -40,9 +40,10 @@ export class ValidadorComponent implements OnInit{
       for (let i = 0; i < data.muebles.length; i++) {
         if (data.muebles[i].expositores.length > 0) {
           this.tienda.muebles.push(data.muebles[i]);
+          
         }
       }
-      console.log("tienda",this.tienda);
+      console.log("tienda",this.tienda.muebles[0].expositores[0].procesados_imagenes[0].respuestas_carteles);
       console.log("data", data);
 
     })
@@ -83,7 +84,7 @@ export class ValidadorComponent implements OnInit{
 
   ngOnInit(): void {
     this.inicializaImagenesReferencia(this.sfid);
-
+    
   }
 
   recibirFile(event: {archivo:File}){

@@ -12,6 +12,15 @@
   justify-content: center;
 }
  
+.custom-header {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 30px;
+  font-weight: bold;
+  font-size: 20px;
+  color: #534c4c;
+  display: flex;
+}
 .panelCompleto{
   display: flex;
   justify-content: center;
@@ -29,11 +38,12 @@
 .panelDerecha{
   display: flex;
   justify-content: center;
+  align-items: center;
   width: 50%;
   background-color: rgba(232, 232, 232, 0.9);
 }
- 
-.anchoAltoSubirFotos {
+
+.anchoAltoFotoReferencia {
   width: 95%;
   height: 95%;
   margin-top: auto;
@@ -42,9 +52,14 @@
   align-items: center;
   box-sizing: border-box;
 }
+ 
+.anchoAltoSubirFotos {
+  width: 90%;
+  height: 90%;
+}
 .imagenSimple{
-  height: 80%;
-  width: auto;
+  height: 100%;
+  width: 100%;
   display: flex;
   justify-content: center;
   overflow: hidden;
@@ -55,14 +70,3 @@
 
 }
 
-.custom-header {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-left: 30px;
-  font-weight: bold;
-  font-size: 20px;
-  color: #534c4c;
-  display: flex;
-  
-  /* Otros estilos personalizados */
-}

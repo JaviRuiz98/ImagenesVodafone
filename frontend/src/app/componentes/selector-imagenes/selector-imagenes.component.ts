@@ -8,7 +8,9 @@ import { Component,  Output, EventEmitter, ViewChild, ElementRef,  } from '@angu
   standalone: true,
   imports: [CommonModule],
 })
+
 export class SelectorImagenesComponent {
+
   @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
   @ViewChild('dropArea') dropAreaRef!: ElementRef;
   @ViewChild('inputFile') inputFileRef!: ElementRef;
@@ -16,12 +18,7 @@ export class SelectorImagenesComponent {
 
   archivoSeleccionado: File | null = null;
 
-  constructor() {
-
-  }
-
-
-
+  constructor() {}
 
   seleccionarArchivo(event: any) {
     if (this.inputFileRef) {
@@ -29,17 +26,12 @@ export class SelectorImagenesComponent {
     }
   }
 
-
   listenChange(event: Event) {
     const input = this.inputFileRef.nativeElement as HTMLInputElement;
-
-      if (input && input.files) {
-        
-          this.archivoSeleccionado = input.files[0];
-          this.archivoSeleccionadoChange.emit({ archivo: this.archivoSeleccionado });
-     
-      }
-   
+    if (input && input.files) {
+      this.archivoSeleccionado = input.files[0];
+      this.archivoSeleccionadoChange.emit({ archivo: this.archivoSeleccionado });
+    }
   }
 
   getImageSrc(file: File) {

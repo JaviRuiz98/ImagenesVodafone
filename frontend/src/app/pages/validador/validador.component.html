@@ -1,23 +1,24 @@
-<div class="paginaCompleta" >
+<div class="paginaCompleta">
   <app-barra-menu [tiendaTitle]="sfid"></app-barra-menu>
   <div *ngFor="let item of tienda.muebles" ngClass="contornoPanel">
     <p-panel class="custom-header-panel" [style]="{'border': '1px solid black', 'margin-bottom': '20px'}">
       <ng-template pTemplate="header">
         <div class="custom-header">
           Elemento/mueble {{item.nombre_mueble !== undefined ? ' - ' + item.nombre_mueble : item.id_mueble}}
+          <div style="margin-left: 500px">  
+          </div>
         </div>
       </ng-template>
    
-   
         <div class="panelCompleto">
-         
           <div class="panelIzquierda" >
-            <div *ngIf="item.expositores.length == 1 else dosFotos" class="anchoAltoSubirFotos" >
+            <div *ngIf="item.expositores.length == 1 else dosFotos" class="anchoAltoFotoReferencia" >
+              <div style="display: flex;">
                 <img [src]="url_imagenes_referencias + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url" class="imagenSimple">
+              </div>
             </div>
             <ng-template #dosFotos>
-
-              <div class="grid anchoAltoSubirFotos">
+              <div class="grid anchoAltoFotoReferencia">
                 <div class="col-6" style="margin-right: 5px;">
                   <img [src]="url_imagenes_referencias + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url" class="imagenDoble">
                 </div>
@@ -25,40 +26,23 @@
                   <img [src]="url_imagenes_referencias + item.expositores[1].imagenes.url" [alt]="item.expositores[1].imagenes.url" class="imagenDoble">
                 </div>
               </div>
-              
             </ng-template> 
           </div>
           <div class="panelDerecha">
 
             <div *ngIf="item.expositores.length == 1 else subir2Fotos" >
-             
-
-              <div *ngIf="item.expositores[0].procesados_imagenes.length > 0 else noTieneProcesados" class=" anchoAltoSubirFotos" style="position: relative;">
-                
-                <p-image  [src]="url_imagenes_referencias + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url"  [preview]="true" class="imagenSimple"></p-image>
-                <p-tag icon="pi pi-check" severity=getSeverityCartel() value="Success" [style]="{'position': 'absolute', 'top': '12%', 'right': '5%'}" ></p-tag>
- 
+              <div *ngIf="item.expositores[0].procesados_imagenes.length > 0 else noTieneProcesados">
+                <app-paginador-procesamiento-subida [procesados]="item.expositores[0].procesados_imagenes" (archivoSeleccionadoChange)="recibirFile($event)"></app-paginador-procesamiento-subida>
               </div> 
-
- 
-
-
-              <ng-template #noTieneProcesados  class=" anchoAltoSubirFotos">
+              <ng-template #noTieneProcesados>
                 <app-selector-imagenes class="imagenSimple" (archivoSeleccionadoChange)="recibirFile($event)" ></app-selector-imagenes>
               </ng-template>           
-
             </div>
-
             <ng-template #subir2Fotos>
-              
             </ng-template> 
-            
-
-              
           </div>
         </div>
       </p-panel>
   </div>
 </div>
- 
  

@@ -14,14 +14,19 @@ import { BadgeModule } from 'primeng/badge';
 import { PrimeIcons } from 'primeng/api';
 import { ImageModule } from 'primeng/image';
 
+
 //instancias del programa
 import { AppRoutingModule } from './app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
+
 import { AppComponent } from './app.component';
 import { ValidadorComponent } from './pages/validador/validador.component';
 import { BarraMenuComponent } from './componentes/barra-menu/barra-menu.component';
 import { MarcoElementoComponent } from './componentes/marco-elemento/marco-elemento.component';
 import { SelectorImagenesComponent } from './componentes/selector-imagenes/selector-imagenes.component';
-import { HttpClientModule } from '@angular/common/http';
+import { PaginadorProcesamientoSubidaComponent } from './componentes/paginador-procesamiento-subida/paginador-procesamiento-subida.component';
+
+
 
 @NgModule({
   declarations: [
@@ -37,12 +42,15 @@ import { HttpClientModule } from '@angular/common/http';
     DividerModule,
     PanelModule,
     HttpClientModule,
+    TagModule,
+    BadgeModule,
+
+    PaginadorProcesamientoSubidaComponent,
     SelectorImagenesComponent,
     ImageModule,
     BarraMenuComponent,
     MarcoElementoComponent,
-    TagModule,
-    BadgeModule
+
   ],
   providers: [   
     PrimeIcons,
