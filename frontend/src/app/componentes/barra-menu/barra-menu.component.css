@@ -1,6 +1,6 @@
 .scrolling-bar::before {
     content: "";
-    display: block;
+    display: flex;
     height: 100%;
     width: 100%;
     background-color: rgba(255, 0, 0, 0.5);
@@ -51,8 +51,10 @@ body.scrolled .scrolling-bar::before {
 }
 
 .image-container {
-  width: 200px; /* Ajusta este valor al tamaño deseado */
-  height: 200px; /* Ajusta este valor al tamaño deseado */
+  height:70px; /* Establecer la altura deseada para la imagen */
 }
 
- 
+.image-container img {
+  height: 100%; /* Escalar la imagen al ancho completo del contenedor */
+  object-fit: contain; /* Ajustar la imagen al tamaño del contenedor sin deformarla */
+}

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TiendasServices } from 'src/app/servicios/tiendas/tiendas-services.service';
+import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
 
 import { tienda } from 'src/app/interfaces/tienda';
@@ -26,7 +26,7 @@ export class ValidadorComponent implements OnInit{
   imagenAProcesar = new File([""], "");
 
 
-  constructor( private tiendasService: TiendasServices,
+  constructor( private tiendasService: TiendasService,
     private procesamientoService: ProcesamientoService
     ) {}
 
