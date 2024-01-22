@@ -19,6 +19,7 @@
   margin-top: 0%;
   height: 550px;
 }
+
 .panelIzquierda {
   display: flex;
   justify-content: center;
@@ -61,5 +62,7 @@
   font-weight: bold;
   font-size: 20px;
   color: #534c4c;
+  display: flex;
+  
   /* Otros estilos personalizados */
 }
