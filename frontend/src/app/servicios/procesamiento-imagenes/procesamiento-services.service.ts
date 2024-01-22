@@ -20,7 +20,7 @@ export class ProcesamientoService {
     formData.append('idExpositor', id_expositor.toString());
     formData.append('imagenesProcesamiento', imageFile);
 
-    return this.http.post<procesados_imagenes>(`${this.API_URI}/procesamientoImagenes`, formData);
+    return this.http.post<procesados_imagenes>(`${this.API_URI}/procesamiento`, formData);
   }
 
 }
