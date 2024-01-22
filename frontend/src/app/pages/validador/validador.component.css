@@ -62,5 +62,7 @@
   font-weight: bold;
   font-size: 20px;
   color: #534c4c;
+  display: flex;
+  
   /* Otros estilos personalizados */
 }

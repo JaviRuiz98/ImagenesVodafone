@@ -5,7 +5,7 @@ import { Observable } from "rxjs";
 
 import { procesados_imagenes } from '../../interfaces/procesados_imagenes';
 import { respuesta_carteles } from '../../interfaces/respuesta_carteles';
-import { respuesta_movil } from '../../interfaces/respuesta_movil';
+import { respuesta_movil } from '../../interfaces/respuesta_dispositivos';
  
 
 

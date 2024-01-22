@@ -39,6 +39,15 @@ export class ValidadorComponent implements OnInit{
 
   }
 
+
+  getSeverityConteo(numero_telefonos: number, huecos_esperados: number) {
+    if (numero_telefonos == huecos_esperados) {
+      return 'success';
+    } else {
+      return 'warning';
+    }
+  }
+
   ngOnInit(): void {
     this.inicializaImagenesReferencia(this.sfid);
 

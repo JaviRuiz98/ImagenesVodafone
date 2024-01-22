@@ -1,10 +1,25 @@
 <div class="paginaCompleta">
+ 
   <app-barra-menu [tiendaTitle]="sfid"></app-barra-menu>
+
   <div *ngFor="let item of tienda.muebles" ngClass="contornoPanel">
     <p-panel class="custom-header-panel" [style]="{'border': '1px solid black', 'margin-bottom': '20px'}">
       <ng-template pTemplate="header">
         <div class="custom-header">
           Elemento/mueble {{item.nombre_mueble !== undefined ? ' - ' + item.nombre_mueble : item.id_mueble}}
+          <div style="margin-left: 500px">  
+            <!-- <div *ngIf="item.expositores[0].">
+
+            </div> -->
+
+         
+            <!-- <p-tag icon="pi pi-exclamation-triangle" severity="warning" value="Warning"></p-tag> -->
+            <!-- <p-tag icon="pi pi-times" severity="danger" value="Danger"  [style]="{ 'margin-left': '15px' }"></p-tag> -->
+            <!-- <p-tag icon="pi pi-check" severity="success" value="Success" [style]="{ 'margin-left': '15px' }"></p-tag>
+            <i class="pi pi-check"  pBadge style="font-size: 1.5rem; color: rgb(0, 255, 30)" [style]="{ 'margin-left': '15px' }"></i>
+            <i class="pi pi-times mr-4 p-text-secondary" pBadge style="font-size: 1.5rem; color: rgb(154, 0, 0); margin-left: 30px"></i>
+            <i class="pi pi-search mr-4 p-text-secondary" pBadge style="font-size: 1.5rem; color:rgb(68, 177, 240); margin-left: 30px"></i> -->
+          </div>
  
         </div>
       </ng-template>
@@ -13,7 +28,12 @@
          
           <div class="panelIzquierda" >
             <div *ngIf="item.expositores.length == 1 else dosFotos" class="anchoAltoSubirFotos" >
+              <!-- <p-tag icon="pi pi-check" severity="success" value="Success" [style]="{ 'margin-left': '15px' }"></p-tag> -->
+              <div style="display: flex;">
                 <img [src]="'http://localhost:3000/imagenesReferencia/' + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url" class="imagenSimple">
+                <!-- <p-badge *ngIf="item.expositores[0].procesamiento=='error'" [value]="'no válido'" [severity]="getSeverity(conteo.error_solicitud)"></p-badge> -->
+              </div>
+   <!-- <p-badge [value]="2"></p-badge> -->
             </div>
             <ng-template #dosFotos>
 

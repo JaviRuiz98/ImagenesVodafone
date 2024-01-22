@@ -5,7 +5,7 @@ import { Observable } from "rxjs";
 
 import { procesados_imagenes } from '../interfaces/procesados_imagenes';
 import { respuesta_carteles } from '../interfaces/respuesta_carteles';
-import { respuesta_movil } from '../interfaces/respuesta_movil';
+import { respuesta_dispositivos } from '../interfaces/respuesta_dispositivos';
  
 
 
@@ -34,9 +34,9 @@ export class ProcesamientoServicesService {
     return this.http.get<respuesta_carteles[]>(`${this.API_URI}/respuestasCarteles`, { params: params });
   }
 
-  getRespuestasMoviles(id_tienda: number): Observable<respuesta_movil[]> {
+  getRespuestasMoviles(id_tienda: number): Observable<respuesta_dispositivos[]> {
     const params =  { id_tienda: id_tienda };
-    return this.http.get<respuesta_movil[]>(`${this.API_URI}/respuestasMoviles`, { params: params });
+    return this.http.get<respuesta_dispositivos[]>(`${this.API_URI}/respuestasMoviles`, { params: params });
   }
 
 

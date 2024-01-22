@@ -50,5 +50,9 @@ body.scrolled .scrolling-bar::before {
   font-size: 16px;
 }
 
+.image-container {
+  width: 200px; /* Ajusta este valor al tamaño deseado */
+  height: 200px; /* Ajusta este valor al tamaño deseado */
+}
 
-  
+ 
