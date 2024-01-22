@@ -55,7 +55,8 @@ export const tiendaService = {
                                         procesados_imagenes: {
                                             include: {
                                                 respuestas_carteles: true,
-                                                respuestas_dispositivos: true
+                                                respuestas_dispositivos: true,
+                                                imagenes: true
                                             }
                                         }                                   
                                     }                            

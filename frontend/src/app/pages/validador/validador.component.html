@@ -34,7 +34,7 @@
              
 
               <div *ngIf="item.expositores[0].procesados_imagenes.length > 0 else noTieneProcesados">
-                <img [src]="url_imagenes_referencias + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url" class="imagenSimple">
+                <img [src]="url_imagenes_procesadas + item.expositores[0].procesados_imagenes[0].imagenes.url" [alt]=" item.expositores[0].procesados_imagenes[0].imagenes.url" class="imagenSimple">
 
                 <!--<img [src]="url_imagenes_procesadas + item.expositores[0].procesados_imagenes[0].imagenes.url" [alt]="item.expositores[0].procesados_imagenes[0]" class="imagenSimple">
                 -->
