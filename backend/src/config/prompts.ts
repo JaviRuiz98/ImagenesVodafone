@@ -61,12 +61,12 @@ function prompt_dispositivosEsperados_2(num_dispositivos:number): string{
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
 const prompt_carteles_r1 = `Dame una probabilidad de que el cartel de la primera imagen esté contenida en la otra imagen en formato json por favor. 
-Si no puedes hacerlo di que es error en probab_estar_contenido y todo comentario añadelo en comentarios. 
+Si no puedes hacerlo di que es false en valido y si puedes hacerlo pon true,todo comentario al respecto añadelo en comentarios. 
 Todo mensaje de comentarios es opcional y debe estar contenido dentro de la estructura json.
 Tampoco empieces avisando de que es un json, directamente empieza usando { y termina con }. Este prompt tiene como finalidad servir como api.
 Para decir que la probabilidad de estar contenido es muy alta debe ser el mismo cartel o ser igual por lo menos en un 95%.
 Es importante ver que el texto del cartel debe coincidir.
-Solo con este estilo: {"probab_estar_contenido": "muy alta/alta/media/baja/muy baja/ninguna/error", "comentarios": "comentarios"}`
+Solo con este estilo: {"probab_estar_contenido": "muy alta/alta/media/baja/muy baja/ninguna/error", "valido": "true/false", "comentarios": "comentarios"}`
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 

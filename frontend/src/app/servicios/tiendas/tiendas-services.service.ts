@@ -5,6 +5,7 @@ import { Observable } from "rxjs";
 import { tienda } from '../../interfaces/tienda';  
 import { mueble } from '../../interfaces/muebles';
 import { expositores } from '../../interfaces/expositor';
+import { expositores } from '../../interfaces/expositor';
 import { imagenes } from '../../interfaces/imagenes';
 
 @Injectable({
@@ -33,10 +34,9 @@ export class TiendasServices {
 
   constructor(private http: HttpClient){ }
 
-  getTienda(sfid: number): Observable<tienda> {
+  getTienda(sfid: string): Observable<tienda> {
 
-    const params =  { sfid: sfid };
-    return this.http.get<tienda>(`${this.API_URI}/tienda`, { params: params });
+    return this.http.get<tienda>(`${this.API_URI}/tiendas/${sfid}`);
 
   }
 
@@ -46,15 +46,12 @@ export class TiendasServices {
     return this.http.get<mueble[]>(`${this.API_URI}/muebles`);
   }
  
-  getExpositorios(id_mueble: number): Observable<expositorios[]> {
+  getExpositores(id_mueble: number): Observable<expositores[]> {
     const params =  { id_mueble: id_mueble };
-    return this.http.get<expositorios[]>(`${this.API_URI}/expositorios`, { params: params });
+    return this.http.get<expositores[]>(`${this.API_URI}/expositores`, { params: params });
   }
 
-  getImagene(id_expositorio: number): Observable<imagenes[]> {
-    const params =  { id_expositorio: id_expositorio };
-    return this.http.get<imagenes[]>(`${this.API_URI}/imagenes`, { params: params });
-  }
+ 
 
   getUrl(id_imagen: number): Observable<string> {
     const params =  { id_imagen: id_imagen };

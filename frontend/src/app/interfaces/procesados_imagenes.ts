@@ -4,7 +4,6 @@ import { respuesta_dispositivos } from "./respuesta_dispositivos";
 
 export interface procesados_imagenes {
     id_procesado_imagen: number;
-    id_imagen: number;
     id_expositor: number;
     fecha: Date;
     comentarios?: string;

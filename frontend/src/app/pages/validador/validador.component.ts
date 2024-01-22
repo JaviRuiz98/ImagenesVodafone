@@ -17,7 +17,8 @@ import { tienda } from 'src/app/interfaces/tienda';
 
 
 export class ValidadorComponent implements OnInit{
-
+  url_imagenes_referencias: string = 'http://localhost:3000/imagenesReferencia/';
+  url_imagenes_procesadas: string = 'http://localhost:3000/imagenesProcesadas/';
 
   tienda: tienda = {
     id_tienda: 0,
