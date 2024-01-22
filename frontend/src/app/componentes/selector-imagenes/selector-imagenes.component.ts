@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '../../interfaces/selector-imagenes';
-import { SelectorImagenesService } from '../../servicios/selector-imagenes/selector-imagenes.service';
 
 @Component({
   selector: 'app-selector-imagenes',
@@ -17,7 +16,7 @@ export class SelectorImagenesComponent implements OnInit {
   first: number = 0;
   rows: number = 5;
 
-  constructor(private SelectorImagenesService: SelectorImagenesService) { }
+  constructor() { }
 
   ngOnInit(): void {
     this.dropArea = document.querySelector('.drop-area') as HTMLInputElement;

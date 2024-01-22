@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TiendasServices } from 'src/app/servicios/tiendas/tiendas.service';
+import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 
 
 
@@ -29,11 +29,11 @@ export class ValidadorComponent implements OnInit{
   sfid = "FRANQ982";
 
 
-  constructor( private tiendasService: TiendasServices) {}
+  constructor( private tiendasService: TiendasService) {}
 
   inicializaImagenesReferencia(sfid: string ) {
-    this.tiendasService.getTienda(sfid).subscribe( ( data: tienda[] ) => {
-      this.tienda = data[0];
+    this.tiendasService.getTienda(sfid).subscribe( ( data: tienda ) => {
+      this.tienda = data;
       console.log(this.tienda.muebles);
       console.log(this.tienda.muebles[0].expositores[0].imagenes.url);
 

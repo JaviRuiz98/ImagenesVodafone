@@ -31,7 +31,7 @@
               <!-- <p-tag icon="pi pi-check" severity="success" value="Success" [style]="{ 'margin-left': '15px' }"></p-tag> -->
               <div style="display: flex;">
                 <img [src]="'http://localhost:3000/imagenesReferencia/' + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url" class="imagenSimple">
-                <!-- <p-badge *ngIf="item.expositores[0].procesamiento=='error'" [value]="'no válido'" [severity]="getSeverity(conteo.error_solicitud)"></p-badge> -->
+                <!-- <p-badge *ngIf="item.expositores[0].procesados_imagenes[0].valido=='false'" [value]="'no válido'" [severity]="getSeverity(conteo.error_solicitud)"></p-badge> -->
               </div>
    <!-- <p-badge [value]="2"></p-badge> -->
             </div>
@@ -54,7 +54,7 @@
              
 
               <div *ngIf="item.expositores[0].procesados_imagenes.length > 0 else noTieneProcesados">
-                <img [src]="url_imagenes_referencias + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url" class="imagenSimple">
+                <!-- <img [src]="url_imagenes_procesadas + item.expositores[0].procesados_imagenes. url" [alt]="item.expositores[0].imagenes.url" class="imagenSimple"> -->
 
                 <!--<img [src]="url_imagenes_procesadas + item.expositores[0].procesados_imagenes[0].imagenes.url" [alt]="item.expositores[0].procesados_imagenes[0]" class="imagenSimple">
                 -->
