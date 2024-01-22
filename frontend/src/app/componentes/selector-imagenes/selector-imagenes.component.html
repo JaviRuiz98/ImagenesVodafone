@@ -5,8 +5,8 @@
         <button (click)="seleccionarArchivo($event)">Selecciona una imagen</button>
         <input #inputFile type="file" (change)="listenChange($event)" hidden>
     </div>
-    <div *ngIf="archivoSeleccionado">
-        <img [src]="getImageSrc(archivoSeleccionado)" alt="Vista previa de la imagen seleccionada">
+    <div *ngIf="archivoSeleccionado" class="drop-area">
+        <img [src]="getImageSrc(archivoSeleccionado)" alt="Vista previa de la imagen seleccionada"  class="imagenSimple">
     </div>
 </div>
 

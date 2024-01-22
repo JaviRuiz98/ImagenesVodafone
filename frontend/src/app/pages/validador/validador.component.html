@@ -58,9 +58,10 @@
 
                 <!--<img [src]="url_imagenes_procesadas + item.expositores[0].procesados_imagenes[0].imagenes.url" [alt]="item.expositores[0].procesados_imagenes[0]" class="imagenSimple">
                 -->
-                </div> 
+              </div> 
 
-              <ng-template #noTieneProcesados>
+              <ng-template #noTieneProcesados class="anchoAltoSubirFotos">
+
                 <app-selector-imagenes class="imagenSimple" (archivoSeleccionadoChange)="recibirFile($event)" ></app-selector-imagenes>
               </ng-template>           
 
