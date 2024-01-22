@@ -41,7 +41,7 @@
                 </div> 
 
               <ng-template #noTieneProcesados>
-                <app-selector-imagenes class="anchoAltoSubirFotos"></app-selector-imagenes>
+                <app-selector-imagenes class="imagenSimple" (archivoSeleccionadoChange)="recibirFile($event)" ></app-selector-imagenes>
               </ng-template>           
 
             </div>

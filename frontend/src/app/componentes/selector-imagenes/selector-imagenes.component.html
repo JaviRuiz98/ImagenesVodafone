@@ -1,7 +1,12 @@
-<div class="drop-area">
-    <h2>Arrastra y suelta imagenes</h2>
-    <span>O</span>
-    <button (click)="seleccionarArchivo($event)">Selecciona una imagen</button>
-    <input type="file" name="" id="input-file" hidden multiple/>
+<div>
+    <div #dropArea class="drop-area" *ngIf="!archivoSeleccionado">
+        <h2 #dragText>Arrastra y suelta imagenes</h2>
+        <span>O</span>
+        <button (click)="seleccionarArchivo($event)">Selecciona una imagen</button>
+        <input #inputFile type="file" (change)="listenChange($event)" hidden>
+    </div>
+    <div *ngIf="archivoSeleccionado">
+        <img [src]="getImageSrc(archivoSeleccionado)" alt="Vista previa de la imagen seleccionada">
+    </div>
 </div>
 
