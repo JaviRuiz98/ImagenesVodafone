@@ -19,6 +19,8 @@ body.scrolled .scrolling-bar::before {
   display: flex; 
   justify-content: center;
   margin-bottom: 50px;
+  position: relative; /* Añade position relative para crear un contexto de posicionamiento */
+  z-index: 1;
 }
 
 .barra {
