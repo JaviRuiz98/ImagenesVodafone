@@ -32,13 +32,17 @@
 
             <div *ngIf="item.expositores.length == 1 else subir2Fotos" >
              
-
+              <!-- Tiene Procesado -->
               <div *ngIf="item.expositores[0].procesados_imagenes.length > 0 else noTieneProcesados">
-                <img [src]="url_imagenes_procesadas + item.expositores[0].procesados_imagenes[0].imagenes.url" [alt]=" item.expositores[0].procesados_imagenes[0].imagenes.url" class="imagenSimple">
-
+                <app-paginador-procesamiento-subida [procesados]="item.expositores[0].procesados_imagenes" (archivoSeleccionadoChange)="recibirFile($event)"></app-paginador-procesamiento-subida>
+                
+                <!-- <img [src]="url_imagenes_procesadas + item.expositores[0].procesados_imagenes[0].imagenes.url" [alt]=" item.expositores[0].procesados_imagenes[0].imagenes.url" class="imagenSimple"> -->
+                
                 <!--<img [src]="url_imagenes_procesadas + item.expositores[0].procesados_imagenes[0].imagenes.url" [alt]="item.expositores[0].procesados_imagenes[0]" class="imagenSimple">
                 -->
                 </div> 
+
+              <!-- No Tiene Procesado -->
 
               <ng-template #noTieneProcesados>
                 <app-selector-imagenes class="imagenSimple" (archivoSeleccionadoChange)="recibirFile($event)" ></app-selector-imagenes>
