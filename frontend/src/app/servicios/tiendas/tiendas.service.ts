@@ -13,19 +13,8 @@ import { imagenes } from '../../interfaces/imagenes';
 
 
 
-
-
-
-
-
 export class TiendasService {
 
-  
-  tienda: tienda = {
-    id_tienda: 0,
-    sfid: "",
-    muebles: []
-  }
 
 
   API_URI = 'http://localhost:3000';
