@@ -46,7 +46,7 @@
 .anchoAltoFotoReferencia {
   width: 95%;
   height: 95%;
-  margin: auto;
+  margin-top: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -69,3 +69,4 @@
   margin-right: 5%;
 
 }
+

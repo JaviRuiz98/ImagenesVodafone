@@ -1,4 +1,4 @@
-<div class="paginaCompleta">
+<div class="paginaCompleta" >
   <app-barra-menu [tiendaTitle]="sfid"></app-barra-menu>
   <div *ngFor="let item of tienda.muebles" ngClass="contornoPanel">
     <p-panel class="custom-header-panel" [style]="{'border': '1px solid black', 'margin-bottom': '20px'}">
@@ -42,15 +42,16 @@
             </ng-template> 
           </div>
           <div class="panelDerecha">
+
             <div *ngIf="item.expositores.length == 1 else subir2Fotos" class="anchoAltoSubirFotos">
               <div *ngIf="item.expositores[0].procesados_imagenes.length > 0 else noTieneProcesados">
-                <!-- <img [src]="url_imagenes_procesadas + item.expositores[0].procesados_imagenes. url" [alt]="item.expositores[0].imagenes.url" class="imagenSimple"> -->
+                <img [src]="url_imagenes_referencias + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url" class="imagenSimple">
+                <p-image  [src]="url_imagenes_referencias + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url"  [preview]="true" class="imagenSimple"></p-image>
+                <p-tag icon="pi pi-check" severity="success" value="Success" [style]="{'position': 'absolute', 'top': '12%', 'right': '5%'}" ></p-tag>
+                </div> 
 
-                <!--<img [src]="url_imagenes_procesadas + item.expositores[0].procesados_imagenes[0].imagenes.url" [alt]="item.expositores[0].procesados_imagenes[0]" class="imagenSimple">
-                -->
-              </div> 
               <ng-template #noTieneProcesados>
-                <app-selector-imagenes (archivoSeleccionadoChange)="recibirFile($event)" ></app-selector-imagenes>
+                <app-selector-imagenes class="imagenSimple" (archivoSeleccionadoChange)="recibirFile($event)" ></app-selector-imagenes>
               </ng-template>           
             </div>
             <ng-template #subir2Fotos>

@@ -44,3 +44,18 @@
     cursor: pointer;
     margin: 1%;
 }
+
+.imagenSimple{
+    height: 80%;
+    width: auto;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .panelDerecha{
+    display: flex;
+    justify-content: center;
+    width: 50%;
+    background-color: rgba(232, 232, 232, 0.9);
+  }

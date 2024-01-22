@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 
 import { procesados_imagenes } from '../../interfaces/procesados_imagenes';
 import { respuesta_carteles } from '../../interfaces/respuesta_carteles';
-import { respuesta_movil } from '../../interfaces/respuesta_movil';
+import { respuesta_dispositivos } from '../../interfaces/respuesta_dispositivos';
  
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class ProcesamientoService {
     formData.append('idExpositor', id_expositor.toString());
     formData.append('imagenesProcesamiento', imageFile);
 
-    return this.http.post<procesados_imagenes>(`${this.API_URI}/procesamientoImagenes`, formData);
+    return this.http.post<procesados_imagenes>(`${this.API_URI}/procesamiento`, formData);
   }
 
 }

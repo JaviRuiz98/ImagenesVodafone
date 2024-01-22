@@ -9,7 +9,10 @@ import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { PanelModule } from 'primeng/panel';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
- 
+import { TagModule } from 'primeng/tag';
+import { BadgeModule } from 'primeng/badge';
+import { PrimeIcons } from 'primeng/api';
+import { ImageModule } from 'primeng/image';
 
 //instancias del programa
 import { AppRoutingModule } from './app-routing.module';
@@ -35,10 +38,16 @@ import { HttpClientModule } from '@angular/common/http';
     PanelModule,
     HttpClientModule,
     SelectorImagenesComponent,
+    ImageModule,
     BarraMenuComponent,
     MarcoElementoComponent,
+    TagModule,
+    BadgeModule
   ],
-  providers: [],
+  providers: [   
+    PrimeIcons,
+  ],
+  
   bootstrap: [AppComponent]
 })
 export class AppModule { }
