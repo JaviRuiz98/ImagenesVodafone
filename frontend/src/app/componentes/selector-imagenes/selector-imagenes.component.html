@@ -1,4 +1,4 @@
-<div>
+
     <div #dropArea class="drop-area" *ngIf="!archivoSeleccionado">
         <h2 #dragText>Arrastra y suelta imagenes</h2>
         <span>O</span>
@@ -8,5 +8,3 @@
     <div *ngIf="archivoSeleccionado">
         <img [src]="getImageSrc(archivoSeleccionado)" alt="Vista previa de la imagen seleccionada">
     </div>
-</div>
-
