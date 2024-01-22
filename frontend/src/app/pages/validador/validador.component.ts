@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
-
-
+import { TiendasServices } from 'src/app/servicios/tiendas/tiendas-services.service';
+import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
 
 import { tienda } from 'src/app/interfaces/tienda';
- 
-
 
 
 @Component({
@@ -13,8 +10,6 @@ import { tienda } from 'src/app/interfaces/tienda';
   templateUrl: './validador.component.html',
   styleUrls: ['./validador.component.css']
 })
-
-
 
 export class ValidadorComponent implements OnInit{
   url_imagenes_referencias: string = 'http://localhost:3000/imagenesReferencia/';
@@ -24,18 +19,31 @@ export class ValidadorComponent implements OnInit{
     id_tienda: 0,
     sfid: " ",
     muebles: []
-  }
+  };
 
   sfid = "FRANQ982";
 
+  imagenAProcesar = new File([""], "");
 
-  constructor( private tiendasService: TiendasService) {}
+
+  constructor( private tiendasService: TiendasServices,
+    private procesamientoService: ProcesamientoService
+    ) {}
 
   inicializaImagenesReferencia(sfid: string ) {
     this.tiendasService.getTienda(sfid).subscribe( ( data: tienda ) => {
-      this.tienda = data;
-      console.log(this.tienda.muebles);
-      console.log(this.tienda.muebles[0].expositores[0].imagenes.url);
+
+      this.tienda.id_tienda = data.id_tienda;
+      this.tienda.sfid = data.sfid;
+
+
+      for (let i = 0; i < data.muebles.length; i++) {
+        if (data.muebles[i].expositores.length > 0) {
+          this.tienda.muebles.push(data.muebles[i]);
+        }
+      }
+      console.log("tienda",this.tienda);
+      console.log("data", data);
 
     })
 
@@ -53,6 +61,16 @@ export class ValidadorComponent implements OnInit{
   ngOnInit(): void {
     this.inicializaImagenesReferencia(this.sfid);
 
+  }
+
+  recibirFile(event: {archivo:File}){
+    this.imagenAProcesar = event.archivo;
+    console.log("imagenAProcesar", this.imagenAProcesar)
+
+    this.procesamientoService.postProcesamientoImagenes(this.tienda.id_tienda, this.imagenAProcesar).subscribe( 
+      ( response ) => {
+        console.log("response", response);
+    })
   }
 
 }

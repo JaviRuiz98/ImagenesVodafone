@@ -1,85 +1,88 @@
-import { Component, OnInit } from '@angular/core';
-import { PageEvent } from '../../interfaces/selector-imagenes';
+import { CommonModule } from '@angular/common';
+import { Component,  Output, EventEmitter, ViewChild, ElementRef,  } from '@angular/core';
 
 @Component({
   selector: 'app-selector-imagenes',
   templateUrl: './selector-imagenes.component.html',
   styleUrls: ['./selector-imagenes.component.css'],
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
 })
-export class SelectorImagenesComponent implements OnInit {
+export class SelectorImagenesComponent {
+  @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
+  @ViewChild('dropArea') dropAreaRef!: ElementRef;
+  @ViewChild('inputFile') inputFileRef!: ElementRef;
+  @ViewChild('dragText') dragTextRef!: ElementRef;
 
-  private dropArea!: HTMLInputElement;
-  private input!: HTMLInputElement | null;
-  private dragText!: HTMLElement | null;
-  first: number = 0;
-  rows: number = 5;
+  archivoSeleccionado: File | null = null;
 
-  constructor() { }
+  constructor() {
 
-  ngOnInit(): void {
-    this.dropArea = document.querySelector('.drop-area') as HTMLInputElement;
-    this.input = this.dropArea.querySelector('#input-file');
-    this.dragText = this.dropArea.querySelector('h2');
   }
-  onPageChange(event: PageEvent) {
-    this.first = event.first;
-    this.rows = event.rows;
-  }
-  onArchivoSeleccionado(archivo: File) {
-    //this.archivo = this.fileBase;
-  }
+
+
+
 
   seleccionarArchivo(event: any) {
-    if (this.input) {
-      this.input.click();
+    if (this.inputFileRef) {
+      this.inputFileRef.nativeElement.click();
     }
   }
 
-  listenChange(){
-    if (this.input) {
-      this.input.addEventListener('change', (event) => {
-        //this.files = (event.target as HTMLInputElement).files;
-        this.dropArea.classList.add('active');
-        //this.showFile(this.files);
-      });
-    }
-  }
-  elementosArrastrandoDentro(){
-    this.dropArea.addEventListener('dragover', (event) => {
-      event.preventDefault();
-      this.dropArea.classList.add('active');
-      if(this.dragText){
-        this.dragText.textContent = "Suelta para subir";
+
+  listenChange(event: Event) {
+    const input = this.inputFileRef.nativeElement as HTMLInputElement;
+
+      if (input && input.files) {
+        
+          this.archivoSeleccionado = input.files[0];
+          this.archivoSeleccionadoChange.emit({ archivo: this.archivoSeleccionado });
+     
       }
-    })
+   
   }
 
-  elementosArrastrandoFuera(){
-    this.dropArea.addEventListener('dragleave', (event) => {
-      event.preventDefault();
-      this.dropArea.classList.remove('active');
-      if(this.dragText){
-        this.dragText.textContent = "Arrastra y suelta imagenes";
-      }
-    })
-  }
-
-  soltarElementos(){
-    this.dropArea.addEventListener('drop', (event) => {
-      event.preventDefault();
-      if(event.dataTransfer){
-        //this.files = event.dataTransfer.files;
-      }
-      //this.showFile(this.files);
-      this.dropArea.classList.remove('active');
-      if(this.dragText){
-        this.dragText.textContent = 'Arrastra y suelta imagenes';
-      }    
-    })
-  }
-  mandarImagenes(){
-    
+  getImageSrc(file: File) {
+    return file ? URL.createObjectURL(file) : '';
   }
 }
+
+  // onPageChange(event: PageEvent) {
+  //   this.first = event.first;
+  //   this.rows = event.rows;
+  // }
+
+  // elementosArrastrandoDentro(){
+  //   this.dropArea.addEventListener('dragover', (event) => {
+  //     event.preventDefault();
+  //     this.dropArea.classList.add('active');
+  //     if(this.dragText){
+  //       this.dragText.textContent = "Suelta para subir";
+  //     }
+  //   })
+  // }
+
+  // elementosArrastrandoFuera(){
+  //   this.dropArea.addEventListener('dragleave', (event) => {
+  //     event.preventDefault();
+  //     this.dropArea.classList.remove('active');
+  //     if(this.dragText){
+  //       this.dragText.textContent = "Arrastra y suelta imagenes";
+  //     }
+  //   })
+  // }
+
+  // soltarElementos(){
+  //   this.dropArea.addEventListener('drop', (event) => {
+  //     event.preventDefault();
+  //     if(event.dataTransfer){
+  //       //this.files = event.dataTransfer.files;
+  //     }
+  //     //this.showFile(this.files);
+  //     this.dropArea.classList.remove('active');
+  //     if(this.dragText){
+  //       this.dragText.textContent = 'Arrastra y suelta imagenes';
+  //     }    
+  //   })
+  // }
+
