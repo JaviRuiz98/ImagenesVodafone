@@ -36,7 +36,7 @@
               <div *ngIf="item.expositores[0].procesados_imagenes.length > 0 else noTieneProcesados" class=" anchoAltoSubirFotos" style="position: relative;">
                 
                 <p-image  [src]="url_imagenes_referencias + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url"  [preview]="true" class="imagenSimple"></p-image>
-                <p-tag icon="pi pi-check" severity="success" value="Success" [style]="{'position': 'absolute', 'top': '12%', 'right': '5%'}" ></p-tag>
+                <p-tag icon="pi pi-check" severity=getSeverityCartel() value="Success" [style]="{'position': 'absolute', 'top': '12%', 'right': '5%'}" ></p-tag>
  
               </div> 
 
