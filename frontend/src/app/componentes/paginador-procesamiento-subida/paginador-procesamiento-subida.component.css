@@ -1,0 +1,9 @@
+.componente-completo {
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.imagen {
+    height: 400px;
+}

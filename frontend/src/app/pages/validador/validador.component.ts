@@ -25,6 +25,8 @@ export class ValidadorComponent implements OnInit{
 
   imagenAProcesar = new File([""], "");
 
+  cargando_procesamiento: boolean = false;
+
 
   constructor( private tiendasService: TiendasService,
     private procesamientoService: ProcesamientoService
@@ -44,19 +46,7 @@ export class ValidadorComponent implements OnInit{
         }
       }
       console.log("tienda",this.tienda.muebles[0].expositores[0].procesados_imagenes[0].respuestas_carteles);
-      console.log("data", data);
-
     })
-
-  }
-
-
-  getSeverityConteo(numero_telefonos: number, huecos_esperados: number) {
-    if (numero_telefonos == huecos_esperados) {
-      return 'success';
-    } else {
-      return 'warning';
-    }
   }
 
   getSeverityCartel(result: string) {
@@ -83,17 +73,18 @@ export class ValidadorComponent implements OnInit{
 
 
   ngOnInit(): void {
-    this.inicializaImagenesReferencia(this.sfid);
-    
+    this.inicializaImagenesReferencia(this.sfid);    
   }
 
-  recibirFile(event: {archivo:File}){
+  recibirFile(event: {archivo:File}, id_expositor_selected: number) {
     this.imagenAProcesar = event.archivo;
-    console.log("imagenAProcesar", this.imagenAProcesar)
+    this.cargando_procesamiento = true;
+    console.log(id_expositor_selected)
 
-    this.procesamientoService.postProcesamientoImagenes(this.tienda.id_tienda, this.imagenAProcesar).subscribe( 
+    this.procesamientoService.postProcesamientoImagenes(id_expositor_selected, this.imagenAProcesar).subscribe( 
       ( response ) => {
         console.log("response", response);
+        this.cargando_procesamiento = false;
     })
   }
 
