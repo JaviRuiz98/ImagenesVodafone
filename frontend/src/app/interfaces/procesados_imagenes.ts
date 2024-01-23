@@ -12,6 +12,6 @@ export interface procesados_imagenes {
     IA_utilizada?: string;
     prompt_usado?: string;
     imagenes: imagenes;
-    respuestas_carteles?: respuesta_carteles[];
-    respuestas_dispositivos?: respuesta_dispositivos[];
+    respuestas_carteles: respuesta_carteles[];
+    respuestas_dispositivos: respuesta_dispositivos[];
 }

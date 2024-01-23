@@ -3,6 +3,8 @@ import {  Component, EventEmitter, Input, Output } from '@angular/core';
 import { PaginatorModule } from 'primeng/paginator';
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 import { SelectorImagenesComponent } from '../selector-imagenes/selector-imagenes.component';
+import { TagModule } from 'primeng/tag';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @Component({
     selector: 'app-paginador-procesamiento-subida',
@@ -12,38 +14,70 @@ import { SelectorImagenesComponent } from '../selector-imagenes/selector-imagene
     imports: [
         CommonModule,
         PaginatorModule,
-        SelectorImagenesComponent
+        SelectorImagenesComponent,
+        TagModule,
+        ProgressSpinnerModule
     ],
-
-
 })
-
 
 export class PaginadorProcesamientoSubidaComponent { 
 
     @Input() procesados: procesados_imagenes[] = [];
-    @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
+    @Input() cargando_procesamiento: boolean = false;
+    @Input() id_expositor_selected: number = 0;
+    @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File, id_expositor_selected: number }>();
 
     url_imagenes_procesadas: string = 'http://localhost:3000/imagenesProcesamiento/';
 
     items_per_page: number = 1;
     indice_paginador: number = 0;
 
-
     onPageChange(event: any) {
         this.indice_paginador = event.first;
     }
 
-    getElementosPaginados(): procesados_imagenes[] | undefined {
-        console.log( this.indice_paginador, this.items_per_page)    
-        return this.indice_paginador === 0 ? undefined : this.procesados.slice(this.indice_paginador-1, this.indice_paginador + this.items_per_page);
-    
+    ngOnChanges(aviso_procesamiento_completado: boolean) {
+        if (aviso_procesamiento_completado) {
+            this.cargando_procesamiento = false;
+        }
     }
 
-    recibirFile(event: {archivo:File}){
-        const imagenAProcesar = event.archivo;
-         this.archivoSeleccionadoChange.emit({ archivo: imagenAProcesar });
-      }
-    
+    getElementosPaginados(): procesados_imagenes[] | undefined {
+        return this.indice_paginador === 0 ? undefined : this.procesados.slice(this.indice_paginador-1, this.indice_paginador + this.items_per_page-1);
+    }
 
+    recibirFile(event: {archivo:File}, id_expositor_selected: number) {
+        const imagenAProcesar = event.archivo;
+         this.archivoSeleccionadoChange.emit({ archivo: imagenAProcesar, id_expositor_selected: id_expositor_selected });
+
+        this.cargando_procesamiento = true;
+    }
+
+    getSeverityCartel(result: string) {
+    switch (result) {
+        case 'muy alta':
+            return 'success';     
+        case 'alta':
+            return 'warning' as string;     
+        case 'media':
+            return 'warning' as string;
+        case 'baja':
+            return 'danger' as string;
+        case 'muy baja':
+            return 'danger' as string;
+        case 'ninguna':
+            return 'danger' as string;
+        
+        default:
+            return undefined;
+    }
+    };
+
+    getSeverityDispositivos(numero_telefonos: number, huecos_esperados: number) {
+        if (numero_telefonos == huecos_esperados) {
+            return 'success';
+        } else {
+            return 'warning';
+        }
+    }
 }
