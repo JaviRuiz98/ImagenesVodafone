@@ -50,10 +50,6 @@
   width: 100%;
 }
  
-.anchoAltoSubirFotos {
-  width: 90%;
-  height: 90%;
-}
 .imagenSimple{
   height: 90%;
   width: auto;
@@ -69,4 +65,10 @@
 
 ::ng-deep .p-panel-content {
   padding: 0 !important;
+}
+
+.anchoAltoSubirFoto.ng-star-inserted {
+  width: 100%;
+  height: 100%;
+  background-color: aqua;
 }

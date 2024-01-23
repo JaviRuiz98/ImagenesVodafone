@@ -15,7 +15,6 @@ import { expositores } from 'src/app/interfaces/expositor';
 export class ValidadorComponent implements OnInit{
   url_imagenes_referencias: string = 'http://localhost:3000/imagenesReferencia/';
 
-
   tienda: tienda = {
     id_tienda: 0,
     sfid: " ",
