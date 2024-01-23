@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component,  Output, EventEmitter, ViewChild, ElementRef,  } from '@angular/core';
+import { Component, Input,  Output, EventEmitter, ViewChild, ElementRef,  } from '@angular/core';
 
 @Component({
   selector: 'app-selector-imagenes',
@@ -11,6 +11,7 @@ import { Component,  Output, EventEmitter, ViewChild, ElementRef,  } from '@angu
 
 export class SelectorImagenesComponent {
 
+  @Input() cargando_procesado: boolean = false;
   @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
   @ViewChild('dropArea') dropAreaRef!: ElementRef;
   @ViewChild('inputFile') inputFileRef!: ElementRef;
