@@ -48,7 +48,7 @@ export class PaginadorProcesamientoSubidaComponent {
 
     recibirFile(event: {archivo:File}, id_expositor_selected: number) {
         const imagenAProcesar = event.archivo;
-         this.archivoSeleccionadoChange.emit({ archivo: imagenAProcesar, id_expositor_selected: id_expositor_selected });
+        this.archivoSeleccionadoChange.emit({ archivo: imagenAProcesar, id_expositor_selected: id_expositor_selected });
 
         this.cargando_procesamiento = true;
     }
