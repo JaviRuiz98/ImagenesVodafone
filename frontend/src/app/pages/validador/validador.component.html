@@ -29,7 +29,6 @@
             </ng-template> 
           </div>
           <div class="panelDerecha">
-
             <div *ngIf="item.expositores.length == 1 else subir2Fotos" >
               <div *ngIf="item.expositores[0].procesados_imagenes.length > 0 else noTieneProcesados">
                 <app-paginador-procesamiento-subida [procesados]="item.expositores[0].procesados_imagenes" (archivoSeleccionadoChange)="recibirFile($event)"></app-paginador-procesamiento-subida>
