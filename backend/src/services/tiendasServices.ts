@@ -53,6 +53,9 @@ export const tiendaService = {
                                     include: {
                                         imagenes: true,
                                         procesados_imagenes: {
+                                            orderBy: {
+                                                fecha: 'desc'
+                                            },
                                             include: {
                                                 respuestas_carteles: true,
                                                 respuestas_dispositivos: true,
