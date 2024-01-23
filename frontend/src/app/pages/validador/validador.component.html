@@ -9,7 +9,6 @@
           </div>
         </div>
       </ng-template>
-   
         <div class="panelCompleto">
           <div class="panelIzquierda" >
             <div *ngIf="item.expositores.length == 1 else dosFotos" class="anchoAltoFotoReferencia" >
@@ -31,7 +30,7 @@
           <div class="panelDerecha">
             <div *ngIf="item.expositores.length == 1 else subir2Fotos" >
               <div *ngIf="item.expositores[0].procesados_imagenes.length > 0 else noTieneProcesados">
-                <app-paginador-procesamiento-subida class="ancho" 
+                <app-paginador-procesamiento-subida 
                   [id_expositor_selected]="item.expositores[0].id_expositor"
                   [procesados]="item.expositores[0].procesados_imagenes" 
                   [cargando_procesamiento]="cargando_procesamiento"
