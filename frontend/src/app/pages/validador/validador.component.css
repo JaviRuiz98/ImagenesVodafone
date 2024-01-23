@@ -4,14 +4,12 @@
   flex-direction: column;
   width: 100%;
 }
- 
 .contornoPanel {
   width: 81%;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
- 
 .custom-header {
   margin-top: 10px;
   margin-bottom: 10px;
@@ -26,7 +24,7 @@
   justify-content: center;
   width: 100%;
   margin-top: 0%;
-  height: 60%;
+  height: 550px;
 }
 
 .panelIzquierda {
@@ -48,6 +46,8 @@
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
+  height: 100%;
+  width: 100%;
 }
  
 .anchoAltoSubirFotos {
@@ -55,15 +55,18 @@
   height: 90%;
 }
 .imagenSimple{
-  height: 80%;
-  width: 100%;
+  height: 90%;
+  width: auto;
   display: flex;
   justify-content: center;
   overflow: hidden;
+  border: #534c4c 2px solid;
 }
 .imagenDoble{
   width: 100%;
   margin-right: 5%;
-
 }
 
+::ng-deep .p-panel-content {
+  padding: 0 !important;
+}
