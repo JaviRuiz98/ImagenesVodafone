@@ -36,12 +36,6 @@ export class PaginadorProcesamientoSubidaComponent {
         this.indice_paginador = event.first;
     }
 
-    ngOnChanges(aviso_procesamiento_completado: boolean) {
-        if (aviso_procesamiento_completado) {
-            this.cargando_procesamiento = false;
-        }
-    }
-
     getElementosPaginados(): procesados_imagenes[] | undefined {
         return this.indice_paginador === 0 ? undefined : this.procesados.slice(this.indice_paginador-1, this.indice_paginador + this.items_per_page-1);
     }
@@ -49,8 +43,6 @@ export class PaginadorProcesamientoSubidaComponent {
     recibirFile(event: {archivo:File}, id_expositor_selected: number) {
         const imagenAProcesar = event.archivo;
          this.archivoSeleccionadoChange.emit({ archivo: imagenAProcesar, id_expositor_selected: id_expositor_selected });
-
-        this.cargando_procesamiento = true;
     }
 
     getSeverityCartel(result: string) {

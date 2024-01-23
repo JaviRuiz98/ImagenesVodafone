@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input,  Output, EventEmitter, ViewChild, ElementRef,  } from '@angular/core';
+import { Component, Input,  Output, EventEmitter, ViewChild, ElementRef, OnChanges, SimpleChange } from '@angular/core';
 
 @Component({
   selector: 'app-selector-imagenes',
@@ -20,6 +20,14 @@ export class SelectorImagenesComponent {
   archivoSeleccionado: File | null = null;
 
   constructor() {}
+
+  ngOnChanges(cargando_procesado: SimpleChange) {
+    console.log(cargando_procesado);
+    if (cargando_procesado.currentValue == false) {
+      this.archivoSeleccionado = null;
+      console.log('borro la imagen');
+    }
+  }
 
   seleccionarArchivo(event: any) {
     if (this.inputFileRef) {
