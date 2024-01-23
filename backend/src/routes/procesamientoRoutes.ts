@@ -2,11 +2,12 @@ import express, { Router } from 'express';
 
 import { procesarImagenes } from '../controller/procesamientoController';
 import { procesamientoValidator } from '../validator/procesamientoValidator';
-import { uploadMiddleware } from '../config/ftpUpload';
+import { uploadSingleFileToFtp } from '../config/ftpUpload';
+import { uploadImagenProcesada } from '../config/multer';
 
 
 const router: Router = express.Router();
 
-router.post('/procesamiento',  uploadMiddleware('imagenesProcesamiento'), procesamientoValidator, procesarImagenes);
+router.post('/procesamiento', uploadImagenProcesada,  uploadSingleFileToFtp('imagenesProcesamiento'), procesamientoValidator, procesarImagenes);
 
 export default router;
