@@ -29,7 +29,8 @@
             </ng-template> 
           </div>
           <div class="panelDerecha">
-            <div *ngIf="item.expositores.length == 1 else subir2Fotos" class="anchoAltoSubirFoto">              
+
+            <div *ngIf="item.expositores.length == 1 else subir2Fotos" class=" anchoAltoSubirFoto " >              
               <app-paginador-procesamiento-subida class="ancho" 
                 [id_expositor_selected]="item.expositores[0].id_expositor"
                 [procesados]="item.expositores[0].procesados_imagenes" 
