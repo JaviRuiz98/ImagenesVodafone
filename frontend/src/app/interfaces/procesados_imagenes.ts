@@ -14,4 +14,6 @@ export interface procesados_imagenes {
     imagenes: imagenes;
     respuestas_carteles: respuesta_carteles[];
     respuestas_dispositivos: respuesta_dispositivos[];
+
+
 }
