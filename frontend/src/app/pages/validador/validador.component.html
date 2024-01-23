@@ -9,7 +9,6 @@
           </div>
         </div>
       </ng-template>
-   
         <div class="panelCompleto">
 
           <div class="panelIzquierda" >
@@ -29,22 +28,18 @@
               </div>
             </ng-template> 
           </div>
-
           <div class="panelDerecha">
-
-            <div *ngIf="item.expositores.length == 1 else subir2Fotos" >              
+            <div *ngIf="item.expositores.length == 1 else subir2Fotos" class="anchoAltoSubirFoto">              
               <app-paginador-procesamiento-subida class="ancho" 
                 [id_expositor_selected]="item.expositores[0].id_expositor"
                 [procesados]="item.expositores[0].procesados_imagenes" 
                 [cargando_procesamiento]="array_cargas_procesamiento[item.expositores[0].id_expositor]"
                 (archivoSeleccionadoChange)="recibirFile($event, item.expositores[0].id_expositor)"></app-paginador-procesamiento-subida>            
             </div>
-            
             <ng-template #subir2Fotos>
             </ng-template> 
           </div>
         </div>
-      </div>
     </p-panel>
   </div>
 </div>
