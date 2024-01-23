@@ -9,30 +9,37 @@
           </div>
         </div>
       </ng-template>
-      <div class="panelCompleto">
-        <div class="panelIzquierda">
-          <div *ngIf="item.expositores.length == 1 else dosFotos" class="anchoAltoFotoReferencia" >
-              <img [src]="url_imagenes_referencias + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url" class="imagenSimple">
-          </div>
-          <ng-template #dosFotos>
-            <div class="grid anchoAltoFotoReferencia">
-              <div class="col-6" style="margin-right: 5px;">
-                <img [src]="url_imagenes_referencias + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url" class="imagenDoble">
-              </div>
-              <div class="col-6">
-                <img [src]="url_imagenes_referencias + item.expositores[1].imagenes.url" [alt]="item.expositores[1].imagenes.url" class="imagenDoble">
+   
+        <div class="panelCompleto">
+
+          <div class="panelIzquierda" >
+            <div *ngIf="item.expositores.length == 1 else dosFotos" class="anchoAltoFotoReferencia" >
+              <div style="display: flex;">
+                <img [src]="url_imagenes_referencias + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url" class="imagenSimple">
               </div>
             </div>
-          </ng-template> 
-        </div>
-        <div class="panelDerecha" >
-          <div *ngIf="item.expositores.length == 1" class="anchoAltoSubirFoto" >
-            <app-paginador-procesamiento-subida 
-              [id_expositor_selected]="item.expositores[0].id_expositor"
-              [procesados]="item.expositores[0].procesados_imagenes" 
-              [cargando_procesamiento]="array_cargas_procesamiento[item.expositores[0].id_expositor]"
-              (archivoSeleccionadoChange)="recibirFile($event, item.expositores[0].id_expositor)">
-            </app-paginador-procesamiento-subida>            
+            <ng-template #dosFotos>
+              <div class="grid anchoAltoFotoReferencia">
+                <div class="col-6" style="margin-right: 5px;">
+                  <img [src]="url_imagenes_referencias + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url" class="imagenDoble">
+                </div>
+                <div class="col-6">
+                  <img [src]="url_imagenes_referencias + item.expositores[1].imagenes.url" [alt]="item.expositores[1].imagenes.url" class="imagenDoble">
+                </div>
+              </div>
+            </ng-template> 
+          </div>
+
+          <div class="panelDerecha">
+
+            <div *ngIf="item.expositores.length == 1 else subir2Fotos" >              
+              <app-paginador-procesamiento-subida class="ancho" 
+                [id_expositor_selected]="item.expositores[0].id_expositor"
+                [procesados]="item.expositores[0].procesados_imagenes" 
+                [cargando_procesamiento]="array_cargas_procesamiento[item.expositores[0].id_expositor]"
+                (archivoSeleccionadoChange)="recibirFile($event, item.expositores[0].id_expositor)"></app-paginador-procesamiento-subida>            
+            </div>
+            
             <ng-template #subir2Fotos>
             </ng-template> 
           </div>
