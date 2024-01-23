@@ -2,7 +2,7 @@ backend/node_modules
 backend/.env
 backend/prisma
 backend/build
-backend/assets
+
 
 .env
 database
