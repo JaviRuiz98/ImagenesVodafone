@@ -51,11 +51,12 @@
     display: flex;
     justify-content: center;
     overflow: hidden;
-  }
+}
 
-  .panelDerecha{
-    display: flex;
-    justify-content: center;
-    width: 50%;
-    background-color: rgba(232, 232, 232, 0.9);
-  }
+.panelDerecha{
+display: flex;
+justify-content: center;
+width: 50%;
+background-color: rgba(232, 232, 232, 0.9);
+}
+
