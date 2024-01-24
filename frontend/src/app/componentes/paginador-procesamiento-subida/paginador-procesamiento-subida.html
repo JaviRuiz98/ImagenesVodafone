@@ -7,7 +7,7 @@
         </app-selector-imagenes>
     </div>
     <div class="imagenProcesadaIndiceMayor0">
-        <div *ngFor="let item of getElementosPaginados()" style="position: relative;">
+        <div *ngFor="let item of getElementosPaginados()" class="imagenProcesada">
             <p-tag *ngIf="item.respuestas_carteles.length" 
                 [severity]="getSeverityCartel(item.respuestas_carteles[0].probabilidad)" 
                 [style]="{'position': 'absolute', 'top': '5%', 'right': '5%'}" 
