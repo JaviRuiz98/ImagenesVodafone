@@ -1,9 +1,23 @@
 .componente-completo {
-    justify-content: center;
-    align-items: center;
     width: 100%;
+    height: 550px;
+    display: flex;
+    flex-direction: column;
 }
 
 .imagen {
     height: 400px;
+    
+}
+
+
+.anchoAltoSelector {
+    width: 90%;
+    margin: 5%;
+    height: 100%;
+}
+
+.imagenProcesadaIndiceMayor0 {
+    display: flex; 
+    flex-direction: column;
 }

@@ -6,15 +6,14 @@
 }
 
 .drop-area {
-    border: 5px dashed #ddd;
-    height: 100%;
-    width: 100%;    
+    border: 5px dashed #ddd;    
     border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     margin: 0;
+    height: 70%;
 }
 
 .drop-area.active {

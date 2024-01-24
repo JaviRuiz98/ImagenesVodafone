@@ -94,7 +94,6 @@ export class ValidadorComponent implements OnInit{
       const expositorIndex = mueble.expositores.findIndex((expositor) => expositor.id_expositor === id_expositor_selected);
       if (expositorIndex !== -1) {
         mueble.expositores[expositorIndex].procesados_imagenes.unshift(response);
-        console.log(mueble)
         break; 
       }
     }
