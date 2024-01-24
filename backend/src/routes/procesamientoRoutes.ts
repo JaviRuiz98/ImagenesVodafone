@@ -1,11 +1,12 @@
 import express, { Router } from 'express';
-import { uploadImagenProcesada } from '../config/multer';
+
 import { procesarImagenes } from '../controller/procesamientoController';
 import { procesamientoValidator } from '../validator/procesamientoValidator';
+import { uploadImagenProcesada } from '../config/multer';
 
 
 const router: Router = express.Router();
 
-router.post('/procesamiento',  uploadImagenProcesada, procesamientoValidator, procesarImagenes);
+router.post('/procesamiento', uploadImagenProcesada,  procesamientoValidator, procesarImagenes);
 
 export default router;

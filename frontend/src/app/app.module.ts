@@ -25,13 +25,15 @@ import { BarraMenuComponent } from './componentes/barra-menu/barra-menu.componen
 import { MarcoElementoComponent } from './componentes/marco-elemento/marco-elemento.component';
 import { SelectorImagenesComponent } from './componentes/selector-imagenes/selector-imagenes.component';
 import { PaginadorProcesamientoSubidaComponent } from './componentes/paginador-procesamiento-subida/paginador-procesamiento-subida.component';
-
+import { DialogInformacionProcesadoComponent } from './componentes/dialog-informacion-procesado/dialog-informacion-procesado.component';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     ValidadorComponent,
+    
    
   ],
   imports: [
@@ -44,13 +46,13 @@ import { PaginadorProcesamientoSubidaComponent } from './componentes/paginador-p
     HttpClientModule,
     TagModule,
     BadgeModule,
-
+    DialogInformacionProcesadoComponent,
     PaginadorProcesamientoSubidaComponent,
     SelectorImagenesComponent,
     ImageModule,
     BarraMenuComponent,
     MarcoElementoComponent,
-
+    ProgressSpinnerModule
   ],
   providers: [   
     PrimeIcons,

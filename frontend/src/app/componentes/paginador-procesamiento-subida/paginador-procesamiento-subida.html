@@ -8,27 +8,35 @@
     </div>
     <div class="imagenProcesadaIndiceMayor0">
         <div *ngFor="let item of getElementosPaginados()" style="position: relative;">
-            <p-tag *ngIf="item.respuestas_carteles.length>0" 
+            <p-tag *ngIf="item.respuestas_carteles.length" 
                 [severity]="getSeverityCartel(item.respuestas_carteles[0].probabilidad)" 
-                [style]="{'position': 'absolute', 'top': '5%', 'right': '5%'}" >
+                [style]="{'position': 'absolute', 'top': '5%', 'right': '5%'}" 
+                (mouseover)="onMouseOver($event)">
                 {{item.respuestas_carteles[0].probabilidad}}
             </p-tag>
-            <p-tag *ngIf="item.respuestas_dispositivos.length>0" 
+            <p-tag *ngIf="item.respuestas_dispositivos.length" 
                 [severity]="getSeverityDispositivos(item.respuestas_dispositivos[0].dispositivos_contados, item.respuestas_dispositivos[0].huecos_esperados)" 
-                [style]="{'position': 'absolute', 'top': '12%', 'right': '5%'}">
+                [style]="{'position': 'absolute', 'top': '12%', 'right': '5%'}"
+                (mouseover)="onMouseOver($event)">
                 {{item.respuestas_dispositivos[0].dispositivos_contados}}/{{item.respuestas_dispositivos[0].huecos_esperados}}
             </p-tag>
             <img [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada"  class="imagen">
-        </div>
-        <div>
-            <p-paginator 
-                [style]="{'background-color': 'rgba(232, 232, 232, 0.9)'}"
-                [rows]="items_per_page" 
-                [totalRecords]="procesados.length+1" 
-                [first]="indice_paginador" 
-                (onPageChange)="onPageChange($event)"
-                [hidden]="procesados.length === 0">
-            </p-paginator>
-        </div>
+            <div *ngIf="visible_info_dispositivos">
+                <app-dialog-informacion-procesado [procesado]="item"></app-dialog-informacion-procesado>
+   
+            </div>
+        </div>	
+    </div>
+    <div>
+        <p-paginator class="p-paginator"
+            [style]="{'background-color': 'rgba(232, 232, 232, 0.9)'}"
+            [rows]="items_per_page" 
+            [totalRecords]="procesados.length+1" 
+            [first]="indice_paginador" 
+            (onPageChange)="onPageChange($event)"
+            [hidden]="procesados.length === 0">
+        </p-paginator>
     </div>
 </div>
+
+
