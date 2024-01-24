@@ -1,3 +1,4 @@
+import { procesados_imagenes } from "@prisma/client";
 import db  from "../config/database";
 
 
@@ -18,6 +19,19 @@ export const procesamientoService = {
         
         return procesamiento.id_procesado_imagen
     }, 
+
+    getById(id_procesado_imagen: number): Promise<procesados_imagenes | null> {
+        return db.procesados_imagenes.findUnique({
+            where: {
+                id_procesado_imagen: id_procesado_imagen
+            },
+            include: {
+                imagenes: true,
+                respuestas_carteles: true,
+                respuestas_dispositivos: true
+            }
+        })
+    }
 
 }
 
