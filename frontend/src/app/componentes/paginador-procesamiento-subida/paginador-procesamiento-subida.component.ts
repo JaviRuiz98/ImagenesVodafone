@@ -8,6 +8,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DialogInformacionProcesadoComponent } from '../dialog-informacion-procesado/dialog-informacion-procesado.component'; // Reemplaza con la ruta correcta a tu componente
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
+import { PrimeIcons } from 'primeng/api';
+
 
 @Component({
     selector: 'app-paginador-procesamiento-subida',
@@ -22,8 +24,11 @@ import { ButtonModule } from 'primeng/button';
         ProgressSpinnerModule,
         DialogModule,
         ButtonModule,
-        DialogInformacionProcesadoComponent
+        DialogInformacionProcesadoComponent,
     ],
+    providers: [
+        PrimeIcons
+    ]
 })
 
 export class PaginadorProcesamientoSubidaComponent { 
