@@ -5,7 +5,8 @@ const ftp = require('basic-ftp');
 const config = {
     host:process.env.HOST_FTP,
     user: process.env.USER_FTP,
-    password: process.env.PASSWORD_FTP
+    password: process.env.PASSWORD_FTP,
+
 }
 
 const uploadFile = async (localPath: string, remotePath: string) => {
@@ -33,7 +34,7 @@ export const  uploadFileToFtp = (foldername:string) => async (req: Request, res:
         
     }else{
         const localPath = file.path;
-        const remotePath = `/imagenes/${foldername}/${file.filename}`;
+        const remotePath = `./imagenes/${foldername}/${file.filename}`;
 
         try {
             uploadFile(localPath, remotePath); //creo que no hay que poner await porque se puede ir haciendo asincronamente
