@@ -21,3 +21,14 @@
     display: flex; 
     flex-direction: column;
 }
+
+
+.cursor-pointer {
+    cursor: pointer;
+  }
+  
+  .cursor-zoom {
+    cursor: zoom-in;
+    transform: scale(5.3);
+  }
+  

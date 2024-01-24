@@ -1,5 +1,5 @@
   
-<p-dialog header="Informacion del procesado" [(visible)]="val" [style]="{width: '50vw'}">
+<p-dialog header="Informacion del procesado" [(visible)]="val" [closable]="false" [style]="{width: '50vw'}">
  
     <div *ngIf="procesado.respuestas_carteles.length > 0">
         <span style="font-weight: bold;">Probabilidad: </span>  

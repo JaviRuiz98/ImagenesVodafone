@@ -7,6 +7,8 @@ import { TagModule } from 'primeng/tag';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DialogInformacionProcesadoComponent } from '../dialog-informacion-procesado/dialog-informacion-procesado.component'; // Reemplaza con la ruta correcta a tu componente
 import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
+
 @Component({
     selector: 'app-paginador-procesamiento-subida',
     templateUrl: './paginador-procesamiento-subida.html',
@@ -19,6 +21,7 @@ import { DialogModule } from 'primeng/dialog';
         TagModule,
         ProgressSpinnerModule,
         DialogModule,
+        ButtonModule,
         DialogInformacionProcesadoComponent
     ],
 })
@@ -36,6 +39,8 @@ export class PaginadorProcesamientoSubidaComponent {
     indice_paginador: number = 0;
 
     visible_info_dispositivos: boolean = false;
+    isTagZoomed = false;
+
     onPageChange(event: any) {
         this.indice_paginador = event.first;
         console.log(this.procesados.length)
@@ -81,7 +86,16 @@ export class PaginadorProcesamientoSubidaComponent {
     }
 
     onMouseOver(event: MouseEvent) {
-        this.visible_info_dispositivos = !this.visible_info_dispositivos;
+        this.visible_info_dispositivos = true;
+        this.isTagZoomed = true;
+        const tagElement = event.target as HTMLElement;
+        tagElement.classList.add('cursor-zoom');
+        console.log(tagElement);
     }
+
+    onMouseOut(event: MouseEvent) {
+        this.visible_info_dispositivos = false;
+    }
+ 
 
 }
