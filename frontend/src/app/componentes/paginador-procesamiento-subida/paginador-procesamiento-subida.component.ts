@@ -38,6 +38,7 @@ export class PaginadorProcesamientoSubidaComponent {
     visible_info_dispositivos: boolean = false;
     onPageChange(event: any) {
         this.indice_paginador = event.first;
+        console.log(this.procesados.length)
     }
 
     getElementosPaginados(): procesados_imagenes[] | undefined {

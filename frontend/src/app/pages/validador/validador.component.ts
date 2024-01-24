@@ -80,7 +80,6 @@ export class ValidadorComponent implements OnInit{
   async recibirFile(event: {archivo:File}, id_expositor_selected: number) {
     this.imagenAProcesar = event.archivo;
     this.array_cargas_procesamiento[id_expositor_selected]= true;
-    console.log(id_expositor_selected)
 
     this.procesamientoService.postProcesamientoImagenes(id_expositor_selected, this.imagenAProcesar).subscribe( 
       ( response: procesados_imagenes ) => {
@@ -95,6 +94,7 @@ export class ValidadorComponent implements OnInit{
       const expositorIndex = mueble.expositores.findIndex((expositor) => expositor.id_expositor === id_expositor_selected);
       if (expositorIndex !== -1) {
         mueble.expositores[expositorIndex].procesados_imagenes.unshift(response);
+        console.log(mueble)
         break; 
       }
     }

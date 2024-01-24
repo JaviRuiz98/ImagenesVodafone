@@ -3,6 +3,10 @@ backend/.env
 backend/prisma
 backend/build
 
+backend/.dockerignore
+backend/docker-compose.debug.yml
+backend/Dockerfile
+
 
 .env
 database

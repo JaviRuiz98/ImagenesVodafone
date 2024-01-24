@@ -46,7 +46,7 @@
 }
 
 .imagenSimple{
-    height: 80%;
+    height: 400px;
     width: auto;
     display: flex;
     justify-content: center;

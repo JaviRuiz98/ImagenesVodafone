@@ -26,7 +26,7 @@ import { MarcoElementoComponent } from './componentes/marco-elemento/marco-eleme
 import { SelectorImagenesComponent } from './componentes/selector-imagenes/selector-imagenes.component';
 import { PaginadorProcesamientoSubidaComponent } from './componentes/paginador-procesamiento-subida/paginador-procesamiento-subida.component';
 import { DialogInformacionProcesadoComponent } from './componentes/dialog-informacion-procesado/dialog-informacion-procesado.component';
-
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 @NgModule({
@@ -52,7 +52,7 @@ import { DialogInformacionProcesadoComponent } from './componentes/dialog-inform
     ImageModule,
     BarraMenuComponent,
     MarcoElementoComponent,
-
+    ProgressSpinnerModule
   ],
   providers: [   
     PrimeIcons,
