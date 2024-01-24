@@ -2,6 +2,7 @@ backend/node_modules
 backend/.env
 backend/prisma
 backend/build
+backend/assets/imagenes
 
 backend/.dockerignore
 backend/docker-compose.debug.yml
