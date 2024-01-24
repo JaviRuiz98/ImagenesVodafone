@@ -14,3 +14,8 @@
     margin: 5%;
     height: 100%;
 }
+
+.imagenProcesadaIndiceMayor0 {
+    display: flex; 
+    flex-direction: column;
+}
