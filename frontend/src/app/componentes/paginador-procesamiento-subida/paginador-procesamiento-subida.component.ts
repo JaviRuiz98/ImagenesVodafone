@@ -5,7 +5,8 @@ import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 import { SelectorImagenesComponent } from '../selector-imagenes/selector-imagenes.component';
 import { TagModule } from 'primeng/tag';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-
+import { DialogInformacionProcesadoComponent } from '../dialog-informacion-procesado/dialog-informacion-procesado.component'; // Reemplaza con la ruta correcta a tu componente
+import { DialogModule } from 'primeng/dialog';
 @Component({
     selector: 'app-paginador-procesamiento-subida',
     templateUrl: './paginador-procesamiento-subida.html',
@@ -16,7 +17,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
         PaginatorModule,
         SelectorImagenesComponent,
         TagModule,
-        ProgressSpinnerModule
+        ProgressSpinnerModule,
+        DialogModule,
+        DialogInformacionProcesadoComponent
     ],
 })
 
@@ -32,6 +35,7 @@ export class PaginadorProcesamientoSubidaComponent {
     items_per_page: number = 1;
     indice_paginador: number = 0;
 
+    visible_info_dispositivos: boolean = false;
     onPageChange(event: any) {
         this.indice_paginador = event.first;
     }
@@ -48,23 +52,23 @@ export class PaginadorProcesamientoSubidaComponent {
     }
 
     getSeverityCartel(result: string) {
-    switch (result) {
-        case 'muy alta':
-            return 'success';     
-        case 'alta':
-            return 'warning' as string;     
-        case 'media':
-            return 'warning' as string;
-        case 'baja':
-            return 'danger' as string;
-        case 'muy baja':
-            return 'danger' as string;
-        case 'ninguna':
-            return 'danger' as string;
-        
-        default:
-            return undefined;
-    }
+        switch (result) {
+            case 'muy alta':
+                return 'success';     
+            case 'alta':
+                return 'warning' as string;     
+            case 'media':
+                return 'warning' as string;
+            case 'baja':
+                return 'danger' as string;
+            case 'muy baja':
+                return 'danger' as string;
+            case 'ninguna':
+                return 'danger' as string;
+            
+            default:
+                return undefined;
+        }
     };
 
     getSeverityDispositivos(numero_telefonos: number, huecos_esperados: number) {
@@ -74,4 +78,9 @@ export class PaginadorProcesamientoSubidaComponent {
             return 'warning';
         }
     }
+
+    onMouseOver(event: MouseEvent) {
+        this.visible_info_dispositivos = !this.visible_info_dispositivos;
+    }
+
 }
