@@ -24,8 +24,7 @@ import { ValidadorComponent } from './pages/validador/validador.component';
 import { BarraMenuComponent } from './componentes/barra-menu/barra-menu.component';
 import { MarcoElementoComponent } from './componentes/marco-elemento/marco-elemento.component';
 import { SelectorImagenesComponent } from './componentes/selector-imagenes/selector-imagenes.component';
-import { PaginadorProcesamientoSubidaComponent } from './componentes/paginador-procesamiento-subida/paginador-procesamiento-subida.component';
-import { DialogInformacionProcesadoComponent } from './componentes/dialog-informacion-procesado/dialog-informacion-procesado.component';
+import { PaginadorProcesamientoSubidaComponent } from './componentes/paginador-procesamiento-subida/paginador-procesamiento-subida.component'; 
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
@@ -45,8 +44,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     PanelModule,
     HttpClientModule,
     TagModule,
-    BadgeModule,
-    DialogInformacionProcesadoComponent,
+    BadgeModule, 
     PaginadorProcesamientoSubidaComponent,
     SelectorImagenesComponent,
     ImageModule,
