@@ -8,7 +8,10 @@
     height: 400px;
 }
 
-.p-paginator{
-    margin-top: auto ;
-    justify-content: flex-end !important;
+::ng-deep .p-paginator {
+    padding: 0;
+}
+
+.p-paginator._ngcontent-ng-c3951205998{
+    margin-top: 5%;
 }

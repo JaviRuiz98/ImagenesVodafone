@@ -52,7 +52,7 @@
  
 .imagenSimple{
   height: 90%;
-  width: auto;
+  width: 90%;
   display: flex;
   justify-content: center;
   overflow: hidden;
