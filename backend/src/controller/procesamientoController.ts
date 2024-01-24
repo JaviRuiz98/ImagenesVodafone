@@ -34,7 +34,7 @@ export async function procesarImagenes(req: Request, res: Response) {
     
     //creo la imagen nueva y compruebo que existe el expositor (falta tipar)
     const [nuevaImagen, existingExpositor]  = await Promise.all([
-      imagenService.create(imagenProcesada.filename),
+      imagenService.create(imagenProcesada.filename, imagenProcesada.originalname),
       expositoresService.getById(idExpositor),
     ]);    
 
