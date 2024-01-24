@@ -36,15 +36,12 @@ export async function procesarImagenes(req: Request, res: Response) {
     const [nuevaImagen, existingExpositor]  = await Promise.all([
       imagenService.create(imagenProcesada.filename),
       expositoresService.getById(idExpositor),
-    ]);
- 
-    
+    ]);    
 
     if (!existingExpositor) {
         res.status(404).json({ error: 'Expositorio not found' });
         return;
     }
-
 
     //obtengo la imagen de referencia y la cantidad de dispositivos 
     const [imagenReferencia, dispositivosCount] = await Promise.all([
@@ -52,15 +49,14 @@ export async function procesarImagenes(req: Request, res: Response) {
       expositoresService.getDispositivosCount(existingExpositor.id_expositor)
     ]);
 
-
     if (!imagenReferencia) {
       res.status(500).json({ error: 'La imagen referencia no existe' });
       return;
     }
    
-    const tipoProcesado: 'carteles' | 'dispositivos' = getTipoProcesadoDeNumeroDispositivos(dispositivosCount);
+    const tipoProcesado: 'carteles' | 'dispositivos' = await getTipoProcesadoDeNumeroDispositivos(dispositivosCount);
 
-    const promptObject: promptObject = getPromptObject(tipoProcesado, dispositivosCount, nombrePromptCarteles, nombrePromptDispositivos);
+    const promptObject: promptObject = await getPromptObject(tipoProcesado, dispositivosCount, nombrePromptCarteles, nombrePromptDispositivos);
 
     //llamada a OpenAI
     const filePaths = [imagenReferencia.url, imagenProcesada.path];
@@ -88,12 +84,13 @@ export async function procesarImagenes(req: Request, res: Response) {
     
     //Almacenar los datos de las respuestas
     if (tipoProcesado === 'carteles') {
-      respuestaService.createRespuestaCartel(id_procesado_imagen, similarityObject.probab_estar_contenido);
+      await respuestaService.createRespuestaCartel(id_procesado_imagen, similarityObject.probab_estar_contenido);
     } else if (tipoProcesado === 'dispositivos') {
-      respuestaService.createRespuestaDispositivo(id_procesado_imagen, dispositivosCount, parseInt(similarityObject.dispositivos_contados));
+      await respuestaService.createRespuestaDispositivo(id_procesado_imagen, dispositivosCount, parseInt(similarityObject.dispositivos_contados));
     }
+    console.log('Procesado efectuado y almacenado');
 
-    return res.status(200).json(similarityObject);
+    res.status(200).json('Procesado efectuado y almacenado');
   } catch (error) {
     console.error('Error al procesar imágenes:', error);
     res.status(500).json({ error: 'Error interno del servidor' });

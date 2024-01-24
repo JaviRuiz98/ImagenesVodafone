@@ -32,7 +32,7 @@ export class ValidadorComponent implements OnInit{
     private procesamientoService: ProcesamientoService
     ) {}
 
-  inicializaImagenesReferencia(sfid: string ) {
+  async inicializaImagenesReferencia(sfid: string ) {
     this.tiendasService.getTienda(sfid).subscribe( ( data: tienda ) => {
 
       this.tienda.id_tienda = data.id_tienda;
@@ -44,7 +44,7 @@ export class ValidadorComponent implements OnInit{
           
         }
       }
-      console.log("tienda",this.tienda.muebles[0].expositores[0].procesados_imagenes[0].respuestas_carteles);
+      console.log("tienda",this.tienda);
     })
   }
 
@@ -75,16 +75,18 @@ export class ValidadorComponent implements OnInit{
     this.inicializaImagenesReferencia(this.sfid);    
   }
 
-  recibirFile(event: {archivo:File}, id_expositor_selected: number) {
+  async recibirFile(event: {archivo:File}, id_expositor_selected: number) {
     this.imagenAProcesar = event.archivo;
     this.array_cargas_procesamiento[id_expositor_selected] = true;
     console.log(this.array_cargas_procesamiento)
 
     this.procesamientoService.postProcesamientoImagenes(id_expositor_selected, this.imagenAProcesar).subscribe( 
-      ( response ) => {
+      async ( response ) => {
         console.log("response", response);
         this.array_cargas_procesamiento[id_expositor_selected] = false;
         console.log(this.array_cargas_procesamiento);
-    })
+
+        await this.inicializaImagenesReferencia(this.sfid);
+    })    
   }
 }

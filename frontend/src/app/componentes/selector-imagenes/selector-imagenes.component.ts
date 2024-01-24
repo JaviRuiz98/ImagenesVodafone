@@ -21,11 +21,9 @@ export class SelectorImagenesComponent {
 
   constructor() {}
 
-  ngOnChanges(cargando_procesado: SimpleChange) {
-    console.log(cargando_procesado);
-    if (cargando_procesado.currentValue == false) {
+  ngOnChanges() {
+    if (this.cargando_procesado == false) {
       this.archivoSeleccionado = null;
-      console.log('borro la imagen');
     }
   }
 

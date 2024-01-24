@@ -1,6 +1,6 @@
 <div class="paginaCompleta">
   <app-barra-menu [tiendaTitle]="sfid"></app-barra-menu>
-  <div *ngFor="let item of tienda.muebles" class="contornoPanel">
+  <div *ngFor="let item of this.tienda.muebles" class="contornoPanel">
     <p-panel  [style]="{'border': '1px solid black', 'margin-bottom': '20px'}">
       <ng-template pTemplate="header">
         <div class="custom-header">
