@@ -23,6 +23,7 @@ export class SelectorImagenesComponent {
   constructor() {}
 
   ngOnChanges() {
+    console.log(this.cargando_procesado);
     if (this.cargando_procesado == false) {
       this.archivoSeleccionado = null;
     }
