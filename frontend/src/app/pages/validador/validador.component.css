@@ -64,6 +64,7 @@
 .imagenSimple{
   height: 90%;
   width: 90%;
+  margin: 5%;
   display: flex;
   justify-content: center;
   overflow: hidden;
