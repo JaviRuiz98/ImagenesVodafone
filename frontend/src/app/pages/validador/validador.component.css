@@ -71,8 +71,10 @@
   border: #534c4c 2px solid;
 }
 .imagenDoble{
-  width: 100%;
-  margin-right: 5%;
+  width: 90%;
+  margin: 5%;
+  border: #534c4c 2px solid;
+
 }
 
 ::ng-deep .p-panel-content {
