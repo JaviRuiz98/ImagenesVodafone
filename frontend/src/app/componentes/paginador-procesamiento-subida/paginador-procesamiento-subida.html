@@ -29,11 +29,11 @@
 
     <div>
         <p-paginator class="p-paginator"
+            *ngIf="this.procesados.length"
             [rows]="items_per_page" 
             [totalRecords]="procesados.length+1" 
             [first]="indice_paginador" 
-            (onPageChange)="onPageChange($event)"
-            [hidden]="this.procesados.length == 0">
+            (onPageChange)="onPageChange($event)">     
         </p-paginator>
     </div>
 </div>
