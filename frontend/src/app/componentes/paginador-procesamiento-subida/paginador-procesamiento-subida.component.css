@@ -1,17 +1,16 @@
 .componente-completo {
-    justify-content: center;
-    align-items: center;
     width: 100%;
+    height: 550px;
+    display: flex;
+    flex-direction: column;
 }
 
 .imagen {
     height: 400px;
 }
 
-::ng-deep .p-paginator {
-    padding: 0;
-}
-
-.p-paginator._ngcontent-ng-c3951205998{
-    margin-top: 5%;
+.anchoAltoSelector {
+    width: 90%;
+    margin: 5%;
+    height: 100%;
 }
