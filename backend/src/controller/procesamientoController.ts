@@ -88,9 +88,8 @@ export async function procesarImagenes(req: Request, res: Response) {
     } else if (tipoProcesado === 'dispositivos') {
       await respuestaService.createRespuestaDispositivo(id_procesado_imagen, dispositivosCount, parseInt(similarityObject.dispositivos_contados));
     }
-    console.log('Procesado efectuado y almacenado');
-
-    res.status(200).json('Procesado efectuado y almacenado');
+    const procesamiento_object = await procesamientoService.getById(id_procesado_imagen);
+    return res.status(200).json(procesamiento_object);
   } catch (error) {
     console.error('Error al procesar imágenes:', error);
     res.status(500).json({ error: 'Error interno del servidor' });

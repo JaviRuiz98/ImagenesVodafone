@@ -3,7 +3,7 @@ import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
 
 import { tienda } from 'src/app/interfaces/tienda';
-import { expositores } from 'src/app/interfaces/expositor';
+import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 
 
 @Component({
@@ -25,10 +25,11 @@ export class ValidadorComponent implements OnInit{
 
   imagenAProcesar = new File([""], "");
 
-  array_cargas_procesamiento: boolean[] = [];
+  array_cargas_procesamiento : boolean[] = [];
 
 
-  constructor( private tiendasService: TiendasService,
+  constructor( 
+    private tiendasService: TiendasService,
     private procesamientoService: ProcesamientoService
     ) {}
 
@@ -37,6 +38,7 @@ export class ValidadorComponent implements OnInit{
 
       this.tienda.id_tienda = data.id_tienda;
       this.tienda.sfid = data.sfid;
+
 
       for (let i = 0; i < data.muebles.length; i++) {
         if (data.muebles[i].expositores.length > 0) {
@@ -77,16 +79,26 @@ export class ValidadorComponent implements OnInit{
 
   async recibirFile(event: {archivo:File}, id_expositor_selected: number) {
     this.imagenAProcesar = event.archivo;
-    this.array_cargas_procesamiento[id_expositor_selected] = true;
-    console.log(this.array_cargas_procesamiento)
+    this.array_cargas_procesamiento[id_expositor_selected]= true;
+    console.log(id_expositor_selected)
 
     this.procesamientoService.postProcesamientoImagenes(id_expositor_selected, this.imagenAProcesar).subscribe( 
-      async ( response ) => {
+      ( response: procesados_imagenes ) => {
         console.log("response", response);
         this.array_cargas_procesamiento[id_expositor_selected] = false;
-        console.log(this.array_cargas_procesamiento);
-
-        await this.inicializaImagenesReferencia(this.sfid);
-    })    
+        this.actualizarProcesamientoEnTienda(id_expositor_selected, response);
+    })
   }
+
+  actualizarProcesamientoEnTienda(id_expositor_selected: number, response: procesados_imagenes) {
+    for (const mueble of this.tienda.muebles) {
+      const expositorIndex = mueble.expositores.findIndex((expositor) => expositor.id_expositor === id_expositor_selected);
+      if (expositorIndex !== -1) {
+        mueble.expositores[expositorIndex].procesados_imagenes.unshift(response);
+        break; 
+      }
+    }
+  }
+  
+
 }
