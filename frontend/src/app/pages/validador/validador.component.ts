@@ -5,11 +5,14 @@ import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/p
 import { tienda } from 'src/app/interfaces/tienda';
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 
+import { MessageService } from 'primeng/api';
+
 
 @Component({
   selector: 'app-validador',
   templateUrl: './validador.component.html',
-  styleUrls: ['./validador.component.css']
+  styleUrls: ['./validador.component.css'],
+  providers: [MessageService]
 })
 
 export class ValidadorComponent implements OnInit{
@@ -30,7 +33,8 @@ export class ValidadorComponent implements OnInit{
 
   constructor( 
     private tiendasService: TiendasService,
-    private procesamientoService: ProcesamientoService
+    private procesamientoService: ProcesamientoService,
+    private messageService: MessageService
     ) {}
 
   async inicializaImagenesReferencia(sfid: string ) {
@@ -50,28 +54,6 @@ export class ValidadorComponent implements OnInit{
     })
   }
 
-  getSeverityCartel(result: string) {
-    switch (result) {
-        case 'muy alta':
-            return 'success' as string;
- 
-        case 'alta':
-            return 'success' as string;
- 
-        case 'media':
-            return 'warning' as string;
-        case 'baja':
-            return 'danger' as string;
-        case 'muy baja':
-            return 'danger' as string;
-        case 'ninguna':
-            return 'danger' as string;
-       
-        default:
-            return undefined;
-    }
-  };
-
 
   ngOnInit(): void {
     this.inicializaImagenesReferencia(this.sfid);    
@@ -80,12 +62,18 @@ export class ValidadorComponent implements OnInit{
   async recibirFile(event: {archivo:File}, id_expositor_selected: number) {
     this.imagenAProcesar = event.archivo;
     this.array_cargas_procesamiento[id_expositor_selected]= true;
+    this.messageService.add({ severity: 'info', summary: 'Cargando', detail: 'La imagen se está procesando' });
 
     this.procesamientoService.postProcesamientoImagenes(id_expositor_selected, this.imagenAProcesar).subscribe( 
       ( response: procesados_imagenes ) => {
         console.log("response", response);
         this.array_cargas_procesamiento[id_expositor_selected] = false;
         this.actualizarProcesamientoEnTienda(id_expositor_selected, response);
+        this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Imagen procesada correctamente' });
+      }, ( error: any ) => {
+        console.log("error", error);
+        this.array_cargas_procesamiento[id_expositor_selected] = false;
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error procesando imagen' });
     })
   }
 
