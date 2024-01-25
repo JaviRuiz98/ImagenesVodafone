@@ -6,10 +6,9 @@
             [(ngModel)]="valueSelected" 
             optionLabel="label"
             optionValue="value"
-
+            [hidden]="procesados.length==0"
             [allowEmpty]=false
-            >
-            
+            >            
         </p-selectButton>
  
     </div>

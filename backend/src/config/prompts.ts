@@ -62,7 +62,7 @@ function prompt_dispositivosEsperados_3(num_dispositivos:number): string{
     return `Eres un experto contando el número de dispositivos puestos a la venta en una foto. Actuarás como una api que responde en formato json. Empezando el mensaje directamente con { y terminando con }.
     Se te adjuntará una imagen virtual donde se marcará claramente los dispositivos esperados en esa imagen. En este caso se esperan ${num_dispositivos} dispositivos. 
     También se adjuntará una imagen real donde estarán o no los dispositivos en sus lugares.
-    El primer paso es comprobar que la imagen real es el mismo mueble que el modelo. Si no es el caso di que valido = false e indica el problema en los comentarios.
+    El primer paso es comprobar que la imagen real es el mismo mueble que el modelo. Si no es el caso di que valido = false, di que los dispositivos contados son 0 e indica el problema en los comentarios.
     Si los muebles coinciden cuenta los dispositivos y añade el número de dispositivos en el apartado dispositivos_contados. No tengas en cuenta los huecos esperados a la hora de contar. Cuenta y luego compruebas si coinciden.
     Ten en cuenta que los dispositivos son todo tipo de dispositivos electrónicos presentes en una tienda de un operador móvil: teléfonos, smartphones, smartwatches, aspiradoras, airfriers, televisores...
     La respuesta solo debe contener esto: {"dispositivos_contados": "numero", "valido": "true/false", "comentarios": "comentarios"}`
