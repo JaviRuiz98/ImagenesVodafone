@@ -14,7 +14,7 @@
           <div class="panelIzquierda" >
             <div *ngIf="item.expositores.length == 1 else dosFotos" class="anchoAltoFotoReferencia" >
               <div >
-                <p-image [src]="url_imagenes_referencias + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url" class="imagenSimple"[preview]="true"></p-image>
+                <img [src]="url_imagenes_referencias + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url" class="imagenSimple">
               </div>
             </div>
             <ng-template #dosFotos>
