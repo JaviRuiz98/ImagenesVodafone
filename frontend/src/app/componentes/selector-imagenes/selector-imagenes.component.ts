@@ -12,8 +12,8 @@ import { Component, Input,  Output, EventEmitter, ViewChild, ElementRef, OnChang
 export class SelectorImagenesComponent {
 
   @Input() cargando_procesado: boolean = false;
- // @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
- @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
+  // @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
+  @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
   @ViewChild('dropArea') dropAreaRef!: ElementRef;
   @ViewChild('inputFile') inputFileRef!: ElementRef;
   @ViewChild('dragText') dragTextRef!: ElementRef;
@@ -23,7 +23,6 @@ export class SelectorImagenesComponent {
   constructor() {}
 
   ngOnChanges() {
-    console.log(this.cargando_procesado);
     if (this.cargando_procesado == false) {
       this.archivoSeleccionado = null;
     }

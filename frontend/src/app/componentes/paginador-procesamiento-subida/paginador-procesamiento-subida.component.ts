@@ -48,7 +48,6 @@ export class PaginadorProcesamientoSubidaComponent {
 
     onPageChange(event: any) {
         this.indice_paginador = event.first;
-        console.log(this.procesados.length)
     }
 
     getElementosPaginados(): procesados_imagenes[] | undefined {
@@ -95,7 +94,6 @@ export class PaginadorProcesamientoSubidaComponent {
         this.isTagZoomed = true;
         const tagElement = event.target as HTMLElement;
         tagElement.classList.add('cursor-zoom');
-        console.log(tagElement);
     }
 
     onMouseOut(event: MouseEvent) {

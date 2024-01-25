@@ -5,11 +5,14 @@ import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/p
 import { tienda } from 'src/app/interfaces/tienda';
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 
+import { MessageService } from 'primeng/api';
+
 
 @Component({
   selector: 'app-validador',
   templateUrl: './validador.component.html',
-  styleUrls: ['./validador.component.css']
+  styleUrls: ['./validador.component.css'],
+  providers: [MessageService]
 })
 
 export class ValidadorComponent implements OnInit{
@@ -30,7 +33,8 @@ export class ValidadorComponent implements OnInit{
 
   constructor( 
     private tiendasService: TiendasService,
-    private procesamientoService: ProcesamientoService
+    private procesamientoService: ProcesamientoService,
+    private messageService: MessageService
     ) {}
 
   async inicializaImagenesReferencia(sfid: string ) {
@@ -56,10 +60,10 @@ export class ValidadorComponent implements OnInit{
             return 'success' as string;
  
         case 'alta':
-            return 'success' as string;
- 
+            return 'warning' as string; 
         case 'media':
             return 'warning' as string;
+
         case 'baja':
             return 'danger' as string;
         case 'muy baja':
@@ -86,6 +90,10 @@ export class ValidadorComponent implements OnInit{
         console.log("response", response);
         this.array_cargas_procesamiento[id_expositor_selected] = false;
         this.actualizarProcesamientoEnTienda(id_expositor_selected, response);
+      }, ( error: any ) => {
+        console.log("error", error);
+        this.array_cargas_procesamiento[id_expositor_selected] = false;
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error procesando imagen' });
     })
   }
 

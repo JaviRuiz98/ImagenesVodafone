@@ -11,7 +11,8 @@ import { TagModule } from 'primeng/tag';
 import { BadgeModule } from 'primeng/badge';
 import { ImageModule } from 'primeng/image';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-
+import { ToastModule } from 'primeng/toast';
+ 
 
 // componentes nuestros
 import { BarraMenuComponent } from './../../componentes/barra-menu/barra-menu.component';
@@ -38,7 +39,8 @@ import { PaginadorProcesamientoSubidaComponent } from './../../componentes/pagin
     TagModule,
     BadgeModule, 
     ImageModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    ToastModule
   ]
 })
 export class ValidadorModule { }

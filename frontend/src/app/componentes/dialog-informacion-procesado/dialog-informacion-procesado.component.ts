@@ -19,8 +19,6 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
   ],
 })
 
-
-
 export class DialogInformacionProcesadoComponent {
 
   @Input() mostrar_info: boolean = false;
@@ -49,28 +47,15 @@ export class DialogInformacionProcesadoComponent {
         default:
             return undefined;
     }
-};
+  };
 
-getSeverityDispositivos(numero_telefonos: number, huecos_esperados: number) {
-  if (numero_telefonos == huecos_esperados) {
-      return 'success';
-  } else {
-      return 'warning';
+  getSeverityDispositivos(numero_telefonos: number, huecos_esperados: number) {
+    if (numero_telefonos == huecos_esperados) {
+        return 'success';
+    } else {
+        return 'warning';
+    }
   }
-}
-
-
-  ngOnInit() {
-    console.log(this.procesado);
-  }
-  
- 
- 
-
-
-
- 
-
 
 
 }

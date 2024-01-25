@@ -3,10 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { PrimeIcons } from 'primeng/api';
 
-
-
-
-
 //instancias del programa
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
