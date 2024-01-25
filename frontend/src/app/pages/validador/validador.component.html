@@ -21,10 +21,10 @@
             <ng-template #dosFotos>
               <div class="grid anchoAltoFotoReferencia">
                 <div style="margin-right: 5px;">
-                  <p-image [src]="url_imagenes_referencias + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url" class="imagenDoble" [preview]="true"></p-image>
+                  <img [src]="url_imagenes_referencias + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url" class="imagenDoble">
                 </div>
                 <div class="col-6">
-                  <p-image [src]="url_imagenes_referencias + item.expositores[1].imagenes.url" [alt]="item.expositores[1].imagenes.url" class="imagenDoble" [preview]="true"></p-image>
+                  <img [src]="url_imagenes_referencias + item.expositores[1].imagenes.url" [alt]="item.expositores[1].imagenes.url" class="imagenDoble">
                 </div>
               </div>
             </ng-template> 
