@@ -68,12 +68,23 @@ Para decir que la probabilidad de estar contenido es muy alta debe ser el mismo 
 Es importante ver que el texto del cartel debe coincidir.
 Solo con este estilo: {"probab_estar_contenido": "muy alta/alta/media/baja/muy baja/ninguna/error", "valido": "true/false", "comentarios": "comentarios"}`
 
+const prompt_carteles_r2 = `Dame una probabilidad de que el cartel de la primera imagen esté contenida en la otra imagen en formato json por favor. 
+Si no puedes hacerlo di que es false en valido y si puedes hacerlo pon true,todo comentario al respecto añadelo en comentarios. 
+Todo mensaje de comentarios es opcional y debe estar contenido dentro de la estructura json.
+Tampoco empieces avisando de que es un json, directamente empieza usando { y termina con }. Este prompt tiene como finalidad servir como api.
+Primero comprueba que el idioma de los dos carteles sea coincidente, en caso de no serlo indicalo con probab_estar_contenido: otro idioma.
+Para decir que la probabilidad de estar contenido es muy alta debe ser el mismo cartel y contener exactamente los mismos elementos. Ni más elementos ni menos.
+Es importante ver que el texto del cartel debe coincidir.
+Solo con este estilo: {"probab_estar_contenido": "muy alta/alta/media/baja/muy baja/ninguna/otro idioma/error", "valido": "true/false", "comentarios": "comentarios"}`
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
 export function getPromptCarteles(nombre_prompt: string): string{
     switch (nombre_prompt) {
         case 'prompt_carteles_r1':
             return prompt_carteles_r1;
+        case 'prompt_carteles_r2':
+            return prompt_carteles_r2;
         default:
             return `Dame error en este formato: {"numero_telefonos": "0", "error_solicitud": "error", "comentarios": "Prompt mal especificado"}`;
     } 
