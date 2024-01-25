@@ -9,6 +9,7 @@ import { DialogInformacionProcesadoComponent } from '../dialog-informacion-proce
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { PrimeIcons } from 'primeng/api';
+import { PublicMethodsService } from 'src/app/shared/public-methods.service';
 
 
 @Component({
@@ -46,6 +47,8 @@ export class PaginadorProcesamientoSubidaComponent {
     visible_info_dispositivos: boolean = false;
     isTagZoomed = false;
 
+    constructor(private publicMethodsService: PublicMethodsService) { }
+
     onPageChange(event: any) {
         this.indice_paginador = event.first;
     }
@@ -61,34 +64,6 @@ export class PaginadorProcesamientoSubidaComponent {
         this.cargando_procesamiento = true;
     }
 
-    getSeverityCartel(result: string) {
-        switch (result) {
-            case 'muy alta':
-                return 'success';     
-            case 'alta':
-                return 'warning' as string;     
-            case 'media':
-                return 'warning' as string;
-            case 'baja':
-                return 'danger' as string;
-            case 'muy baja':
-                return 'danger' as string;
-            case 'ninguna':
-                return 'danger' as string;
-            
-            default:
-                return undefined;
-        }
-    };
-
-    getSeverityDispositivos(numero_telefonos: number, huecos_esperados: number) {
-        if (numero_telefonos == huecos_esperados) {
-            return 'success';
-        } else {
-            return 'warning';
-        }
-    }
-
     onMouseOver(event: MouseEvent) {
         this.visible_info_dispositivos = true;
         this.isTagZoomed = true;
@@ -100,5 +75,11 @@ export class PaginadorProcesamientoSubidaComponent {
         this.visible_info_dispositivos = false;
     }
  
-
+    getSeverityCartel(procesado: string): string {
+        return this.publicMethodsService.getSeverityCartel(procesado);
+      }
+    
+      getSeverityDispositivos(numero_dispositivos: number, huecos_esperados: number): string {
+        return this.publicMethodsService.getSeverityDispositivos(numero_dispositivos, huecos_esperados);
+      }
 }

@@ -54,28 +54,6 @@ export class ValidadorComponent implements OnInit{
     })
   }
 
-  getSeverityCartel(result: string) {
-    switch (result) {
-        case 'muy alta':
-            return 'success' as string;
- 
-        case 'alta':
-            return 'warning' as string; 
-        case 'media':
-            return 'warning' as string;
-
-        case 'baja':
-            return 'danger' as string;
-        case 'muy baja':
-            return 'danger' as string;
-        case 'ninguna':
-            return 'danger' as string;
-       
-        default:
-            return undefined;
-    }
-  };
-
 
   ngOnInit(): void {
     this.inicializaImagenesReferencia(this.sfid);    

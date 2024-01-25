@@ -14,7 +14,7 @@ import { imagenService } from '../services/imagenService';
 const IA_utilizada = 'openai';
 const max_tokens = 500;
 const temperature = 0;
-const nombrePromptCarteles = 'prompt_carteles_r1';
+const nombrePromptCarteles = 'prompt_carteles_r2';
 const nombrePromptDispositivos = 'prompt_telefonosEsperados_2';
 
 export async function procesarImagenes(req: Request, res: Response) {

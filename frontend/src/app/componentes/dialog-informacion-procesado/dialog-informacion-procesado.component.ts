@@ -5,6 +5,7 @@ import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 import { CommonModule } from '@angular/common';
 import { TagModule } from 'primeng/tag';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { PublicMethodsService } from 'src/app/shared/public-methods.service';
 
 @Component({
   selector: 'app-dialog-informacion-procesado',
@@ -29,33 +30,13 @@ export class DialogInformacionProcesadoComponent {
 
   val: boolean = true;
 
-  getSeverityCartel(result: string) {
-    switch (result) {
-        case 'muy alta':
-            return 'success' as string; ;     
-        case 'alta':
-            return 'warning' as string;     
-        case 'media':
-            return 'warning' as string;
-        case 'baja':
-            return 'danger' as string;
-        case 'muy baja':
-            return 'danger' as string;
-        case 'ninguna':
-            return 'danger' as string;
-        
-        default:
-            return undefined;
-    }
-  };
+  constructor( private publicMethodsService: PublicMethodsService) { }
 
-  getSeverityDispositivos(numero_telefonos: number, huecos_esperados: number) {
-    if (numero_telefonos == huecos_esperados) {
-        return 'success';
-    } else {
-        return 'warning';
-    }
+  getSeverityCartel(procesado: string): string {
+    return this.publicMethodsService.getSeverityCartel(procesado);
   }
 
-
+  getSeverityDispositivos(numero_dispositivos: number, huecos_esperados: number): string {
+    return this.publicMethodsService.getSeverityDispositivos(numero_dispositivos, huecos_esperados);
+  }
 }
