@@ -14,16 +14,16 @@
           <div class="panelIzquierda" >
             <div *ngIf="item.expositores.length == 1 else dosFotos" class="anchoAltoFotoReferencia" >
               <div >
-                <img [src]="url_imagenes_referencias + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url" class="imagenSimple">
+                <p-image [src]="url_imagenes_referencias + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url" class="imagenSimple"[preview]="true"></p-image>
               </div>
             </div>
             <ng-template #dosFotos>
               <div class="grid anchoAltoFotoReferencia">
                 <div style="margin-right: 5px;">
-                  <img [src]="url_imagenes_referencias + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url" class="imagenDoble">
+                  <p-image [src]="url_imagenes_referencias + item.expositores[0].imagenes.url" [alt]="item.expositores[0].imagenes.url" class="imagenDoble" [preview]="true"></p-image>
                 </div>
                 <div class="col-6">
-                  <img [src]="url_imagenes_referencias + item.expositores[1].imagenes.url" [alt]="item.expositores[1].imagenes.url" class="imagenDoble">
+                  <p-image [src]="url_imagenes_referencias + item.expositores[1].imagenes.url" [alt]="item.expositores[1].imagenes.url" class="imagenDoble" [preview]="true"></p-image>
                 </div>
               </div>
             </ng-template> 
