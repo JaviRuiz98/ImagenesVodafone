@@ -36,3 +36,15 @@
     margin: 5%;
     position: relative;
 }
+
+
+.p-paginator .p-paginator-pages .p-paginator-page:first-child {
+    font-size: 0; /* Oculta el número */
+}
+
+/* Agregar el ícono en la primera página */
+.p-paginator .p-paginator-pages .p-paginator-page:first-child::before {
+    content: '\e91a'; /* Código del ícono de PrimeIcons que desees usar */
+    font-family: 'PrimeIcons';
+    font-size: 1.5rem; /* Ajusta el tamaño del ícono según sea necesario */
+}
