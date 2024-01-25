@@ -1,13 +1,17 @@
 import { CommonModule } from '@angular/common';
 import {  Component, EventEmitter, Input, Output } from '@angular/core';
-import { PaginatorModule } from 'primeng/paginator';
+
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 import { SelectorImagenesComponent } from '../selector-imagenes/selector-imagenes.component';
+import { DialogInformacionProcesadoComponent } from '../dialog-informacion-procesado/dialog-informacion-procesado.component'; // Reemplaza con la ruta correcta a tu componente
+
+import { GalleriaModule } from 'primeng/galleria';
+import { SelectButtonModule } from 'primeng/selectbutton';
 import { TagModule } from 'primeng/tag';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { DialogInformacionProcesadoComponent } from '../dialog-informacion-procesado/dialog-informacion-procesado.component'; // Reemplaza con la ruta correcta a tu componente
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
+import { FormsModule } from '@angular/forms';
 import { PrimeIcons } from 'primeng/api';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
 
@@ -19,13 +23,15 @@ import { PublicMethodsService } from 'src/app/shared/public-methods.service';
     standalone: true,
     imports: [
         CommonModule,
-        PaginatorModule,
         SelectorImagenesComponent,
         TagModule,
         ProgressSpinnerModule,
         DialogModule,
         ButtonModule,
         DialogInformacionProcesadoComponent,
+        SelectButtonModule,
+        GalleriaModule,
+        FormsModule
     ],
     providers: [
         PrimeIcons
@@ -44,8 +50,28 @@ export class PaginadorProcesamientoSubidaComponent {
     items_per_page: number = 1;
     indice_paginador: number = 0;
 
-    visible_info_dispositivos: boolean = false;
-    isTagZoomed = false;
+    visible_info_procesamiento: boolean = false;
+ 
+
+    SelectButtonOptions: any[] = [{label:'Nuevo', icon: 'pi pi-plus-circle', value: 'new',  styleClass: "optionColorVodafone" }, {label:'Historial' ,icon: 'pi pi-history', value: 'historial', styleClass: "optionColorVodafone" }];
+
+    valueSelected: string = 'new';
+
+  
+    responsiveOptions = [
+        {
+            breakpoint: '1024px',
+            numVisible: 5
+        },
+        {
+            breakpoint: '768px',
+            numVisible: 3
+        },
+        {
+            breakpoint: '560px',
+            numVisible: 1
+        }
+    ];
 
     constructor(private publicMethodsService: PublicMethodsService) { }
 
@@ -53,9 +79,6 @@ export class PaginadorProcesamientoSubidaComponent {
         this.indice_paginador = event.first;
     }
 
-    getElementosPaginados(): procesados_imagenes[] | undefined {
-        return this.indice_paginador === 0 ? undefined : this.procesados.slice(this.indice_paginador-1, this.indice_paginador + this.items_per_page-1);
-    }
 
     recibirFile(event: {archivo:File}, id_expositor_selected: number) {
         const imagenAProcesar = event.archivo;
@@ -65,14 +88,13 @@ export class PaginadorProcesamientoSubidaComponent {
     }
 
     onMouseOver(event: MouseEvent) {
-        this.visible_info_dispositivos = true;
-        this.isTagZoomed = true;
+        this.visible_info_procesamiento = true;
         const tagElement = event.target as HTMLElement;
         tagElement.classList.add('cursor-zoom');
     }
 
     onMouseOut(event: MouseEvent) {
-        this.visible_info_dispositivos = false;
+        this.visible_info_procesamiento = false;
     }
  
     getSeverityCartel(procesado: string): string {
