@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input,  Output, EventEmitter, ViewChild, ElementRef, OnChanges, SimpleChange } from '@angular/core';
-
+import { Component, Input,  Output, EventEmitter, ViewChild, ElementRef, } from '@angular/core';
+import { ButtonModule } from 'primeng/button';
 @Component({
   selector: 'app-selector-imagenes',
   templateUrl: './selector-imagenes.component.html',
   styleUrls: ['./selector-imagenes.component.css'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ButtonModule],
 })
 
 export class SelectorImagenesComponent {
