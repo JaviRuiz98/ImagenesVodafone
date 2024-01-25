@@ -37,7 +37,7 @@ export const  uploadFileToFtp = (foldername:string) => async (req: Request, res:
         const remotePath = `./imagenes/${foldername}/${file.filename}`;
 
         try {
-            uploadFile(localPath, remotePath); //creo que no hay que poner await porque se puede ir haciendo asincronamente
+            await uploadFile(localPath, remotePath); //creo que no hay que poner await porque se puede ir haciendo asincronamente
             return next();
         } catch (error) {
             console.error('Error al subir al archivo:', error);
