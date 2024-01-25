@@ -5,7 +5,7 @@
             [cargando_procesado]="cargando_procesamiento">
         </app-selector-imagenes>
     </div>
-    <div class="imagenProcesadaIndiceMayor0">
+
         <div *ngFor="let item of getElementosPaginados()" class="imagenProcesada">
             <p-tag *ngIf="item.respuestas_carteles.length>0" 
                 icon="pi pi-info-circle" 
@@ -33,11 +33,10 @@
             <div *ngIf="visible_info_dispositivos">
                 <app-dialog-informacion-procesado [procesado]="item"></app-dialog-informacion-procesado>
             </div>
-        </div>	
     </div>
     <div>
         <p-paginator
-            [style]="{'background-color': 'rgba(232, 232, 232, 0.9)'}"
+            [style]="{'background-color': 'rgba(232, 232, 232, 0.9)', 'flex': '30%'}"
             [rows]="items_per_page" 
             [totalRecords]="procesados.length+1" 
             [first]="indice_paginador" 

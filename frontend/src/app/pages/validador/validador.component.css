@@ -90,3 +90,7 @@
   display: flex;
   justify-content: center;
 }
+.anchoAltoPaginador{
+  height: 100%;
+  width: 100%;
+}

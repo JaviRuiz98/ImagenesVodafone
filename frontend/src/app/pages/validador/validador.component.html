@@ -31,6 +31,7 @@
           <div class="panelDerecha">
             <div *ngIf="item.expositores.length == 1 else subir2Fotos" class="anchoAltoSubirFoto">              
               <app-paginador-procesamiento-subida  
+                class="anchoAltoPaginador"
                 [id_expositor_selected]="item.expositores[0].id_expositor"
                 [procesados]="item.expositores[0].procesados_imagenes" 
                 [cargando_procesamiento]="array_cargas_procesamiento[item.expositores[0].id_expositor]"
