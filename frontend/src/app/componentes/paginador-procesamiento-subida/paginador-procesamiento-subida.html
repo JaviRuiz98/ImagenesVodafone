@@ -1,6 +1,5 @@
 <div class="componente-completo">
     <div *ngIf="indice_paginador === 0" class="anchoAltoSelector">
-        <p-progressSpinner *ngIf="cargando_procesamiento" styleClass="w-4rem h-4rem" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s"></p-progressSpinner>
         <app-selector-imagenes 
             (archivoSeleccionadoChange)="recibirFile($event, id_expositor_selected)"
             [cargando_procesado]="cargando_procesamiento">
