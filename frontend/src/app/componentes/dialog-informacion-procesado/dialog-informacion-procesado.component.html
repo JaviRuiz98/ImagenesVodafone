@@ -1,8 +1,8 @@
   
-<p-dialog header="Informacion del procesado" [(visible)]="val" [style]="{width: '50vw'}">
+<p-dialog header="Informacion del procesado" [(visible)]="val" [closable]="false" [style]="{width: '20vw'}">
  
     <div *ngIf="procesado.respuestas_carteles.length > 0">
-        <span style="font-weight: bold;">Probabilidad: </span>  
+        <span style="font-weight: bold;">· Probabilidad: </span>  
         <p-tag [severity]="getSeverityCartel(procesado.respuestas_carteles[0].probabilidad)" >
             {{procesado.respuestas_carteles[0].probabilidad}}
         </p-tag>
@@ -11,21 +11,26 @@
 
 
     <div *ngIf="procesado.respuestas_dispositivos.length>0">
-        <span style="font-weight: bold;">Encontrados: </span>           
+        <span style="font-weight: bold;">· Encontrados: </span>           
          <p-tag 
             [severity]="getSeverityDispositivos(procesado.respuestas_dispositivos[0].dispositivos_contados, procesado.respuestas_dispositivos[0].huecos_esperados)" >
             {{procesado.respuestas_dispositivos[0].dispositivos_contados}}/{{procesado.respuestas_dispositivos[0].huecos_esperados}}
          </p-tag>
     </div>
 
-    <span style="font-weight: bold;">Comentarios: </span><span >{{this.procesado.comentarios}}</span>
     <br>
 
-    <span style="font-weight: bold;">IA Utilizada: </span><span >{{this.procesado.IA_utilizada}}</span>
+    <span style="font-weight: bold;">· Comentarios: </span><span >{{this.procesado.comentarios}}</span>
     <br>
-    <span style="font-weight: bold;">Prompt utilizado: </span><span >{{this.procesado.prompt_usado}}</span>
     <br>
-    <span style="font-weight: bold;">Fecha: </span><span >{{ this.procesado.fecha | date:'dd-MM-yyyy | HH:mm' }}</span>
+    <span style="font-weight: bold;">· IA Utilizada: </span><span >{{this.procesado.IA_utilizada}}</span>
+    <br>
+    <br>
+    <span style="font-weight: bold;">· Prompt utilizado: </span><span >{{this.procesado.prompt_usado}}</span>
+    <br>
+    <br>
+    <span style="font-weight: bold;">· Fecha: </span><span >{{ this.procesado.fecha | date:'dd-MM-yyyy | HH:mm' }}</span>
+    <br>
     <br>
 </p-dialog>
 

@@ -1,8 +1,6 @@
 import express, { Router } from 'express';
-
 import { procesarImagenes } from '../controller/procesamientoController';
 import { procesamientoValidator } from '../validator/procesamientoValidator';
-
 import { uploadImagenProcesada, uploadImagenRepresentativa } from '../config/multer';
 import { uploadFileToFtp, uploadFileToFtpReferencia } from '../config/ftpUpload';
 

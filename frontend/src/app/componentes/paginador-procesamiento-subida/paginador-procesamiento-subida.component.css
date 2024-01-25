@@ -20,6 +20,18 @@
     flex-direction: column;
 }
 
+
+.cursor-pointer {
+    cursor: pointer;
+  }
+  
+  .cursor-zoom {
+    cursor: zoom-in;
+    transform: scale(5.3);
+  }
+  
+
+
 .imagenProcesada {
     width: 90%;
     height: 420px;

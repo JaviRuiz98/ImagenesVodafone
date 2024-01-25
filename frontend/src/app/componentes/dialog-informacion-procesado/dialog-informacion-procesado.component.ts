@@ -4,6 +4,8 @@ import { Component, Input } from '@angular/core';
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 import { CommonModule } from '@angular/common';
 import { TagModule } from 'primeng/tag';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+
 @Component({
   selector: 'app-dialog-informacion-procesado',
   templateUrl: './dialog-informacion-procesado.component.html',
@@ -12,7 +14,8 @@ import { TagModule } from 'primeng/tag';
   imports: [
     DialogModule,
     CommonModule,
-    TagModule
+    TagModule,
+    OverlayPanelModule
   ],
 })
 
