@@ -15,7 +15,8 @@ import { FormsModule } from '@angular/forms';
 import { PrimeIcons } from 'primeng/api';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
-
+import { ImageModule } from 'primeng/image';
+import { PaginatorModule } from 'primeng/paginator';
 @Component({
     selector: 'app-paginador-procesamiento-subida',
     templateUrl: './paginador-procesamiento-subida.html',
@@ -32,7 +33,9 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
         SelectButtonModule,
         GalleriaModule,
         FormsModule,
-        OverlayPanelModule
+        OverlayPanelModule,
+        ImageModule,
+        PaginatorModule
     ],
     providers: [
         PrimeIcons
@@ -85,6 +88,10 @@ export class PaginadorProcesamientoSubidaComponent {
         this.archivoSeleccionadoChange.emit({ archivo: imagenAProcesar, id_expositor_selected: id_expositor_selected });
 
         this.cargando_procesamiento = true;
+    }
+
+    getElementosPaginados(): procesados_imagenes[] | undefined {
+        return this.procesados.slice(this.indice_paginador, this.indice_paginador + this.items_per_page);
     }
 
 }
