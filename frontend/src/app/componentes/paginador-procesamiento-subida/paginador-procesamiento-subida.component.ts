@@ -74,8 +74,11 @@ export class PaginadorProcesamientoSubidaComponent {
         }
     ];
 
-
     constructor(private publicMethodsService: PublicMethodsService) { }
+
+    onPageChange(event: any) {
+        this.indice_paginador = event.first;
+    }
 
 
     recibirFile(event: {archivo:File}, id_expositor_selected: number) {

@@ -6,10 +6,9 @@
             [(ngModel)]="valueSelected" 
             optionLabel="label"
             optionValue="value"
-
+            [hidden]="procesados.length==0"
             [allowEmpty]=false
-            >
-            
+            >            
         </p-selectButton>
  
     </div>
@@ -35,7 +34,7 @@
             >
                 <ng-template pTemplate="item" let-item  class="image-container">
                     
-                    <img [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" style="width: 400px; height: 400px;">
+                    <img [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" style="width: auto; height: 400px;">
                     
                     <div class="tag-container" (mouseover)="onMouseOver($event)" (mouseout)="onMouseOut($event)">
 
