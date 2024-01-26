@@ -14,11 +14,13 @@ export class SelectorImagenesComponent {
   @Input() cargando_procesado: boolean = false;
   // @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
   @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
+  
   @ViewChild('dropArea') dropAreaRef!: ElementRef;
   @ViewChild('inputFile') inputFileRef!: ElementRef;
   @ViewChild('dragText') dragTextRef!: ElementRef;
 
   archivoSeleccionado: File | null = null;
+  mouseSobre: boolean = false;
 
   constructor() {}
 
@@ -45,6 +47,37 @@ export class SelectorImagenesComponent {
   getImageSrc(file: File) {
     return file ? URL.createObjectURL(file) : '';
   }
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    this.dropAreaRef.nativeElement.classList.add('active');
+    event.stopPropagation();
+    this.mouseSobre = true;
+}
+
+onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.mouseSobre = false;
+}
+
+onDrop(event: DragEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+    this.mouseSobre = false;
+
+    const transferencia = event.dataTransfer;
+
+    if (!transferencia) {
+        return;
+    }
+
+    const files = transferencia.files;
+    
+    if (files.length > 0) {
+        this.archivoSeleccionado = files[0];
+        this.archivoSeleccionadoChange.emit({ archivo: this.archivoSeleccionado });
+    }
+}
 }
 
   // onPageChange(event: PageEvent) {
