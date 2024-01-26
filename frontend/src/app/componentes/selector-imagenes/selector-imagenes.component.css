@@ -26,7 +26,7 @@
 
 
 .drop-area.active {
-    background: rgb(255, 197, 197);
+    background: #ddd;
     color: black;
     border: 2px dashed red;
 }
