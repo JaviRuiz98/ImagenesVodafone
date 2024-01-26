@@ -88,7 +88,7 @@ export class PaginadorProcesamientoSubidaComponent {
     onMouseOver(event: MouseEvent) {
         this.visible_info_procesamiento = true;
         const tagElement = event.target as HTMLElement;
-        tagElement.classList.add('cursor-zoom');
+     //   tagElement.classList.add('cursor-zoom');
     }
 
     onMouseOut(event: MouseEvent) {
