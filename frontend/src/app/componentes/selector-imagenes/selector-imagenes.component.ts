@@ -42,8 +42,8 @@ export class SelectorImagenesComponent {
     }
   }
 
-  getImageSrc(file: File) {
-    return file ? URL.createObjectURL(file) : '';
+  getImageSrc() {
+    return this.archivoSeleccionado ? URL.createObjectURL(this.archivoSeleccionado) : '';
   }
 }
 

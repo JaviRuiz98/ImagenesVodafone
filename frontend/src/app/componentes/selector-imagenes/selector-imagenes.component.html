@@ -6,5 +6,5 @@
         <input #inputFile type="file" (change)="listenChange($event)" hidden>
     </div>
     <div *ngIf="archivoSeleccionado && cargando_procesado" class="drop-area ">
-        <img [src]="getImageSrc(archivoSeleccionado)" alt="Vista previa de la imagen seleccionada"  class="imagenSimple">
+        <img [src]="getImageSrc()" alt="Vista previa de la imagen seleccionada"  class="imagenSimple">
     </div>
