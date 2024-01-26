@@ -44,6 +44,7 @@ export class PaginadorProcesamientoSubidaComponent {
     @Input() procesados: procesados_imagenes[] = [];
     @Input() cargando_procesamiento: boolean = false;
     @Input() id_expositor_selected: number = 0;
+    @Input() valueSelected: string = 'new';
     @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File, id_expositor_selected: number }>();
 
     url_imagenes_procesadas: string = 'http://validador-vf.topdigital.local/imagenes/imagenesProcesamiento/';
@@ -55,8 +56,6 @@ export class PaginadorProcesamientoSubidaComponent {
     visible_info_procesamiento_click: boolean = false;
 
     SelectButtonOptions: any[] = [{label:'Nuevo', icon: 'pi pi-plus-circle', value: 'new',  styleClass: "optionColorVodafone" }, {label:'Historial' ,icon: 'pi pi-history', value: 'historial', styleClass: "optionColorVodafone" }];
-
-    valueSelected: string = 'new';
 
   
     responsiveOptions = [
