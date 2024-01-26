@@ -14,7 +14,7 @@ import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { PrimeIcons } from 'primeng/api';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
-
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @Component({
     selector: 'app-paginador-procesamiento-subida',
@@ -31,7 +31,8 @@ import { PublicMethodsService } from 'src/app/shared/public-methods.service';
         DialogInformacionProcesadoComponent,
         SelectButtonModule,
         GalleriaModule,
-        FormsModule
+        FormsModule,
+        OverlayPanelModule
     ],
     providers: [
         PrimeIcons
@@ -51,7 +52,7 @@ export class PaginadorProcesamientoSubidaComponent {
     indice_paginador: number = 0;
 
     visible_info_procesamiento: boolean = false;
- 
+    visible_info_procesamiento_click: boolean = false;
 
     SelectButtonOptions: any[] = [{label:'Nuevo', icon: 'pi pi-plus-circle', value: 'new',  styleClass: "optionColorVodafone" }, {label:'Historial' ,icon: 'pi pi-history', value: 'historial', styleClass: "optionColorVodafone" }];
 
@@ -74,6 +75,8 @@ export class PaginadorProcesamientoSubidaComponent {
     ];
 
 
+    constructor(private publicMethodsService: PublicMethodsService) { }
+
 
     recibirFile(event: {archivo:File}, id_expositor_selected: number) {
         const imagenAProcesar = event.archivo;
@@ -91,12 +94,16 @@ export class PaginadorProcesamientoSubidaComponent {
     onMouseOut(event: MouseEvent) {
         this.visible_info_procesamiento = false;
     }
+
+    onMouseClick(event: any) {
+        this.visible_info_procesamiento_click = !this.visible_info_procesamiento_click;
+    }
  
     getSeverityCartel(procesado: string): string {
         return this.publicMethodsService.getSeverityCartel(procesado);
-      }
+    }
     
-      getSeverityDispositivos(numero_dispositivos: number, huecos_esperados: number): string {
-        return this.publicMethodsService.getSeverityDispositivos(numero_dispositivos, huecos_esperados);
-      }
+    getSeverityDispositivos(numero_dispositivos: number, huecos_esperados: number): string {
+    return this.publicMethodsService.getSeverityDispositivos(numero_dispositivos, huecos_esperados);
+    }
 }

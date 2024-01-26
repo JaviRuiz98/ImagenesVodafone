@@ -30,7 +30,24 @@ export class DialogInformacionProcesadoComponent {
 
   val: boolean = true;
 
+  visible_info_procesamiento: boolean = false;
+  visible_info_procesamiento_click: boolean = false;
+
   constructor( private publicMethodsService: PublicMethodsService) { }
+
+
+
+  onMouseOver(event: MouseEvent) {
+    this.visible_info_procesamiento = true;
+    const tagElement = event.target as HTMLElement;
+    tagElement.classList.add('cursor-zoom');
+   
+}
+
+onMouseOut(event: MouseEvent) {
+    this.visible_info_procesamiento = false;
+}
+ 
 
   getSeverityCartel(procesado: string): string {
     return this.publicMethodsService.getSeverityCartel(procesado);
