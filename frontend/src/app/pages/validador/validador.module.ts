@@ -12,6 +12,7 @@ import { BadgeModule } from 'primeng/badge';
 import { ImageModule } from 'primeng/image';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToastModule } from 'primeng/toast';
+
  
 
 // componentes nuestros
