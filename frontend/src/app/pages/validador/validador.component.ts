@@ -89,13 +89,4 @@ export class ValidadorComponent implements OnInit{
     }
   }
 
-  getValueSelectedButton(id_expositor: number): string {
-    let res = "new";
-    if (this.modos_visualizacion[id_expositor] === 'historial') {
-      res = 'historial';
-    }
-    return res;
-  }
-  
-
 }
