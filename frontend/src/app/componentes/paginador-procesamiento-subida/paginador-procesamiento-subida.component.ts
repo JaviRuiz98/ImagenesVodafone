@@ -31,7 +31,8 @@ import { ImageModule } from 'primeng/image';
         DialogInformacionProcesadoComponent,
         SelectButtonModule,
         FormsModule,
-        ImageModule
+        ImageModule,
+        PaginatorModule
     ],
     providers: [
         PrimeIcons
