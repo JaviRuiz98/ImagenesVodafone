@@ -71,6 +71,7 @@
   display: flex;
   justify-content: center;
   overflow: hidden;
+  margin: 5%;
   border: #534c4c 2px solid;
 }
 .imagenDoble{
@@ -90,4 +91,8 @@
   flex-direction: column;
   display: flex;
   justify-content: center;
+}
+.anchoAltoPaginador{
+  height: 100%;
+  width: 100%;
 }

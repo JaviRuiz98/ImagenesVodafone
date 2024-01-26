@@ -5,7 +5,6 @@ import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 import { SelectorImagenesComponent } from '../selector-imagenes/selector-imagenes.component';
 import { DialogInformacionProcesadoComponent } from '../dialog-informacion-procesado/dialog-informacion-procesado.component'; // Reemplaza con la ruta correcta a tu componente
 
-import { GalleriaModule } from 'primeng/galleria';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { TagModule } from 'primeng/tag';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
@@ -13,9 +12,9 @@ import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { PrimeIcons } from 'primeng/api';
+import { PaginatorModule } from 'primeng/paginator';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
-
+import { ImageModule } from 'primeng/image';
 @Component({
     selector: 'app-paginador-procesamiento-subida',
     templateUrl: './paginador-procesamiento-subida.html',
@@ -30,9 +29,9 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
         ButtonModule,
         DialogInformacionProcesadoComponent,
         SelectButtonModule,
-        GalleriaModule,
         FormsModule,
-        OverlayPanelModule
+        ImageModule,
+        PaginatorModule
     ],
     providers: [
         PrimeIcons
@@ -52,27 +51,11 @@ export class PaginadorProcesamientoSubidaComponent {
     indice_paginador: number = 0;
 
     visible_info_procesamiento: boolean = false;
-    visible_info_procesamiento_click: boolean = false;
 
     SelectButtonOptions: any[] = [{label:'Nuevo', icon: 'pi pi-plus-circle', value: 'new',  styleClass: "optionColorVodafone" }, {label:'Historial' ,icon: 'pi pi-history', value: 'historial', styleClass: "optionColorVodafone" }];
 
     valueSelected: string = 'new';
 
-  
-    responsiveOptions = [
-        {
-            breakpoint: '1024px',
-            numVisible: 5
-        },
-        {
-            breakpoint: '768px',
-            numVisible: 3
-        },
-        {
-            breakpoint: '560px',
-            numVisible: 1
-        }
-    ];
 
     constructor(private publicMethodsService: PublicMethodsService) { }
 
@@ -80,6 +63,9 @@ export class PaginadorProcesamientoSubidaComponent {
         this.indice_paginador = event.first;
     }
 
+    getElementosPaginados(): procesados_imagenes[] | undefined {
+        return this.procesados.slice(this.indice_paginador, this.indice_paginador + this.items_per_page);
+    }
 
     recibirFile(event: {archivo:File}, id_expositor_selected: number) {
         const imagenAProcesar = event.archivo;
@@ -90,23 +76,18 @@ export class PaginadorProcesamientoSubidaComponent {
 
     onMouseOver(event: MouseEvent) {
         this.visible_info_procesamiento = true;
-        const tagElement = event.target as HTMLElement;
-     //   tagElement.classList.add('cursor-zoom');
     }
 
     onMouseOut(event: MouseEvent) {
         this.visible_info_procesamiento = false;
     }
-
-    onMouseClick(event: any) {
-        this.visible_info_procesamiento_click = !this.visible_info_procesamiento_click;
-    }
  
     getSeverityCartel(procesado: string): string {
         return this.publicMethodsService.getSeverityCartel(procesado);
-    }
+      }
     
     getSeverityDispositivos(numero_dispositivos: number, huecos_esperados: number): string {
     return this.publicMethodsService.getSeverityDispositivos(numero_dispositivos, huecos_esperados);
     }
+
 }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input,  Output, EventEmitter, ViewChild, ElementRef, } from '@angular/core';
+import { Component, Input,  Output, EventEmitter, ViewChild, ElementRef, OnChanges, SimpleChanges, } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 @Component({
   selector: 'app-selector-imagenes',
@@ -9,20 +9,22 @@ import { ButtonModule } from 'primeng/button';
   imports: [CommonModule, ButtonModule],
 })
 
-export class SelectorImagenesComponent {
+export class SelectorImagenesComponent implements OnChanges {
 
   @Input() cargando_procesado: boolean = false;
-  // @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
-  @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
+ // @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
+ @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
   @ViewChild('dropArea') dropAreaRef!: ElementRef;
   @ViewChild('inputFile') inputFileRef!: ElementRef;
   @ViewChild('dragText') dragTextRef!: ElementRef;
 
   archivoSeleccionado: File | null = null;
 
+  file: File | null = null;
+
   constructor() {}
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges): void {
     if (this.cargando_procesado == false) {
       this.archivoSeleccionado = null;
     }
@@ -42,8 +44,8 @@ export class SelectorImagenesComponent {
     }
   }
 
-  getImageSrc(file: File) {
-    return file ? URL.createObjectURL(file) : '';
+  getImageSrc() {
+    return this.file ? URL.createObjectURL(this.file) : '';
   }
 }
 
@@ -85,4 +87,3 @@ export class SelectorImagenesComponent {
   //     }    
   //   })
   // }
-

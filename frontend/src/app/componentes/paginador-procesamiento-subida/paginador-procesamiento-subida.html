@@ -1,56 +1,59 @@
-<div >
-
-    <div class="centered">
-        <p-selectButton  
-            [options]="SelectButtonOptions" 
-            [(ngModel)]="valueSelected" 
-            optionLabel="label"
-            optionValue="value"
-            [hidden]="procesados.length==0"
-            [allowEmpty]=false
-            >            
-        </p-selectButton>
- 
-    </div>
 
 
-    <div *ngIf="valueSelected === 'new'"  >
+
+<div class="componente-completo">
+    <p-selectButton  class="botonNuevoHistorial"
+        [options]="SelectButtonOptions" 
+        [(ngModel)]="valueSelected" 
+        optionLabel="label"
+        optionValue="value"
+        [allowEmpty]=false
+        [hidden]="procesados.length==0">
+    </p-selectButton>
+    <div class="anchoAltoSelector" *ngIf="valueSelected==='new'"> 
         <app-selector-imagenes 
+            *ngIf="valueSelected==='new'"
             (archivoSeleccionadoChange)="recibirFile($event, id_expositor_selected)"
             [cargando_procesado]="cargando_procesamiento">
         </app-selector-imagenes>
     </div>
-    <div *ngIf="valueSelected === 'historial'" class="centeredV2">
-     
-          
-            <p-galleria 
-                [value]="procesados" 
-                [showIndicators]="true" 
-                [showThumbnails]="false" 
-                [responsiveOptions]="responsiveOptions" 
-                [containerStyle]="{ 'max-width': '400px', 'height': '400px' }"
-                [changeItemOnIndicatorHover]="true"
-                [showItemNavigators]="true"
-            >
-                <ng-template pTemplate="item" let-item  class="image-container">
-                    
-                    <img [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" style="width: auto; height: 400px;">
-                    
-                    <div class="tag-container" (mouseover)="onMouseOver($event)" (mouseout)="onMouseOut($event)">
-
-                        <app-dialog-informacion-procesado [procesado]="item"></app-dialog-informacion-procesado>
-
-                    </div>
-                    
-                 
-                </ng-template>
-            </p-galleria>
-           
-         
-        
-    </div>	
-
-    
+    <div *ngIf="valueSelected==='historial'">
+        <div *ngFor="let item of getElementosPaginados()" class="imagenProcesada">
+            <p-image [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" class="imagen" [preview]="true"></p-image>
+            <div class="tag-container" (mouseover)="onMouseOver($event)" (mouseout)="onMouseOut($event)">
+                <p-tag *ngIf="item.respuestas_carteles.length>0" 
+                    icon="pi pi-info-circle" 
+                    value="{{item.respuestas_carteles[0].probabilidad}}"
+                    [severity]="getSeverityCartel(item.respuestas_carteles[0].probabilidad)" 
+                    (mouseover)="onMouseOver($event)"
+                    (mouseout)="onMouseOut($event)"
+                >
+                </p-tag>
+                <p-tag *ngIf="item.respuestas_dispositivos.length>0" 
+                    icon="pi pi-info-circle"
+                    value="{{item.respuestas_dispositivos[0].dispositivos_contados}}/{{item.respuestas_dispositivos[0].huecos_esperados}}"
+                    [severity]="getSeverityDispositivos(item.respuestas_dispositivos[0].dispositivos_contados, item.respuestas_dispositivos[0].huecos_esperados)" 
+                    (mouseover)="onMouseOver($event)"
+                    (mouseout)="onMouseOut($event)"
+                >
+                </p-tag>
+            </div>
+            <div *ngIf="visible_info_procesamiento">
+                <app-dialog-informacion-procesado [procesado]="item"></app-dialog-informacion-procesado>
+            </div>
+        </div>
+        <div>
+            <p-paginator
+                [style]="{'background-color': 'rgba(232, 232, 232, 0.9)', 'flex': '30%'}"
+                [rows]="items_per_page" 
+                [totalRecords]="procesados.length" 
+                [first]="indice_paginador" 
+                (onPageChange)="onPageChange($event)"
+                [hidden]="procesados.length === 0"
+                [showJumpToPageDropdown]="true" 
+                [showPageLinks]="false">
+            </p-paginator>
+        </div>
+    </div>
 </div>
-
 

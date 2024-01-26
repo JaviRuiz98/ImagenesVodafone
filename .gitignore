@@ -8,11 +8,9 @@ backend/.dockerignore
 backend/docker-compose.debug.yml
 backend/Dockerfile
 
-
 .env
 database
 docker-compose.yml
-
 
 frontend/node_modules
 
