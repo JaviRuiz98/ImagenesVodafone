@@ -31,6 +31,14 @@ export const procesamientoService = {
                 respuestas_dispositivos: true
             }
         })
+    },
+
+    borrarProcesado(id_procesado_imagen: number) {
+        return db.procesados_imagenes.delete({
+            where: {
+                id_procesado_imagen: id_procesado_imagen
+            }
+        })
     }
 
 }
