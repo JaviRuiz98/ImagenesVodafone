@@ -30,7 +30,7 @@
 
  :host::ng-deep {
  .p-button.p-highlight.optionColorVodafone {
-    background: rgba(255, 0, 0, 0.5);
+    background: red;
     border: rgb(87, 11, 11);
     
   }
