@@ -1,8 +1,5 @@
-
-
-
 <div class="componente-completo">
-    <p-selectButton  class="botonNuevoHistorial"
+    <p-selectButton class="botonNuevoHistorial"
         [options]="SelectButtonOptions" 
         [(ngModel)]="valueSelected" 
         optionLabel="label"
@@ -19,7 +16,8 @@
     </div>
     <div *ngIf="valueSelected==='historial'">
         <div *ngFor="let item of getElementosPaginados()" class="imagenProcesada">
-            <p-image [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" class="imagen" [preview]="true"></p-image>
+            <p-image [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" class="imagen" [preview]="true">
+            </p-image>
             <div class="tag-container" (mouseover)="onMouseOver($event)" (mouseout)="onMouseOut($event)">
                 <p-tag *ngIf="item.respuestas_carteles.length>0" 
                     icon="pi pi-info-circle" 
@@ -42,18 +40,18 @@
                 <app-dialog-informacion-procesado [procesado]="item"></app-dialog-informacion-procesado>
             </div>
         </div>
-        <div>
-            <p-paginator
-                [style]="{'background-color': 'rgba(232, 232, 232, 0.9)', 'flex': '30%'}"
-                [rows]="items_per_page" 
-                [totalRecords]="procesados.length" 
-                [first]="indice_paginador" 
-                (onPageChange)="onPageChange($event)"
-                [hidden]="procesados.length === 0"
-                [showJumpToPageDropdown]="true" 
-                [showPageLinks]="false">
-            </p-paginator>
-        </div>
+    </div>
+    <div class="paginator">
+        <p-paginator *ngIf="valueSelected==='historial'" 
+            [style]="{'background-color': 'rgba(232, 232, 232, 0.9)', 'flex': '30%'}"
+            [rows]="items_per_page" 
+            [totalRecords]="procesados.length" 
+            [first]="indice_paginador" 
+            (onPageChange)="onPageChange($event)"
+            [hidden]="procesados.length === 0"
+            [showJumpToPageDropdown]="true" 
+            [showPageLinks]="false">
+        </p-paginator>
     </div>
 </div>
 
