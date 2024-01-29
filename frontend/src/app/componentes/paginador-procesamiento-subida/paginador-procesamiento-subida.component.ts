@@ -6,8 +6,6 @@ import { SelectorImagenesComponent } from '../selector-imagenes/selector-imagene
 import { DialogInformacionProcesadoComponent } from '../dialog-informacion-procesado/dialog-informacion-procesado.component'; // Reemplaza con la ruta correcta a tu componente
 
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { TagModule } from 'primeng/tag';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
@@ -15,7 +13,7 @@ import { PrimeIcons } from 'primeng/api';
 import { PaginatorModule } from 'primeng/paginator';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
 import { ImageModule } from 'primeng/image';
-import { InfoCircleIcon } from 'primeng/icons/infocircle';
+
 @Component({
     selector: 'app-paginador-procesamiento-subida',
     templateUrl: './paginador-procesamiento-subida.html',
@@ -25,8 +23,6 @@ import { InfoCircleIcon } from 'primeng/icons/infocircle';
         CommonModule,
         PaginatorModule,
         SelectorImagenesComponent,
-        TagModule,
-        ProgressSpinnerModule,
         DialogModule,
         ButtonModule,
         DialogInformacionProcesadoComponent,
