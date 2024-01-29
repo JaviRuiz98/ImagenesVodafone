@@ -25,7 +25,7 @@
     </div>
     <div class="paginator">
         <p-paginator *ngIf="valueSelected==='historial'" 
-            [style]="{'background-color': 'rgba(232, 232, 232, 0.9)', 'flex': '30%'}"
+            [style]="{'background-color': 'rgba(232, 232, 232, 0.9)', 'flex': '30%', 'justify-content': 'center', 'align-items': 'center'}"
             [rows]="items_per_page" 
             [totalRecords]="procesados.length" 
             [first]="indice_paginador" 
