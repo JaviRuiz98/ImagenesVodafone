@@ -15,8 +15,6 @@
 .imagenProcesada {
     position: relative;
     display: grid;
-    justify-content: center;
-    align-items: center;
     height: 100%;
     width: 100%;
     grid-template-rows: 50% 50%;
@@ -99,7 +97,8 @@
 .contenido {
     margin: 2%;
     width: 100%;
-    justify-content: center;
-    display: flex;
-    align-items: center;
+    justify-content: start;
+    align-items: start;
+    
 }
+
