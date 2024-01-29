@@ -3,19 +3,19 @@ import { ChatMessage } from '../interfaces/procesamientoInterfaces';
 import * as fs from 'fs';
 import openai from '../config/openAi';
 import { expositoresService } from '../services/expositorService';
-import { getPromptDispositivos, getPromptCarteles } from '../config/prompts';
 import { procesamientoService, respuestaService } from '../services/procesamientoService';
-import { promptObject } from '../interfaces/promptObject';
 import { parseBool } from '../utils/funcionesCompartidasController';
 import { imagenService } from '../services/imagenService';
+import { prompts } from '@prisma/client';
+import { promptService } from '../services/promptService';
 
 
 // Constantes y configuracion de procesado
 const IA_utilizada = 'openai';
 const max_tokens = 500;
 const temperature = 0;
-const nombrePromptCarteles = 'prompt_carteles_r2';
-const nombrePromptDispositivos = 'prompt_telefonosEsperados_3';
+const id_prompt_carteles: number = 4;
+const id_prompt_dispositivos: number = 5;
 
 export async function procesarImagenes(req: Request, res: Response) {
   try {
@@ -39,7 +39,7 @@ export async function procesarImagenes(req: Request, res: Response) {
     ]);    
 
     if (!existingExpositor) {
-        res.status(404).json({ error: 'Expositorio not found' });
+        res.status(404).json({ error: 'Expositor no encontrado' });
         return;
     }
 
@@ -54,20 +54,26 @@ export async function procesarImagenes(req: Request, res: Response) {
       return;
     }
    
-    const tipoProcesado: 'carteles' | 'dispositivos' = await getTipoProcesadoDeNumeroDispositivos(dispositivosCount);
+    const id_prompt_usado: number = await getIdPromptDeNumeroDispositivos(dispositivosCount);
 
-    const promptObject: promptObject = await getPromptObject(tipoProcesado, dispositivosCount, nombrePromptCarteles, nombrePromptDispositivos);
+    const promptObject: prompts | null = await promptService.getById(id_prompt_usado);
+    if (!promptObject) {
+      res.status(500).json({ error: 'Prompt no encontrado' });
+      return;
+    }
+
+    //añadir num dispositivos al prompt
 
     //llamada a OpenAI
     const filePaths = [imagenReferencia.url, imagenProcesada.path];
-    const openAiResult = await getOpenAiResults(filePaths, promptObject.prompt);
+    const openAiResult = await getOpenAiResults(filePaths, promptObject.texto_prompt!);
     if (!openAiResult) {
       res.status(500).json({ error: 'Error al procesar imágenes' });
       return;
     }
     //Comprobación de la válidez de la respuesta (falta por implementar)
     const cleanedResponse = openAiResult.replace(/[\n\r]/g, '');
-    if (!isValidOpenAiResponse(cleanedResponse, tipoProcesado)) {
+    if (!isValidOpenAiResponse(cleanedResponse, promptObject.categoria!)) {
       res.status(500).json({ error: 'Respuesta inválida' });
       return;
     }
@@ -80,12 +86,12 @@ export async function procesarImagenes(req: Request, res: Response) {
       similarityObject.comentarios, 
       parseBool(similarityObject.valido), 
       IA_utilizada, 
-      promptObject.nombre_prompt);
+      promptObject.id_prompt);
     
     //Almacenar los datos de las respuestas
-    if (tipoProcesado === 'carteles') {
+    if (promptObject.categoria === 'carteles') {
       await respuestaService.createRespuestaCartel(id_procesado_imagen, similarityObject.probab_estar_contenido);
-    } else if (tipoProcesado === 'dispositivos') {
+    } else if (promptObject.categoria === 'dispositivos') {
       await respuestaService.createRespuestaDispositivo(id_procesado_imagen, dispositivosCount, parseInt(similarityObject.dispositivos_contados));
     }
     const procesamiento_object = await procesamientoService.getById(id_procesado_imagen);
@@ -99,29 +105,13 @@ export async function procesarImagenes(req: Request, res: Response) {
 }
 
 
-function getTipoProcesadoDeNumeroDispositivos(dispositivosCount: number): 'carteles' | 'dispositivos' {
+function getIdPromptDeNumeroDispositivos(dispositivosCount: number): number {
   if (dispositivosCount === 0) {
-    return 'carteles';
+    return id_prompt_carteles;
   } else {
-    return 'dispositivos';
+    return id_prompt_dispositivos;
   }
 }
-
-
-function getPromptObject(tipoProcesado: string, dispositivosCount: number, nombrePromptCarteles: string, nombrePromptDispositivos: string): promptObject {
-  // Prompt object es un objeto que contiene el nombre del prompt y el prompt correspondiente
-
-  const nombre_prompt: string = tipoProcesado === 'carteles' ? nombrePromptCarteles : nombrePromptDispositivos;
-  const prompt : string = tipoProcesado === 'carteles' ? getPromptCarteles(nombrePromptCarteles) : getPromptDispositivos(nombrePromptDispositivos, dispositivosCount);
-
-  const promptObject: promptObject = {
-    nombre_prompt,
-    prompt
-  };
-
-  return promptObject;
-}
-
 
 
 async function getOpenAiResults(filePaths: string[], instrucciones: string) {

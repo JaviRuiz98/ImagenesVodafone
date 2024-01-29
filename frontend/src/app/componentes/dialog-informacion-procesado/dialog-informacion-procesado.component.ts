@@ -37,17 +37,17 @@ export class DialogInformacionProcesadoComponent {
 
 
 
-  onMouseOver(event: MouseEvent) {
-    this.visible_info_procesamiento = true;
-    const tagElement = event.target as HTMLElement;
-    tagElement.classList.add('cursor-zoom');
-   
-}
+    onMouseOver(event: MouseEvent) {
+      this.visible_info_procesamiento = true;
+      const tagElement = event.target as HTMLElement;
+      tagElement.classList.add('cursor-zoom');
+    
+  }
 
-onMouseOut(event: MouseEvent) {
-    this.visible_info_procesamiento = false;
-}
- 
+  onMouseOut(event: MouseEvent) {
+      this.visible_info_procesamiento = false;
+  }
+  
 
   getSeverityCartel(procesado: string): string {
     return this.publicMethodsService.getSeverityCartel(procesado);
@@ -56,4 +56,5 @@ onMouseOut(event: MouseEvent) {
   getSeverityDispositivos(numero_dispositivos: number, huecos_esperados: number): string {
     return this.publicMethodsService.getSeverityDispositivos(numero_dispositivos, huecos_esperados);
   }
+
 }

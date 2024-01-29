@@ -7,6 +7,7 @@ backend/assets/imagenes
 backend/.dockerignore
 backend/docker-compose.debug.yml
 backend/Dockerfile
+backend/assets/imagenes
 
 .env
 database

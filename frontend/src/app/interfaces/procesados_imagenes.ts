@@ -1,4 +1,5 @@
 import { imagenes } from "./imagenes";
+import { prompts } from "./prompts";
 import { respuesta_carteles } from "./respuesta_carteles";
 import { respuesta_dispositivos } from "./respuesta_dispositivos";
 
@@ -10,10 +11,8 @@ export interface procesados_imagenes {
     comentarios?: string;
     valido: boolean;
     IA_utilizada?: string;
-    prompt_usado?: string;
+    prompts: prompts;
     imagenes: imagenes;
     respuestas_carteles: respuesta_carteles[];
     respuestas_dispositivos: respuesta_dispositivos[];
-
-
 }
