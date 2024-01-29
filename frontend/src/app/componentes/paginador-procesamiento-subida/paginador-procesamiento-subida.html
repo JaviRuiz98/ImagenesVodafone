@@ -14,23 +14,40 @@
             [cargando_procesado]="cargando_procesamiento">
         </app-selector-imagenes>
     </div>
-    <div *ngIf="valueSelected==='historial'">
-        <div *ngFor="let item of getElementosPaginados()" class="imagenProcesada">
-            <p-image [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" class="imagen" [preview]="true">
-            </p-image>
-            <app-dialog-informacion-procesado [procesado]="item"></app-dialog-informacion-procesado>
+    <div class="gridHistorial">
+        <div *ngIf="valueSelected==='historial'">
+            <div *ngFor="let item of getElementosPaginados()" class="imagenProcesada">
+                <div>
+                    <app-dialog-informacion-procesado [procesado]="item"></app-dialog-informacion-procesado>
+                    <p-image [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" class="imagen" [preview]="true">
+                    </p-image>
+                </div>
+                <div class="respuestaProcesado">
+                    <p>
+                        <span style="font-weight: bold;">Comentarios: </span>
+                        <span>{{this.item.comentarios}}</span>
+                    </p>
+                    <span style="font-weight: bold;">Prompt utilizado: </span>
+                    <p-button label="Ver prompt" (click)="showDialog()" [text]="true" severity="danger"></p-button>
+                    <p-dialog header="Header" [(visible)]="visiblePrompt" [style]="{width: '50vw'}">
+                        <p>
+                            {{item.prompts.texto_prompt}}
+                        </p>
+                    </p-dialog>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="paginator">
-        <p-paginator *ngIf="valueSelected==='historial'" 
-            [style]="{'background-color': 'rgba(232, 232, 232, 0.9)', 'flex': '30%'}"
-            [rows]="items_per_page" 
-            [totalRecords]="procesados.length" 
-            [first]="indice_paginador" 
-            (onPageChange)="onPageChange($event)"
-            [hidden]="procesados.length === 0"
-            [showJumpToPageDropdown]="true" 
-            [showPageLinks]="false">
-        </p-paginator>
+        <div class="paginator">
+            <p-paginator *ngIf="valueSelected==='historial'" 
+                [style]="{'background-color': 'rgba(232, 232, 232, 0.9)', 'flex': '30%'}"
+                [rows]="items_per_page" 
+                [totalRecords]="procesados.length" 
+                [first]="indice_paginador" 
+                (onPageChange)="onPageChange($event)"
+                [hidden]="procesados.length === 0"
+                [showJumpToPageDropdown]="true" 
+                [showPageLinks]="false">
+            </p-paginator>
+        </div>
     </div>
 </div>

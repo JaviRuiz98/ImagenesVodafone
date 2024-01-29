@@ -15,6 +15,7 @@ import { PrimeIcons } from 'primeng/api';
 import { PaginatorModule } from 'primeng/paginator';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
 import { ImageModule } from 'primeng/image';
+import { InfoCircleIcon } from 'primeng/icons/infocircle';
 @Component({
     selector: 'app-paginador-procesamiento-subida',
     templateUrl: './paginador-procesamiento-subida.html',
@@ -43,20 +44,18 @@ export class PaginadorProcesamientoSubidaComponent {
     @Input() procesados: procesados_imagenes[] = [];
     @Input() cargando_procesamiento: boolean = false;
     @Input() id_expositor_selected: number = 0;
+    @Input() valueSelected: string = 'new';
     @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File, id_expositor_selected: number }>();
 
     url_imagenes_procesadas: string = 'http://validador-vf.topdigital.local/imagenes/imagenesProcesamiento/';
 
     items_per_page: number = 1;
     indice_paginador: number = 0;
-
     visible_info_procesamiento: boolean = false;
-
     SelectButtonOptions: any[] = [{label:'Nuevo', icon: 'pi pi-plus-circle', value: 'new',  styleClass: "optionColorVodafone" }, {label:'Historial' ,icon: 'pi pi-history', value: 'historial', styleClass: "optionColorVodafone" }];
+    visiblePrompt: boolean = false;
 
-    valueSelected: string = 'new';
-
-
+   
     constructor(private publicMethodsService: PublicMethodsService) { }
 
     onPageChange(event: any) {
@@ -89,5 +88,7 @@ export class PaginadorProcesamientoSubidaComponent {
     getSeverityDispositivos(numero_dispositivos: number, huecos_esperados: number): string {
     return this.publicMethodsService.getSeverityDispositivos(numero_dispositivos, huecos_esperados);
     }
-
+    showDialog() {
+        this.visiblePrompt = true;
+    }
 }
