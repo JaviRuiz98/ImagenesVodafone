@@ -4,7 +4,7 @@ import db  from "../config/database";
 
 //tipo_procesamiento
 export const procesamientoService = {
-    async create (id_imagen: number, id_expositor: number, comentarios: string, valido: boolean, IA_utilizada: string, prompt_usado: string) {
+    async create (id_imagen: number, id_expositor: number, comentarios: string, valido: boolean, IA_utilizada: string, id_prompt_usado: number) {
 
         const procesamiento = await db.procesados_imagenes.create({
             data: {                
@@ -13,7 +13,7 @@ export const procesamientoService = {
                 comentarios: comentarios,
                 valido: valido,
                 IA_utilizada: IA_utilizada,
-                prompt_usado: prompt_usado,
+                id_prompt_usado: id_prompt_usado,
             }
         });
         
