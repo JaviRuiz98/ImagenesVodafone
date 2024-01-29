@@ -11,11 +11,6 @@
     height: 90%;
 }
 
-.cursor-pointer {
-    cursor: pointer;
-}
-  
-
 .imagenProcesada {
     display: flex;
     justify-content: center;
@@ -35,21 +30,10 @@
 
 :host::ng-deep {
     .p-button.p-highlight.optionColorVodafone {
-       background: rgba(255, 0, 0, 0.5);
+       background: red;
        border: rgb(87, 11, 11);
     }
    
-}
-.tag-container {
-    position: absolute;
-    top: 5%;
-    right: 1%;
-    transition: transform 0.3s ease;
-}
-
-.tag-container:hover {
-    transform: scale(1.1);
-    transform-origin: top right;
 }
 
 .image-container {

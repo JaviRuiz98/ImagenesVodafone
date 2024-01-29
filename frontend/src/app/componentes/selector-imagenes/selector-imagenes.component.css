@@ -11,19 +11,8 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    height: 400px; 
-    margin: 5%;
+    height: 100%;
 }
-
-
-/*
-.drop-area.active {
-    background: #b8d4fe;
-    color: black;
-    border: 2px dashed #618ac9;
-}
-*/
-
 
 .drop-area.active {
     background: #ddd;
