@@ -85,3 +85,8 @@
     width: auto;
     margin: 1%;
 }
+.imagen{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

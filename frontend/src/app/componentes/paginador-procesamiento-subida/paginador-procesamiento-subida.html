@@ -18,24 +18,6 @@
         <div *ngFor="let item of getElementosPaginados()" class="imagenProcesada">
             <p-image [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" class="imagen" [preview]="true">
             </p-image>
-            <div class="tag-container" (mouseover)="onMouseOver($event)" (mouseout)="onMouseOut($event)">
-                <p-tag *ngIf="item.respuestas_carteles.length>0" 
-                    icon="pi pi-info-circle" 
-                    value="{{item.respuestas_carteles[0].probabilidad}}"
-                    [severity]="getSeverityCartel(item.respuestas_carteles[0].probabilidad)" 
-                    (mouseover)="onMouseOver($event)"
-                    (mouseout)="onMouseOut($event)"
-                >
-                </p-tag>
-                <p-tag *ngIf="item.respuestas_dispositivos.length>0" 
-                    icon="pi pi-info-circle"
-                    value="{{item.respuestas_dispositivos[0].dispositivos_contados}}/{{item.respuestas_dispositivos[0].huecos_esperados}}"
-                    [severity]="getSeverityDispositivos(item.respuestas_dispositivos[0].dispositivos_contados, item.respuestas_dispositivos[0].huecos_esperados)" 
-                    (mouseover)="onMouseOver($event)"
-                    (mouseout)="onMouseOut($event)"
-                >
-                </p-tag>
-            </div>
             <div *ngIf="visible_info_procesamiento">
                 <app-dialog-informacion-procesado [procesado]="item"></app-dialog-informacion-procesado>
             </div>

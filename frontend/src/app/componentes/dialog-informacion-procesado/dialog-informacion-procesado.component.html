@@ -10,7 +10,7 @@
 
 
 
-    <div *ngIf="procesado.respuestas_dispositivos.length>0">
+    <div *ngIf="procesado.respuestas_dispositivos.length >0">
         <span style="font-weight: bold;">· Encontrados: </span>           
          <p-tag 
             [severity]="getSeverityDispositivos(procesado.respuestas_dispositivos[0].dispositivos_contados, procesado.respuestas_dispositivos[0].huecos_esperados)" >
