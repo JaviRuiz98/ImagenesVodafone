@@ -22,6 +22,7 @@ import { ImageModule } from 'primeng/image';
     standalone: true,
     imports: [
         CommonModule,
+        PaginatorModule,
         SelectorImagenesComponent,
         TagModule,
         ProgressSpinnerModule,
