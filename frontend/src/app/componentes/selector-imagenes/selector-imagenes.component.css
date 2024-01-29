@@ -12,12 +12,23 @@
     justify-content: center;
     flex-direction: column;
     height: 400px; 
+    margin: 5%;
 }
 
+
+/*
 .drop-area.active {
     background: #b8d4fe;
     color: black;
     border: 2px dashed #618ac9;
+}
+*/
+
+
+.drop-area.active {
+    background: #ddd;
+    color: black;
+    border: 2px dashed red;
 }
 
 .drop-area h2 {

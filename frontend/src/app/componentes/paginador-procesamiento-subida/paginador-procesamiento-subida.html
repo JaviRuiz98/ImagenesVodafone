@@ -18,14 +18,19 @@
         <div *ngFor="let item of getElementosPaginados()" class="imagenProcesada">
             <p-image [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" class="imagen" [preview]="true">
             </p-image>
-            <div *ngIf="visible_info_procesamiento">
+
+    
+            <div class="tag-container">
+
                 <app-dialog-informacion-procesado [procesado]="item"></app-dialog-informacion-procesado>
+
             </div>
+            
         </div>
     </div>
     <div class="paginator">
         <p-paginator *ngIf="valueSelected==='historial'" 
-            [style]="{'background-color': 'rgba(232, 232, 232, 0.9)', 'flex': '30%', 'justify-content': 'center', 'align-items': 'center'}"
+            [style]="{'background-color': 'rgba(232, 232, 232, 0.9)', 'flex': '30%'}"
             [rows]="items_per_page" 
             [totalRecords]="procesados.length" 
             [first]="indice_paginador" 
@@ -36,4 +41,3 @@
         </p-paginator>
     </div>
 </div>
-

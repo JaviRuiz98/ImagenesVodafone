@@ -1,10 +1,15 @@
 
-<div #dropArea class="drop-area" *ngIf="!archivoSeleccionado">
-    <h2  #dragText>Arrastra y suelta imagenes</h2>
-    <span>O</span>
-    <p-button  (click)="seleccionarArchivo($event)" [outlined]="true" label="Seleccionar una imagen" severity="danger" ></p-button>
-    <input #inputFile type="file" (change)="listenChange($event)" hidden>
-</div>
-<div *ngIf="archivoSeleccionado && cargando_procesado" class="drop-area ">
-    <img [src]="getImageSrc(archivoSeleccionado)" alt="Vista previa de la imagen seleccionada"  class="imagenSimple">
-</div>
+    <div #dropArea 
+        class= 'drop-area' 
+        (dragover)="onDragOver($event)" 
+        (dragleave)="onDragLeave($event)" 
+        (drop)="onDrop($event)"
+        *ngIf="!archivoSeleccionado">
+        <h2  #dragText>Arrastra y suelta imagenes</h2>
+        <span>O</span>
+        <p-button  (click)="seleccionarArchivo($event)" [outlined]="true" label="Seleccionar una imagen" severity="danger" ></p-button>
+        <input #inputFile type="file" (change)="listenChange($event)" hidden>
+    </div>
+    <div *ngIf="archivoSeleccionado && cargando_procesado" class="drop-area ">
+        <img [src]="getImageSrc()" alt="Vista previa de la imagen seleccionada"  class="imagenSimple">
+    </div>
