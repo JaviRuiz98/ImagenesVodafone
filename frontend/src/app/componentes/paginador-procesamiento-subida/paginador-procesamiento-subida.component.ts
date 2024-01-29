@@ -51,7 +51,6 @@ export class PaginadorProcesamientoSubidaComponent {
 
     items_per_page: number = 1;
     indice_paginador: number = 0;
-    visible_info_procesamiento: boolean = false;
     SelectButtonOptions: any[] = [{label:'Nuevo', icon: 'pi pi-plus-circle', value: 'new',  styleClass: "optionColorVodafone" }, {label:'Historial' ,icon: 'pi pi-history', value: 'historial', styleClass: "optionColorVodafone" }];
     visiblePrompt: boolean = false;
     
@@ -69,14 +68,6 @@ export class PaginadorProcesamientoSubidaComponent {
         const imagenAProcesar = event.archivo;
         this.archivoSeleccionadoChange.emit({ archivo: imagenAProcesar, id_expositor_selected: id_expositor_selected });
         this.cargando_procesamiento = true;
-    }
-
-    onMouseOver(event: MouseEvent) {
-        this.visible_info_procesamiento = true;
-    }
-
-    onMouseOut(event: MouseEvent) {
-        this.visible_info_procesamiento = false;
     }
  
     getSeverityCartel(procesado: string): string {
