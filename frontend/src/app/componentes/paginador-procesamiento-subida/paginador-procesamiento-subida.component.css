@@ -93,4 +93,13 @@
     justify-content: center;
     align-items: center;
     display: flex;
+    flex-direction: column;
+}
+
+.contenido {
+    margin: 2%;
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    align-items: center;
 }
