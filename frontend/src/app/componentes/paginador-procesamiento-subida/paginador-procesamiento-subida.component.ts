@@ -54,8 +54,7 @@ export class PaginadorProcesamientoSubidaComponent {
     visible_info_procesamiento: boolean = false;
     SelectButtonOptions: any[] = [{label:'Nuevo', icon: 'pi pi-plus-circle', value: 'new',  styleClass: "optionColorVodafone" }, {label:'Historial' ,icon: 'pi pi-history', value: 'historial', styleClass: "optionColorVodafone" }];
     visiblePrompt: boolean = false;
-
-   
+    
     constructor(private publicMethodsService: PublicMethodsService) { }
 
     onPageChange(event: any) {
@@ -69,7 +68,6 @@ export class PaginadorProcesamientoSubidaComponent {
     recibirFile(event: {archivo:File}, id_expositor_selected: number) {
         const imagenAProcesar = event.archivo;
         this.archivoSeleccionadoChange.emit({ archivo: imagenAProcesar, id_expositor_selected: id_expositor_selected });
-
         this.cargando_procesamiento = true;
     }
 
@@ -83,10 +81,10 @@ export class PaginadorProcesamientoSubidaComponent {
  
     getSeverityCartel(procesado: string): string {
         return this.publicMethodsService.getSeverityCartel(procesado);
-      }
+    }
     
     getSeverityDispositivos(numero_dispositivos: number, huecos_esperados: number): string {
-    return this.publicMethodsService.getSeverityDispositivos(numero_dispositivos, huecos_esperados);
+        return this.publicMethodsService.getSeverityDispositivos(numero_dispositivos, huecos_esperados);
     }
     showDialog() {
         this.visiblePrompt = true;
