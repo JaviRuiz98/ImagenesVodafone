@@ -59,7 +59,8 @@ export const tiendaService = {
                                             include: {
                                                 respuestas_carteles: true,
                                                 respuestas_dispositivos: true,
-                                                imagenes: true
+                                                imagenes: true,
+                                                prompts: true
                                             }
                                         }                                   
                                     }                            
