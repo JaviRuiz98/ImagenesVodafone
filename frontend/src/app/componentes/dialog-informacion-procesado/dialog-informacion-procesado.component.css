@@ -3,8 +3,8 @@
 }
 
 .tag-container {
-    position: absolute;
-    top: 30%;
+    position: relative;
+    top: 5%;
     right: 20%;
     transition: transform 0.3s ease;
 }
