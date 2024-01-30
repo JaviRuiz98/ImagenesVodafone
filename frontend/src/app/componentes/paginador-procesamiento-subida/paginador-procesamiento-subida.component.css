@@ -3,7 +3,7 @@
     height: 100%;
     display: grid;
     align-content: center;
-    grid-template-rows: 13% 87%;
+    grid-template-rows: 10% 90%;
 }
 
 .componente-solo-selector {
@@ -11,13 +11,15 @@
     height: 100%;
 }
 .botonNuevoHistorial {
+    width: 100%;
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 .imagen {
     width:90%;
-    height:100%;
+    height:90%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,8 +27,10 @@
 }
 .anchoAltoSelector {
     width: 90%;
-    margin: 5%;
     height: 90%;
+    margin-top: 4%;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
 .gridHistorial {
@@ -34,7 +38,7 @@
     height: 100%;
     display: grid;
     align-content: center;
-    grid-template-rows: 88% 12%;
+    grid-template-rows: 85% 15%;
 }
 .imagenProcesada {
     position: relative;
@@ -46,6 +50,7 @@
 .anchoAltoImagenDialog {
     height: 100%; 
     width: auto;
+    
 }
 .respuestaProcesado {
     width: 100%;
@@ -65,23 +70,15 @@
     margin-top: 5%;
     margin-left: 2%;
 }
+.margenesPrompt {
+    margin-top: 5%;
+    margin-left: 9%;
+}
 .promptBotones {
     display: grid;
     align-content: center;
-    grid-template-columns: 27% 33% 40%;
+    grid-template-columns: 22% 38% 40%;
 }
-.margenesPrompt {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.paginator {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 2%;
-}
-
 
 
 :host::ng-deep {
@@ -96,7 +93,6 @@
     max-width: 80%;
     overflow: hidden;
 }
-
 
 .butonFeedback {
     display: flex;
@@ -132,6 +128,14 @@
     height: 100%;
     width: auto;
     margin: 1%;
+}
+
+.p-image {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 
