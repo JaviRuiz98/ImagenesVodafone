@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {  Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 import { SelectorImagenesComponent } from '../selector-imagenes/selector-imagenes.component';
@@ -43,9 +43,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
         ConfirmationService,
         MessageService
     ],
-    schemas: [
-        /*CUSTOM_ELEMENTS_SCHEMA*/
-    ],
+    schemas: [],
 })
 
 export class PaginadorProcesamientoSubidaComponent { 
@@ -116,55 +114,47 @@ export class PaginadorProcesamientoSubidaComponent {
     }
 
     funcionFeedback(procesado: procesados_imagenes, likeDislike: boolean | null) {
-
-        if(procesado.feedback_Humano == null){
-            procesado.feedback_Humano = likeDislike;
+        if(procesado.feedback_humano == null){
+            procesado.feedback_humano = likeDislike;
         } else {
-            if(procesado.feedback_Humano == likeDislike){
-                procesado.feedback_Humano = null;
+            if(procesado.feedback_humano == likeDislike){
+                procesado.feedback_humano = null;
             } else {
-                procesado.feedback_Humano = likeDislike;
+                procesado.feedback_humano = likeDislike;
             }
         }
-
-        if(procesado.feedback_Humano == true){
+        if(procesado.feedback_humano == true){
             this.likeButton = "pi pi-thumbs-up-fill";
             this.dislikeButton = "pi pi-thumbs-down";
-        } else if(procesado.feedback_Humano == false){
+        } else if(procesado.feedback_humano == false){
             this.likeButton = "pi pi-thumbs-up";
             this.dislikeButton = "pi pi-thumbs-down-fill";
-        } else if(procesado.feedback_Humano == null){
+        } else if(procesado.feedback_humano == null){
             this.likeButton = "pi pi-thumbs-up";
             this.dislikeButton = "pi pi-thumbs-down";
         }
-
- 
-        this.procesamientoService.updateFeedbackProcesado(procesado.id_procesado_imagen, procesado.feedback_Humano).subscribe();
-
+        this.procesamientoService.updateFeedbackProcesado(procesado.id_procesado_imagen, procesado.feedback_humano).subscribe();
     }
 
     inicializa_likeButon(procesado: procesados_imagenes){
-        
-        if(procesado.feedback_Humano == true){
+        if(procesado.feedback_humano == true){
             this.likeButton = "pi pi-thumbs-up-fill";
-        } else if(procesado.feedback_Humano == false){
+        } else if(procesado.feedback_humano == false){
             this.likeButton = "pi pi-thumbs-up";
-        } else if(procesado.feedback_Humano == null){
+        } else if(procesado.feedback_humano == null){
             this.likeButton = "pi pi-thumbs-up";
         }
         return this.likeButton;
     }
 
     inicializa_dislikeButon(procesado: procesados_imagenes){
-        if(procesado.feedback_Humano == true){
+        if(procesado.feedback_humano == true){
             this.dislikeButton = "pi pi-thumbs-down";
-        } else if(procesado.feedback_Humano == false){
+        } else if(procesado.feedback_humano == false){
             this.dislikeButton = "pi pi-thumbs-down-fill";
-        } else if(procesado.feedback_Humano == null){
+        } else if(procesado.feedback_humano == null){
             this.dislikeButton = "pi pi-thumbs-down";
         }
         return this.dislikeButton;
     }
-
-
 }
