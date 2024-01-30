@@ -6,6 +6,11 @@
     grid-template-rows: 13% 87%;
 }
 
+.componente-solo-selector {
+    width: 100%;
+    height: 100%;
+}
+
 .anchoAltoSelector {
     width: 90%;
     margin: 5%;
