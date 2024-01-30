@@ -61,8 +61,14 @@ export class PaginadorProcesamientoSubidaComponent {
     items_per_page: number = 1;
     indice_paginador: number = 0;
     SelectButtonOptions: any[] = [{label:'Nuevo', icon: 'pi pi-plus-circle', value: 'new',  styleClass: "optionColorVodafone" }, {label:'Historial' ,icon: 'pi pi-history', value: 'historial', styleClass: "optionColorVodafone" }];
-    visiblePrompt: boolean = false;
+    feedbackButtonOptions: any[] = [{label:'Like', icon: 'pi pi-thumbs-up', value: 'like',  styleClass: "optionColorVodafone" }, {label:'Dislike' ,icon: 'pi pi-thumbs-down', value: 'dislike', styleClass: "optionColorVodafone" }];
     
+    visiblePrompt: boolean = false;
+    LikeDislike: number =-1;
+
+    likeButton: string = "pi pi-thumbs-up";
+    dislikeButton: string = "pi pi-thumbs-down";
+
     constructor(private publicMethodsService: PublicMethodsService, private confirmationService: ConfirmationService, private messageService: MessageService, private procesamientoService: ProcesamientoService) { }
 
     onPageChange(event: any) {
@@ -78,14 +84,7 @@ export class PaginadorProcesamientoSubidaComponent {
         this.archivoSeleccionadoChange.emit({ archivo: imagenAProcesar, id_expositor_selected: id_expositor_selected });
         this.cargando_procesamiento = true;
     }
- 
-    getSeverityCartel(procesado: string): string {
-        return this.publicMethodsService.getSeverityCartel(procesado);
-    }
-    
-    getSeverityDispositivos(numero_dispositivos: number, huecos_esperados: number): string {
-        return this.publicMethodsService.getSeverityDispositivos(numero_dispositivos, huecos_esperados);
-    }
+  
     showDialog() {
         this.visiblePrompt = true;
     }
@@ -115,5 +114,57 @@ export class PaginadorProcesamientoSubidaComponent {
         this.procesados.splice(this.procesados.indexOf(procesado), 1);
         this.messageService.add({ severity: 'info', life: 3000,summary: 'Cargando', detail: 'La imagen se borro correctamente' });
     }
+
+    funcionFeedback(procesado: procesados_imagenes, likeDislike: boolean | null) {
+
+        if(procesado.feedback_Humano == null){
+            procesado.feedback_Humano = likeDislike;
+        } else {
+            if(procesado.feedback_Humano == likeDislike){
+                procesado.feedback_Humano = null;
+            } else {
+                procesado.feedback_Humano = likeDislike;
+            }
+        }
+
+        if(procesado.feedback_Humano == true){
+            this.likeButton = "pi pi-thumbs-up-fill";
+            this.dislikeButton = "pi pi-thumbs-down";
+        } else if(procesado.feedback_Humano == false){
+            this.likeButton = "pi pi-thumbs-up";
+            this.dislikeButton = "pi pi-thumbs-down-fill";
+        } else if(procesado.feedback_Humano == null){
+            this.likeButton = "pi pi-thumbs-up";
+            this.dislikeButton = "pi pi-thumbs-down";
+        }
+
+ 
+        this.procesamientoService.updateFeedbackProcesado(procesado.id_procesado_imagen, procesado.feedback_Humano).subscribe();
+
+    }
+
+    inicializa_likeButon(procesado: procesados_imagenes){
+        
+        if(procesado.feedback_Humano == true){
+            this.likeButton = "pi pi-thumbs-up-fill";
+        } else if(procesado.feedback_Humano == false){
+            this.likeButton = "pi pi-thumbs-up";
+        } else if(procesado.feedback_Humano == null){
+            this.likeButton = "pi pi-thumbs-up";
+        }
+        return this.likeButton;
+    }
+
+    inicializa_dislikeButon(procesado: procesados_imagenes){
+        if(procesado.feedback_Humano == true){
+            this.dislikeButton = "pi pi-thumbs-down";
+        } else if(procesado.feedback_Humano == false){
+            this.dislikeButton = "pi pi-thumbs-down-fill";
+        } else if(procesado.feedback_Humano == null){
+            this.dislikeButton = "pi pi-thumbs-down";
+        }
+        return this.dislikeButton;
+    }
+
 
 }

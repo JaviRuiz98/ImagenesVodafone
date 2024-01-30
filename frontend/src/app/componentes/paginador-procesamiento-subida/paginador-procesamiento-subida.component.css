@@ -96,6 +96,11 @@
     overflow: hidden;
 }
 
+
+.butonFeedback {
+    display: flex;
+}
+
 .p-image-preview-container>img {
     cursor: pointer;
     height: 50px;

@@ -210,3 +210,24 @@ async function getOpenAiResults(filePaths: string[], instrucciones: string) {
     }
 
   }
+
+  export async function feedbackProcesado(req: Request, res: Response) {
+    
+    try{
+
+      const id_procesado_imagen = parseInt(req.body.id_procesado_imagen);  
+
+      const feedback = req.body.feedback;
+      console.log('id_procesado_imagen: ', id_procesado_imagen);
+      console.log('feedback: ', feedback);
+      await procesamientoService.feedbackProcesado(id_procesado_imagen, feedback);
+ 
+      res.status(200).json({ message: 'feedback insertado' });
+
+    }catch(error){
+        console.error('Error al editar el feedback del procesado:', error);
+        res.status(500).json({ error: 'error feedback' });
+    }
+
+
+  }
