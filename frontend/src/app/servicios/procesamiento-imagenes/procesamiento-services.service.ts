@@ -23,4 +23,8 @@ export class ProcesamientoService {
     return this.http.post<procesados_imagenes>(`${this.API_URI}/procesamiento`, formData);
   }
 
+  deleteProcesado(procesado: procesados_imagenes){
+    return this.http.delete(`${this.API_URI}/borrarProcesamiento/${procesado.id_procesado_imagen}`);
+  }
+
 }

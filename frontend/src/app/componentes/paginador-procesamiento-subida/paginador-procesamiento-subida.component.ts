@@ -15,6 +15,11 @@ import { FormsModule } from '@angular/forms';
 import { PrimeIcons } from 'primeng/api';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
+import { MessageService } from 'primeng/api';
+import { ConfirmationService, ConfirmEventType } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
     selector: 'app-paginador-procesamiento-subida',
@@ -32,11 +37,19 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
         SelectButtonModule,
         GalleriaModule,
         FormsModule,
-        OverlayPanelModule
+        ToastModule,
+        OverlayPanelModule,
+        ConfirmDialogModule
+        
     ],
     providers: [
-        PrimeIcons
-    ]
+        PrimeIcons,
+        ConfirmationService,
+        MessageService
+    ],
+    schemas: [
+        /*CUSTOM_ELEMENTS_SCHEMA*/
+    ],
 })
 
 export class PaginadorProcesamientoSubidaComponent { 
@@ -56,7 +69,6 @@ export class PaginadorProcesamientoSubidaComponent {
     visible_info_procesamiento_click: boolean = false;
 
     SelectButtonOptions: any[] = [{label:'Nuevo', icon: 'pi pi-plus-circle', value: 'new',  styleClass: "optionColorVodafone" }, {label:'Historial' ,icon: 'pi pi-history', value: 'historial', styleClass: "optionColorVodafone" }];
-
   
     responsiveOptions = [
         {
@@ -73,7 +85,7 @@ export class PaginadorProcesamientoSubidaComponent {
         }
     ];
 
-    constructor(private publicMethodsService: PublicMethodsService) { }
+    constructor(private publicMethodsService: PublicMethodsService, private confirmationService: ConfirmationService, private messageService: MessageService, private procesamientoService: ProcesamientoService) { }
 
     onPageChange(event: any) {
         this.indice_paginador = event.first;
@@ -85,6 +97,36 @@ export class PaginadorProcesamientoSubidaComponent {
         this.archivoSeleccionadoChange.emit({ archivo: imagenAProcesar, id_expositor_selected: id_expositor_selected });
 
         this.cargando_procesamiento = true;
+    }
+
+
+ 
+
+
+    confirmarDelete(event: Event, procesado: procesados_imagenes) {
+        this.confirmationService.confirm({
+            target: event.target as EventTarget,
+            message: 'Estas seguro de eliminar este procesado?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            acceptIcon:"none",
+            rejectIcon:"none",
+            rejectButtonStyleClass:"p-button-text",
+            accept: () => {
+                this.borrarProcesado(procesado);
+            },
+            reject: () => {
+                this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+            }
+        });
+    }
+
+
+    borrarProcesado(procesado: procesados_imagenes){
+        this.valueSelected = 'new';
+        this.procesamientoService.deleteProcesado(procesado).subscribe();
+        this.procesados.splice(this.procesados.indexOf(procesado), 1);
+        this.messageService.add({ severity: 'info', life: 3000,summary: 'Cargando', detail: 'La imagen se borro correctamente' });
     }
 
 }

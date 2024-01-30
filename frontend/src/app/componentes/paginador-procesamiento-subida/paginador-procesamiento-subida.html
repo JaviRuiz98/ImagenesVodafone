@@ -1,4 +1,4 @@
-<div >
+<div > 
 
     <div class="centered">
         <p-selectButton  
@@ -10,7 +10,7 @@
             [allowEmpty]=false
             >            
         </p-selectButton>
- 
+
     </div>
 
 
@@ -21,30 +21,32 @@
         </app-selector-imagenes>
     </div>
     <div *ngIf="valueSelected === 'historial'" class="centeredV2">
-     
-          
-            <p-galleria 
-                [value]="procesados" 
-                [showIndicators]="true" 
-                [showThumbnails]="false" 
-                [responsiveOptions]="responsiveOptions" 
-                [containerStyle]="{ 'max-width': '400px', 'height': '400px' }"
-                [changeItemOnIndicatorHover]="true"
-                [showItemNavigators]="true"
-            >
-                <ng-template pTemplate="item" let-item  class="image-container">
-                    
-                    <img [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" style="width: auto; height: 400px;">
-                    
-                    <div class="tag-container">
+        <p-toast></p-toast>
+        <p-confirmDialog></p-confirmDialog>
+    <p-galleria 
+            [value]="procesados" 
+            [showIndicators]="true" 
+            [showThumbnails]="false" 
+            [responsiveOptions]="responsiveOptions" 
+            [containerStyle]="{ 'max-width': '400px', 'height': '400px' }"
+            [changeItemOnIndicatorHover]="true"
+            [showItemNavigators]="true"
+        >
+            <ng-template pTemplate="item" let-item  class="image-container">
+                
+                <p-button icon="pi pi-trash" (click)="confirmarDelete($event, item)" [rounded]="true" [text]="true" severity="danger" [style]="{'margin-right': '10px'}"></p-button>
+    
+                <img [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" style="width: auto; height: 400px;">
+                
+                <div class="tag-container">
 
-                        <app-dialog-informacion-procesado [procesado]="item"></app-dialog-informacion-procesado>
+                    <app-dialog-informacion-procesado [procesado]="item"></app-dialog-informacion-procesado>
 
-                    </div>
-                    
-                 
-                </ng-template>
-            </p-galleria>
+                </div>
+                
+                
+            </ng-template>
+        </p-galleria>
            
          
         
