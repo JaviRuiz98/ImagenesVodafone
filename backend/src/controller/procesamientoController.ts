@@ -108,7 +108,7 @@ export async function borrarProcesamiento(req: Request, res: Response){
   try{
 
     const id_procesado: number = parseInt(req.params.id_procesado);
-    await procesamientoService.borrarProcesamiento(id_procesado);
+    await procesamientoService.borrarProcesado(id_procesado);
     console.log('Eliminado: ', id_procesado);
     return res.status(200).json({mensaje: 'Eliminado'})
   
