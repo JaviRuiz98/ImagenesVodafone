@@ -15,7 +15,7 @@ export async function validateGetTiendasBySfid(req:Request, res:Response, next:N
     next();
 }
 
-export async function validateGetProcedaosByIdExpositor(req:Request, res:Response, next:NextFunction) {
+export async function validateGetProcesadosByIdExpositor(req:Request, res:Response, next:NextFunction) {
     const idExpositor = parseInt(req.params.idExpositor);
     //Validar datos de filtro
     /*
