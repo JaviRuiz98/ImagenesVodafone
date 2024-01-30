@@ -39,111 +39,68 @@ export const tiendaService = {
        
     },
 
-    async getBySfid(
-        sfid: string,
-        categoria_clause: string  | null,  
-        ): Promise<tiendas | null> {
-
-            //const whereCategoriaClause =  categoria_clause? {procesados_imagenes: {prompt: {categoria: categoria_clause}}} : {};
-     
-       try{
-             
-             return  db.tiendas.findUnique(
-                {
-                    where : {
-                        sfid: sfid,
-
-                    },
-                    include:{
-                        muebles:{
-                            include:{
-                                expositores: {
-                                    include: {
-                                        imagenes: true,
-                                                                   
-                                    }                            
-                                }
-                            }
-                        }
-                    
-                    }
-                }, 
+    async getBySfid(sfid: string, categoria_clause: string | null): Promise<tiendas | null> {
+      try {
+          const tiendaWithMuebles = await db.tiendas.findUnique({
+              where: {
+                  sfid: sfid,
+              },
+              include: {
+                  muebles: {
+                      include: {
+                          expositores: {
+                              include: {
+                                  procesados_imagenes: {
+                                      include: {
+                                          prompts: true,
+                                      },
+                                  },
+                                  imagenes: true,
+                              },
+                          },
+                      },
+                  },
+              },
+          });
+  
+          if (categoria_clause && tiendaWithMuebles) {
+            tiendaWithMuebles.muebles = tiendaWithMuebles.muebles.filter(mueble =>
+                mueble.expositores.some(expositor =>
+                    expositor.procesados_imagenes.some(procesado =>
+                        procesado.prompts && procesado.prompts.categoria === categoria_clause
+                    )
+                )
             );
-            
-        }  catch(error){
-            console.log(error);
-            throw error;
-        }finally{
-            db.$disconnect();
         }
-    }, 
+
+        return tiendaWithMuebles;
+      } catch (error) {
+          console.log(error);
+          throw error;
+      } finally {
+          db.$disconnect();
+      }
+  }
+  ,
+      
 
     async  getProcesadosByIdExpositor(
         id_expositor: number,
         orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null,
         prompts_clause: string[] | null,
         ia_clause : string | null,
-   
         respuesta_carteles_clause: string [] | null,
         respuesta_carteles_dispositivos_clause: string[] | null  
         
         ): Promise<procesados_imagenes[] | null> {
         try{
                   
-        let orderClause: any = 'ORDER BY procesados_imagenes.fecha DESC'
-        let orderDirection: 'ASC' | 'DESC' = 'DESC';
-
-        switch (orden_clause) {
-            case 'date_asc':
-                orderClause = 'ORDER BY procesados_imagenes.fecha ASC';
-                break;
-            case 'date_desc':
-                orderClause = 'ORDER BY procesados_imagenes.fecha DESC';
-                break;
-            case 'result_asc':
-                orderDirection = 'ASC';
-                break;
-            case 'result_desc':
-                orderDirection = 'DESC';
-                break;
-            default:
-                orderClause = 'ORDER BY procesados_imagenes.fecha DESC';
-                break;
-        }
-
-        if (orden_clause === 'result_asc' || orden_clause === 'result_desc') {
-            orderClause = `
-                ORDER BY 
-                CASE respuestas_carteles.probabilidad
-                    WHEN 'ninguna' THEN 1
-                    WHEN 'muy bajo' THEN 2
-                    WHEN 'bajo' THEN 3
-                    WHEN 'medio' THEN 4
-                    WHEN 'otro idioma' THEN 5
-                    WHEN 'alto' THEN 6
-                    WHEN 'muy alto' THEN 7
-                    ELSE 8
-                END ${orderDirection},
-                ABS(respuestas_dispositivos.huecos_esperados - respuestas_dispositivos.dispositivos_contados) ${orderDirection}
-            `;
-        }
         
-        let promptsString: string  | null = null;
-        if (prompts_clause != null){
-            promptsString = prompts_clause.length > 0 ? prompts_clause.map(item => `'${item}'`).join(", ") : null;
-        }
-       
-       
-        let respuestaCartelesString: string  | null = null;
-        if (respuesta_carteles_clause != null){
-            respuestaCartelesString = respuesta_carteles_clause.length > 0 ? respuesta_carteles_clause.map(item => `'${item}'`).join(", ") : null;
-        }
+        const orderClause = getOrderClause(orden_clause);
 
-        let respuestaDispositivosString: string  | null = null;
-        if (respuesta_carteles_dispositivos_clause != null){
-            respuestaDispositivosString = respuesta_carteles_dispositivos_clause.length > 0 ? respuesta_carteles_dispositivos_clause.map(item => `'${item}'`).join(", ") : null;
-        }
-
+        const promptsString = arrayToString(prompts_clause);
+        const respuestaCartelesString = arrayToString(respuesta_carteles_clause);
+        const respuestaDispositivosString = arrayToString(respuesta_carteles_dispositivos_clause);
 
         let whereClause: any = `
         WHERE
@@ -156,7 +113,6 @@ export const tiendaService = {
                  IN  (${respuestaDispositivosString})`  : ''}
   
         ` 
-
        
         return  await db.$queryRaw`
         SELECT 
@@ -173,10 +129,9 @@ export const tiendaService = {
         LEFT JOIN 
             prompts ON prompts.id_prompt = procesados_imagenes.id_prompt_usado
         ${whereClause};
-           
         ${orderClause};
-    
         `;
+
         }  catch(error){
             console.log(error);
             throw error;
@@ -187,4 +142,35 @@ export const tiendaService = {
     }
     
     
+}
+
+
+ function getOrderClause( orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null) {
+
+    let orderDirection = orden_clause === 'result_asc' ? 'ASC' : 'DESC';
+
+    if (orden_clause === 'date_asc' || orden_clause === 'date_desc') {
+        return `ORDER BY procesados_imagenes.fecha ${orden_clause === 'date_asc' ? 'ASC' : 'DESC'}`;
+    } else if (orden_clause === 'result_asc' || orden_clause === 'result_desc') {
+        return `
+            ORDER BY 
+            CASE respuestas_carteles.probabilidad
+                WHEN 'ninguna' THEN 1
+                WHEN 'muy bajo' THEN 2
+                WHEN 'bajo' THEN 3
+                WHEN 'medio' THEN 4
+                WHEN 'otro idioma' THEN 5
+                WHEN 'alto' THEN 6
+                WHEN 'muy alto' THEN 7
+                ELSE 8
+            END ${orderDirection},
+            ABS(respuestas_dispositivos.huecos_esperados - respuestas_dispositivos.dispositivos_contados) ${orderDirection}
+        `;
+    } else {
+        return 'ORDER BY procesados_imagenes.fecha DESC';
+    }
+}
+
+function arrayToString(array: string[] | null ): string | null {
+    return array && array.length > 0 ? array.map(item => `'${item}'`).join(", ") : null;
 }
