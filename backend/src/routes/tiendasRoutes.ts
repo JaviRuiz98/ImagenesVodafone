@@ -6,6 +6,6 @@ import { validateGetTiendasBySfid } from '../validator/tiendaValidator';
 const router = express.Router();
 
 router.get('/tiendas',getAllTiendas);
-router.get('/tiendas/:sfid', validateGetTiendasBySfid, getTiendaBySfid);
+router.post('/tiendas/:sfid', validateGetTiendasBySfid, getTiendaBySfid);
 
 export default router;
