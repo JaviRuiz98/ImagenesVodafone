@@ -20,22 +20,23 @@
                 <div style="height: 100%; width: auto;">
                     <app-dialog-informacion-procesado [procesado]="item"></app-dialog-informacion-procesado>
                     <p-toast></p-toast>
-                    <p-confirmDialog></p-confirmDialog>
-                    <p-button icon="pi pi-trash" (click)="confirmarDelete($event, item)" [rounded]="true" [text]="true" severity="danger" [style]="{'margin-right': '10px'}"></p-button>
-    
+                    <p-confirmDialog></p-confirmDialog>    
                     <p-image [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" class="imagen" [preview]="true"></p-image>
                 </div>
                 <div class="respuestaProcesado">
                     <div class="contenido">
-                        <span class="margenesComentarioPrompt"><strong>Comentarios:</strong> {{this.item.comentarios}}</span>
-                        <div>
-                            <span class="margenesComentarioPrompt"><strong>Prompt utilizado:</strong></span>
-                            <p-button label="{{this.item.prompts.nombre_prompt}}" (click)="showDialog()" [text]="true" severity="danger" [style]="{'padding': '0', 'margin-left': '1%'}"></p-button>
-                            <p-dialog [header]='item.prompts.nombre_prompt' [(visible)]="visiblePrompt" [style]="{width: '50vw'}">
-                                <p>
-                                    {{item.prompts.texto_prompt}}
-                                </p>
-                            </p-dialog>
+                        <span class="margenesComentario"><strong>Comentarios:</strong> {{this.item.comentarios}}</span>
+                        <div class="promptBotones">
+                            <span class="margenesPrompt"><strong>Prompt utilizado:</strong></span>
+                            <div  class="margenesPrompt" style="margin-bottom: 3%;">
+                                <p-button label="{{this.item.prompts.nombre_prompt}}" (click)="showDialog()" [text]="true" severity="danger" [style]="{'padding': '0', 'margin-top': '3%'}"></p-button>
+                                <p-dialog [header]='item.prompts.nombre_prompt' [(visible)]="visiblePrompt" [style]="{width: '50vw'}">
+                                    <p>
+                                        {{item.prompts.texto_prompt}}
+                                    </p>
+                                </p-dialog>
+                            </div>
+                            <p-button icon="pi pi-trash" (click)="confirmarDelete($event, item)" [rounded]="true" [text]="true" severity="danger"  class="margenesPrompt" [style]="{'padding': '0'}"></p-button>
                         </div>
                     </div>
                 </div>

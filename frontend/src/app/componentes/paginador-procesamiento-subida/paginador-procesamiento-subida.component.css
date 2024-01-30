@@ -25,14 +25,6 @@
     grid-template-rows: 60% 40%;
 }
 
-.imagen {
-    width:100%;
-    height:100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 :host::ng-deep {
     .p-button.p-highlight.optionColorVodafone {
        background: red;
@@ -62,6 +54,7 @@
     align-items: center;
     margin: 0;
     height: 100%;
+    max-width: 100%;
     width: auto;
 }
 
@@ -106,8 +99,24 @@
     height: 100%;
 }
 
-.margenesComentarioPrompt {
+.margenesComentario {
     margin-top: 5%;
     margin-left: 2%;
+}
+.margenesPrompt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.imagenBorrar {
+    display: grid;
+    grid-template-columns: 90% 10%;
+}
+
+.promptBotones {
+    display: grid;
+    align-content: center;
+    grid-template-columns: 27% 33% 40%;
 }
 
