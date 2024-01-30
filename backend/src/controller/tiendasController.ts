@@ -40,25 +40,27 @@ export async function getProcesadosByIdExpositor(req: Request, res: Response) {
         const idExpositor = parseInt(req.params.idExpositor);
         
         const  orden_clause: 'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null  = req.body.orden;
-        const prompts_clause: string[] | null  = req.body.prompt;
-        const ia_clause : string | null = req.body.ia; 
-   
+        const prompts_clause: number[] | null  = req.body.prompt;
+        const ia_clause: string | null = req.body.ia;     
         const respuestas_carteles_clause: string[] | null = req.body.carteles;
-        const respuestas_carteles_dispositivos_clause: string[] | null = req.body.dispositivos;
+        const respuestas_carteles_dispositivos_clause: number[] | null = req.body.dispositivos;
 
         const procesados: procesados_imagenes[] | null = 
         await tiendaService.getProcesadosByIdExpositor(idExpositor, orden_clause, prompts_clause, ia_clause, respuestas_carteles_clause, respuestas_carteles_dispositivos_clause);
 
         if (procesados?.length === 0) {
-            res.status(204).json({ error: 'procesados vacíos' });
-            
+             res.status(204).json({ error: 'procesados vacíos' });
+             return;
+                   
         }
         if (procesados) {
-            res.status(200).json(procesados);
+             res.status(200).json(procesados);
+             return;
         }
 
     } catch(error){
         console.error('Error al obtener tienda por sfid:', error);
         res.status(500).json({ error: 'Internal server error' });
+        throw error;
     }
 }

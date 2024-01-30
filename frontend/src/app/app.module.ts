@@ -14,7 +14,6 @@ import { ValidadorModule } from './pages/validador/validador.module';
 
 @NgModule({
   declarations: [
-    AppComponent,   
   ],
   imports: [
     ValidadorModule,

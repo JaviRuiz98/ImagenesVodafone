@@ -20,11 +20,11 @@ export async function validateGetProcesadosByIdExpositor(req:Request, res:Respon
     //Validar datos de filtro
     /*
     const  orden_clause: 'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null  = req.body.orden;
-    const prompts_clause: string[] | null  = req.body.prompt;
+    const prompts_clause: number[] | null  = req.body.prompt;
     const ia_clause : string | null = req.body.ia; 
 
     const respuestas_carteles_clause: string[] | null = req.body.carteles;
-    const respuestas_carteles_dispositivos_clause: string[] | null = req.body.dispositivos;
+    const respuestas_carteles_dispositivos_clause: number[] | null = req.body.dispositivos;
     */
 
     if (!idExpositor) {

@@ -1,0 +1,5 @@
+<form [formGroup]="filtro_procesados_form" style="display: flex">
+    <p-dropdown formGroupName="ordenes" [options]="ordenes" optionLabel="label" placeholder="Selecciona orden"></p-dropdown>
+    <p-multiSelect formControlName="prompts" [options]="prompts" optionLabel="label" placeholder="Selecciona prompt"></p-multiSelect>
+    <p-button (click)="enviarFiltroProcesados()" icon="pi pi-search" label="Filtrar"></p-button>
+</form>

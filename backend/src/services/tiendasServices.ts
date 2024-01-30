@@ -47,32 +47,38 @@ export const tiendaService = {
               },
               include: {
                   muebles: {
-                      include: {
-                          expositores: {
-                              include: {
-                                  procesados_imagenes: {
-                                      include: {
-                                          prompts: true,
-                                      },
-                                  },
-                                  imagenes: true,
-                              },
-                          },
-                      },
+                   where: {
+                       expositores: {
+                           some: {
+                               procesados_imagenes: {
+                                   some: {
+                                       prompts: {
+                                            categoria: categoria_clause
+                                       }
+                                   }
+                               }
+                           }
+                       }
+                   },
+
+                    include: {
+                    
+                        expositores: {
+                            include: {
+                                procesados_imagenes: {
+                                    include: {
+                                        prompts: true,
+                                    },
+                                },
+                                imagenes: true,
+                            },
+                        },
+                    },
+                     
                   },
               },
           });
-  
-          if (categoria_clause && tiendaWithMuebles) {
-            tiendaWithMuebles.muebles = tiendaWithMuebles.muebles.filter(mueble =>
-                mueble.expositores.some(expositor =>
-                    expositor.procesados_imagenes.some(procesado =>
-                        procesado.prompts && procesado.prompts.categoria === categoria_clause
-                    )
-                )
-            );
-        }
-
+    
         return tiendaWithMuebles;
       } catch (error) {
           console.log(error);
@@ -87,10 +93,10 @@ export const tiendaService = {
     async  getProcesadosByIdExpositor(
         id_expositor: number,
         orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null,
-        prompts_clause: string[] | null,
+        prompts_clause: number[] | null,
         ia_clause : string | null,
         respuesta_carteles_clause: string [] | null,
-        respuesta_carteles_dispositivos_clause: string[] | null  
+        respuesta_dispositivos_clause: number[] | null  
         
         ): Promise<procesados_imagenes[] | null> {
         try{
@@ -98,9 +104,9 @@ export const tiendaService = {
         
         const orderClause = getOrderClause(orden_clause);
 
-        const promptsString = arrayToString(prompts_clause);
+        const promptsString = numberArrayToString(prompts_clause);
         const respuestaCartelesString = arrayToString(respuesta_carteles_clause);
-        const respuestaDispositivosString = arrayToString(respuesta_carteles_dispositivos_clause);
+        const respuestaDispositivosString = numberArrayToString(respuesta_dispositivos_clause);
 
         let whereClause: any = `
         WHERE
@@ -108,7 +114,7 @@ export const tiendaService = {
             ${prompts_clause ? `AND prompts.id_prompt IN (${promptsString})` : ''}
             ${ia_clause ? `AND procesados_imagenes.IA_utilizada = '${ia_clause}'` : ''}
             ${respuesta_carteles_clause ? `AND respuestas_carteles.probabilidad IN (${respuestaCartelesString})` : ''}
-            ${respuesta_carteles_dispositivos_clause ? 
+            ${respuesta_dispositivos_clause ? 
                 `AND ABS(respuestas_dispositivos.huecos_esperados - respuestas_dispositivos.dispositivos_contados) 
                  IN  (${respuestaDispositivosString})`  : ''}
   
@@ -174,3 +180,9 @@ export const tiendaService = {
 function arrayToString(array: string[] | null ): string | null {
     return array && array.length > 0 ? array.map(item => `'${item}'`).join(", ") : null;
 }
+
+//comillas?
+function numberArrayToString(array: number[] | null ): string | null {
+    return array && array.length > 0 ? array.map(item => `${item.toString()}`).join(", ") : null;
+}
+

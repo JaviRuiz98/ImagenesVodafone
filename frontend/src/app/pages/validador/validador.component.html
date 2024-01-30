@@ -1,5 +1,6 @@
 <div class="paginaCompleta">
-  <app-barra-menu [tiendaTitle]="sfid"></app-barra-menu>
+  <app-barra-menu [tiendaTitle]="sfid" (show_filter)="showFilter()"></app-barra-menu>
+  <app-filtro-procesados *ngIf="show_filter"></app-filtro-procesados>
   <p-toast></p-toast>
   <div *ngFor="let item of this.tienda.muebles" class="contornoPanel">
     <p-panel [style]="{'border': '1px solid black', 'margin-bottom': '20px'}">
