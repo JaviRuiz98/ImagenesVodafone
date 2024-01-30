@@ -39,8 +39,19 @@ export const procesamientoService = {
                 id_procesado_imagen: id_procesado_imagen
             }
         })
-    }
+    },
 
+    async feedbackProcesado(id_procesado_imagen: number, feedback_Humano: boolean | null) {
+        
+        return await db.procesados_imagenes.update({
+            where: {
+                id_procesado_imagen: id_procesado_imagen
+            },
+            data: {
+                feedback_Humano: feedback_Humano
+            }
+        });
+    }
 }
 
 export const respuestaService = {

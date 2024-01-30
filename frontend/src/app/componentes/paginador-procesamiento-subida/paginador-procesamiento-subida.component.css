@@ -45,10 +45,15 @@
     max-width: 80%;
     overflow: hidden;
 }
+
 .botonNuevoHistorial {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.butonFeedback {
+    display: flex;
 }
 
 .p-image-preview-container>img {
