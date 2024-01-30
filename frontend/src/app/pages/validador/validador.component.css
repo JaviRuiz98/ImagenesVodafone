@@ -52,7 +52,7 @@
   align-items: center;
   width: 50%;
   background-color: rgba(232, 232, 232, 0.9);
-  overflow: clip;
+  overflow: visible;
 }
 
 .anchoAltoFotoReferencia {
@@ -71,13 +71,11 @@
   display: flex;
   justify-content: center;
   overflow: hidden;
-  border: #534c4c 2px solid;
+  margin: 5%;
 }
 .imagenDoble{
   width: 90%;
   margin: 5%;
-  border: #534c4c 2px solid;
-
 }
 
 ::ng-deep .p-panel-content {
@@ -90,4 +88,8 @@
   flex-direction: column;
   display: flex;
   justify-content: center;
+}
+.anchoAltoPaginador{
+  height: 100%;
+  width: 100%;
 }

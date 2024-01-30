@@ -1,59 +1,113 @@
-
-.imagenProcesadaIndiceMayor0 {
-    display: flex; 
-    flex-direction: column;
+.componente-completo {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    align-content: center;
+    grid-template-rows: 13% 87%;
 }
 
-
-
-  
-.cursor-zoom {
-    cursor: zoom-in;
-    transform: scale(5.3);
+.componente-solo-selector {
+    width: 100%;
+    height: 100%;
 }
 
-.centered {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.centeredV2 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.anchoAltoSelector {
+    width: 90%;
     margin: 5%;
+    height: 90%;
 }
 
-
- :host::ng-deep {
- .p-button.p-highlight.optionColorVodafone {
-    background: red;
-    border: rgb(87, 11, 11);
-    
-  }
-
-  .tag-container {
-    position: absolute;
-    top: 5%;
-    right: 1%;
-    transition: transform 0.3s ease;
+.imagenProcesada {
+    position: relative;
+    display: grid;
+    height: 100%;
+    width: 100%;
+    grid-template-rows: 60% 40%;
 }
 
-.tag-container:hover {
-    transform: scale(1.1);
-    transform-origin: top right;
+.imagen {
+    width:100%;
+    height:100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+:host::ng-deep {
+    .p-button.p-highlight.optionColorVodafone {
+       background: red;
+       border: rgb(87, 11, 11);
+    }
 }
 
 .image-container {
     position: relative;
     max-width: 80%;
     overflow: hidden;
-
+}
+.botonNuevoHistorial {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+.p-image-preview-container>img {
+    cursor: pointer;
+    height: 50px;
+}
 
-  
-  
+::ng-deep .p-image-preview-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    height: 100%;
+    width: auto;
+}
+
+::ng-deep .p-image img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    max-width: 100%;
+    height: 100%;
+    width: auto;
+    margin: 1%;
+}
+
+.paginator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2%;
+}
+.gridHistorial {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    align-content: center;
+    grid-template-rows: 88% 12%;
+}
+
+.respuestaProcesado {
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.contenido {
+    display: grid;
+    grid-template-rows: 65% 35%;
+    width: 100%; 
+    height: 100%;
+}
+
+.margenesComentarioPrompt {
+    margin-top: 5%;
+    margin-left: 2%;
 }
 

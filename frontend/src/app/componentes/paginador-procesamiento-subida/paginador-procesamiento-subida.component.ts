@@ -5,16 +5,14 @@ import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 import { SelectorImagenesComponent } from '../selector-imagenes/selector-imagenes.component';
 import { DialogInformacionProcesadoComponent } from '../dialog-informacion-procesado/dialog-informacion-procesado.component'; // Reemplaza con la ruta correcta a tu componente
 
-import { GalleriaModule } from 'primeng/galleria';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { TagModule } from 'primeng/tag';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { PrimeIcons } from 'primeng/api';
+import { PaginatorModule } from 'primeng/paginator';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { ImageModule } from 'primeng/image';
 import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService, ConfirmEventType } from 'primeng/api';
@@ -28,17 +26,15 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     standalone: true,
     imports: [
         CommonModule,
+        PaginatorModule,
         SelectorImagenesComponent,
-        TagModule,
-        ProgressSpinnerModule,
         DialogModule,
         ButtonModule,
         DialogInformacionProcesadoComponent,
         SelectButtonModule,
-        GalleriaModule,
         FormsModule,
         ToastModule,
-        OverlayPanelModule,
+        ImageModule,
         ConfirmDialogModule
         
     ],
@@ -64,44 +60,35 @@ export class PaginadorProcesamientoSubidaComponent {
 
     items_per_page: number = 1;
     indice_paginador: number = 0;
-
-    visible_info_procesamiento: boolean = false;
-    visible_info_procesamiento_click: boolean = false;
-
     SelectButtonOptions: any[] = [{label:'Nuevo', icon: 'pi pi-plus-circle', value: 'new',  styleClass: "optionColorVodafone" }, {label:'Historial' ,icon: 'pi pi-history', value: 'historial', styleClass: "optionColorVodafone" }];
-  
-    responsiveOptions = [
-        {
-            breakpoint: '1024px',
-            numVisible: 5
-        },
-        {
-            breakpoint: '768px',
-            numVisible: 3
-        },
-        {
-            breakpoint: '560px',
-            numVisible: 1
-        }
-    ];
-
+    visiblePrompt: boolean = false;
+    
     constructor(private publicMethodsService: PublicMethodsService, private confirmationService: ConfirmationService, private messageService: MessageService, private procesamientoService: ProcesamientoService) { }
 
     onPageChange(event: any) {
         this.indice_paginador = event.first;
     }
 
+    getElementosPaginados(): procesados_imagenes[] | undefined {
+        return this.procesados.slice(this.indice_paginador, this.indice_paginador + this.items_per_page);
+    }
 
     recibirFile(event: {archivo:File}, id_expositor_selected: number) {
         const imagenAProcesar = event.archivo;
         this.archivoSeleccionadoChange.emit({ archivo: imagenAProcesar, id_expositor_selected: id_expositor_selected });
-
         this.cargando_procesamiento = true;
     }
-
-
  
-
+    getSeverityCartel(procesado: string): string {
+        return this.publicMethodsService.getSeverityCartel(procesado);
+    }
+    
+    getSeverityDispositivos(numero_dispositivos: number, huecos_esperados: number): string {
+        return this.publicMethodsService.getSeverityDispositivos(numero_dispositivos, huecos_esperados);
+    }
+    showDialog() {
+        this.visiblePrompt = true;
+    }
 
     confirmarDelete(event: Event, procesado: procesados_imagenes) {
         this.confirmationService.confirm({

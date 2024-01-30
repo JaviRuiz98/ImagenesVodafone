@@ -30,7 +30,7 @@ export class ValidadorComponent implements OnInit{
 
   cargas_procesamiento : boolean[] = [];
   modos_visualizacion : string[] = [];
-
+  
 
   constructor( 
     private tiendasService: TiendasService,

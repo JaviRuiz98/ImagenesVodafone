@@ -1,58 +1,57 @@
-<div > 
-
-    <div class="centered">
-        <p-selectButton  
-            [options]="SelectButtonOptions" 
-            [(ngModel)]="valueSelected" 
-            optionLabel="label"
-            optionValue="value"
-            [hidden]="procesados.length==0"
-            [allowEmpty]=false
-            >            
-        </p-selectButton>
-
-    </div>
-
-
-    <div *ngIf="valueSelected === 'new'"  >
+<div [ngClass]="{'componente-completo': procesados.length > 0, 'componente-solo-selector': procesados.length === 0}">
+    <p-selectButton class="botonNuevoHistorial"
+        [options]="SelectButtonOptions" 
+        [(ngModel)]="valueSelected" 
+        optionLabel="label"
+        optionValue="value"
+        [allowEmpty]=false
+        *ngIf="procesados.length>0">
+    </p-selectButton>
+    <div class="anchoAltoSelector" *ngIf="valueSelected==='new'"> 
         <app-selector-imagenes 
+            *ngIf="valueSelected==='new'"
             (archivoSeleccionadoChange)="recibirFile($event, id_expositor_selected)"
             [cargando_procesado]="cargando_procesamiento">
         </app-selector-imagenes>
     </div>
-    <div *ngIf="valueSelected === 'historial'" class="centeredV2">
-        <p-toast></p-toast>
-        <p-confirmDialog></p-confirmDialog>
-    <p-galleria 
-            [value]="procesados" 
-            [showIndicators]="true" 
-            [showThumbnails]="false" 
-            [responsiveOptions]="responsiveOptions" 
-            [containerStyle]="{ 'max-width': '400px', 'height': '400px' }"
-            [changeItemOnIndicatorHover]="true"
-            [showItemNavigators]="true"
-        >
-            <ng-template pTemplate="item" let-item  class="image-container">
-                
-                <p-button icon="pi pi-trash" (click)="confirmarDelete($event, item)" [rounded]="true" [text]="true" severity="danger" [style]="{'margin-right': '10px'}"></p-button>
-    
-                <img [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" style="width: auto; height: 400px;">
-                
-                <div class="tag-container">
-
+    <div class="gridHistorial">
+        <div *ngIf="valueSelected==='historial'">
+            <div *ngFor="let item of getElementosPaginados()" class="imagenProcesada">
+                <div style="height: 100%; width: auto;">
                     <app-dialog-informacion-procesado [procesado]="item"></app-dialog-informacion-procesado>
-
-                </div>
-                
-                
-            </ng-template>
-        </p-galleria>
-           
-         
-        
-    </div>	
-
+                    <p-toast></p-toast>
+                    <p-confirmDialog></p-confirmDialog>
+                    <p-button icon="pi pi-trash" (click)="confirmarDelete($event, item)" [rounded]="true" [text]="true" severity="danger" [style]="{'margin-right': '10px'}"></p-button>
     
+                    <p-image [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" class="imagen" [preview]="true"></p-image>
+                </div>
+                <div class="respuestaProcesado">
+                    <div class="contenido">
+                        <span class="margenesComentarioPrompt"><strong>Comentarios:</strong> {{this.item.comentarios}}</span>
+                        <div>
+                            <span class="margenesComentarioPrompt"><strong>Prompt utilizado:</strong></span>
+                            <p-button label="{{this.item.prompts.nombre_prompt}}" (click)="showDialog()" [text]="true" severity="danger" [style]="{'padding': '0', 'margin-left': '1%'}"></p-button>
+                            <p-dialog [header]='item.prompts.nombre_prompt' [(visible)]="visiblePrompt" [style]="{width: '50vw'}">
+                                <p>
+                                    {{item.prompts.texto_prompt}}
+                                </p>
+                            </p-dialog>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="paginator">
+            <p-paginator *ngIf="valueSelected==='historial'" 
+                [style]="{'background-color': 'rgba(232, 232, 232, 0.9)', 'flex': '30%'}"
+                [rows]="items_per_page" 
+                [totalRecords]="procesados.length" 
+                [first]="indice_paginador" 
+                (onPageChange)="onPageChange($event)"
+                [hidden]="procesados.length === 0"
+                [showJumpToPageDropdown]="true" 
+                [showPageLinks]="false">
+            </p-paginator>
+        </div>
+    </div>
 </div>
-
-
