@@ -48,7 +48,7 @@ export const procesamientoService = {
                 id_procesado_imagen: id_procesado_imagen
             },
             data: {
-                feedback_Humano: feedback_Humano
+                feedback_humano: feedback_Humano
             }
         });
     }
