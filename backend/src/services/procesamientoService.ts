@@ -33,8 +33,8 @@ export const procesamientoService = {
         })
     },
 
-    async borrarProcesamiento(id_procesado_imagen: number) {
-        return await db.procesados_imagenes.delete({
+    borrarProcesado(id_procesado_imagen: number) {
+        return db.procesados_imagenes.delete({
             where: {
                 id_procesado_imagen: id_procesado_imagen
             }

@@ -9,7 +9,6 @@ backend/docker-compose.debug.yml
 backend/Dockerfile
 backend/assets/imagenes
 
-
 .env
 database
 docker-compose.yml
