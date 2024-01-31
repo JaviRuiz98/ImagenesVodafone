@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ValidadorComponent } from './validador.component';
 
+import { SidebarComponent } from '../../componentes/sidebar/sidebar.component';
+
 // modulos primeng:
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
@@ -27,7 +29,7 @@ import { PaginadorProcesamientoSubidaComponent } from './../../componentes/pagin
   ],
   imports: [
     CommonModule,
-
+    SidebarComponent,
     PaginadorProcesamientoSubidaComponent,
     SelectorImagenesComponent,
     BarraMenuComponent,
