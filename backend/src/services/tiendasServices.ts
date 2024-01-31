@@ -43,14 +43,12 @@ export const tiendaService = {
 
          let whereClause =  {};
          if (categoria_clause != null){
-              whereClause = categoria_clause ==  "dispositivos" ? {some:{}}  : {none:{}};
+            whereClause = categoria_clause ==  "dispositivos" ? {some:{}}  : {none:{}};
          }
 
+        try {       
         
-        
-      try {       
-      
-        const tiendaWithMuebles = await db.tiendas.findUnique({
+        return await db.tiendas.findUnique({
             where: {
                 sfid: sfid
             },
@@ -68,14 +66,7 @@ export const tiendaService = {
                             },
                             include: {
                                 imagenes: true,
-                                procesados_imagenes: {
-                                    include: {
-                                        imagenes: true,
-                                        respuestas_carteles: true,
-                                        respuestas_dispositivos: true,
-                                        prompts: true
-                                    }
-                                }
+                                
                             }
                         }
                     }
@@ -83,8 +74,7 @@ export const tiendaService = {
             }
         });
         
- 
-        return tiendaWithMuebles as tiendas;
+        
       } catch (error) {
           console.log(error);
           throw error;
