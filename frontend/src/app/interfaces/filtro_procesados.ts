@@ -1,5 +1,6 @@
 export interface filtro_procesados {
     orden: String,
+    categoria: String,
     prompts: number [],
     rangos_cuentas: {
       min: number,

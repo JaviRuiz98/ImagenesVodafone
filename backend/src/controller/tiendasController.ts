@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { tiendaService } from '../services/tiendasServices';
-import { procesados_imagenes, tiendas, expositores } from '@prisma/client';
+import { tiendas } from '@prisma/client';
 
 export async function getAllTiendas(req: Request, res: Response) {
 
@@ -22,11 +22,11 @@ export async function getTiendaBySfid(req: Request, res: Response) {
         const sfid = req.params.sfid;
         console.log(req.body);
         const categoria_clause:  "carteles" | "dispositivos"  | null = req.body.categoria as "carteles" | "dispositivos" | null;
-        const orden_clause: 'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null  = req.body.orden;
+        /*const orden_clause: 'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null  = req.body.orden;
         const prompts_clause: number[] | null  = req.body.prompts;
         const ia_clause: string | null = req.body.ia;     
         const respuestas_carteles_clause: string[] | null = req.body.carteles;
-        const respuestas_dispositivos_clause: number[] | null = req.body.dispositivos;
+        const respuestas_dispositivos_clause: number[] | null = req.body.dispositivos;*/
 
         //obtiene las tiendas ordenadas por categoría_clause
         const tienda: any = await tiendaService.getBySfid(sfid, categoria_clause);
@@ -38,7 +38,7 @@ export async function getTiendaBySfid(req: Request, res: Response) {
             return;
         }
 
-        for (const mueble of tienda.muebles) {
+        /*for (const mueble of tienda.muebles) {
       
             const promises = mueble.expositores.map( async (expositores: expositores) => 
                 
@@ -58,18 +58,16 @@ export async function getTiendaBySfid(req: Request, res: Response) {
             for (let i = 0; i < mueble.expositores.length; i++) {
                 mueble.expositores[i].procesados_imagenes = resultados[i];
             }
-        }
+        }*/
         res.status(200).json(tienda);
-        
-
-        
+                
     }catch(error){
         console.error('Error al obtener tienda por sfid:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 }
 
-export async function getProcesadosByIdExpositor(req: Request, res: Response) {
+/*export async function getProcesadosByIdExpositor(req: Request, res: Response) {
     try{
         const idExpositor = parseInt(req.params.idExpositor);
         
@@ -97,4 +95,4 @@ export async function getProcesadosByIdExpositor(req: Request, res: Response) {
         res.status(500).json({ error: 'Internal server error' });
         throw error;
     }
-}
+}*/

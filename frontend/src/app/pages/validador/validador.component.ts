@@ -32,18 +32,33 @@ export class ValidadorComponent implements OnInit{
   cargas_procesamiento : boolean[] = [];
   modos_visualizacion : string[] = [];  
 
+  filtros: filtro_procesados = {
+    orden: "date_desc",
+    categoria: "",
+    prompts: [],
+    respuestas_carteles: [],
+    rangos_cuentas: {min: 0, max: 100}    
+  }
+
   constructor( 
     private tiendasService: TiendasService,
     private procesamientoService: ProcesamientoService,
     private messageService: MessageService
     ) {}
 
-  async inicializaImagenesReferencia(sfid: string) {
+  async inicializaImagenesReferencia(sfid: string, filtros?: filtro_procesados) {
+    // Inicializo los datos a nulos
+    this.tienda = {
+      id_tienda: 0,
+      sfid: " ",
+      muebles: []
+    };
+
+    // Relleno con los datos de la DB
     this.tiendasService.getTienda(sfid, filtros).subscribe( ( data: tienda ) => {
 
       this.tienda.id_tienda = data.id_tienda;
       this.tienda.sfid = data.sfid;
-
 
       for (let i = 0; i < data.muebles.length; i++) {
         if (data.muebles[i].expositores.length > 0) {
@@ -51,14 +66,14 @@ export class ValidadorComponent implements OnInit{
           
         }
       }
-      console.log("tienda",this.tienda);
     })
   }
 
 
   ngOnInit(): void {
-    this.inicializaImagenesReferencia(this.sfid);    
-    
+    this.inicializaImagenesReferencia(this.sfid, this.filtros);    
+    console.log("tienda",this.tienda);
+
   }
 
   async recibirFile(event: {archivo:File}, id_expositor_selected: number) {
@@ -91,15 +106,9 @@ export class ValidadorComponent implements OnInit{
   }
 
   enviarFiltroProcesados(filtros:filtro_procesados) {
-
-   this.filtrar(filtros);
+    console.log("filtros", filtros);
+    this.inicializaImagenesReferencia(this.sfid, filtros);  
   }
 
-  filtrar(filtros: filtro_procesados) {
-    //llamadas asincronas al backend para filtrar
-    //obtengo un array de array de procesados
-
-    //actualizar en local
-  }
 
 }

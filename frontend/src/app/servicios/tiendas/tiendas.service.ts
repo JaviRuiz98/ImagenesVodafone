@@ -34,12 +34,12 @@ export class TiendasService {
     if(filtros){
       body = {
         orden: filtros.orden,
+        categoria: filtros.categoria,
         prompts: filtros.prompts,
         careteles: filtros.respuestas_carteles,
         dispositivos: [filtros.rangos_cuentas.min, filtros.rangos_cuentas.max]
       }
     }
-   
 
     return this.http.post<tienda>(`${this.API_URI}/tiendas/${sfid}`, body, this.options);
 
@@ -64,9 +64,4 @@ export class TiendasService {
   }
 
   
-
-
-
-
-
 }
