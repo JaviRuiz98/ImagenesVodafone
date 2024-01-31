@@ -41,7 +41,7 @@ export class ValidadorComponent implements OnInit{
     private messageService: MessageService
     ) {}
 
-  async inicializaImagenesReferencia(sfid: string, filtros?: filtro_procesados) {
+  async inicializaImagenesReferencia(sfid: string) {
     this.tiendasService.getTienda(sfid, filtros).subscribe( ( data: tienda ) => {
 
       this.tienda.id_tienda = data.id_tienda;
@@ -99,7 +99,14 @@ export class ValidadorComponent implements OnInit{
 
   enviarFiltroProcesados(filtros:filtro_procesados) {
 
-    this.inicializaImagenesReferencia(this.sfid, filtros);
+   this.filtrar(filtros);
+  }
+
+  filtrar(filtros: filtro_procesados) {
+    //llamadas asincronas al backend para filtrar
+    //obtengo un array de array de procesados
+
+    //actualizar en local
   }
 
 }
