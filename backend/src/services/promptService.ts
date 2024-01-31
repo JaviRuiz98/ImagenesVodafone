@@ -9,8 +9,7 @@ export const promptService = {
                 {
                     orderBy: {
                         id_prompt: 'desc'
-                    },
-                    include:{ }
+                    }
                 }
             );
         }
