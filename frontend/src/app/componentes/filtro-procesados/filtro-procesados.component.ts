@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
-import { Filtro } from 'src/app/interfaces/filtro_procesados';
+import {  Filtro, filtro_procesados } from 'src/app/interfaces/filtro_procesados';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { PromptsService } from 'src/app/servicios/prompts/prompts.service';
 import { Prompt } from 'src/app/interfaces/prompts';
@@ -24,7 +24,7 @@ import { SliderModule} from 'primeng/slider';
 })
 export class FiltroProcesadosComponent implements OnInit {
 
-  @Output () enviar_filtros = new EventEmitter();
+  @Output () enviar_filtros = new   EventEmitter<filtro_procesados>();
 
   filtro_procesados_form: FormGroup = this.formBuilder.group({
     orden: [''],
@@ -32,7 +32,7 @@ export class FiltroProcesadosComponent implements OnInit {
     respuestas_carteles: [[]],
   });;
 
-  formData = this.filtro_procesados_form?.value;
+  formData  = this.filtro_procesados_form?.value;
 
   ordenes: Filtro[] = [];
   prompts: Prompt[] = [];
@@ -69,11 +69,24 @@ export class FiltroProcesadosComponent implements OnInit {
   }
 
   enviarFiltroProcesados() {
-    this.formData = this.filtro_procesados_form?.value;
 
-    this.formData.prompts = this.formData.prompts.map( (prompt: Prompt) => prompt.id_prompt );
-    this.formData.rangos_cuentas = this.rangos_cuentas;
-    this.enviar_filtros.emit(this.formData);
+    this.formData = this.filtro_procesados_form.value;
+    const prompts_id: number[] = this.formData.prompts.map( (prompt: Prompt) => prompt.id_prompt );
+
+
+    const  filtros : filtro_procesados = {
+      orden: this.formData.orden.value,
+      prompts: prompts_id,
+      rangos_cuentas: {
+        min: this.rangos_cuentas[0],
+        max: this.rangos_cuentas[1],
+      },
+      respuestas_carteles: this.formData.respuestas_carteles
+    }
+
+    console.log("filtros", filtros);
+
+    this.enviar_filtros.emit(filtros);
 
     //console.log("formData", this.formData);    
   }

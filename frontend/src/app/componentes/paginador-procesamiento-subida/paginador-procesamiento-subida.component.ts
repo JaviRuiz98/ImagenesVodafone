@@ -72,6 +72,8 @@ export class PaginadorProcesamientoSubidaComponent {
     onPageChange(event: any) {
         this.indice_paginador = event.first;
     }
+    ngOnInit(){
+    }
 
     getElementosPaginados(): procesados_imagenes[] | undefined {
         return this.procesados.slice(this.indice_paginador, this.indice_paginador + this.items_per_page);

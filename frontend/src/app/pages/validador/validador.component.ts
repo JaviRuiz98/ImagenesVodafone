@@ -6,6 +6,7 @@ import { tienda } from 'src/app/interfaces/tienda';
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 
 import { MessageService } from 'primeng/api';
+import { filtro_procesados } from 'src/app/interfaces/filtro_procesados';
 
 
 @Component({
@@ -40,8 +41,8 @@ export class ValidadorComponent implements OnInit{
     private messageService: MessageService
     ) {}
 
-  async inicializaImagenesReferencia(sfid: string ) {
-    this.tiendasService.getTienda(sfid).subscribe( ( data: tienda ) => {
+  async inicializaImagenesReferencia(sfid: string, filtros?: filtro_procesados) {
+    this.tiendasService.getTienda(sfid, filtros).subscribe( ( data: tienda ) => {
 
       this.tienda.id_tienda = data.id_tienda;
       this.tienda.sfid = data.sfid;
@@ -60,6 +61,7 @@ export class ValidadorComponent implements OnInit{
 
   ngOnInit(): void {
     this.inicializaImagenesReferencia(this.sfid);    
+    
   }
 
   showFilter(){
@@ -95,8 +97,9 @@ export class ValidadorComponent implements OnInit{
     }
   }
 
-  enviarFiltroProcesados(event: any) {
-    console.log(event)
+  enviarFiltroProcesados(filtros:filtro_procesados) {
+
+    this.inicializaImagenesReferencia(this.sfid, filtros);
   }
 
 }
