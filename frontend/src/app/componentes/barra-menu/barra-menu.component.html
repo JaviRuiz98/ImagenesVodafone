@@ -1,7 +1,7 @@
 
 <div class="barraCompleta" >
   <div class="barra">
-        
+    <!-- <app-sidebar></app-sidebar> -->
     <div class="image-container">
       <img src="./assets/icono.png" alt="icono">
     </div>
@@ -10,8 +10,14 @@
       {{tiendaTitle!=='' ? ' - '+tiendaTitle : ''}}
 
     </h1>
-
-   <!-- <button class="botonSalir">Salir</button>-->
+  </div>
+  <div class="boton">
+    <p-button 
+      icon ="pi pi-filter"
+      label="Filtrar procesados" 
+      severity="danger"
+      (click)="showFilter()"
+    ></p-button>
   </div>
 </div> 
 

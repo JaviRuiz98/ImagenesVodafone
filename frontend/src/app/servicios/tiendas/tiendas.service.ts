@@ -11,14 +11,9 @@ import { imagenes } from '../../interfaces/imagenes';
   providedIn: 'root'
 })
 
-
-
 export class TiendasService {
 
-
-
   API_URI = 'http://localhost:3000';
-
 
   constructor(private http: HttpClient){ }
 

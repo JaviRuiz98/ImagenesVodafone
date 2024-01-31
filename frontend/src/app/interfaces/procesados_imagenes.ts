@@ -1,5 +1,5 @@
 import { imagenes } from "./imagenes";
-import { prompts } from "./prompts";
+import { Prompt } from "./prompts";
 import { respuesta_carteles } from "./respuesta_carteles";
 import { respuesta_dispositivos } from "./respuesta_dispositivos";
 
@@ -11,7 +11,7 @@ export interface procesados_imagenes {
     comentarios?: string;
     valido: boolean;
     IA_utilizada?: string;
-    prompts: prompts;
+    prompts: Prompt;
     feedback_humano: boolean | null;  //  null (sin datos), 0 para dislike y 1 para like
     imagenes: imagenes;
     respuestas_carteles: respuesta_carteles[];

@@ -1,0 +1,44 @@
+
+
+.card{
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgb(136, 128, 128);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    justify-content: right;
+    height: auto;
+
+}
+
+.lineas{
+    display: grid;
+    grid-template-columns: 45% 25% 30%;
+}
+
+.nombres{
+    display: flex;
+    flex-direction: row;
+    align-items: left;
+    justify-content: space-between;
+    width: 45%;
+    height: auto;
+}
+
+.iconos{
+    margin-left: 5%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.progressBar{
+    margin-top: 20px;
+    margin-left: 5%;
+    margin-right: 5%;
+    justify-content: space-between;
+    width: 90%;
+    height: auto;
+    
+}

@@ -1,0 +1,8 @@
+<form [formGroup]="filtro_procesados_form" style="display: flex">
+    <p-dropdown formControlName="orden" [options]="ordenes" optionLabel="label" placeholder="Selecciona orden"></p-dropdown>
+    <p-multiSelect formControlName="prompts" [options]="prompts" optionLabel="nombre_prompt" placeholder="Selecciona prompt"></p-multiSelect>
+    <p-multiSelect formControlName="respuestas_carteles" [options]="respuestas_carteles" optionLabel="" placeholder="Probabilidades de los carteles"></p-multiSelect>
+    
+    <p-button (click)="enviarFiltroProcesados()" icon="pi pi-search" label="Filtrar"></p-button>
+</form>
+<p-slider [min]="0" [max]="10" [step]="1" [range]="true" [ngModel]="rangos_cuentas"></p-slider>

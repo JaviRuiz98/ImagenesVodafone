@@ -1,0 +1,21 @@
+<p-sidebar [(visible)]="sidebarVisible" position="right"  [style]="{'width': '40%'}" >
+    <p-card header="Estadisticas de Prompts">
+        <div class="card" >
+            <div class="lineas" *ngFor="let estadistica of estadisticaPrompts">
+                <div>
+                    <h4> {{estadistica.nombre_prompt}} </h4> 
+                </div>
+                <div class="iconos">
+                    <h6> {{estadistica.likes}} <i class="pi pi-thumbs-up-fill"></i></h6> 
+                    <h6> {{estadistica.dislikes}} <i class="pi pi-thumbs-down-fill"></i></h6>
+                    <h6> {{estadistica.nulos}} <i class="pi pi-times-circle"></i></h6>
+                </div>
+                <div class="progressBar">                    
+                  <p-progressBar [value]="estadistica.porcentaje_exito"></p-progressBar>
+                </div>
+            </div>
+        </div>
+ 
+    </p-card>
+</p-sidebar>
+<p-button (click)="sidebarVisible = true" label= "Estadisticas" icon="pi pi-arrow-left"> </p-button>
