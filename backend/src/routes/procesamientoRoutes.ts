@@ -15,7 +15,6 @@ router.post('/borrarProcesado', borrarProcesado);
 
 router.post('/feedbackProcesado', feedbackProcesado );
 
-//router.get('/estadisticasPrompts ', estadisticasPrompts );
 
 
 export default router;

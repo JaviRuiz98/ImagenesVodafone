@@ -3,7 +3,7 @@ import { HttpClient,HttpParams } from '@angular/common/http';
 import { Observable } from "rxjs";
 
 import { procesados_imagenes } from '../../interfaces/procesados_imagenes';
-import { estadisticaPrompts } from 'src/app/interfaces/estadistica';
+
  
 @Injectable({
   providedIn: 'root'
@@ -36,8 +36,5 @@ export class ProcesamientoService {
     return this.http.post<any>(`${this.API_URI}/feedbackProcesado`,body);
   }
 
-  getEstadisticas(): Observable<estadisticaPrompts[]> {
-    return this.http.get<estadisticaPrompts[]>(`${this.API_URI}/estadisticasPrompts`);
-  }
 
 }

@@ -36,5 +36,17 @@ export const promptService = {
             await db.$disconnect();
         }
         
+    },
+    async estadisticasPrompts(id_prompt: number) {
+        return db.procesados_imagenes.findMany({
+            select: {
+                feedback_humano:true,
+            },
+            where: {
+                prompts:{
+                    id_prompt: id_prompt
+                }
+            }
+        })
     }
 }

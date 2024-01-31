@@ -6,4 +6,5 @@ export interface estadisticaPrompts {
     likes: number;
     dislikes: number;
     nulos: number;
+    porcentaje_exito: number;
 }
