@@ -27,13 +27,14 @@ export class FiltroProcesadosComponent implements OnInit {
   filtro_procesados_form: FormGroup = this.formBuilder.group({
     orden: [''],
     prompts: [0],
-    respuestas_carteles: ['']
+    respuestas_carteles: [''],
+    rango_cuentas: []
   });;
 
   ordenes: Filtro[] = [];
   prompts: Prompt[] = [];
   respuestas_carteles: string[] = [];
-  rangos_cuentas: number[] = [0, 3];
+  rangos_cuentas: number[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -64,14 +65,15 @@ export class FiltroProcesadosComponent implements OnInit {
     this.respuestas_carteles = ['muy alta', 'alta', 'media', 'otro idioma', 'baja', 'muy baja', 'ninguna'];
 
     // Opciones de respuesta dispositivos
-    
+    this.rangos_cuentas = [0, 3];
   }
 
   enviarFiltroProcesados() {
     const formData = this.filtro_procesados_form?.value
 
-    console.log("formData", formData);
-    
+    formData.prompts = formData.prompts.map( (prompt: Prompt) => prompt.id_prompt );
+
+    console.log("formData", formData);    
   }
 }
 
