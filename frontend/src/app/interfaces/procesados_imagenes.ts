@@ -12,6 +12,7 @@ export interface procesados_imagenes {
     valido: boolean;
     IA_utilizada?: string;
     prompts: Prompt;
+    feedback_humano: boolean | null;  //  null (sin datos), 0 para dislike y 1 para like
     imagenes: imagenes;
     respuestas_carteles: respuesta_carteles[];
     respuestas_dispositivos: respuesta_dispositivos[];

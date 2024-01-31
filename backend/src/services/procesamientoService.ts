@@ -31,8 +31,27 @@ export const procesamientoService = {
                 respuestas_dispositivos: true
             }
         })
-    }
+    },
 
+    borrarProcesado(id_procesado_imagen: number) {
+        return db.procesados_imagenes.delete({
+            where: {
+                id_procesado_imagen: id_procesado_imagen
+            }
+        })
+    },
+
+    async feedbackProcesado(id_procesado_imagen: number, feedback_Humano: boolean | null) {
+        
+        return await db.procesados_imagenes.update({
+            where: {
+                id_procesado_imagen: id_procesado_imagen
+            },
+            data: {
+                feedback_humano: feedback_Humano
+            }
+        });
+    }
 }
 
 export const respuestaService = {

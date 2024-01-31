@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import {  Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 import { SelectorImagenesComponent } from '../selector-imagenes/selector-imagenes.component';
@@ -13,6 +13,11 @@ import { PrimeIcons } from 'primeng/api';
 import { PaginatorModule } from 'primeng/paginator';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
 import { ImageModule } from 'primeng/image';
+import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
+import { MessageService } from 'primeng/api';
+import { ConfirmationService, ConfirmEventType } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
     selector: 'app-paginador-procesamiento-subida',
@@ -28,11 +33,17 @@ import { ImageModule } from 'primeng/image';
         DialogInformacionProcesadoComponent,
         SelectButtonModule,
         FormsModule,
-        ImageModule
+        ToastModule,
+        ImageModule,
+        ConfirmDialogModule
+        
     ],
     providers: [
-        PrimeIcons
-    ]
+        PrimeIcons,
+        ConfirmationService,
+        MessageService
+    ],
+    schemas: [],
 })
 
 export class PaginadorProcesamientoSubidaComponent { 
@@ -48,9 +59,15 @@ export class PaginadorProcesamientoSubidaComponent {
     items_per_page: number = 1;
     indice_paginador: number = 0;
     SelectButtonOptions: any[] = [{label:'Nuevo', icon: 'pi pi-plus-circle', value: 'new',  styleClass: "optionColorVodafone" }, {label:'Historial' ,icon: 'pi pi-history', value: 'historial', styleClass: "optionColorVodafone" }];
-    visiblePrompt: boolean = false;
+    feedbackButtonOptions: any[] = [{label:'Like', icon: 'pi pi-thumbs-up', value: 'like',  styleClass: "optionColorVodafone" }, {label:'Dislike' ,icon: 'pi pi-thumbs-down', value: 'dislike', styleClass: "optionColorVodafone" }];
     
-    constructor(private publicMethodsService: PublicMethodsService) { }
+    visiblePrompt: boolean = false;
+    LikeDislike: number =-1;
+
+    likeButton: string = "pi pi-thumbs-up";
+    dislikeButton: string = "pi pi-thumbs-down";
+
+    constructor(private publicMethodsService: PublicMethodsService, private confirmationService: ConfirmationService, private messageService: MessageService, private procesamientoService: ProcesamientoService) { }
 
     onPageChange(event: any) {
         this.indice_paginador = event.first;
@@ -65,15 +82,79 @@ export class PaginadorProcesamientoSubidaComponent {
         this.archivoSeleccionadoChange.emit({ archivo: imagenAProcesar, id_expositor_selected: id_expositor_selected });
         this.cargando_procesamiento = true;
     }
- 
-    getSeverityCartel(procesado: string): string {
-        return this.publicMethodsService.getSeverityCartel(procesado);
-    }
-    
-    getSeverityDispositivos(numero_dispositivos: number, huecos_esperados: number): string {
-        return this.publicMethodsService.getSeverityDispositivos(numero_dispositivos, huecos_esperados);
-    }
+  
     showDialog() {
         this.visiblePrompt = true;
+    }
+
+    confirmarDelete(event: Event, procesado: procesados_imagenes) {
+        this.confirmationService.confirm({
+            target: event.target as EventTarget,
+            message: 'Estas seguro de eliminar este procesado?',
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            acceptIcon:"none",
+            rejectIcon:"none",
+            rejectButtonStyleClass:"p-button-text",
+            accept: () => {
+                this.borrarProcesado(procesado);
+            },
+            reject: () => {
+                this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+            }
+        });
+    }
+
+
+    borrarProcesado(procesado: procesados_imagenes){
+        this.valueSelected = 'new';
+        this.procesamientoService.deleteProcesado(procesado).subscribe();
+        this.procesados.splice(this.procesados.indexOf(procesado), 1);
+        this.messageService.add({ severity: 'info', life: 3000,summary: 'Cargando', detail: 'La imagen se borro correctamente' });
+    }
+
+    funcionFeedback(procesado: procesados_imagenes, likeDislike: boolean | null) {
+        if(procesado.feedback_humano == null){
+            procesado.feedback_humano = likeDislike;
+        } else {
+            if(procesado.feedback_humano == likeDislike){
+                procesado.feedback_humano = null;
+            } else {
+                procesado.feedback_humano = likeDislike;
+            }
+        }
+        if(procesado.feedback_humano == true){
+            this.likeButton = "pi pi-thumbs-up-fill";
+            this.dislikeButton = "pi pi-thumbs-down";
+        } else if(procesado.feedback_humano == false){
+            this.likeButton = "pi pi-thumbs-up";
+            this.dislikeButton = "pi pi-thumbs-down-fill";
+        } else if(procesado.feedback_humano == null){
+            this.likeButton = "pi pi-thumbs-up";
+            this.dislikeButton = "pi pi-thumbs-down";
+        }
+        this.procesamientoService.updateFeedbackProcesado(procesado.id_procesado_imagen, procesado.feedback_humano).subscribe();
+    }
+
+    inicializa_likeButon(procesado: procesados_imagenes){
+        if(procesado.feedback_humano == true){
+            this.likeButton = "pi pi-thumbs-up-fill";
+        } else if(procesado.feedback_humano == false){
+            this.likeButton = "pi pi-thumbs-up";
+        } else if(procesado.feedback_humano == null){
+            this.likeButton = "pi pi-thumbs-up";
+        }
+        return this.likeButton;
+    }
+
+    inicializa_dislikeButon(procesado: procesados_imagenes){
+        if(procesado.feedback_humano == true){
+            this.dislikeButton = "pi pi-thumbs-down";
+        } else if(procesado.feedback_humano == false){
+            this.dislikeButton = "pi pi-thumbs-down-fill";
+        } else if(procesado.feedback_humano == null){
+            this.dislikeButton = "pi pi-thumbs-down";
+        }
+        return this.dislikeButton;
     }
 }
