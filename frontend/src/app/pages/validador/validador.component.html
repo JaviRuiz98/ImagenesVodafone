@@ -1,7 +1,5 @@
 <div class="paginaCompleta">
-  
   <app-barra-menu [tiendaTitle]="sfid"></app-barra-menu>
-  <app-sidebar style="margin-bottom: 10px;"></app-sidebar>
   <p-toast></p-toast>
   <div *ngFor="let item of this.tienda.muebles" class="contornoPanel">
     <p-panel [style]="{'border': '1px solid black', 'margin-bottom': '20px'}">
