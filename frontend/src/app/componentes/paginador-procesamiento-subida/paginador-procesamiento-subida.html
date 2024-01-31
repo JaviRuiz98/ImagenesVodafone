@@ -27,8 +27,8 @@
                     <div class="contenido">
                         <span class="margenesComentario"><strong>Comentarios:</strong> {{this.item.comentarios}}</span>
                         <div class="promptBotones">
-                            <div>
-                                <p-button label="{{this.item.prompts.nombre_prompt}}" (click)="showDialog()" [text]="true" severity="danger" [style]="{'padding': '0', 'margin-top': '10%', 'max-width': '100%', 'margin-left': '5%'}"></p-button>
+                            <div class="verPrompt">
+                                <p-button label="{{this.item.prompts.nombre_prompt}}" (click)="showDialog()" [text]="true" severity="danger" [style]="{'padding': '0', 'max-width': '100%'}"></p-button>
                                 <p-dialog [header]='item.prompts.nombre_prompt' [(visible)]="visiblePrompt" [style]="{width: '50vw'}">
                                     <p>
                                         {{item.prompts.texto_prompt}}

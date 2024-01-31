@@ -39,6 +39,7 @@
     display: grid;
     align-content: center;
     grid-template-rows: 85% 15%;
+    overflow: hidden;
 }
 .imagenProcesada {
     position: relative;
@@ -68,16 +69,15 @@
 }
 .margenesComentario {
     margin-top: 5%;
-    margin-left: 2%;
+    margin-left: 5%;
 }
 .margenesPrompt {
     margin-top: 5%;
-    margin-left: 9%;
 }
 .promptBotones {
     display: grid;
     align-content: center;
-    grid-template-columns: 40% 50%;
+    grid-template-columns: 50% 50%;
 }
 
 
@@ -134,4 +134,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.verPrompt{
+    max-width: 100%;
+    margin: auto;
+    margin-left: 15%;
 }
