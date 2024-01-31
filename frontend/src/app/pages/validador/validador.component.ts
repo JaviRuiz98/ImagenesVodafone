@@ -29,10 +29,7 @@ export class ValidadorComponent implements OnInit{
   imagenAProcesar = new File([""], "");
 
   cargas_procesamiento : boolean[] = [];
-  modos_visualizacion : string[] = [];
-
-  show_filter: boolean = false;
-  
+  modos_visualizacion : string[] = [];  
 
   constructor( 
     private tiendasService: TiendasService,
@@ -60,10 +57,6 @@ export class ValidadorComponent implements OnInit{
 
   ngOnInit(): void {
     this.inicializaImagenesReferencia(this.sfid);    
-  }
-
-  showFilter(){
-    this.show_filter = !this.show_filter;
   }
 
   async recibirFile(event: {archivo:File}, id_expositor_selected: number) {

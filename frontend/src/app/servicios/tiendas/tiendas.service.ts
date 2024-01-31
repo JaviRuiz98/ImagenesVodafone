@@ -19,7 +19,7 @@ export class TiendasService {
 
   getTienda(sfid: string): Observable<tienda> {
 
-    return this.http.get<tienda>(`${this.API_URI}/tiendas/${sfid}`);
+    return this.http.post<tienda>(`${this.API_URI}/tiendas/${sfid}`);
 
   }
 
