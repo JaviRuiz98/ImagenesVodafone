@@ -4,7 +4,7 @@
 
 export interface estadisticaPrompts {
     id_prompt: number;
-    nombre_prompt: string;
+    nombre_prompt: string | null;
     likes: number;
     dislikes: number;
     nulos: number;
