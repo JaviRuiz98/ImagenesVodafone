@@ -1,18 +1,18 @@
 p {
     font-family: Lato;
-  }
+}
   
-  .button {
-    position: fixed;
-    bottom: 20px;
-    right: 5px;
-    font-size: 30px;
-    text-align: center;
-    border-radius: 50%;
-    outline: none;
-    background-color: red;
-    color: white;
-    margin-right: 2.5%;
-    cursor: pointer;
-  }
+.button {
+  position: fixed;
+  bottom: 20px;
+  right: 5px;
+  font-size: 30px;
+  text-align: center;
+  border-radius: 50%;
+  outline: none;
+  background-color: red;
+  color: white;
+  margin-right: 2.5%;
+  cursor: pointer;
+}
   
