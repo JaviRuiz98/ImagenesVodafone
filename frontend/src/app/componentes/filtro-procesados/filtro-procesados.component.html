@@ -4,14 +4,12 @@
         <p-dropdown formControlName="orden" [options]="ordenes" optionLabel="label" placeholder="Selecciona orden"></p-dropdown>
         <p-multiSelect formControlName="prompts" [options]="prompts" optionLabel="nombre_prompt" placeholder="Selecciona prompt"></p-multiSelect>
         <p-multiSelect formControlName="respuestas_carteles" [options]="respuestas_carteles" optionLabel="" placeholder="Probabilidades de los carteles"></p-multiSelect>
-        <div style="display: flex">
-            <input type="text" pInputText [(ngModel)]="rangos_cuentas[0]"/>
-            <input type="text" pInputText [(ngModel)]="rangos_cuentas[1]" />    
-        </div>
-        <p-slider formControlName="rango_cuentas" [min]="0" [max]="15" [step]="1" [range]="true" [ngModel]="rangos_cuentas"></p-slider>
+        
         <p-button (click)="enviarFiltroProcesados()" icon="pi pi-search" label="Filtrar"></p-button>
-    </form>
-    
-    
+    </form>   
 </div>
-
+<div style="display: flex">
+    <input type="number" pInputText [(ngModel)]="rangos_cuentas[0]"/>
+    <input type="number" pInputText [(ngModel)]="rangos_cuentas[1]" />    
+</div>
+<p-slider [(ngModel)]="rangos_cuentas" [min]="0" [max]="15" [step]="1" [range]="true"></p-slider>

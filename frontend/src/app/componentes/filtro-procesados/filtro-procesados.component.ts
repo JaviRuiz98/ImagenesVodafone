@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
@@ -24,17 +24,20 @@ import { SliderModule} from 'primeng/slider';
 })
 export class FiltroProcesadosComponent implements OnInit {
 
+  @Output () enviar_filtros = new EventEmitter();
+
   filtro_procesados_form: FormGroup = this.formBuilder.group({
     orden: [''],
-    prompts: [0],
-    respuestas_carteles: [''],
-    rango_cuentas: []
+    prompts: [[]],
+    respuestas_carteles: [[]],
   });;
+
+  formData = this.filtro_procesados_form?.value;
 
   ordenes: Filtro[] = [];
   prompts: Prompt[] = [];
   respuestas_carteles: string[] = [];
-  rangos_cuentas: number[] = [];
+  rangos_cuentas: number[] = [0,3];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -63,17 +66,16 @@ export class FiltroProcesadosComponent implements OnInit {
 
     // Opciones de respuesta cartel
     this.respuestas_carteles = ['muy alta', 'alta', 'media', 'otro idioma', 'baja', 'muy baja', 'ninguna'];
-
-    // Opciones de respuesta dispositivos
-    this.rangos_cuentas = [0, 3];
   }
 
   enviarFiltroProcesados() {
-    const formData = this.filtro_procesados_form?.value
+    this.formData = this.filtro_procesados_form?.value;
 
-    formData.prompts = formData.prompts.map( (prompt: Prompt) => prompt.id_prompt );
+    this.formData.prompts = this.formData.prompts.map( (prompt: Prompt) => prompt.id_prompt );
+    this.formData.rangos_cuentas = this.rangos_cuentas;
+    this.enviar_filtros.emit(this.formData);
 
-    console.log("formData", formData);    
+    //console.log("formData", this.formData);    
   }
 }
 

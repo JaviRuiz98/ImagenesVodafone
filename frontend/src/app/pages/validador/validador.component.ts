@@ -95,4 +95,8 @@ export class ValidadorComponent implements OnInit{
     }
   }
 
+  enviarFiltroProcesados(event: any) {
+    console.log(event)
+  }
+
 }
