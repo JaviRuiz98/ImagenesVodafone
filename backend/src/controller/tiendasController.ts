@@ -20,7 +20,7 @@ export async function getAllTiendas(req: Request, res: Response) {
 export async function getTiendaBySfid(req: Request, res: Response) {
     try{
         const sfid = req.params.sfid;
-        const categoria_clause: string  | null = req.query.categoria ? req.query.categoria as string : null;
+        const categoria_clause:  "carteles" | "dispositivos"  | null = req.query.categoria as "carteles" | "dispositivos" | null;
         
         
         const tienda: tiendas | null = await tiendaService.getBySfid(sfid, categoria_clause);

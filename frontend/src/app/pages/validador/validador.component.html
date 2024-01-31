@@ -32,14 +32,14 @@
           </div>
           <div class="panelDerecha">
             <div *ngIf="item.expositores.length == 1 else subir2Fotos" class="anchoAltoSubirFoto">              
-              <!-- <app-paginador-procesamiento-subida  
+              <app-paginador-procesamiento-subida  
                 class="anchoAltoPaginador"
                 [id_expositor_selected]="item.expositores[0].id_expositor"
                 [procesados]="item.expositores[0].procesados_imagenes" 
                 [cargando_procesamiento]="cargas_procesamiento[item.expositores[0].id_expositor]"
                 [valueSelected]="modos_visualizacion[item.expositores[0].id_expositor] === 'historial'? 'historial':'new'"
                 (archivoSeleccionadoChange)="recibirFile($event, item.expositores[0].id_expositor)">
-              </app-paginador-procesamiento-subida>             -->
+              </app-paginador-procesamiento-subida>            
             </div>
             <ng-template #subir2Fotos>
               <div class="gridDoble">

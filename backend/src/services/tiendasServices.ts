@@ -39,39 +39,50 @@ export const tiendaService = {
        
     },
 
-    async getBySfid(sfid: string, categoria_clause: string | null): Promise<tiendas | null> {
+    async getBySfid(sfid: string, categoria_clause: "carteles" | "dispositivos" | null): Promise<tiendas | null> {
+
+         let whereClause =  {};
+         if (categoria_clause != null){
+              whereClause = categoria_clause ==  "dispositivos" ? {some:{}}  : {none:{}};
+         }
+
+        
+        
       try {       
       
         const tiendaWithMuebles = await db.tiendas.findUnique({
             where: {
                 sfid: sfid
-            }, 
+            },
             include: {
                 muebles: {
                     where: {
                         expositores: {
-                            every: {
-                                procesados_imagenes: {
-                                    some: {
-                                        prompts: {
-                                            
-                                                categoria: categoria_clause
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                            some: {}
+                        },
                     },
                     include: {
                         expositores: {
+                            where: {
+                                dispositivos: whereClause,
+                            },
                             include: {
-                                imagenes: true
+                                imagenes: true,
+                                procesados_imagenes: {
+                                    include: {
+                                        imagenes: true,
+                                        respuestas_carteles: true,
+                                        respuestas_dispositivos: true,
+                                        prompts: true
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-        })
+        });
+        
  
         return tiendaWithMuebles as tiendas;
       } catch (error) {
