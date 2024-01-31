@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ValidadorComponent } from './validador.component';
 
+import { SidebarComponent } from '../../componentes/sidebar/sidebar.component';
+
 // modulos primeng:
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
@@ -20,7 +22,7 @@ import { BarraMenuComponent } from './../../componentes/barra-menu/barra-menu.co
 import { MarcoElementoComponent } from './../../componentes/marco-elemento/marco-elemento.component';
 import { SelectorImagenesComponent } from './../../componentes/selector-imagenes/selector-imagenes.component';
 import { PaginadorProcesamientoSubidaComponent } from './../../componentes/paginador-procesamiento-subida/paginador-procesamiento-subida.component'; 
-import { FiltroProcesadosComponent } from 'src/app/componentes/filtro-procesados/filtro-procesados.component';
+import { IrArribaComponent } from 'src/app/componentes/ir-arriba/ir-arriba.component';import { FiltroProcesadosComponent } from 'src/app/componentes/filtro-procesados/filtro-procesados.component';
 
 @NgModule({
   declarations: [
@@ -28,11 +30,12 @@ import { FiltroProcesadosComponent } from 'src/app/componentes/filtro-procesados
   ],
   imports: [
     CommonModule,
-
+    SidebarComponent,
     PaginadorProcesamientoSubidaComponent,
     SelectorImagenesComponent,
     BarraMenuComponent,
     MarcoElementoComponent,
+    IrArribaComponent,
     FiltroProcesadosComponent,
 
     BrowserAnimationsModule,    

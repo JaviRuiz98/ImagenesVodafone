@@ -5,11 +5,11 @@
   width: 100%;
 }
 .contornoPanel {
-  width: 81%;
+  width: 85%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-width: 510px;
+  min-width: 750px;
 }
 .header{
   display: flex;
@@ -37,13 +37,14 @@
   width: 100%;
   margin-top: 0%;
   height: 550px;
-  min-width: 500px;
+  min-width: 550px;
 }
 
 .panelIzquierda {
   display: flex;
   justify-content: center;
   width: 50%;
+  min-width: 380px;
   background-color: rgba(210, 209, 209, 0.9);
 }
 .panelDerecha{
@@ -51,6 +52,7 @@
   justify-content: center;
   align-items: center;
   width: 50%;
+  min-width: 380px;
   background-color: rgba(232, 232, 232, 0.9);
   overflow: visible;
 }
@@ -70,7 +72,6 @@
   margin: 5%;
   display: flex;
   justify-content: center;
-  overflow: hidden;
   margin: 5%;
 }
 .imagenDoble{
@@ -99,7 +100,6 @@
   grid-template-columns: 50% 50%;
   width: 100%;
   height: 100%;
+  min-width: 369px;
 }
-
-
 

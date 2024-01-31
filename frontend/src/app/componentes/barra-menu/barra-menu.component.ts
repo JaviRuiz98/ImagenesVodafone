@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
+import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
   selector: 'app-barra-menu',
@@ -7,7 +8,8 @@ import { ButtonModule } from 'primeng/button';
   styleUrls: ['./barra-menu.component.css'],
   standalone: true,
   imports: [
-    ButtonModule
+    ButtonModule,
+    SidebarComponent
   ],
 })
 export class BarraMenuComponent {
