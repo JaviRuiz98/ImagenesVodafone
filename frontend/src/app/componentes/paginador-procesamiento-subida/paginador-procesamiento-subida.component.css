@@ -39,7 +39,6 @@
     display: grid;
     align-content: center;
     grid-template-rows: 85% 15%;
-    overflow: hidden;
 }
 .imagenProcesada {
     position: relative;

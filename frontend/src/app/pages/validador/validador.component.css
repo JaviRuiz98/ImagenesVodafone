@@ -10,7 +10,6 @@
   flex-direction: column;
   justify-content: center;
   min-width: 750px;
-  overflow: hidden;
 }
 .header{
   display: flex;
@@ -73,7 +72,6 @@
   margin: 5%;
   display: flex;
   justify-content: center;
-  overflow: hidden;
   margin: 5%;
 }
 .imagenDoble{
