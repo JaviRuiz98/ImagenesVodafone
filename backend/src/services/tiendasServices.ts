@@ -40,54 +40,47 @@ export const tiendaService = {
     },
 
     async getBySfid(sfid: string, categoria_clause: string | null): Promise<tiendas | null> {
-      try {
-          const tiendaWithMuebles = await db.tiendas.findUnique({
-              where: {
-                  sfid: sfid,
-              },
-              include: {
-                  muebles: {
-                   where: {
-                       expositores: {
-                           some: {
-                               procesados_imagenes: {
-                                   some: {
-                                       prompts: {
-                                            categoria: categoria_clause
-                                       }
-                                   }
-                               }
-                           }
-                       }
-                   },
-
+      try {       
+      
+        const tiendaWithMuebles = await db.tiendas.findUnique({
+            where: {
+                sfid: sfid
+            }, 
+            include: {
+                muebles: {
+                    where: {
+                        expositores: {
+                            every: {
+                                procesados_imagenes: {
+                                    some: {
+                                        prompts: {
+                                            
+                                                categoria: categoria_clause
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
                     include: {
-                    
                         expositores: {
                             include: {
-                                procesados_imagenes: {
-                                    include: {
-                                        prompts: true,
-                                    },
-                                },
-                                imagenes: true,
-                            },
-                        },
-                    },
-                     
-                  },
-              },
-          });
-    
-        return tiendaWithMuebles;
+                                imagenes: true
+                            }
+                        }
+                    }
+                }
+            }
+        })
+ 
+        return tiendaWithMuebles as tiendas;
       } catch (error) {
           console.log(error);
           throw error;
       } finally {
           db.$disconnect();
       }
-  }
-  ,
+  },
       
 
     async  getProcesadosByIdExpositor(

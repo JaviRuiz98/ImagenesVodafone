@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormArray } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
-import { Filtro_procesados, Filtro } from 'src/app/interfaces/filtro_procesados';
+import { Filtro } from 'src/app/interfaces/filtro_procesados';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { PromptsService } from 'src/app/servicios/prompts/prompts.service';
+import { Prompt } from 'src/app/interfaces/prompts';
+import { SliderModule} from 'primeng/slider';
 
 @Component({
   selector: 'app-filtro-procesados',
@@ -15,44 +18,60 @@ import { MultiSelectModule } from 'primeng/multiselect';
     FormsModule,
     ReactiveFormsModule,
     ButtonModule,
-    MultiSelectModule
+    MultiSelectModule,
+    SliderModule
   ],
 })
 export class FiltroProcesadosComponent implements OnInit {
 
-  filtro_procesados_form: FormGroup = new FormGroup({});
+  filtro_procesados_form: FormGroup = this.formBuilder.group({
+    orden: [''],
+    prompts: [0],
+    respuestas_carteles: ['']
+  });;
 
   ordenes: Filtro[] = [];
-  prompts: Filtro[] = [];
+  prompts: Prompt[] = [];
+  respuestas_carteles: string[] = [];
+  rangos_cuentas: number[] = [0, 3];
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private promptsService: PromptsService
+    ) {  }
 
   ngOnInit(): void {
+    // Opciones de ordenado
     this.ordenes = [
       {label: 'Fecha descendente', value: 'date_desc'},
       {label: 'Fecha ascendente', value: 'date_asc'},
       {label: 'Resultado descendente', value: 'result_desc'},      
       {label: 'Resultado ascendente', value: 'result_asc'},      
-    ];
+    ]; 
 
-    this.prompts = [
-      {label: 'Prompt 1', value: 'prompt1'},
-      {label: 'Prompt 2', value: 'prompt2'},
-    ]
+    // Opciones de prompts
+    this.promptsService.getAllPrompts().subscribe( 
+      ( data: Prompt[] ) => {
+        this.prompts = data;
+        console.log(this.prompts)
+      }); (error: Error) => {
+        console.log("error", error);
+      }
 
-    this.filtro_procesados_form = this.formBuilder.group({
-      ordenes: this.ordenes[0].value,
-      prompts: this.prompts[0].value
-    });
+    // Opciones de IA usada
+
+    // Opciones de respuesta cartel
+    this.respuestas_carteles = ['muy alta', 'alta', 'media', 'otro idioma', 'baja', 'muy baja', 'ninguna'];
+
+    // Opciones de respuesta dispositivos
+    
   }
 
   enviarFiltroProcesados() {
-    const formData = this.filtro_procesados_form = this.formBuilder.group({
-      ordenes: this.ordenes.values,
-      prompts: this.prompts.values
-    });
-    
+    const formData = this.filtro_procesados_form?.value
+
     console.log("formData", formData);
+    
   }
 }
 

@@ -11,20 +11,15 @@ import { imagenes } from '../../interfaces/imagenes';
   providedIn: 'root'
 })
 
-
-
 export class TiendasService {
 
-
-
   API_URI = 'http://localhost:3000';
-
 
   constructor(private http: HttpClient){ }
 
   getTienda(sfid: string): Observable<tienda> {
 
-    return this.http.get<tienda>(`${this.API_URI}/tiendas/${sfid}`);
+    return this.http.get<tienda>(`${this.API_URI}/tiendas/${sfid}?categoria=carteles`);
 
   }
 
