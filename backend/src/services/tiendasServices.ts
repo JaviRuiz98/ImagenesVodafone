@@ -97,28 +97,50 @@ export const tiendaService = {
                   
         
         const orderClause = getOrderClause(orden_clause);
+        
 
-        const promptsString = numberArrayToString(prompts_clause);
+        const promptsNumber = numberArrayToString(prompts_clause);
         const respuestaCartelesString = arrayToString(respuesta_carteles_clause);
-        const respuestaDispositivosString = numberArrayToString(respuesta_dispositivos_clause);
 
-        let whereClause: any = `
+
+        const whereClause: any = `
         WHERE
-            procesados_imagenes.id_expositor = '${id_expositor}'
-            ${prompts_clause ? `AND prompts.id_prompt IN (${promptsString})` : ''}
-            ${ia_clause ? `AND procesados_imagenes.IA_utilizada = '${ia_clause}'` : ''}
-            ${respuesta_carteles_clause ? `AND respuestas_carteles.probabilidad IN (${respuestaCartelesString})` : ''}
+            procesados_imagenes.id_expositor = ${id_expositor}
+            ${prompts_clause ? `AND prompts.id_prompt IN (${promptsNumber})` : null}
+            ${ia_clause ? `AND procesados_imagenes.IA_utilizada = '${ia_clause}'` : null}
+            ${respuesta_carteles_clause ? `AND respuestas_carteles.probabilidad IN (${respuestaCartelesString})` : null}
             ${respuesta_dispositivos_clause ? 
                 `AND ABS(respuestas_dispositivos.huecos_esperados - respuestas_dispositivos.dispositivos_contados) 
-                 IN  (${respuestaDispositivosString})`  : ''}
-  
+                 BETWEEN  ${respuesta_dispositivos_clause[0]} AND ${respuesta_dispositivos_clause[1]}`  : null}
         ` 
+      const query = 
+      `
+      SELECT 
+          procesados_imagenes.*, 
+          respuestas_carteles.*, 
+          respuestas_dispositivos.*, 
+          prompts.*
+      FROM 
+          procesados_imagenes
+      LEFT JOIN 
+          respuestas_carteles ON respuestas_carteles.id_procesado_imagen = procesados_imagenes.id_procesado_imagen
+      LEFT JOIN 
+          respuestas_dispositivos ON respuestas_dispositivos.id_procesado_imagen = procesados_imagenes.id_procesado_imagen
+      LEFT JOIN 
+          prompts ON prompts.id_prompt = procesados_imagenes.id_prompt_usado
+      ${whereClause}
+      ${orderClause}
+      
+      `
+      console.log("query ->", query);
+
        
         return  await db.$queryRaw`
         SELECT 
             procesados_imagenes.*, 
             respuestas_carteles.*, 
             respuestas_dispositivos.*, 
+            imagenes.*,
             prompts.*
         FROM 
             procesados_imagenes
@@ -128,10 +150,14 @@ export const tiendaService = {
             respuestas_dispositivos ON respuestas_dispositivos.id_procesado_imagen = procesados_imagenes.id_procesado_imagen
         LEFT JOIN 
             prompts ON prompts.id_prompt = procesados_imagenes.id_prompt_usado
-        ${whereClause};
-        ${orderClause};
+        LEFT JOIN
+            imagenes ON imagenes.id_imagen = procesados_imagenes.id_imagen
+       
+        WHERE 
+            procesados_imagenes.id_expositor = ${id_expositor}
+     
         `;
-
+      
         }  catch(error){
             console.log(error);
             throw error;

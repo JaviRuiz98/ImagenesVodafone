@@ -6,6 +6,7 @@ import { tienda } from '../../interfaces/tienda';
 import { mueble } from '../../interfaces/muebles';
 import { expositores } from '../../interfaces/expositor';
 import { imagenes } from '../../interfaces/imagenes';
+import { filtro_procesados } from 'src/app/interfaces/filtro_procesados';
 
 @Injectable({
   providedIn: 'root'
@@ -15,11 +16,32 @@ export class TiendasService {
 
   API_URI = 'http://localhost:3000';
 
+  headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+  });
+
+  options = { 
+    headers: this.headers
+  }
+
+
   constructor(private http: HttpClient){ }
 
-  getTienda(sfid: string): Observable<tienda> {
+  getTienda(sfid: string, filtros?:filtro_procesados): Observable<tienda> {
+   
+    let body: any = undefined;
 
-    return this.http.post<tienda>(`${this.API_URI}/tiendas/${sfid}`);
+    if(filtros){
+      body = {
+        orden: filtros.orden,
+        prompts: filtros.prompts,
+        careteles: filtros.respuestas_carteles,
+        dispositivos: [filtros.rangos_cuentas.min, filtros.rangos_cuentas.max]
+      }
+    }
+   
+
+    return this.http.post<tienda>(`${this.API_URI}/tiendas/${sfid}`, body, this.options);
 
   }
 

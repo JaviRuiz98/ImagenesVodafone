@@ -20,16 +20,18 @@ export async function getAllTiendas(req: Request, res: Response) {
 export async function getTiendaBySfid(req: Request, res: Response) {
     try{
         const sfid = req.params.sfid;
+        console.log(req.body);
         const categoria_clause:  "carteles" | "dispositivos"  | null = req.body.categoria as "carteles" | "dispositivos" | null;
         const orden_clause: 'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null  = req.body.orden;
-        const prompts_clause: number[] | null  = req.body.prompt;
+        const prompts_clause: number[] | null  = req.body.prompts;
         const ia_clause: string | null = req.body.ia;     
         const respuestas_carteles_clause: string[] | null = req.body.carteles;
-        const respuestas_carteles_dispositivos_clause: number[] | null = req.body.dispositivos;
+        const respuestas_dispositivos_clause: number[] | null = req.body.dispositivos;
 
         //obtiene las tiendas ordenadas por categoría_clause
         const tienda: any = await tiendaService.getBySfid(sfid, categoria_clause);
 
+      
         if (!tienda) {
             //Contenido vacio
             res.status(204).send();
@@ -37,25 +39,27 @@ export async function getTiendaBySfid(req: Request, res: Response) {
         }
 
         for (const mueble of tienda.muebles) {
+      
             const promises = mueble.expositores.map( async (expositores: expositores) => 
-
+                
                 tiendaService.getProcesadosByIdExpositor(
                     expositores.id_expositor,
                     orden_clause,
                     prompts_clause,
                     ia_clause,
                     respuestas_carteles_clause,
-                    respuestas_carteles_dispositivos_clause
+                    respuestas_dispositivos_clause
                 )
             );
         
             const resultados = await Promise.all(promises);
-        
+          
            
             for (let i = 0; i < mueble.expositores.length; i++) {
-                mueble.expositores[i].procesados = resultados[i];
+                mueble.expositores[i].procesados_imagenes = resultados[i];
             }
         }
+        res.status(200).json(tienda);
         
 
         
