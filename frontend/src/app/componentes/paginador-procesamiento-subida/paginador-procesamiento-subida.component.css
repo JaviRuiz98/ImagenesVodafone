@@ -125,13 +125,13 @@
     align-items: center;
     margin: 0;
     max-width: 100%;
-    height: 100%;
+    height: 90%;
     width: auto;
     margin: 1%;
 }
 
 .p-image {
-    width: 100%;
+    width: auto;
     height: 100%;
     display: flex;
     justify-content: center;
