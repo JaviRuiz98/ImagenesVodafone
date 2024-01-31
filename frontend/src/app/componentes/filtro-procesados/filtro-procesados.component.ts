@@ -7,6 +7,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { PromptsService } from 'src/app/servicios/prompts/prompts.service';
 import { Prompt } from 'src/app/interfaces/prompts';
 import { SliderModule} from 'primeng/slider';
+import { ChipsModule} from 'primeng/chips';
 
 @Component({
   selector: 'app-filtro-procesados',
@@ -19,7 +20,8 @@ import { SliderModule} from 'primeng/slider';
     ReactiveFormsModule,
     ButtonModule,
     MultiSelectModule,
-    SliderModule
+    SliderModule,
+    ChipsModule
   ],
 })
 export class FiltroProcesadosComponent implements OnInit {
@@ -73,9 +75,8 @@ export class FiltroProcesadosComponent implements OnInit {
 
     this.formData.prompts = this.formData.prompts.map( (prompt: Prompt) => prompt.id_prompt );
     this.formData.rangos_cuentas = this.rangos_cuentas;
-    this.enviar_filtros.emit(this.formData);
 
-    //console.log("formData", this.formData);    
+    this.enviar_filtros.emit(this.formData);
   }
 }
 
