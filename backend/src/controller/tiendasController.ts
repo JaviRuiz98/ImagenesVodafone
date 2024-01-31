@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { tiendaService } from '../services/tiendasServices';
-import { procesados_imagenes, tiendas } from '@prisma/client';
+import { procesados_imagenes, tiendas, expositores } from '@prisma/client';
 
 export async function getAllTiendas(req: Request, res: Response) {
 
@@ -37,19 +37,26 @@ export async function getTiendaBySfid(req: Request, res: Response) {
         }
 
         for (const mueble of tienda.muebles) {
-            for (const expositor of mueble.expositores) {
-                // Obtener procesados ordenados para cada expositor
-                expositor.procesados = 
-                await tiendaService.getProcesadosByIdExpositor(
-                    expositor.id,
+            const promises = mueble.expositores.map( async (expositores: expositores) => 
+
+                tiendaService.getProcesadosByIdExpositor(
+                    expositores.id_expositor,
                     orden_clause,
                     prompts_clause,
                     ia_clause,
                     respuestas_carteles_clause,
-                    respuestas_carteles_dispositivos_clause);
+                    respuestas_carteles_dispositivos_clause
+                )
+            );
+        
+            const resultados = await Promise.all(promises);
+        
+           
+            for (let i = 0; i < mueble.expositores.length; i++) {
+                mueble.expositores[i].procesados = resultados[i];
             }
         }
-
+        
 
         
     }catch(error){
