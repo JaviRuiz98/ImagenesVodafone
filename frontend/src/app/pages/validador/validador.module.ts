@@ -22,6 +22,7 @@ import { BarraMenuComponent } from './../../componentes/barra-menu/barra-menu.co
 import { MarcoElementoComponent } from './../../componentes/marco-elemento/marco-elemento.component';
 import { SelectorImagenesComponent } from './../../componentes/selector-imagenes/selector-imagenes.component';
 import { PaginadorProcesamientoSubidaComponent } from './../../componentes/paginador-procesamiento-subida/paginador-procesamiento-subida.component'; 
+import { FiltroProcesadosComponent } from 'src/app/componentes/filtro-procesados/filtro-procesados.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { PaginadorProcesamientoSubidaComponent } from './../../componentes/pagin
     SelectorImagenesComponent,
     BarraMenuComponent,
     MarcoElementoComponent,
+    FiltroProcesadosComponent,
 
     BrowserAnimationsModule,    
     CardModule,

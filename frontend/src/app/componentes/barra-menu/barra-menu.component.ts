@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ButtonModule } from 'primeng/button';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
@@ -7,15 +8,16 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
   styleUrls: ['./barra-menu.component.css'],
   standalone: true,
   imports: [
+    ButtonModule,
     SidebarComponent
   ],
-  providers: [
-     
-  ],
-  
 })
 export class BarraMenuComponent {
 
   @Input() tiendaTitle: string = "";
-  
+  @Output() show_filter = new EventEmitter<boolean>();
+
+  showFilter(){
+    this.show_filter.emit(true);
+  }
 }

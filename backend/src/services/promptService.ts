@@ -3,6 +3,24 @@ import db  from "../config/database";
 
 export const promptService = {
 
+    async getAll(): Promise<prompts[]> {
+        try{
+            return await db.prompts.findMany(
+                {
+                    orderBy: {
+                        id_prompt: 'desc'
+                    }
+                }
+            );
+        }
+        catch (error) {
+            console.error('No se pudo obtener los prompts:', error);
+            throw error;
+        } finally  {
+            await db.$disconnect();
+        }
+    },
+
     async getById(id_prompt: number): Promise<prompts | null> {
         try{
             return db.prompts.findUnique({
