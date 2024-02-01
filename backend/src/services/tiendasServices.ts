@@ -15,14 +15,10 @@ export const tiendaService = {
 
                     where : whereClause,
                     include:{
-                        muebles:{
-                            include:{
-                                expositores: {
-                                    include: {
-                                        imagenes: true                             
-                                    }
-                                }
-                            }
+                        mobiliario:{
+                           select:{
+                               id_mobiliario: true
+                           }
                         }
                     }
                 }
@@ -41,13 +37,9 @@ export const tiendaService = {
        
     },
 
-    async getBySfid(sfid: string, categoria_clause: "carteles" | "dispositivos" | ''): Promise<tiendas | null> {
+    async getBySfid(sfid: string): Promise<tiendas | null> {
 
-        let whereClause =  {};
-        if (categoria_clause != ''){
-            whereClause = categoria_clause == "dispositivos" ? {some:{}}  : {none:{}};
-        }
-        console.log(whereClause);
+   
 
         try {       
         
@@ -56,30 +48,39 @@ export const tiendaService = {
                 sfid: sfid
             },
             include: {
-                muebles: {
-
+                mobiliario: {
                     include: {
-                        expositores: {
-                            where: {
-                                dispositivos: whereClause,
-                            },
+                        pertenencia_mueble_mobiliario: {
                             include: {
-                                imagenes: true, 
-                                procesados_imagenes: {
-                                    orderBy: {
-                                        fecha: 'desc'
-                                    },
+                                muebles: {
+
                                     include: {
-                                        imagenes: true,
-                                        respuestas_carteles: true,
-                                        respuestas_dispositivos: true,
-                                        prompts: true
+                                        expositores: {
+                                          
+                                            include: {
+                                                imagenes: true, 
+                                                procesados_imagenes: {
+                                                    orderBy: {
+                                                        fecha: 'desc'
+                                                    },
+                                                    include: {
+                                                        imagenes: true,
+                                                        respuestas_carteles: true,
+                                                        respuestas_dispositivos: true,
+                                                        prompts: true
+                                                    }
+                                                }                                        
+                                            }
+                                        }
                                     }
-                                }                                        
+                                }
+                                    
+                                
                             }
                         }
                     }
                 }
+               
             }
         });
         
