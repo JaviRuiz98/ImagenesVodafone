@@ -5,6 +5,8 @@ import { HomeComponent } from './home.component';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from 'primeng/api';
 import { BarraMenuComponent } from 'src/app/componentes/barra-menu/barra-menu.component';
+import { CardModule } from 'primeng/card';
+
 @NgModule({
   declarations: [
     HomeComponent
@@ -14,7 +16,8 @@ import { BarraMenuComponent } from 'src/app/componentes/barra-menu/barra-menu.co
     DropdownModule,
     FormsModule,
     SharedModule,
-    BarraMenuComponent
+    BarraMenuComponent,
+    CardModule
   ]
 })
 export class HomeModule { }
