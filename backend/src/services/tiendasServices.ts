@@ -5,6 +5,7 @@ export const tiendaService = {
 
     async getAllById(idTienda?: number): Promise<tiendas[]> {
         try{
+
             // Obtenemos todos los expositores junto con sus imágenes
             const whereClause =  idTienda? {id_tienda:idTienda} : {};
             const tiendas = await db.tiendas.findMany(
@@ -15,15 +16,13 @@ export const tiendaService = {
 
                     where : whereClause,
                     include:{
-                        muebles:{
-                            include:{
-                                expositores: {
-                                    include: {
-                                        imagenes: true                             
-                                    }
-                                }
-                            }
+                        mobiliario:{
+                           select:{
+                               id_mobiliario: true,
+                           }
+                           
                         }
+                       
                     }
                 }
             );
@@ -36,11 +35,9 @@ export const tiendaService = {
         }finally{
             db.$disconnect();
         }
-        
-        
-       
+           
     },
-
+    
     async getBySfid(sfid: string, categoria_clause: "carteles" | "dispositivos" | null): Promise<tiendas | null> {
 
         let whereClause =  {};
@@ -55,27 +52,37 @@ export const tiendaService = {
                 sfid: sfid
             },
             include: {
-                muebles: {
-
+                mobiliario: {
                     include: {
-                        expositores: {
-                            where: {
-                                dispositivos: whereClause,
-                            },
+                        pertenencia_mueble_mobiliario: {
                             include: {
-                                imagenes: true, 
-                                procesados_imagenes: {
+                                muebles: {
                                     include: {
-                                        imagenes: true,
-                                        respuestas_carteles: true,
-                                        respuestas_dispositivos: true,
-                                        prompts: true
+                                        expositores: {
+                                            where: {
+                                                dispositivos: whereClause,
+                                            },
+                                            include: {
+                                                imagenes: true, 
+                                                procesados_imagenes: {
+                                                    include: {
+                                                        imagenes: true,
+                                                        respuestas_carteles: true,
+                                                        respuestas_dispositivos: true,
+                                                        prompts: true
+                                                    }
+                                                }                                        
+                                            }
+                                        }
                                     }
-                                }                                        
+                                }
+                                
                             }
                         }
+                       
                     }
                 }
+               
             }
         });
         

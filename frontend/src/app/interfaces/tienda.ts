@@ -1,8 +1,8 @@
-import { mueble } from "./muebles";
+import { muebles } from "./muebles";
 
 export interface tienda {
     id_tienda: number;
     sfid: string;
-    muebles: mueble[];
+    muebles: muebles[];
     
 }
