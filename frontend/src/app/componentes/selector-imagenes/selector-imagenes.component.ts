@@ -49,41 +49,4 @@ export class SelectorImagenesComponent implements OnChanges {
   }
 }
 
-  // onPageChange(event: PageEvent) {
-  //   this.first = event.first;
-  //   this.rows = event.rows;
-  // }
-
-  // elementosArrastrandoDentro(){
-  //   this.dropArea.addEventListener('dragover', (event) => {
-  //     event.preventDefault();
-  //     this.dropArea.classList.add('active');
-  //     if(this.dragText){
-  //       this.dragText.textContent = "Suelta para subir";
-  //     }
-  //   })
-  // }
-
-  // elementosArrastrandoFuera(){
-  //   this.dropArea.addEventListener('dragleave', (event) => {
-  //     event.preventDefault();
-  //     this.dropArea.classList.remove('active');
-  //     if(this.dragText){
-  //       this.dragText.textContent = "Arrastra y suelta imagenes";
-  //     }
-  //   })
-  // }
-
-  // soltarElementos(){
-  //   this.dropArea.addEventListener('drop', (event) => {
-  //     event.preventDefault();
-  //     if(event.dataTransfer){
-  //       //this.files = event.dataTransfer.files;
-  //     }
-  //     //this.showFile(this.files);
-  //     this.dropArea.classList.remove('active');
-  //     if(this.dragText){
-  //       this.dragText.textContent = 'Arrastra y suelta imagenes';
-  //     }    
-  //   })
-  // }
+ 
