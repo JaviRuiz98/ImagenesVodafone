@@ -1,32 +1,84 @@
 .componente-completo {
     width: 100%;
-    height: 100%;
+    height: 550px;
     display: grid;
     align-content: center;
-    grid-template-rows: 13% 70% 17%;
+    grid-template-rows: 10% 90%;
+}
+
+.componente-solo-selector {
+    width: 100%;
+    height: 100%;
+}
+.botonNuevoHistorial {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.imagen {
+    width:90%;
+    height:90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5%;
 }
 .anchoAltoSelector {
     width: 90%;
-    margin: 5%;
     height: 90%;
+    margin-top: 4%;
+    margin-left: 5%;
+    margin-right: 5%;
 }
 
+.gridHistorial {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    align-content: center;
+    grid-template-rows: 85% 15%;
+}
 .imagenProcesada {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
+    position: relative;
+    display: grid;
     height: 100%;
     width: 100%;
+    grid-template-rows: 60% 40%;
 }
-
-.imagen {
-    width:100%;
-    height:100%;
-    display: flex;
+.anchoAltoImagenDialog {
+    height: 100%; 
+    width: auto;
+    
+}
+.respuestaProcesado {
+    width: 100%;
+    height: 100%;
     justify-content: center;
     align-items: center;
+    display: flex;
+    flex-direction: column;
 }
+.contenido {
+    display: grid;
+    grid-template-rows: 65% 35%;
+    width: 100%; 
+    height: 100%;
+}
+.margenesComentario {
+    margin-top: 5%;
+    margin-left: 5%;
+}
+.margenesPrompt {
+    margin-top: 5%;
+}
+.promptBotones {
+    display: grid;
+    align-content: center;
+    grid-template-columns: 50% 50%;
+}
+
 
 :host::ng-deep {
     .p-button.p-highlight.optionColorVodafone {
@@ -40,10 +92,12 @@
     max-width: 80%;
     overflow: hidden;
 }
-.botonNuevoHistorial {
+
+.butonFeedback {
     display: flex;
-    justify-content: center;
-    align-items: center;
+}
+.valoracionBorrar {
+    margin: auto;
 }
 
 .p-image-preview-container>img {
@@ -56,9 +110,10 @@
     justify-content: center;
     align-items: center;
     margin: 0;
-    max-width: 606px;
     height: 100%;
-    width: 100%;
+    max-height: 90%;
+    max-width: 100%;
+    width: auto;
 }
 
 ::ng-deep .p-image img {
@@ -67,13 +122,21 @@
     align-items: center;
     margin: 0;
     max-width: 100%;
-    height: 100%;
+    height: 90%;
     width: auto;
     margin: 1%;
 }
 
-.paginator {
+.p-image {
+    width: auto;
+    height: 100%;
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: center
+}
+
+.verPrompt{
+    max-width: 100%;
+    margin: auto;
+    margin-left: 15%;
 }

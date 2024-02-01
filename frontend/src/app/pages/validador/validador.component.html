@@ -1,5 +1,8 @@
 <div class="paginaCompleta">
-  <app-barra-menu [tiendaTitle]="sfid"></app-barra-menu>
+  <div class="barra">
+    <app-barra-menu [tiendaTitle]="sfid" style="width: 100%;"></app-barra-menu>
+    <app-sidebar class="sidebar"></app-sidebar>
+  </div>
   <p-toast></p-toast>
   <div *ngFor="let item of this.tienda.muebles" class="contornoPanel">
     <p-panel [style]="{'border': '1px solid black', 'margin-bottom': '20px'}">
@@ -36,28 +39,31 @@
                 [id_expositor_selected]="item.expositores[0].id_expositor"
                 [procesados]="item.expositores[0].procesados_imagenes" 
                 [cargando_procesamiento]="cargas_procesamiento[item.expositores[0].id_expositor]"
-                [cargando_procesamiento]="cargas_procesamiento[item.expositores[0].id_expositor]"
+                [valueSelected]="modos_visualizacion[item.expositores[0].id_expositor] === 'historial'? 'historial':'new'"
                 (archivoSeleccionadoChange)="recibirFile($event, item.expositores[0].id_expositor)">
               </app-paginador-procesamiento-subida>            
             </div>
             <ng-template #subir2Fotos>
-              <app-paginador-procesamiento-subida class="anchoAltoSubirFoto"
-                [id_expositor_selected]="item.expositores[0].id_expositor"
-                [procesados]="item.expositores[0].procesados_imagenes" 
-                [cargando_procesamiento]="cargas_procesamiento[item.expositores[0].id_expositor]"
-                [cargando_procesamiento]="cargas_procesamiento[item.expositores[0].id_expositor]"
-                (archivoSeleccionadoChange)="recibirFile($event, item.expositores[0].id_expositor)">
-              </app-paginador-procesamiento-subida> 
-              <app-paginador-procesamiento-subida class="anchoAltoSubirFoto"
-                [id_expositor_selected]="item.expositores[1].id_expositor"
-                [procesados]="item.expositores[1].procesados_imagenes" 
-                [cargando_procesamiento]="cargas_procesamiento[item.expositores[1].id_expositor]"
-                [cargando_procesamiento]="cargas_procesamiento[item.expositores[1].id_expositor]"
-                (archivoSeleccionadoChange)="recibirFile($event, item.expositores[1].id_expositor)">
-              </app-paginador-procesamiento-subida>                    
+              <div class="gridDoble">
+                <app-paginador-procesamiento-subida 
+                  [id_expositor_selected]="item.expositores[0].id_expositor"
+                  [procesados]="item.expositores[0].procesados_imagenes" 
+                  [cargando_procesamiento]="cargas_procesamiento[item.expositores[0].id_expositor]"
+                  [valueSelected]="modos_visualizacion[item.expositores[0].id_expositor] === 'historial'? 'historial':'new'"
+                  (archivoSeleccionadoChange)="recibirFile($event, item.expositores[0].id_expositor)">
+                </app-paginador-procesamiento-subida> 
+                <app-paginador-procesamiento-subida
+                  [id_expositor_selected]="item.expositores[1].id_expositor"
+                  [procesados]="item.expositores[1].procesados_imagenes" 
+                  [cargando_procesamiento]="cargas_procesamiento[item.expositores[1].id_expositor]"
+                  [valueSelected]="modos_visualizacion[item.expositores[1].id_expositor] === 'historial'? 'historial':'new'"                
+                  (archivoSeleccionadoChange)="recibirFile($event, item.expositores[1].id_expositor)">
+                </app-paginador-procesamiento-subida>                    
+              </div>
             </ng-template> 
           </div>
         </div>
     </p-panel>
   </div>
+  <app-ir-arriba></app-ir-arriba>
 </div>

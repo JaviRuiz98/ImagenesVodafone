@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { tiendaService } from '../services/tiendasServices';
-import { tiendas } from '@prisma/client';
+import { procesados_imagenes, tiendas } from '@prisma/client';
 
 export async function getAllTiendas(req: Request, res: Response) {
 
@@ -20,7 +20,10 @@ export async function getAllTiendas(req: Request, res: Response) {
 export async function getTiendaBySfid(req: Request, res: Response) {
     try{
         const sfid = req.params.sfid;
-        const tienda: tiendas | null = await tiendaService.getBySfid(sfid);
+        const categoria_clause:  "carteles" | "dispositivos"  | null = req.query.categoria as "carteles" | "dispositivos" | null;
+        
+        
+        const tienda: tiendas | null = await tiendaService.getBySfid(sfid, categoria_clause);
         if (tienda) {
             res.status(200).json(tienda);
         } else {
@@ -29,5 +32,35 @@ export async function getTiendaBySfid(req: Request, res: Response) {
     }catch(error){
         console.error('Error al obtener tienda por sfid:', error);
         res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+export async function getProcesadosByIdExpositor(req: Request, res: Response) {
+    try{
+        const idExpositor = parseInt(req.params.idExpositor);
+        
+        const  orden_clause: 'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null  = req.body.orden;
+        const prompts_clause: number[] | null  = req.body.prompt;
+        const ia_clause: string | null = req.body.ia;     
+        const respuestas_carteles_clause: string[] | null = req.body.carteles;
+        const respuestas_carteles_dispositivos_clause: number[] | null = req.body.dispositivos;
+
+        const procesados: procesados_imagenes[] | null = 
+        await tiendaService.getProcesadosByIdExpositor(idExpositor, orden_clause, prompts_clause, ia_clause, respuestas_carteles_clause, respuestas_carteles_dispositivos_clause);
+
+        if (procesados?.length === 0) {
+             res.status(204).json({ error: 'procesados vacíos' });
+             return;
+                   
+        }
+        if (procesados) {
+             res.status(200).json(procesados);
+             return;
+        }
+
+    } catch(error){
+        console.error('Error al obtener tienda por sfid:', error);
+        res.status(500).json({ error: 'Internal server error' });
+        throw error;
     }
 }

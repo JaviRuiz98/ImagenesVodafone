@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import { procesarImagenes, borrarProcesado } from '../controller/procesamientoController';
+import { procesarImagenes, borrarProcesado, feedbackProcesado } from '../controller/procesamientoController';
 import { procesamientoValidator } from '../validator/procesamientoValidator';
 import { uploadImagenProcesada, uploadImagenRepresentativa } from '../config/multer';
 import { uploadFileToFtp, uploadFileToFtpReferencia } from '../config/ftpUpload';
@@ -12,6 +12,9 @@ router.post('/procesamiento', uploadImagenProcesada, uploadFileToFtp('imagenesPr
 router.post('/subirImagen', uploadImagenRepresentativa, uploadFileToFtpReferencia);
 
 router.post('/borrarProcesado', borrarProcesado);
+
+router.post('/feedbackProcesado', feedbackProcesado );
+
 
 
 export default router;

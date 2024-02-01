@@ -104,6 +104,23 @@ export async function procesarImagenes(req: Request, res: Response) {
   }
 }
 
+export async function borrarProcesamiento(req: Request, res: Response){
+  try{
+
+    const id_procesado: number = parseInt(req.params.id_procesado);
+    await procesamientoService.borrarProcesado(id_procesado);
+    console.log('Eliminado: ', id_procesado);
+    return res.status(200).json({mensaje: 'Eliminado'})
+  
+  }catch(error){
+
+    res.status(500).json({ error: error });
+    throw error;
+  }
+
+
+}
+
 
 function getIdPromptDeNumeroDispositivos(dispositivosCount: number): number {
   if (dispositivosCount === 0) {
@@ -191,5 +208,26 @@ async function getOpenAiResults(filePaths: string[], instrucciones: string) {
         console.error('Error al borrar procesado:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
+
+  }
+
+  export async function feedbackProcesado(req: Request, res: Response) {
+    
+    try{
+
+      const id_procesado_imagen = parseInt(req.body.id_procesado_imagen);  
+
+      const feedback = req.body.feedback;
+      console.log('id_procesado_imagen: ', id_procesado_imagen);
+      console.log('feedback: ', feedback);
+      await procesamientoService.feedbackProcesado(id_procesado_imagen, feedback);
+ 
+      res.status(200).json({ message: 'feedback insertado' });
+
+    }catch(error){
+        console.error('Error al editar el feedback del procesado:', error);
+        res.status(500).json({ error: 'error feedback' });
+    }
+
 
   }
