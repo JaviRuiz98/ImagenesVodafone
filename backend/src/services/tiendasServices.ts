@@ -5,7 +5,6 @@ export const tiendaService = {
 
     async getAllById(idTienda?: number): Promise<tiendas[]> {
         try{
-
             // Obtenemos todos los expositores junto con sus imágenes
             const whereClause =  idTienda? {id_tienda:idTienda} : {};
             const tiendas = await db.tiendas.findMany(
@@ -16,13 +15,15 @@ export const tiendaService = {
 
                     where : whereClause,
                     include:{
-                        mobiliario:{
-                           select:{
-                               id_mobiliario: true,
-                           }
-                           
+                        muebles:{
+                            include:{
+                                expositores: {
+                                    include: {
+                                        imagenes: true                             
+                                    }
+                                }
+                            }
                         }
-                       
                     }
                 }
             );
@@ -35,15 +36,18 @@ export const tiendaService = {
         }finally{
             db.$disconnect();
         }
-           
+        
+        
+       
     },
-    
-    async getBySfid(sfid: string, categoria_clause: "carteles" | "dispositivos" | null): Promise<tiendas | null> {
+
+    async getBySfid(sfid: string, categoria_clause: "carteles" | "dispositivos" | ''): Promise<tiendas | null> {
 
         let whereClause =  {};
-        if (categoria_clause != null){
+        if (categoria_clause != ''){
             whereClause = categoria_clause == "dispositivos" ? {some:{}}  : {none:{}};
         }
+        console.log(whereClause);
 
         try {       
         
@@ -52,37 +56,30 @@ export const tiendaService = {
                 sfid: sfid
             },
             include: {
-                mobiliario: {
+                muebles: {
+
                     include: {
-                        pertenencia_mueble_mobiliario: {
+                        expositores: {
+                            where: {
+                                dispositivos: whereClause,
+                            },
                             include: {
-                                muebles: {
+                                imagenes: true, 
+                                procesados_imagenes: {
+                                    orderBy: {
+                                        fecha: 'desc'
+                                    },
                                     include: {
-                                        expositores: {
-                                            where: {
-                                                dispositivos: whereClause,
-                                            },
-                                            include: {
-                                                imagenes: true, 
-                                                procesados_imagenes: {
-                                                    include: {
-                                                        imagenes: true,
-                                                        respuestas_carteles: true,
-                                                        respuestas_dispositivos: true,
-                                                        prompts: true
-                                                    }
-                                                }                                        
-                                            }
-                                        }
+                                        imagenes: true,
+                                        respuestas_carteles: true,
+                                        respuestas_dispositivos: true,
+                                        prompts: true
                                     }
-                                }
-                                
+                                }                                        
                             }
                         }
-                       
                     }
                 }
-               
             }
         });
         
