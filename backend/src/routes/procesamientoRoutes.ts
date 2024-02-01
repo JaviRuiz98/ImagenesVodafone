@@ -11,7 +11,7 @@ router.post('/procesamiento', uploadImagenProcesada, uploadFileToFtp('imagenesPr
 
 router.post('/subirImagen', uploadImagenRepresentativa, uploadFileToFtpReferencia);
 
-router.post('/borrarProcesado', borrarProcesado);
+router.delete('/borrarProcesado/:id_procesado_imagen', borrarProcesado);
 
 router.post('/feedbackProcesado', feedbackProcesado );
 
