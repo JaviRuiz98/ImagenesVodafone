@@ -6,6 +6,7 @@ import tiendaRoutes from './routes/tiendasRoutes';
 import imagesRoutes from './routes/imagenesRoutes';
 import procesamientoRoutes from './routes/procesamientoRoutes';
 import promptsRoutes from './routes/promptsRoutes';
+import  mobiliarioRouter from './routes/mobiliarioRoutes';
 
 const app = express();
 app.use(bodyParser.json({ limit: '10mb' }));
@@ -16,7 +17,8 @@ app.use(cors());
 app.use('/', tiendaRoutes);
 app.use('/', imagesRoutes);
 app.use('/', procesamientoRoutes);
-app.use('/', promptsRoutes)
+app.use('/', promptsRoutes);
+app.use('/', mobiliarioRouter);
 
 app.get('/', (_req: Request, res: Response) => {
     res.send('Hello World! ');
