@@ -49,7 +49,7 @@ export class ValidadorComponent implements OnInit{
 
   async inicializaImagenesReferencia( filtros?: filtro_procesados) {
 
-   
+                                //id mobiliario
     this.mueblesService.getMuebles(undefined, filtros).subscribe( (data: muebles[]) => {
       this.muebles = data;
     }), (error: Error) => { console.log(error) }
