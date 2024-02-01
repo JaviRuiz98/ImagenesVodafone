@@ -201,9 +201,10 @@ async function getOpenAiResults(filePaths: string[], instrucciones: string) {
 
   export async function borrarProcesado(req: Request, res: Response) {
     try{
-      const id_procesado_imagen = req.body.id_procesado_imagen;
+      const id_procesado_imagen: number = parseInt(req.params.id_procesado_imagen);
       await procesamientoService.borrarProcesado(id_procesado_imagen);
       res.status(200).json({ message: 'Borrado exitoso' });
+      console.log('Procesado borrado: ', id_procesado_imagen);
     }catch(error){
         console.error('Error al borrar procesado:', error);
         res.status(500).json({ error: 'Internal server error' });
