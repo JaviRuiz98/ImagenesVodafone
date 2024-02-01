@@ -14,6 +14,11 @@ export class ProcesamientoService {
 
   constructor(private http: HttpClient){ }
 
+
+  getProcesados(id_auditoria: number): Observable<procesados_imagenes[]> {
+    return this.http.get<procesados_imagenes[]>(`${this.API_URI}/procesados/${id_auditoria}`);
+  }
+
   postProcesamientoImagenes(id_expositor:number,imageFile: File  ): Observable<procesados_imagenes> {
     const formData = new FormData();
     formData.append('idExpositor', id_expositor.toString());
