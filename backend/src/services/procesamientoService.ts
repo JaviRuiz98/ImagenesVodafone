@@ -28,7 +28,8 @@ export const procesamientoService = {
             include: {
                 imagenes: true,
                 respuestas_carteles: true,
-                respuestas_dispositivos: true
+                respuestas_dispositivos: true,
+                prompts: true
             }
         })
     },
