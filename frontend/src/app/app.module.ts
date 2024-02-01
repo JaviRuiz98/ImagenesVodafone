@@ -10,7 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 
 import { ValidadorModule } from './pages/validador/validador.module';
-
+import { HomeModule } from './pages/home/home.module';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,7 @@ import { ValidadorModule } from './pages/validador/validador.module';
   imports: [
     ValidadorModule,
     AppRoutingModule,
-
+    HomeModule,
     BrowserModule,
     HttpClientModule   
   ],
