@@ -1,5 +1,3 @@
-
-
 export interface estadisticaPrompts {
     id_prompt: number;
     nombre_prompt: string;

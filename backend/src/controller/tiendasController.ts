@@ -21,7 +21,7 @@ export async function getTiendaBySfid(req: Request, res: Response) {
     try{
         const sfid = req.params.sfid;
         console.log(req.body);
-        const categoria_clause:  "carteles" | "dispositivos"  | null = req.body.categoria as "carteles" | "dispositivos" | null;
+        const categoria_clause:  "carteles" | "dispositivos"  | '' = req.body.categoria as "carteles" | "dispositivos" | '';
         /*const orden_clause: 'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null  = req.body.orden;
         const prompts_clause: number[] | null  = req.body.prompts;
         const ia_clause: string | null = req.body.ia;     

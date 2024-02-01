@@ -41,12 +41,13 @@ export const tiendaService = {
        
     },
 
-    async getBySfid(sfid: string, categoria_clause: "carteles" | "dispositivos" | null): Promise<tiendas | null> {
+    async getBySfid(sfid: string, categoria_clause: "carteles" | "dispositivos" | ''): Promise<tiendas | null> {
 
         let whereClause =  {};
-        if (categoria_clause != null){
+        if (categoria_clause != ''){
             whereClause = categoria_clause == "dispositivos" ? {some:{}}  : {none:{}};
         }
+        console.log(whereClause);
 
         try {       
         
@@ -65,6 +66,9 @@ export const tiendaService = {
                             include: {
                                 imagenes: true, 
                                 procesados_imagenes: {
+                                    orderBy: {
+                                        fecha: 'desc'
+                                    },
                                     include: {
                                         imagenes: true,
                                         respuestas_carteles: true,
