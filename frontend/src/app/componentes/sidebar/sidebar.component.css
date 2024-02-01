@@ -1,5 +1,3 @@
-
-
 .card{
     width: 100%;
     padding: 10px;
@@ -8,7 +6,7 @@
     align-items: left;
     justify-content: right;
     height: auto;
-
+    z-index: 3;
 }
 
 .lineas{
@@ -39,4 +37,8 @@
     width: 90%;
     height: auto;
     
+}
+
+.boton{
+    background-color: red;
 }
