@@ -1,12 +1,13 @@
-import { procesados_imagenes, tiendas } from "@prisma/client";
+import {  tiendas } from "@prisma/client";
 import db  from "../config/database";
 
 export const tiendaService = {
 
     async getAllById(idTienda?: number): Promise<tiendas[]> {
         try{
+            // Obtenemos todos los expositores junto con sus imágenes
             const whereClause =  idTienda? {id_tienda:idTienda} : {};
-            return  db.tiendas.findMany(
+            const tiendas = await db.tiendas.findMany(
                 {
                     orderBy: {
                         id_tienda: 'asc'
@@ -18,19 +19,20 @@ export const tiendaService = {
                             include:{
                                 expositores: {
                                     include: {
-                                        imagenes: true,                                        
-                                        }
+                                        imagenes: true                             
                                     }
                                 }
                             }
                         }
-                    
+                    }
                 }
-                
             );
+            return tiendas as tiendas[];
+        
         }  catch(error){
             console.log(error);
             throw error;
+
         }finally{
             db.$disconnect();
         }
@@ -41,33 +43,27 @@ export const tiendaService = {
 
     async getBySfid(sfid: string, categoria_clause: "carteles" | "dispositivos" | null): Promise<tiendas | null> {
 
-         let whereClause =  {};
-         if (categoria_clause != null){
-              whereClause = categoria_clause ==  "dispositivos" ? {some:{}}  : {none:{}};
-         }
+        let whereClause =  {};
+        if (categoria_clause != null){
+            whereClause = categoria_clause == "dispositivos" ? {some:{}}  : {none:{}};
+        }
 
+        try {       
         
-        
-      try {       
-      
-        const tiendaWithMuebles = await db.tiendas.findUnique({
+        return await db.tiendas.findUnique({
             where: {
                 sfid: sfid
             },
             include: {
                 muebles: {
-                    where: {
-                        expositores: {
-                            some: {}
-                        },
-                    },
+
                     include: {
                         expositores: {
                             where: {
                                 dispositivos: whereClause,
                             },
                             include: {
-                                imagenes: true,
+                                imagenes: true, 
                                 procesados_imagenes: {
                                     include: {
                                         imagenes: true,
@@ -75,7 +71,7 @@ export const tiendaService = {
                                         respuestas_dispositivos: true,
                                         prompts: true
                                     }
-                                }
+                                }                                        
                             }
                         }
                     }
@@ -83,8 +79,7 @@ export const tiendaService = {
             }
         });
         
- 
-        return tiendaWithMuebles as tiendas;
+        
       } catch (error) {
           console.log(error);
           throw error;
@@ -94,67 +89,88 @@ export const tiendaService = {
   },
       
 
-    async  getProcesadosByIdExpositor(
-        id_expositor: number,
-        orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null,
-        prompts_clause: number[] | null,
-        ia_clause : string | null,
-        respuesta_carteles_clause: string [] | null,
-        respuesta_dispositivos_clause: number[] | null  
-        
-        ): Promise<procesados_imagenes[] | null> {
-        try{
-                  
-        
-        const orderClause = getOrderClause(orden_clause);
+//     async  getProcesadosByIdExpositor(
+//             id_expositor: number,
+//             orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null,
+//             prompts_clause: number[] | null,
+//             ia_clause : string | null,
+//             respuesta_carteles_clause: string [] | null,
+//             respuesta_dispositivos_clause: number[] | null  
+            
+//             ): Promise<procesados_imagenes[] | null> {
 
-        const promptsString = numberArrayToString(prompts_clause);
-        const respuestaCartelesString = arrayToString(respuesta_carteles_clause);
-        const respuestaDispositivosString = numberArrayToString(respuesta_dispositivos_clause);
-
-        let whereClause: any = `
-        WHERE
-            procesados_imagenes.id_expositor = '${id_expositor}'
-            ${prompts_clause ? `AND prompts.id_prompt IN (${promptsString})` : ''}
-            ${ia_clause ? `AND procesados_imagenes.IA_utilizada = '${ia_clause}'` : ''}
-            ${respuesta_carteles_clause ? `AND respuestas_carteles.probabilidad IN (${respuestaCartelesString})` : ''}
-            ${respuesta_dispositivos_clause ? 
-                `AND ABS(respuestas_dispositivos.huecos_esperados - respuestas_dispositivos.dispositivos_contados) 
-                 IN  (${respuestaDispositivosString})`  : ''}
-  
-        ` 
-       
-        return  await db.$queryRaw`
-        SELECT 
-            procesados_imagenes.*, 
-            respuestas_carteles.*, 
-            respuestas_dispositivos.*, 
-            prompts.*
-        FROM 
-            procesados_imagenes
-        LEFT JOIN 
-            respuestas_carteles ON respuestas_carteles.id_procesado_imagen = procesados_imagenes.id_procesado_imagen
-        LEFT JOIN 
-            respuestas_dispositivos ON respuestas_dispositivos.id_procesado_imagen = procesados_imagenes.id_procesado_imagen
-        LEFT JOIN 
-            prompts ON prompts.id_prompt = procesados_imagenes.id_prompt_usado
-        ${whereClause};
-        ${orderClause};
-        `;
-
-        }  catch(error){
-            console.log(error);
-            throw error;
-        }finally{
-            db.$disconnect();
+//         try{
+                    
         
-        }
-    }
-    
-    
+//             const orderClause = getOrderClause(orden_clause);
+            
+
+//             const promptsNumber = numberArrayToString(prompts_clause);
+//             const respuestaCartelesString = arrayToString(respuesta_carteles_clause);
+
+
+//             const whereClause: string = `
+//             WHERE
+//                 procesados_imagenes.id_expositor = ${id_expositor}
+//                 ${prompts_clause ? `AND prompts.id_prompt IN (${promptsNumber})` : null}
+//                 ${ia_clause ? `AND procesados_imagenes.IA_utilizada = '${ia_clause}'` : null}
+//                 ${respuesta_carteles_clause ? `AND respuestas_carteles.probabilidad IN (${respuestaCartelesString})` : null}
+//                 ${respuesta_dispositivos_clause ? 
+//                     `AND ABS(respuestas_dispositivos.huecos_esperados - respuestas_dispositivos.dispositivos_contados) 
+//                         BETWEEN  ${respuesta_dispositivos_clause[0]} AND ${respuesta_dispositivos_clause[1]}`  : null}
+//             ` 
+//             const query = 
+//             `
+//             SELECT 
+//                 procesados_imagenes.*, 
+//                 respuestas_carteles.*, 
+//                 respuestas_dispositivos.*, 
+//                 prompts.*
+//             FROM 
+//                 procesados_imagenes
+//             LEFT JOIN 
+//                 respuestas_carteles ON respuestas_carteles.id_procesado_imagen = procesados_imagenes.id_procesado_imagen
+//             LEFT JOIN 
+//                 respuestas_dispositivos ON respuestas_dispositivos.id_procesado_imagen = procesados_imagenes.id_procesado_imagen
+//             LEFT JOIN 
+//                 prompts ON prompts.id_prompt = procesados_imagenes.id_prompt_usado
+//             ${whereClause}
+//             ${orderClause}            
+//             `
+            
+//             return  await db.$queryRaw`
+//             SELECT 
+//                 procesados_imagenes.*, 
+//                 respuestas_carteles.*, 
+//                 respuestas_dispositivos.*, 
+//                 imagenes.*,
+//                 prompts.*
+//             FROM 
+//                 procesados_imagenes
+//             LEFT JOIN 
+//                 respuestas_carteles ON respuestas_carteles.id_procesado_imagen = procesados_imagenes.id_procesado_imagen
+//             LEFT JOIN 
+//                 respuestas_dispositivos ON respuestas_dispositivos.id_procesado_imagen = procesados_imagenes.id_procesado_imagen
+//             LEFT JOIN 
+//                 prompts ON prompts.id_prompt = procesados_imagenes.id_prompt_usado
+//             LEFT JOIN
+//                 imagenes ON imagenes.id_imagen = procesados_imagenes.id_imagen
+            
+//             WHERE 
+//                 procesados_imagenes.id_expositor = ${id_expositor}
+            
+//             `;
+        
+//         }  catch(error){
+//             console.log(error);
+//             throw error;
+//         }finally{
+//             db.$disconnect();
+//         }
+    // }   
 }
 
-
+/*
  function getOrderClause( orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null) {
 
     let orderDirection = orden_clause === 'result_asc' ? 'ASC' : 'DESC';
@@ -189,4 +205,4 @@ function arrayToString(array: string[] | null ): string | null {
 function numberArrayToString(array: number[] | null ): string | null {
     return array && array.length > 0 ? array.map(item => `${item.toString()}`).join(", ") : null;
 }
-
+*/

@@ -3,6 +3,7 @@
     <app-barra-menu [tiendaTitle]="sfid" style="width: 100%;"></app-barra-menu>
     <app-sidebar class="sidebar"></app-sidebar>
   </div>
+  <app-filtro-procesados (enviar_filtros)="enviarFiltroProcesados($event)" style="margin: 1.5%;"></app-filtro-procesados>
   <p-toast></p-toast>
   <div *ngFor="let item of this.tienda.muebles" class="contornoPanel">
     <p-panel [style]="{'border': '1px solid black', 'margin-bottom': '20px'}">

@@ -9,14 +9,12 @@
 .barraCompleta {
   position: relative;
   width: 100%;
-  margin-bottom: 2%;
 }
 .barra{
   display: grid;
   grid-template-columns: 90% 10%;
   width: 100%;
   height: 100%;
-  margin-bottom: 3%;
 }
 .sidebar{
   background-color: red;

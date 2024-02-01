@@ -1,8 +1,18 @@
-<form [formGroup]="filtro_procesados_form" style="display: flex">
-    <p-dropdown formControlName="orden" [options]="ordenes" optionLabel="label" placeholder="Selecciona orden"></p-dropdown>
-    <p-multiSelect formControlName="prompts" [options]="prompts" optionLabel="nombre_prompt" placeholder="Selecciona prompt"></p-multiSelect>
-    <p-multiSelect formControlName="respuestas_carteles" [options]="respuestas_carteles" optionLabel="" placeholder="Probabilidades de los carteles"></p-multiSelect>
-    
-    <p-button (click)="enviarFiltroProcesados()" icon="pi pi-search" label="Filtrar"></p-button>
-</form>
-<p-slider [min]="0" [max]="10" [step]="1" [range]="true" [ngModel]="rangos_cuentas"></p-slider>
+
+<div class="filtros">
+    <form [formGroup]="filtro_procesados_form" >
+        <p-dropdown formControlName="categoria" [options]="categorias" optionLabel="" placeholder="Tipo de procesado"></p-dropdown>
+        <!-- <p-dropdown formControlName="orden" [options]="ordenes" optionLabel="label" placeholder="Selecciona orden"></p-dropdown> -->
+        <!-- <p-multiSelect formControlName="prompts" [options]="prompts" optionLabel="nombre_prompt" placeholder="Selecciona prompt" [selectionLimit]="1"></p-multiSelect>
+        <p-multiSelect formControlName="respuestas_carteles" [options]="respuestas_carteles" optionLabel="" placeholder="Probabilidades de los carteles" [selectionLimit]="2"></p-multiSelect> -->
+    </form>   
+    <!-- <div>
+        <div style="display: flex;">
+            <input type="number" pInputText [(ngModel)]="rangos_cuentas[0]" [style]="{'width':'100px'}"/>
+            <input type="number" pInputText [(ngModel)]="rangos_cuentas[1]" [style]="{'width':'100px'}" /> 
+        </div>
+        <p-slider [(ngModel)]="rangos_cuentas" [min]="0" [max]="15" [step]="1" [range]="true"></p-slider>
+    </div> -->
+    <p-button (click)="enviarFiltroProcesados()" icon="pi pi-search" label="Filtrar" severity="danger"></p-button>
+</div>
+
