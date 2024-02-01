@@ -22,11 +22,15 @@
 .p-cardsRuta {
     display: grid;
     grid-template-columns: 50% 50%;
+    margin-left: 20%;
+    margin-top: 10%;
 }
 
 .card {
     height: 60%;
     width: 50%;
+    max-width: 400px;
+    max-height: 600px;
     border: solid red 5px;
     border-radius: 10px;
 }
