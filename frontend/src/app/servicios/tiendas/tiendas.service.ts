@@ -27,6 +27,8 @@ export class TiendasService {
 
   constructor(private http: HttpClient){ }
 
+
+
   getTienda(sfid: string, filtros?:filtro_procesados): Observable<tienda> {
    
     let body: any = undefined;

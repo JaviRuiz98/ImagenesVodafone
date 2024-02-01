@@ -11,6 +11,8 @@
   width: 100%;
 }
 .barra{
+  position: fixed;
+  z-index: 5; 
   display: grid;
   grid-template-columns: 90% 10%;
   width: 100%;
@@ -21,6 +23,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 80px;
 }
 .contornoPanel {
   width: 85%;
