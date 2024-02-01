@@ -43,7 +43,7 @@
 }
 
 ::ng-deep .p-component-overlay {
-    z-index: 0 !important;
+    z-index: 5 !important;
 }
 ::ng-deep .p-progressbar-value {
     background-color: red;
