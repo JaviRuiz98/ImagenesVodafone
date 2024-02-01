@@ -49,39 +49,14 @@ export const tiendaService = {
             },
             include: {
                 mobiliario: {
-                    include: {
-                        pertenencia_mueble_mobiliario: {
-                            include: {
-                                muebles: {
-
-                                    include: {
-                                        expositores: {
-                                          
-                                            include: {
-                                                imagenes: true, 
-                                                procesados_imagenes: {
-                                                    orderBy: {
-                                                        fecha: 'desc'
-                                                    },
-                                                    include: {
-                                                        imagenes: true,
-                                                        respuestas_carteles: true,
-                                                        respuestas_dispositivos: true,
-                                                        prompts: true
-                                                    }
-                                                }                                        
-                                            }
-                                        }
-                                    }
-                                }
-                                    
-                                
-                            }
-                        }
-                    }
+                   select:{
+                       id_mobiliario: true
+                   }
                 }
-               
             }
+                
+               
+            
         });
         
         
