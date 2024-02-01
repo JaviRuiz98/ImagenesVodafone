@@ -1,4 +1,3 @@
-
 .paginaCompleta {
   display: flex;
   align-items: center;
@@ -11,16 +10,21 @@
   width: 100%;
 }
 .barra{
+  position: fixed;
+  z-index: 5; 
   display: grid;
   grid-template-columns: 90% 10%;
   width: 100%;
   height: 100%;
+  height: 80px;
 }
 .sidebar{
   background-color: red;
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 80px;
+  z-index: 6;
 }
 .contornoPanel {
   width: 85%;

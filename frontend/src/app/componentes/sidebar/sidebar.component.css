@@ -42,3 +42,7 @@
 .boton{
     background-color: red;
 }
+
+::ng-deep .p-component-overlay {
+    z-index: 0 !important;
+}
