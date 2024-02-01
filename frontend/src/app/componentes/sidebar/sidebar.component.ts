@@ -35,6 +35,13 @@ export class SidebarComponent implements OnInit {
     this.promptsService.getEstadisticasPrompts().subscribe({
       next: (data) => {
         this.estadisticaPrompts = data;
+
+        this.estadisticaPrompts = this.estadisticaPrompts.map((estadistica) => ({
+          ...estadistica,
+          porcentaje_exito: parseFloat(estadistica.porcentaje_exito.toFixed(2))
+        }))
+
+        console.log("estadisticas", this.estadisticaPrompts);
       }
     })
   }

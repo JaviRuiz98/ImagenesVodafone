@@ -56,7 +56,7 @@ export class FiltroProcesadosComponent implements OnInit {
     ]; 
 
     // Tipos de procesado
-    this.categorias = ['carteles', 'dispositivos'];
+    this.categorias = ['todos','carteles','dispositivos'];
 
     // Opciones de prompts
     this.promptsService.getAllPrompts().subscribe( 
@@ -80,7 +80,7 @@ export class FiltroProcesadosComponent implements OnInit {
 
     const  filtros : filtro_procesados = {
       orden: this.formData.orden.value,
-      categoria: this.formData.categoria,
+      categoria: this.formData.categoria != "todos" ? this.formData.categoria : '',
       prompts: prompts_id,
       rangos_cuentas: {
         min: this.rangos_cuentas[0],

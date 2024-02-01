@@ -33,7 +33,6 @@
     margin-top: 20px;
     margin-left: 5%;
     margin-right: 5%;
-    justify-content: space-between;
     width: 90%;
     height: auto;
     
@@ -44,5 +43,8 @@
 }
 
 ::ng-deep .p-component-overlay {
-    z-index: 0 !important;
+    z-index: 5 !important;
+}
+::ng-deep .p-progressbar-value {
+    background-color: red;
 }
