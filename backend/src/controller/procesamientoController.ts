@@ -22,7 +22,6 @@ export async function procesarImagenes(req: Request, res: Response) {
     const file = req.file //as { [fieldname: string]: Express.Multer.File[] };
     const idExpositor: number = parseInt(req.body.idExpositor);
     
-    
     //obtengo la imagen a procesar
     const imagenProcesada = file//(files['imagenesProcesamiento'] as Express.Multer.File[]).map(file => file.path)[0];
 

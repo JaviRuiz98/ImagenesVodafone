@@ -11,10 +11,12 @@ import { AppComponent } from './app.component';
 
 import { ValidadorModule } from './pages/validador/validador.module';
 import { HomeModule } from './pages/home/home.module';
+import { CargarAuditoriaComponent } from './pages/cargar-auditoria/cargar-auditoria.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    CargarAuditoriaComponent,
   ],
   imports: [
     ValidadorModule,

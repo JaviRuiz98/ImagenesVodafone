@@ -22,7 +22,7 @@ export class ValidadorComponent implements OnInit{
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
 
-
+  id_auditoria = null;        //                      ESTA VISTA SERA SOLO PARA (ADMIN || DESARROLLO)   ID_AUDITORIA -> NULL 
   //sfid = "FRANQ982";
   
   muebles: muebles[] = [];
@@ -48,13 +48,10 @@ export class ValidadorComponent implements OnInit{
     ) {}
 
   async inicializaImagenesReferencia( filtros?: filtro_procesados) {
-
                                 //id mobiliario
     this.mueblesService.getMuebles(undefined, filtros).subscribe( (data: muebles[]) => {
       this.muebles = data;
     }), (error: Error) => { console.log(error) }
-
-
   }
 
 
@@ -69,7 +66,7 @@ export class ValidadorComponent implements OnInit{
     this.cargas_procesamiento[id_expositor_selected]= true;   
     this.messageService.add({ severity: 'info', summary: 'Cargando', detail: 'La imagen se está procesando' });
 
-    this.procesamientoService.postProcesamientoImagenes(id_expositor_selected, this.imagenAProcesar).subscribe( 
+    this.procesamientoService.postProcesadoImagenes(id_expositor_selected, this.imagenAProcesar, this.id_auditoria).subscribe( 
       ( response: procesados_imagenes ) => {
         console.log("response", response);
         this.cargas_procesamiento[id_expositor_selected] = false;

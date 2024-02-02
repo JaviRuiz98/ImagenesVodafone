@@ -19,11 +19,15 @@ export class ProcesamientoService {
     return this.http.get<procesados_imagenes[]>(`${this.API_URI}/procesados/${id_auditoria}`);
   }
 
-  postProcesamientoImagenes(id_expositor:number,imageFile: File  ): Observable<procesados_imagenes> {
+  postProcesadoImagenes(id_expositor:number,imageFile: File, id_auditoria: number | null  ): Observable<procesados_imagenes> {
     const formData = new FormData();
     formData.append('idExpositor', id_expositor.toString());
     formData.append('imagenesProcesamiento', imageFile);
-
+    if (id_auditoria!=null) {
+     formData.append('id_auditoria', id_auditoria.toString());
+    }else{
+      formData.append('id_auditoria', 'null');
+    }
     return this.http.post<procesados_imagenes>(`${this.API_URI}/procesamiento`, formData);
   }
 

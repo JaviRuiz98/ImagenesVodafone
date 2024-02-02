@@ -15,6 +15,7 @@ router.delete('/borrarProcesado/:id_procesado_imagen', borrarProcesado);
 
 router.post('/feedbackProcesado', feedbackProcesado );
 
+router.get('/procesamientos', )
 
 
 export default router;

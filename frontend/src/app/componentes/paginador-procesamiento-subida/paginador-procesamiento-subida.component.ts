@@ -52,6 +52,7 @@ export class PaginadorProcesamientoSubidaComponent {
     @Input() cargando_procesamiento: boolean = false;
     @Input() id_expositor_selected: number = 0;
     @Input() valueSelected: string = 'new';
+    @Input() id_auditoria: number = 0;
     @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File, id_expositor_selected: number }>();
 
     url_imagenes_procesadas: string = 'http://validador-vf.topdigital.local/imagenes/imagenesProcesamiento/';
