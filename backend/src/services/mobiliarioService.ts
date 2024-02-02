@@ -31,6 +31,9 @@ export const mobiliarioService = {
                                 respuestas_carteles: true,
                                 respuestas_dispositivos: true,
                                 prompts: true
+                            },
+                            orderBy: {
+                                fecha: 'desc'
                             }
                         }                                        
                     }

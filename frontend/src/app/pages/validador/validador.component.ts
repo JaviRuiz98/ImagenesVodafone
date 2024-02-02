@@ -9,6 +9,7 @@ import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 import { MessageService } from 'primeng/api';
 import { filtro_procesados } from 'src/app/interfaces/filtro_procesados';
 import { muebles } from 'src/app/interfaces/muebles';
+import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
 
 
 @Component({
@@ -43,12 +44,16 @@ export class ValidadorComponent implements OnInit{
   constructor( 
     private mueblesService: MueblesService,
     private procesamientoService: ProcesamientoService,
-    private messageService: MessageService
+    private messageService: MessageService, 
+    private localStorageService: LocalStorageService
     ) {}
 
   async inicializaImagenesReferencia( filtros?: filtro_procesados) {
 
-                                //id mobiliario
+
+    //const tiendaSelected: number | undefined = this.localStorageService.getItem('tiendas');
+    //const mobiliarioSelected: number | undefined= this.localStorageService.getItem('mobiliario');
+                                
     this.mueblesService.getMuebles(undefined, filtros).subscribe( (data: muebles[]) => {
       this.muebles = data;
     }), (error: Error) => { console.log(error) }

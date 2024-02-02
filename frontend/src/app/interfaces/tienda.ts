@@ -5,5 +5,6 @@ export interface tienda {
     sfid: string;
     mobiliario: {
         id_mobiliario: number
+        fecha: Date
     } []
 }
