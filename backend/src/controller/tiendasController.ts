@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { tiendaService } from '../services/tiendasServices';
-import { procesados_imagenes, tiendas } from '@prisma/client';
+import { tiendas } from '@prisma/client';
 
 export async function getAllTiendas(req: Request, res: Response) {
 
@@ -20,26 +20,57 @@ export async function getAllTiendas(req: Request, res: Response) {
 export async function getTiendaBySfid(req: Request, res: Response) {
     try{
         const sfid = req.params.sfid;
-        const categoria_clause:  "carteles" | "dispositivos"  | null = req.query.categoria as "carteles" | "dispositivos" | null;
-        
-        
-        const tienda: tiendas | null = await tiendaService.getBySfid(sfid, categoria_clause);
-        if (tienda) {
-            res.status(200).json(tienda);
-        } else {
-            res.status(404).json({ error: 'Tienda no encontrada' });
+        console.log(req.body);
+        /*const orden_clause: 'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null  = req.body.orden;
+        const prompts_clause: number[] | null  = req.body.prompts;
+        const ia_clause: string | null = req.body.ia;     
+        const respuestas_carteles_clause: string[] | null = req.body.carteles;
+        const respuestas_dispositivos_clause: number[] | null = req.body.dispositivos;*/
+
+        //obtiene las tiendas ordenadas por categoría_clause
+        const tienda: any = await tiendaService.getBySfid(sfid);
+
+      
+        if (!tienda) {
+            //Contenido vacio
+            res.status(204).send();
+            return;
         }
+
+        /*for (const mueble of tienda.muebles) {
+      
+            const promises = mueble.expositores.map( async (expositores: expositores) => 
+                
+                tiendaService.getProcesadosByIdExpositor(
+                    expositores.id_expositor,
+                    orden_clause,
+                    prompts_clause,
+                    ia_clause,
+                    respuestas_carteles_clause,
+                    respuestas_dispositivos_clause
+                )
+            );
+        
+            const resultados = await Promise.all(promises);
+          
+           
+            for (let i = 0; i < mueble.expositores.length; i++) {
+                mueble.expositores[i].procesados_imagenes = resultados[i];
+            }
+        }*/
+        res.status(200).json(tienda);
+                
     }catch(error){
         console.error('Error al obtener tienda por sfid:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 }
 
-export async function getProcesadosByIdExpositor(req: Request, res: Response) {
+/*export async function getProcesadosByIdExpositor(req: Request, res: Response) {
     try{
         const idExpositor = parseInt(req.params.idExpositor);
         
-        const  orden_clause: 'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null  = req.body.orden;
+        const orden_clause: 'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null  = req.body.orden;
         const prompts_clause: number[] | null  = req.body.prompt;
         const ia_clause: string | null = req.body.ia;     
         const respuestas_carteles_clause: string[] | null = req.body.carteles;
@@ -63,4 +94,4 @@ export async function getProcesadosByIdExpositor(req: Request, res: Response) {
         res.status(500).json({ error: 'Internal server error' });
         throw error;
     }
-}
+}*/

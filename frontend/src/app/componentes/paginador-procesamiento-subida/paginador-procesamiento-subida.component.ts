@@ -72,7 +72,7 @@ export class PaginadorProcesamientoSubidaComponent {
     onPageChange(event: any) {
         this.indice_paginador = event.first;
     }
-
+    
     getElementosPaginados(): procesados_imagenes[] | undefined {
         return this.procesados.slice(this.indice_paginador, this.indice_paginador + this.items_per_page);
     }
@@ -100,7 +100,7 @@ export class PaginadorProcesamientoSubidaComponent {
                 this.borrarProcesado(procesado);
             },
             reject: () => {
-                this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+                this.messageService.add({ severity: 'error', summary: 'Proceso cancelado', detail: '', life: 3000 });
             }
         });
     }
@@ -108,9 +108,16 @@ export class PaginadorProcesamientoSubidaComponent {
 
     borrarProcesado(procesado: procesados_imagenes){
         this.valueSelected = 'new';
-        this.procesamientoService.deleteProcesado(procesado).subscribe();
-        this.procesados.splice(this.procesados.indexOf(procesado), 1);
-        this.messageService.add({ severity: 'info', life: 3000,summary: 'Cargando', detail: 'La imagen se borro correctamente' });
+        this.procesamientoService.deleteProcesado(procesado).subscribe(
+            (response) => {
+                this.procesados.splice(this.procesados.indexOf(procesado), 1);
+                this.messageService.add({ severity: 'info', life: 3000,summary: 'Cargando', detail: 'La imagen se borro correctamente' });
+            }, (error) => {
+                console.log('error', error);
+                this.messageService.add({ severity: 'error', life: 3000, summary: 'Error', detail: 'No se pudo borrar la imagen' });
+            }
+        );
+        
     }
 
     funcionFeedback(procesado: procesados_imagenes, likeDislike: boolean | null) {

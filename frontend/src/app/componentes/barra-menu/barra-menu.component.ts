@@ -15,9 +15,5 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
 export class BarraMenuComponent {
 
   @Input() tiendaTitle: string = "";
-  @Output() show_filter = new EventEmitter<boolean>();
 
-  showFilter(){
-    this.show_filter.emit(true);
-  }
 }

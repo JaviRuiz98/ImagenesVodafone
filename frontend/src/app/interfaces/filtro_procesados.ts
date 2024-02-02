@@ -1,12 +1,13 @@
-export interface Filtro_procesados {
-    orden: string,
-    prompts: string[],
-    ia: string,
-    categoria: string,
-    respuestas_carteles: string[],
-    respuestas_dispositivos: string[]
+export interface filtro_procesados {
+    orden: String,
+    categoria: String,
+    prompts: number [],
+    rangos_cuentas: {
+      min: number,
+      max: number
+    },
+    respuestas_carteles: string [],
 }
-
 export interface Filtro {
     label: string,
     value: string

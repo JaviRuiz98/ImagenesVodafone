@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
+import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
 
-import { tienda } from 'src/app/interfaces/tienda';
+
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 
 import { MessageService } from 'primeng/api';
+import { filtro_procesados } from 'src/app/interfaces/filtro_procesados';
+import { muebles } from 'src/app/interfaces/muebles';
 
 
 @Component({
@@ -18,52 +21,47 @@ import { MessageService } from 'primeng/api';
 export class ValidadorComponent implements OnInit{
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
-  tienda: tienda = {
-    id_tienda: 0,
-    sfid: " ",
-    muebles: []
-  };
 
-  sfid = "FRANQ982";
+
+  //sfid = "FRANQ982";
+  
+  muebles: muebles[] = [];
 
   imagenAProcesar = new File([""], "");
 
   cargas_procesamiento : boolean[] = [];
-  modos_visualizacion : string[] = [];
+  modos_visualizacion : string[] = [];  
 
-  show_filter: boolean = false;
-  
+  filtros: filtro_procesados = {
+    orden: "date_desc",
+    categoria: "",
+    prompts: [],
+    respuestas_carteles: [],
+    rangos_cuentas: {min: 0, max: 100}    
+  }
 
   constructor( 
     private tiendasService: TiendasService,
+    private mueblesService: MueblesService,
     private procesamientoService: ProcesamientoService,
     private messageService: MessageService
     ) {}
 
-  async inicializaImagenesReferencia(sfid: string ) {
-    this.tiendasService.getTienda(sfid).subscribe( ( data: tienda ) => {
+  async inicializaImagenesReferencia( filtros?: filtro_procesados) {
 
-      this.tienda.id_tienda = data.id_tienda;
-      this.tienda.sfid = data.sfid;
+                                //id mobiliario
+    this.mueblesService.getMuebles(undefined, filtros).subscribe( (data: muebles[]) => {
+      this.muebles = data;
+    }), (error: Error) => { console.log(error) }
 
 
-      for (let i = 0; i < data.muebles.length; i++) {
-        if (data.muebles[i].expositores.length > 0) {
-          this.tienda.muebles.push(data.muebles[i]);
-          
-        }
-      }
-      console.log("tienda",this.tienda);
-    })
   }
 
 
   ngOnInit(): void {
-    this.inicializaImagenesReferencia(this.sfid);    
-  }
+   this.inicializaImagenesReferencia();    
+   console.log("muebles", this.muebles);
 
-  showFilter(){
-    this.show_filter = !this.show_filter;
   }
 
   async recibirFile(event: {archivo:File}, id_expositor_selected: number) {
@@ -76,7 +74,7 @@ export class ValidadorComponent implements OnInit{
         console.log("response", response);
         this.cargas_procesamiento[id_expositor_selected] = false;
         this.modos_visualizacion[id_expositor_selected] = 'historial';        
-        this.actualizarProcesamientoEnTienda(id_expositor_selected, response);
+        this.actualizarProcesamientoEnMueble(id_expositor_selected, response);
         this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Imagen procesada correctamente' });
       }, ( error: any ) => {
         console.log("error", error);
@@ -85,8 +83,8 @@ export class ValidadorComponent implements OnInit{
     })
   }
 
-  actualizarProcesamientoEnTienda(id_expositor_selected: number, response: procesados_imagenes) {
-    for (const mueble of this.tienda.muebles) {
+  actualizarProcesamientoEnMueble(id_expositor_selected: number, response: procesados_imagenes) {
+    for (const mueble of this.muebles) {
       const expositorIndex = mueble.expositores.findIndex((expositor) => expositor.id_expositor === id_expositor_selected);
       if (expositorIndex !== -1) {
         mueble.expositores[expositorIndex].procesados_imagenes.unshift(response);
@@ -94,5 +92,11 @@ export class ValidadorComponent implements OnInit{
       }
     }
   }
+
+  enviarFiltroProcesados(filtros:filtro_procesados) {
+    console.log("filtros", filtros);
+    this.inicializaImagenesReferencia( filtros);  
+  }
+
 
 }

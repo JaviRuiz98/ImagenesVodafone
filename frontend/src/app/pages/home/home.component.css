@@ -1,0 +1,42 @@
+.paginaCompleta {
+    display: grid;
+    grid-template-rows: 80px 100%;
+    height: 91vh; 
+    width: 100vw;
+}
+.barraTienda {
+    display: grid;
+    grid-template-columns: 80% 20%;
+    width: 100%;
+    height: 80px;
+    background-color: red;
+    z-index: 1;
+}
+
+.centrar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.p-cardsRuta {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    margin-left: 20%;
+    margin-top: 10%;
+}
+
+.card {
+    height: 60%;
+    width: 50%;
+    max-width: 400px;
+    max-height: 600px;
+    border: solid red 5px;
+    border-radius: 10px;
+}
+
+::ng-deep .p-card {
+    height: 100%;
+    width: 100%;
+    background-color: white;
+}
