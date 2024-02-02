@@ -41,7 +41,6 @@ export class ValidadorComponent implements OnInit{
   }
 
   constructor( 
-    private tiendasService: TiendasService,
     private mueblesService: MueblesService,
     private procesamientoService: ProcesamientoService,
     private messageService: MessageService

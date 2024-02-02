@@ -13,7 +13,7 @@
         </h1>
       </div>
       
-      <div *ngIf="currentState === 'home'" class ="dropdown" >
+      <div *ngIf="currentState === 'home'" class ="elements" >
         <p-dropdown 
         [options]="tiendas" 
         [(ngModel)]="tiendaSeleccionada"
@@ -23,8 +23,21 @@
         class="centrar">
         </p-dropdown>
       </div>
-      <div *ngIf="currentState === 'admin'" class ="dropdown" >
-        <app-sidebar class="sidebar"></app-sidebar>
+      
+      <div *ngIf="currentState === 'admin'" class ="elements" >
+    
+        <p-dropdown 
+        [options]="tiendas" 
+        [(ngModel)]="tiendaSeleccionada"
+        optionLabel="sfid" 
+        [showClear]="true" 
+        placeholder="Selecciona tu tienda" 
+        >
+        </p-dropdown>
+
+        <app-sidebar></app-sidebar>
+
+  
       </div>
     </div>
 
