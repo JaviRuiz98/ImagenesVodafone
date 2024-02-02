@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -7,10 +8,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit{
-  
-  tiendas: any[] = [] || undefined;
-  tiendaSaleccionada: any | undefined;
+
+
+  constructor(private router: Router ) { }
 
   ngOnInit() {
+  }
+
+  goToAdmin() {
+    this.router.navigate(['/validator']);
   }
 }

@@ -1,8 +1,4 @@
 <div class="paginaCompleta">
-  <div class="barra">
-
-    <app-sidebar class="sidebar"></app-sidebar>
-  </div>
   <app-filtro-procesados (enviar_filtros)="enviarFiltroProcesados($event)" style="margin: 1.5%;"></app-filtro-procesados>
   <p-toast></p-toast>
   <div *ngFor="let item of this.muebles" class="contornoPanel">

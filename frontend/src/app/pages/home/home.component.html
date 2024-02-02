@@ -1,11 +1,14 @@
-<div class="paginaCompleta">
-    <div class="barraTienda">
-        <app-barra-menu></app-barra-menu>
-        <p-dropdown [options]="tiendas" [(ngModel)]="tiendaSaleccionada" optionLabel="name" [showClear]="true" placeholder="Selecciona tu tienda" class="centrar"></p-dropdown>
-    </div>
+<div class="paginaCompleta"> 
     <div class="p-cardsRuta">
-        <p-card class="card"></p-card>
-        <p-card class="card"></p-card>
+        <p-card class="card">
+            imagen chula
+        </p-card>
+        
+        <div class="card" (click)="goToAdmin()">
+            <img  src="../../../assets/images/admin_example.png" class="image" alt="admin">
+        </div>
+       
+       
     </div>
 </div>
 

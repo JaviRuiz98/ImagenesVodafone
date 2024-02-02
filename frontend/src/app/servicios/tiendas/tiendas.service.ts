@@ -33,7 +33,7 @@ export class TiendasService {
 
   }
 
-  getTiendas(id_tienda: number): Observable<tienda[]> {
+  getTiendas(id_tienda?: number): Observable<tienda[]> {
 
     let url = `${this.API_URI}/tiendas`;
     if (id_tienda){
