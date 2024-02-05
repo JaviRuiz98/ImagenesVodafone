@@ -17,7 +17,7 @@ import { CargarAuditoriaComponent } from './pages/cargar-auditoria/cargar-audito
 @NgModule({
   declarations: [
     AppComponent,
-    CargarAuditoriaComponent,
+    AuditoriaComponent,
   ],
   imports: [
     BarraMenuComponent,
