@@ -4,7 +4,17 @@
   flex-direction: column;
   width: 100%;
 }
-
+.gridVolverFiltro {
+  display: grid;
+  grid-template-columns: 10% 90%;
+  width: 99vw;
+}
+.filtro {
+  display: flex;
+  align-items: center;
+  height: 80px;
+  
+}
 .barraCompleta {
   position: relative;
   width: 100%;

@@ -1,20 +1,11 @@
 
 <!DOCTYPE html>
 <html lang="es">
-    
     <p-button label="Volver al inicio" icon="pi pi-home" (click)="volver()" [text]="true" severity="danger"></p-button>
-
     <div class="paginaCompleta">
-        
         <p-button label="Nueva auditoria" [rounded]="true" (click)="nuevaAuditoria()" [style]="{'width': '100%', 'height': '100px', backgroundColor: 'gray'}"  class="botonNuevaAuditoria"></p-button>
-       
-        <div  *ngFor="let auditoria of auditorias; " >
+        <div *ngFor="let auditoria of auditorias;">
            <app-item-lista-auditoria [auditoria]="auditoria"></app-item-lista-auditoria>
         </div>
-
     </div>
-
-    
-
-   
 </html>

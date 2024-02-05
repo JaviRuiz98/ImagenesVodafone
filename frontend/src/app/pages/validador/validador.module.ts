@@ -14,6 +14,7 @@ import { BadgeModule } from 'primeng/badge';
 import { ImageModule } from 'primeng/image';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
 
  
 
@@ -46,7 +47,8 @@ import { IrArribaComponent } from 'src/app/componentes/ir-arriba/ir-arriba.compo
     BadgeModule, 
     ImageModule,
     ProgressSpinnerModule,
-    ToastModule
+    ToastModule,
+    ButtonModule
   ]
 })
 export class ValidadorModule { }

@@ -7,6 +7,7 @@ import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/p
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 
 import { MessageService } from 'primeng/api';
+import { Router } from '@angular/router';
 import { filtro_procesados } from 'src/app/interfaces/filtro_procesados';
 import { muebles } from 'src/app/interfaces/muebles';
 import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
@@ -45,7 +46,8 @@ export class ValidadorComponent implements OnInit{
     private mueblesService: MueblesService,
     private procesamientoService: ProcesamientoService,
     private messageService: MessageService, 
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private router: Router
     ) {}
 
   async inicializaImagenesReferencia( filtros?: filtro_procesados) {
@@ -100,6 +102,9 @@ export class ValidadorComponent implements OnInit{
   enviarFiltroProcesados(filtros:filtro_procesados) {
     console.log("filtros", filtros);
     this.inicializaImagenesReferencia( filtros);  
+  }
+  volver() {
+    this.router.navigate(['/home']);
   }
 
 
