@@ -4,7 +4,7 @@ import { muebles } from '@prisma/client';
 
 export async function getAllMuebles(req: Request, res: Response) {
         const id_mobiliario = req.params.id_mobiliario ? parseInt(req.params.id_mobiliario as string) : undefined;
-        const categoria_clause:  "carteles" | "dispositivos"  | '' = req.body.categoria as "carteles" | "dispositivos" | '';
+        const categoria_clause:  "carteles" | "dispositivos"  | null = req.body.categoria as "carteles" | "dispositivos" | null;
         const orden_clause: 'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null  = req.body.orden;
         const prompts_clause: number[] | null  = req.body.prompts;
         const ia_clause: string | null = req.body.ia;     

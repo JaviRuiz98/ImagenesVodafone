@@ -5,7 +5,7 @@ import db  from "../config/database";
 export const mobiliarioService = {
     getAllMuebles: async (
         id?: number,
-        categoria_clause: "carteles" | "dispositivos" | '' = '',
+        categoria_clause: "carteles" | "dispositivos" | null = null,
         _orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null = null,
         prompts_clause: number[] | null = null,
         ia_clause: string | null = null,
@@ -13,71 +13,78 @@ export const mobiliarioService = {
         _respuestas_dispositivos_clause: number[] | null = null
         ) : Promise<muebles[]> => {
 
-        const whereClause = id ? { some:{id_mobiliario: id }}: {};
+        const whereClause = id ? { some:{id_tienda: id }}: {};
 
-        let categoryClause =  {};
-        if (categoria_clause != ''){
-            categoryClause = categoria_clause == "dispositivos" ? {some:{}}  : {none:{}};
-        }
+     
 
         //const orderClause = getOrderClause(orden_clause);
 
 
         const muebles = await db.muebles.findMany({
             where:{
-                pertenencia_mueble_mobiliario:{
-                    ...whereClause
-                },
                 
-                expositores: {
-                    every: {
-                        dispositivos: categoryClause,
-                    }
-                }
+                pertenencia_mueble_tienda: whereClause,
                 
-                
-            }, include: {
+                categoria: categoria_clause ? categoria_clause : undefined
+                     
+            },
+            include: {
                                 
-                expositores: {
+                pertenencia_expositor_mueble: {
+                    //obtener el expositor mas reciente
+                    orderBy: {
+                        fecha: 'desc',
+                    },
+
+                    take:1,
                   
                     include: {
-                        imagenes: true, 
-                        procesados_imagenes: {
-                            include: {
-                                imagenes: true,
-                                respuestas_carteles: true,
-                                respuestas_dispositivos: true,
-                                prompts: true
-                                
-                            },
-                           orderBy: {
-                              
-                           },
-
-                           where: {
-                               prompts:{
-                                   id_prompt:{
-                                    in: prompts_clause? prompts_clause : undefined
-                                   }
+                       expositores:{
+                        include:{
+                            imagenes: true,
+                            procesados_imagenes: {
+                                include: {
+                                    imagenes: true,
+                                    respuestas_carteles: true,
+                                    respuestas_dispositivos: true,
+                                    prompts: true
+                                    
+                                },
+                               orderBy: {
+                                  
                                },
-
-                               IA_utilizada: ia_clause ? ia_clause : undefined,
-                               respuestas_carteles:{
-                                   every:{
-                                       probabilidad:{
-                                           in: respuestas_carteles_clause ? respuestas_carteles_clause : undefined
+    
+                               where: {
+                                   prompts:{
+                                       id_prompt:{
+                                        in: prompts_clause? prompts_clause : undefined
                                        }
-                                   }
-                               },
-                                                                
-                            }  
-                        }                                      
+                                   },
+    
+                                   IA_utilizada: ia_clause ? ia_clause : undefined,
+                                   respuestas_carteles:{
+                                       every:{
+                                           probabilidad:{
+                                               in: respuestas_carteles_clause ? respuestas_carteles_clause : undefined
+                                           }
+                                       }
+                                   },
+                                                                    
+                                }  
+                            }    
+                        }
+                       } 
+                                                         
                     }
                 }
             }
         });
 
         return muebles;
+    },
+
+    async getMuebleById( id_mueble: number): Promise<muebles | null> {
+        return await db.muebles.findUnique({where: {id_mueble: id_mueble}});
     }
                                           
 }

@@ -88,9 +88,9 @@ export class ValidadorComponent implements OnInit{
 
   actualizarProcesamientoEnMueble(id_expositor_selected: number, response: procesados_imagenes) {
     for (const mueble of this.muebles) {
-      const expositorIndex = mueble.expositores.findIndex((expositor) => expositor.id_expositor === id_expositor_selected);
+      const expositorIndex = mueble.pertenencia_expositor_mueble.expositores.findIndex((expositor) => expositor.id_expositor === id_expositor_selected);
       if (expositorIndex !== -1) {
-        mueble.expositores[expositorIndex].procesados_imagenes.unshift(response);
+        mueble.pertenencia_expositor_mueble.expositores[expositorIndex].procesados_imagenes.unshift(response);
         break; 
       }
     }
