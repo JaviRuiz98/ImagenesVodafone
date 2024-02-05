@@ -26,7 +26,7 @@ export class AuditoriaService {
 
   getAuditorias(id_tienda: number): Observable<auditoria[]> {
     const params =  { id_tienda: id_tienda };
-    return this.http.get<auditoria[]>(`${this.API_URI}/auditorias`, { params: params });
+    return this.http.get<auditoria[]>(`${this.API_URI}/auditorias/${id_tienda}`);
   }
 
   
