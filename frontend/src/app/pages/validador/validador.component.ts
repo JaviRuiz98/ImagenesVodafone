@@ -50,7 +50,6 @@ export class ValidadorComponent implements OnInit{
 
   async inicializaImagenesReferencia( filtros?: filtro_procesados) {
 
-
     //const tiendaSelected: number | undefined = this.localStorageService.getItem('tiendas');
     //const mobiliarioSelected: number | undefined= this.localStorageService.getItem('mobiliario');
                                 
@@ -58,7 +57,6 @@ export class ValidadorComponent implements OnInit{
       this.muebles = data;
       console.log("muebles", this.muebles);
     }), (error: Error) => { console.log(error) }
-
 
   }
 

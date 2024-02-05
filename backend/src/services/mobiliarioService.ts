@@ -3,7 +3,15 @@ import db  from "../config/database";
 
 
 export const mobiliarioService = {
-    getAllMuebles: async (id?: number,  categoria_clause: "carteles" | "dispositivos" | '' = '') : Promise<muebles[]> => {
+    getAllMuebles: async (
+        id?: number,
+        categoria_clause: "carteles" | "dispositivos" | '' = '',
+        _orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null = null,
+        prompts_clause: number[] | null = null,
+        ia_clause: string | null = null,
+        respuestas_carteles_clause: string[] | null = null,
+        _respuestas_dispositivos_clause: number[] | null = null
+        ) : Promise<muebles[]> => {
 
         const whereClause = id ? { some:{id_mobiliario: id }}: {};
 
@@ -11,6 +19,9 @@ export const mobiliarioService = {
         if (categoria_clause != ''){
             categoryClause = categoria_clause == "dispositivos" ? {some:{}}  : {none:{}};
         }
+
+        //const orderClause = getOrderClause(orden_clause);
+
 
         const muebles = await db.muebles.findMany({
             where:{
@@ -37,11 +48,30 @@ export const mobiliarioService = {
                                 respuestas_carteles: true,
                                 respuestas_dispositivos: true,
                                 prompts: true
+                                
                             },
-                            orderBy: {
-                                fecha: 'desc'
-                            }
-                        }                                        
+                           orderBy: {
+                              
+                           },
+
+                           where: {
+                               prompts:{
+                                   id_prompt:{
+                                    in: prompts_clause? prompts_clause : undefined
+                                   }
+                               },
+
+                               IA_utilizada: ia_clause ? ia_clause : undefined,
+                               respuestas_carteles:{
+                                   every:{
+                                       probabilidad:{
+                                           in: respuestas_carteles_clause ? respuestas_carteles_clause : undefined
+                                       }
+                                   }
+                               },
+                                                                
+                            }  
+                        }                                      
                     }
                 }
             }
@@ -51,6 +81,33 @@ export const mobiliarioService = {
     }
                                           
 }
+
+// function getOrderClause( orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null) {
+
+//     let orderDirection = orden_clause === 'result_asc' ? 'ASC' : 'DESC';
+
+//     if (orden_clause === 'date_asc' || orden_clause === 'date_desc') {
+//         return `ORDER BY procesados_imagenes.fecha ${orden_clause === 'date_asc' ? 'ASC' : 'DESC'}`;
+//     } else if (orden_clause === 'result_asc' || orden_clause === 'result_desc') {
+//         return `
+//             ORDER BY 
+//             CASE respuestas_carteles.probabilidad
+//                 WHEN 'ninguna' THEN 1
+//                 WHEN 'muy bajo' THEN 2
+//                 WHEN 'bajo' THEN 3
+//                 WHEN 'medio' THEN 4
+//                 WHEN 'otro idioma' THEN 5
+//                 WHEN 'alto' THEN 6
+//                 WHEN 'muy alto' THEN 7
+//                 ELSE 8
+//             END ${orderDirection},
+//             ABS(respuestas_dispositivos.huecos_esperados - respuestas_dispositivos.dispositivos_contados) ${orderDirection}
+//         `;
+//     } else {
+//         return 'ORDER BY procesados_imagenes.fecha DESC';
+//     }
+// }
+
 
 
 //     async  getProcesadosByIdExpositor(
@@ -131,42 +188,19 @@ export const mobiliarioService = {
 //         }finally{
 //             db.$disconnect();
 //         }
-    // }   
+ // }   
+
+//  function arrayToString(array: string[] | null ): string | null {
+//     return array && array.length > 0 ? array.map(item => `'${item}'`).join(", ") : null;
+// }
+
+// //comillas?
+// function numberArrayToString(array: number[] | null ): string | null {
+//     return array && array.length > 0 ? array.map(item => `${item.toString()}`).join(", ") : null;
+// }
 
 
-/*
- function getOrderClause( orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null) {
 
-    let orderDirection = orden_clause === 'result_asc' ? 'ASC' : 'DESC';
+ 
 
-    if (orden_clause === 'date_asc' || orden_clause === 'date_desc') {
-        return `ORDER BY procesados_imagenes.fecha ${orden_clause === 'date_asc' ? 'ASC' : 'DESC'}`;
-    } else if (orden_clause === 'result_asc' || orden_clause === 'result_desc') {
-        return `
-            ORDER BY 
-            CASE respuestas_carteles.probabilidad
-                WHEN 'ninguna' THEN 1
-                WHEN 'muy bajo' THEN 2
-                WHEN 'bajo' THEN 3
-                WHEN 'medio' THEN 4
-                WHEN 'otro idioma' THEN 5
-                WHEN 'alto' THEN 6
-                WHEN 'muy alto' THEN 7
-                ELSE 8
-            END ${orderDirection},
-            ABS(respuestas_dispositivos.huecos_esperados - respuestas_dispositivos.dispositivos_contados) ${orderDirection}
-        `;
-    } else {
-        return 'ORDER BY procesados_imagenes.fecha DESC';
-    }
-}
 
-function arrayToString(array: string[] | null ): string | null {
-    return array && array.length > 0 ? array.map(item => `'${item}'`).join(", ") : null;
-}
-
-//comillas?
-function numberArrayToString(array: number[] | null ): string | null {
-    return array && array.length > 0 ? array.map(item => `${item.toString()}`).join(", ") : null;
-}
-*/
