@@ -24,7 +24,7 @@ const routes: Routes = [
     path: "", component: GestionDeAuditoriasComponent 
   },
   { 
-    path: "auditoria", component: CargarAuditoriaComponent 
+    path: "auditoria", component: AuditoriaComponent 
   },
 ];
 
