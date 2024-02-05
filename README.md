@@ -1,6 +1,6 @@
 #GETTING STARTED
     #backend
-    Se deben seguir los siguientes pasos:
+    -Se deben seguir los siguientes pasos:
         -Ejecutar en la consola npm install para obtener los node modules en local
         -Escribir en la consola npm run prisma:init
         -Especificar en el prisma el provider de base de datos

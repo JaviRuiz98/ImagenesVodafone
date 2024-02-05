@@ -11,6 +11,7 @@ import { AppComponent } from './app.component';
 
 import { ValidadorModule } from './pages/validador/validador.module';
 import { HomeModule } from './pages/home/home.module';
+import { BarraMenuComponent } from './componentes/barra-menu/barra-menu.component';
 import { CargarAuditoriaComponent } from './pages/cargar-auditoria/cargar-auditoria.component';
 
 @NgModule({
@@ -19,6 +20,7 @@ import { CargarAuditoriaComponent } from './pages/cargar-auditoria/cargar-audito
     CargarAuditoriaComponent,
   ],
   imports: [
+    BarraMenuComponent,
     ValidadorModule,
     AppRoutingModule,
     HomeModule,
