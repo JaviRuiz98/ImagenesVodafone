@@ -37,7 +37,6 @@ export class BarraMenuComponent implements OnInit {
   currentState: 'home' | 'auditoria' | 'admin' | 'empty' = 'home';
 
   constructor(
-
     private localStorageService: LocalStorageService,
     private tiendasService: TiendasService,
     private activatedRoute: ActivatedRoute, private router: Router) {}

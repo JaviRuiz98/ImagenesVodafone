@@ -55,7 +55,7 @@ export class GestionDeAuditoriasComponent implements OnInit {
   }
 
   volver() {
-    window.location.href = '/';
+    this.router.navigate(['/home']);
   }
 
   inicializaAuditorias() {
