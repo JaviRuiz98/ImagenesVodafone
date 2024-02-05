@@ -7,7 +7,7 @@ import { HomeComponent } from './pages/home/home.component';
 
 
 import { GestionDeAuditoriasComponent } from './pages/gestion-de-auditorias/gestion-de-auditorias.component';
-import { CargarAuditoriaComponent } from './pages/cargar-auditoria/cargar-auditoria.component';
+import { AuditoriaComponent } from './pages/auditoria/auditoria.component';
 
 const routes: Routes = [
 
@@ -24,7 +24,7 @@ const routes: Routes = [
     path: "", component: GestionDeAuditoriasComponent 
   },
   { 
-    path: "auditoria", component: CargarAuditoriaComponent 
+    path: "auditoria", component: AuditoriaComponent 
   },
 ];
 
