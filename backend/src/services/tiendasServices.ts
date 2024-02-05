@@ -17,7 +17,8 @@ export const tiendaService = {
                     include:{
                         mobiliario:{
                            select:{
-                               id_mobiliario: true
+                               id_mobiliario: true,
+                               fecha: true
                            }
                         }
                     }
@@ -40,7 +41,6 @@ export const tiendaService = {
     async getBySfid(sfid: string): Promise<tiendas | null> {
 
    
-
         try {       
         
         return await db.tiendas.findUnique({
@@ -50,7 +50,8 @@ export const tiendaService = {
             include: {
                 mobiliario: {
                    select:{
-                       id_mobiliario: true
+                       id_mobiliario: true,
+                       fecha: true
                    }
                 }
             }

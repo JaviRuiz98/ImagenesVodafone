@@ -26,12 +26,22 @@ export class TiendasService {
 
 
 
-  getTienda(sfid: string): Observable<tienda> {
+  getTiendaBySfid(sfid: string): Observable<tienda> {
    
   
     return this.http.get<tienda>(`${this.API_URI}/tiendas/${sfid}`);
 
   }
+
+  getTiendas(id_tienda?: number): Observable<tienda[]> {
+
+    let url = `${this.API_URI}/tiendas`;
+    if (id_tienda){
+      url += `?id_tienda=${id_tienda}`
+    }
+    return this.http.get<tienda[]>(url);
+  }
+
 
 
  
