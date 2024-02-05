@@ -56,6 +56,7 @@ export class ValidadorComponent implements OnInit{
                                 
     this.mueblesService.getMuebles(undefined, filtros).subscribe( (data: muebles[]) => {
       this.muebles = data;
+      console.log("muebles", this.muebles);
     }), (error: Error) => { console.log(error) }
 
 

@@ -16,13 +16,19 @@ export const mobiliarioService = {
             where:{
                 pertenencia_mueble_mobiliario:{
                     ...whereClause
+                },
+                
+                expositores: {
+                    every: {
+                        dispositivos: categoryClause,
+                    }
                 }
+                
+                
             }, include: {
                                 
                 expositores: {
-                    where: {
-                        dispositivos: categoryClause,
-                    },
+                  
                     include: {
                         imagenes: true, 
                         procesados_imagenes: {
