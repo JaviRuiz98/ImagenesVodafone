@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CargarAuditoriaComponent } from './cargar-auditoria.component';
+import { AuditoriaComponent } from './auditoria.component';
 
 import { SidebarComponent } from '../../componentes/sidebar/sidebar.component';
 
@@ -26,7 +26,7 @@ import { IrArribaComponent } from 'src/app/componentes/ir-arriba/ir-arriba.compo
 
 @NgModule({
   declarations: [
-    CargarAuditoriaComponent
+    AuditoriaComponent
   ],
   imports: [
     CommonModule,

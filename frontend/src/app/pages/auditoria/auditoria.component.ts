@@ -16,11 +16,11 @@ import { AuditoriaService } from 'src/app/servicios/auditoria/auditoria.service'
 
 
 @Component({
-  selector: 'app-cargar-auditoria',
-  templateUrl: './cargar-auditoria.component.html',
-  styleUrls: ['./cargar-auditoria.component.css']
+  selector: 'auditoria',
+  templateUrl: './auditoria.component.html',
+  styleUrls: ['./auditoria.component.css']
 })
-export class CargarAuditoriaComponent implements OnInit{
+export class AuditoriaComponent implements OnInit{
   //url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
 
