@@ -68,12 +68,12 @@ export class ValidadorComponent implements OnInit{
 
   }
 
-  async recibirFile(event: {archivo:File}, id_expositor_selected: number) {
+  async recibirFile(event: {archivo:File}, id_expositor_selected: number, id_mueble_selected: number) {
     this.imagenAProcesar = event.archivo;
     this.cargas_procesamiento[id_expositor_selected]= true;   
     this.messageService.add({ severity: 'info', summary: 'Cargando', detail: 'La imagen se está procesando' });
 
-    this.procesamientoService.postProcesamientoImagenes(id_expositor_selected, this.imagenAProcesar).subscribe( 
+    this.procesamientoService.postProcesamientoImagenes(id_expositor_selected, id_mueble_selected, this.imagenAProcesar).subscribe( 
       ( response: procesados_imagenes ) => {
         console.log("response", response);
         this.cargas_procesamiento[id_expositor_selected] = false;

@@ -3,6 +3,7 @@ import { HttpClient,HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { auditoria } from '../../interfaces/auditoria';
 import { procesados_imagenes } from '../../interfaces/procesados_imagenes';
+
 @Injectable({
   providedIn: 'root'
 })

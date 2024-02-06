@@ -12,16 +12,15 @@ import { auditoria } from 'src/app/interfaces/auditoria';
 
 import { AuditoriaService } from 'src/app/servicios/auditoria/auditoria.service';
 
-
 @Component({
   selector: 'auditoria',
   templateUrl: './auditoria.component.html',
   styleUrls: ['./auditoria.component.css']
 })
+
 export class AuditoriaComponent implements OnInit{
+
   //url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
-
-
 
   @Input() auditoria = new auditoria(null);
 
@@ -40,9 +39,6 @@ export class AuditoriaComponent implements OnInit{
     rangos_cuentas: {min: 0, max: 100}    
   }
 
-
-
-
   constructor( 
     private tiendasService: TiendasService,
     private mueblesService: MueblesService,
@@ -50,31 +46,15 @@ export class AuditoriaComponent implements OnInit{
     private messageService: MessageService
     ) {}
 
+    ngOnInit(): void {
+      this.inicializaImagenesReferencia(this.auditoria.id_mobiliario);
+    }
 
-  
   async inicializaImagenesReferencia(id_mobiliario: number, filtros?: filtro_procesados) {
     //id mobiliario
     this.mueblesService.getMuebles(id_mobiliario, filtros).subscribe( (data: muebles[]) => {
       this.muebles = data;
       console.log("muebles", this.muebles);
     }), (error: Error) => { console.log(error) }
-
   }
-
-  
-
-
-
-
-
-  ngOnInit(): void {
-
-
-    this.inicializaImagenesReferencia(this.auditoria.id_mobiliario);
-
-
-  }
-
-
-
 }
