@@ -15,11 +15,16 @@ export const tiendaService = {
 
                     where : whereClause,
                     include:{
-                        mobiliario:{
-                           select:{
-                               id_mobiliario: true,
-                               fecha: true
-                           }
+                        pertenencia_mueble_tienda:{
+                            include:{
+                                muebles:{
+                                    select:{
+                                        id_mueble: true,
+                                        
+                                    }
+                                }
+                            }
+                          
                         }
                     }
                 }
@@ -48,12 +53,19 @@ export const tiendaService = {
                 sfid: sfid
             },
             include: {
-                mobiliario: {
-                   select:{
-                       id_mobiliario: true,
-                       fecha: true
-                   }
+           
+                pertenencia_mueble_tienda:{
+                    include:{
+                        muebles:{
+                            select:{
+                                id_mueble: true,
+                                
+                            }
+                        }
+                    }
+                    
                 }
+            
             }
                 
                

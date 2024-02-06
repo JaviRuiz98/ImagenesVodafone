@@ -1,4 +1,4 @@
-import { expositores, imagenes } from "@prisma/client";
+import { expositores, imagenes, muebles } from "@prisma/client";
 import db  from "../config/database";
 import { getDestination } from "../config/multer";
 
@@ -43,16 +43,24 @@ export const expositoresService = {
           await db.$disconnect();
         }
       },
+      
 
-      /*async  getDispositivosCount(idExpositor: number): Promise<number> {
+      async  getMueble(idExpositor: number): Promise<muebles | null> {
         try {
-          const count = await db.dispositivos.count({
+          const mueble = await db.muebles.findFirst({
             where: {
-              id_expositor: idExpositor
-            }
+             pertenencia_expositor_mueble: {
+               some: {
+                 id_expositor: idExpositor,
+                 
+               },
+               
+             }
+            },
+        
           });
-          
-          return count;
+          return mueble
+    
         } catch (error) {
          
           throw error;

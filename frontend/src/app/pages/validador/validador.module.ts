@@ -16,8 +16,6 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 
- 
-
 // componentes nuestros
 import { BarraMenuComponent } from './../../componentes/barra-menu/barra-menu.component';
 import { MarcoElementoComponent } from './../../componentes/marco-elemento/marco-elemento.component';
