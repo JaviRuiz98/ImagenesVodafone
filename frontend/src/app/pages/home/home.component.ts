@@ -21,4 +21,15 @@ export class HomeComponent implements OnInit{
   goToGestionAuditorias() {
     this.router.navigate(['/gestionAuditorias']);
   }
+
+  goToExpositor() {
+    this.router.navigate(['/expositor']);
+    }
+    goToMueble() {
+    this.router.navigate(['/muebles']);
+    }
+    goToTienda() {
+    this.router.navigate(['/tienda']);
+    }
+    
 }
