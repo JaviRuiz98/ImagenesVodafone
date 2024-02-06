@@ -1,3 +1,4 @@
+
 <div class="barraCompleta">
   <div class="image-container">
     <img src="../../../assets/images/icono.png" alt="icono">
@@ -6,51 +7,31 @@
     <h1 class="titulo">
       Validación de Imagenes Vodafone 
       {{tiendaSeleccionada?  getTiendaTitle() : ''}}
+      
     </h1>
   </div>
+  
   <div *ngIf="currentState === 'home'" class ="elements" >
     <p-dropdown 
-      [options]="tiendas" 
-      [(ngModel)]="tiendaSeleccionada"
-      (ngModelChange)="onTiendaSelected()"
-      optionLabel="sfid" 
-      [showClear]="true" 
-      placeholder="Selecciona tu tienda" 
-      class="centrar">
+    [options]="tiendas" 
+    [(ngModel)]="tiendaSeleccionada"
+    (ngModelChange)="onTiendaSelected()"
+    optionLabel="sfid" 
+    [showClear]="true" 
+    placeholder="Selecciona tu tienda" 
+    class="centrar">
     </p-dropdown>
   </div>
-  <div *ngIf="currentState === 'admin'" class ="elements" >        
-    <p-dropdown 
-      [options]="tiendas" 
-      [(ngModel)]="tiendaSeleccionada"
-      optionLabel="sfid" 
-      [showClear]="true" 
-      (ngModelChange)="onTiendaSelected()"
-      placeholder="Selecciona tu tienda" >
-    </p-dropdown>
-    <p-dropdown 
-      *ngIf ="tiendaSeleccionada"
-      [options]="mobiliarios"
-      optionLabel="fecha" 
-      [(ngModel)]="mobiliarioSeleccionado"
-      (ngModelChange)="onMobiliarioSelected()"
-      placeholder="Selecciona tu mobiliario"
-      [showClear]="true">
-    </p-dropdown> 
-
-    <!-- <p-button 
-    [hidden]="!tiendaSeleccionada"
-    [severity]="'danger'"
-    [raised]="true"
-    [label]= "mobiliarioSeleccionado == undefined ? 'Aplicar selección de  tienda' : 'Aplicar selección de tienda y mobiliario'"
-    >
-    </p-button> -->
+  
+  <div *ngIf="currentState === 'admin'" class ="elementosValidator" >        
+    
+   
+  
     <app-sidebar></app-sidebar>
+
+
   </div>
 </div>
-
-
-
 
 
 

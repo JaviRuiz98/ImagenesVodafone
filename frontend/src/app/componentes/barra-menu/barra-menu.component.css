@@ -31,6 +31,16 @@
   font-size: 24px;
 }
 
+.elementosValidator{
+ 
+  display: flex;
+  justify-content: right;
+  align-items: center;
+  margin-right: 30%;
+  height: 100%;
+
+}
+
 .scrolling-bar::before {
   content: "";
   display: flex;
