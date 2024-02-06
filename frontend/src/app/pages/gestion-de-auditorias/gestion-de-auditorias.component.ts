@@ -42,12 +42,7 @@ export class GestionDeAuditoriasComponent implements OnInit {
   nuevaAuditoria() {
     this.auditoriaService.nuevaAuditoria(this.id_tienda______SUSTITUIR, this.auditorias[0].id_mobiliario).subscribe();
     this.router.navigate(['/auditoria'], { queryParams: { id_tienda: this.id_tienda } });
-  }
-
-  volver() {
-    this.router.navigate(['/home']);
-  }
-
+  } 
   inicializaAuditorias() {
     this.auditoriaService
     this.auditoriaService.getAuditorias(this.id_tienda______SUSTITUIR).subscribe((data)=>{

@@ -1,39 +1,33 @@
-
-
-
-    <div class="barraCompleta">
-      <div class="image-container">
-        <img src="../../../assets/images/icono.png" alt="icono">
-      </div>
-      <div>
-        <h1 class="titulo">
-          Validación de Imagenes Vodafone 
-          {{tiendaSeleccionada?  getTiendaTitle() : ''}}
-          
-        </h1>
-      </div>
-      
-      <div *ngIf="currentState === 'home'" class ="elements" >
-        <p-dropdown 
-        [options]="tiendas" 
-        [(ngModel)]="tiendaSeleccionada"
-        (ngModelChange)="onTiendaSelected()"
-        optionLabel="sfid" 
-        [showClear]="true" 
-        placeholder="Selecciona tu tienda" 
-        class="centrar">
-        </p-dropdown>
-      </div>
-      
-      <div *ngIf="currentState === 'admin'" class ="elementosValidator" >        
-        
-       
-      
-        <app-sidebar></app-sidebar>
-
-  
-      </div>
+<div class="barraCompletaBotonInicio">
+  <div class="barraCompleta">
+    <div class="image-container">
+      <img src="../../../assets/images/icono.png" alt="icono">
     </div>
+    <div>
+      <h1 class="titulo">
+        Validación de Imagenes Vodafone 
+        {{tiendaSeleccionada?  getTiendaTitle() : ''}}
+      </h1>
+    </div>
+    <div *ngIf="currentState === 'home'" class ="elements" >
+      <p-dropdown 
+      [options]="tiendas" 
+      [(ngModel)]="tiendaSeleccionada"
+      (ngModelChange)="onTiendaSelected()"
+      optionLabel="sfid" 
+      [showClear]="true" 
+      placeholder="Selecciona tu tienda" 
+      class="centrar">
+      </p-dropdown>
+    </div>
+    <div *ngIf="currentState === 'admin'" class ="elementosValidator" >        
+      <app-sidebar></app-sidebar>
+    </div>
+  </div>
+  <div *ngIf="currentState !== 'home'">
+    <p-button label="Volver al inicio" icon="pi pi-home" (click)="volverInicio()" [text]="true" severity="danger" [style]="{'padding': '0', 'margin': '0.5%'}"></p-button>
+  </div>
+</div>
 
 
 
