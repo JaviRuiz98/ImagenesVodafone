@@ -16,7 +16,6 @@ import { AuditoriaComponent } from './pages/auditoria/auditoria.component';
 @NgModule({
   declarations: [
     AppComponent,
-    AuditoriaComponent,
   ],
   imports: [
     BarraMenuComponent,
