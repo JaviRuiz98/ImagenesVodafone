@@ -1,10 +1,8 @@
 import { Request, Response } from 'express';
 import { ChatMessage } from '../interfaces/procesadoInterfaces';
-import { ChatMessage } from '../interfaces/procesadoInterfaces';
 import * as fs from 'fs';
 import openai from '../config/openAi';
 import { expositoresService } from '../services/expositorService';
-import { procesadoService, respuestaService } from '../services/procesadoService';
 import { procesadoService, respuestaService } from '../services/procesadoService';
 import { parseBool } from '../utils/funcionesCompartidasController';
 import { imagenService } from '../services/imagenService';
@@ -88,7 +86,7 @@ export async function procesarImagenes(req: Request, res: Response) {
 
     const similarityObject = JSON.parse(cleanedResponse);
     //Guardar en la base de datos (falta por implementar)
-    const id_procesado_imagen = await procesadoService.create( //devuelve el id del procesado de imagen para usarlo en el almacenamiento de la respuesta
+   
     const id_procesado_imagen = await procesadoService.create( //devuelve el id del procesado de imagen para usarlo en el almacenamiento de la respuesta
       nuevaImagen.id_imagen, 
       existingExpositor.id_expositor, 
@@ -105,8 +103,7 @@ export async function procesarImagenes(req: Request, res: Response) {
     }
     const procesado_object = await procesadoService.getById(id_procesado_imagen);
     return res.status(200).json(procesado_object);
-    const procesado_object = await procesadoService.getById(id_procesado_imagen);
-    return res.status(200).json(procesado_object);
+
   } catch (error) {
     console.error('Error al procesar imágenes:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
@@ -120,7 +117,7 @@ export async function borrarprocesado(req: Request, res: Response){
 
     const id_procesado: number = parseInt(req.params.id_procesado);
     await procesadoService.borrarProcesado(id_procesado);
-    await procesadoService.borrarProcesado(id_procesado);
+
     console.log('Eliminado: ', id_procesado);
     return res.status(200).json({mensaje: 'Eliminado'})
   
@@ -275,4 +272,4 @@ async function getOpenAiResults(filePaths: string[], instrucciones: string) {
     }
 
     
-  // }
+  }

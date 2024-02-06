@@ -4,9 +4,9 @@ import db  from "../config/database";
 
 //tipo_procesado
 export const procesadoService = {
-    async create (id_imagen: number, id_expositor: number, comentarios: string, valido: boolean, IA_utilizada: string, id_prompt_usado: number, id_auditoria?: number) {
+    async create (id_imagen: number, id_expositor: number, comentarios: string, valido: boolean, IA_utilizada: string, id_prompt_usado: number, _id_auditoria?: number) {
 
-        const procesado = await db.procesados_imagenes.create({
+       
         const procesado = await db.procesados_imagenes.create({
             data: {                
                 id_imagen: id_imagen,
@@ -19,7 +19,7 @@ export const procesadoService = {
         });
         
         return procesado.id_procesado_imagen
-        return procesado.id_procesado_imagen
+  
     }, 
 
     getById(id_procesado_imagen: number): Promise<procesados_imagenes | null> {
