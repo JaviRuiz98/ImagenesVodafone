@@ -1,8 +1,6 @@
 <div class="paginaCompleta">
-  <div class="gridVolverFiltro">
-    <p-button label="Volver al inicio" icon="pi pi-home" (click)="volver()" [text]="true" severity="danger"></p-button>
-    <app-filtro-procesados (enviar_filtros)="enviarFiltroProcesados($event)" class="filtro"></app-filtro-procesados>
-  </div>  <p-toast></p-toast>
+  <app-filtro-procesados (enviar_filtros)="enviarFiltroProcesados($event)" class="filtro"></app-filtro-procesados>
+  <p-toast></p-toast>
   <div *ngFor="let mueble of this.muebles" class="contornoPanel">
     <p-panel [style]="{'border': '1px solid black', 'margin-bottom': '20px'}">
       <ng-template pTemplate="header">
