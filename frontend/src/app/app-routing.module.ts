@@ -24,6 +24,14 @@ const routes: Routes = [
     path: "auditoria", component: AuditoriaComponent, 
     data: { stateBarra: 'auditorias' },
   },
+
+  // { path: 'muebles', },
+
+  // {path: "tiendas", },
+
+  // { path:"expositores",}
+
+
 ];
 
 @NgModule({

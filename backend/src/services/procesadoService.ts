@@ -4,8 +4,9 @@ import db  from "../config/database";
 
 //tipo_procesado
 export const procesadoService = {
-    async create (id_imagen: number, id_expositor: number, comentarios: string, valido: boolean, IA_utilizada: string, id_prompt_usado: number) {
+    async create (id_imagen: number, id_expositor: number, comentarios: string, valido: boolean, IA_utilizada: string, id_prompt_usado: number, id_auditoria?: number) {
 
+        const procesado = await db.procesados_imagenes.create({
         const procesado = await db.procesados_imagenes.create({
             data: {                
                 id_imagen: id_imagen,
@@ -17,6 +18,7 @@ export const procesadoService = {
             }
         });
         
+        return procesado.id_procesado_imagen
         return procesado.id_procesado_imagen
     }, 
 
@@ -52,7 +54,26 @@ export const procesadoService = {
                 feedback_humano: feedback_Humano
             }
         });
+    },
+
+    async getProcesadosByIdExpositor(id_expositor: number) {
+        return await db.procesados_imagenes.findMany({
+            where: {
+                id_expositor: id_expositor
+            }
+        })
+    },
+
+    async getProcesadosByIdAuditoria(id_auditoria: number) {
+        return await db.procesados_imagenes.findMany({
+            where: {
+                id_auditoria: id_auditoria
+            }
+        })
     }
+
+
+
 }
 
 export const respuestaService = {
