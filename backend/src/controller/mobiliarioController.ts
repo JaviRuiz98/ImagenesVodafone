@@ -47,3 +47,8 @@ export async function updateMueble(req: Request, res: Response) {
     const mobiliario = await mobiliarioService.updateMueble(id_mueble, data);
     res.status(200).json(mobiliario);
 }
+
+export async function getAllMuebles(_req: Request, res: Response) {
+    const muebles = await mobiliarioService.getAllMuebles();
+    res.status(200).json(muebles);
+}

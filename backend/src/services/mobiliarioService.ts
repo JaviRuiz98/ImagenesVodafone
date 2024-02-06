@@ -83,13 +83,9 @@ export const mobiliarioService = {
         });
 
         
-        const result: MuebleFrontInterfaz[] = muebles.map((mueble:any) => {
-            return {
-                id_mueble: mueble.id_mueble, 
-                nombre_mueble: mueble.nombre_mueble, 
-                expositores: mueble.pertenencia_expositor_mueble.map((pem:any) => pem.expositores),
-            };
-        });
+        const result: MuebleFrontInterfaz[]  = muebles.map((mueble:muebles) => {
+            return mapearResultadoParaFront(mueble);  
+        })
     
         return result;
     } catch (error) {
@@ -106,9 +102,11 @@ export const mobiliarioService = {
     }, 
 
     //tipar
-    async createMueble(mueble: any): Promise<muebles> {
+    async createMueble(mueble: any): Promise<MuebleFrontInterfaz> {
         try {
-            return await db.muebles.create({data: mueble});
+            const muebleCreated = await db.muebles.create({data: mueble});
+            const result = mapearResultadoParaFront(muebleCreated);
+            return result;
         } catch (error) {
             throw error;
         } finally{
@@ -117,17 +115,63 @@ export const mobiliarioService = {
        
     },  
         //tipar
-    async updateMueble(id_mueble:number, mueble: any): Promise<muebles | null> {
+    async updateMueble(id_mueble:number, mueble: any): Promise<MuebleFrontInterfaz | null> {
         try{
-            return await db.muebles.update({where: {id_mueble: id_mueble}, data: mueble});
+            const muebleUpdated = await db.muebles.update({where: {id_mueble: id_mueble}, data: mueble});
+            const result = mapearResultadoParaFront(muebleUpdated);
+            return result;
+            
         } catch (error) {
             throw error;
         } finally{
             await db.$disconnect();
         }
+    },
+    async getAllMuebles(): Promise<MuebleFrontInterfaz[]> {
+        try{
+            const muebles =  await db.muebles.findMany( {
+                include: {
+                    pertenencia_expositor_mueble:{
+                        include: {
+                            expositores: {
+                                include: {
+                                    imagenes: true, 
+                                   
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const result: MuebleFrontInterfaz[] = muebles.map((mueble: any) => {
+                return mapearResultadoParaFront(mueble);
+            });
+        
+            return result;
+        } catch (error) {
+            throw error;
+        } finally{
+            await db.$disconnect();
+        }
+       
     }
                                           
 }
+
+//tipar adecuadamente
+function mapearResultadoParaFront(mueble: any): MuebleFrontInterfaz {
+    const expositores = mueble.pertenencia_expositor_mueble ? mueble.pertenencia_expositor_mueble.map((pem: any) => pem.expositores) : [];
+    return {
+        id_mueble: mueble.id_mueble,
+        nombre_mueble: mueble.nombre_mueble,
+        expositores: expositores,
+        categoria: mueble.categoria,
+        numero_dispositivos: mueble.dispositivos
+    };
+}
+
+
 
 // function getOrderClause( orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null) {
 
