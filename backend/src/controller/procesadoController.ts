@@ -24,7 +24,6 @@ export async function procesarImagenes(req: Request, res: Response) {
     const id_expositor: number = parseInt(req.body.id_expositor); //ojo refactor
     const id_mueble: number = parseInt(req.body.id_mueble);
     
-    
     //obtengo la imagen a procesar
     const imagenProcesada = file//(files['imagenesprocesado'] as Express.Multer.File[]).map(file => file.path)[0];
 
@@ -236,4 +235,9 @@ async function getOpenAiResults(filePaths: string[], instrucciones: string) {
     }
 
 
+  }
+
+
+  export async function getProcesadosByIdAuditoria(req: Request, res: Response) {
+    
   }

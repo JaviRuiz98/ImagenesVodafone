@@ -2,7 +2,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 
-export async function procesamientoValidator(req: Request, res: Response, next: NextFunction) {
+export async function procesadoValidator(req: Request, res: Response, next: NextFunction) {
 
     const file = req.file;
     const id_expositor: number = req.body.id_expositor;

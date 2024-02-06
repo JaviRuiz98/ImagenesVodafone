@@ -12,10 +12,12 @@ import { AppComponent } from './app.component';
 import { ValidadorModule } from './pages/validador/validador.module';
 import { HomeModule } from './pages/home/home.module';
 import { BarraMenuComponent } from './componentes/barra-menu/barra-menu.component';
+import { AuditoriaComponent } from './pages/auditoria/auditoria.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AuditoriaComponent,
   ],
   imports: [
     BarraMenuComponent,
