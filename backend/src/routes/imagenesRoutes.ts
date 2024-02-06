@@ -5,7 +5,6 @@ import { getImagenesProcesado, getImagenesReferencia } from '../controller/image
 
 const router: Router = express.Router();
 
-
 router.use('/imagenesReferencia',  express.static(getDestination('imagenesReferencia')));
 router.use('/imagenesProcesamiento',  express.static(getDestination('imagenesProcesamiento')));
 
