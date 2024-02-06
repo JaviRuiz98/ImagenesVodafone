@@ -21,7 +21,7 @@ import { MarcoElementoComponent } from './../../componentes/marco-elemento/marco
 import { SelectorImagenesComponent } from './../../componentes/selector-imagenes/selector-imagenes.component';
 import { PaginadorProcesamientoSubidaComponent } from './../../componentes/paginador-procesamiento-subida/paginador-procesamiento-subida.component'; 
 import { IrArribaComponent } from 'src/app/componentes/ir-arriba/ir-arriba.component';import { FiltroProcesadosComponent } from 'src/app/componentes/filtro-procesados/filtro-procesados.component';
-
+import { ButtonModule } from 'primeng/button';
 @NgModule({
   declarations: [
     ValidadorComponent
@@ -44,7 +44,8 @@ import { IrArribaComponent } from 'src/app/componentes/ir-arriba/ir-arriba.compo
     BadgeModule, 
     ImageModule,
     ProgressSpinnerModule,
-    ToastModule
+    ToastModule,
+    ButtonModule
   ]
 })
 export class ValidadorModule { }

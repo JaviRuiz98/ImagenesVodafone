@@ -18,4 +18,7 @@ export class HomeComponent implements OnInit{
   goToAdmin() {
     this.router.navigate(['/validator']);
   }
+  goToGestionAuditorias() {
+    this.router.navigate(['/gestionAuditorias']);
+  }
 }

@@ -10,6 +10,7 @@ import { MessageService } from 'primeng/api';
 import { filtro_procesados } from 'src/app/interfaces/filtro_procesados';
 import { muebles } from 'src/app/interfaces/muebles';
 import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -45,7 +46,7 @@ export class ValidadorComponent implements OnInit{
     private mueblesService: MueblesService,
     private procesamientoService: ProcesamientoService,
     private messageService: MessageService, 
-    private localStorageService: LocalStorageService
+    private router: Router
     ) {}
 
   async inicializaImagenesReferencia( filtros?: filtro_procesados) {
@@ -100,6 +101,8 @@ export class ValidadorComponent implements OnInit{
     console.log("filtros", filtros);
     this.inicializaImagenesReferencia( filtros);  
   }
-
+  volver() {
+    this.router.navigate(['/home']);
+  }
 
 }
