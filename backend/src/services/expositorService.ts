@@ -67,7 +67,29 @@ export const expositoresService = {
         } finally {
           await db.$disconnect();
         }
-      }
+      },
+
+      //falta tipar
+     async createExpositor(expositor: any): Promise<expositores> {
+       try {
+         return await db.expositores.create({ data: expositor });
+       } catch (error) {
+         throw error;
+       } finally {
+         await db.$disconnect();
+       }
+     }, 
+     async updateExpositor(id_expositor: number, expositor: any): Promise<expositores | null> {
+       try {
+         return await db.expositores.update({ where: { id_expositor: id_expositor }, data: expositor });
+        
+       } catch (error) {
+         throw error;
+       } finally {
+         await db.$disconnect();
+       }
+     }
+
       
 
 
