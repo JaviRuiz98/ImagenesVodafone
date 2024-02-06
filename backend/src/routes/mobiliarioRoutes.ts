@@ -1,9 +1,9 @@
 import express, { Router } from 'express';
-import { getAllMuebles } from '../controller/mobiliarioController';
+import { getFilteredMuebles } from '../controller/mobiliarioController';
 
 
 const router: Router = express.Router();
 
-router.post('/muebles',  getAllMuebles);
+router.post('/muebles',  getFilteredMuebles);
 
 export default router

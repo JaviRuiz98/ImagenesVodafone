@@ -10,6 +10,7 @@ import { MessageService } from 'primeng/api';
 import { filtro_procesados } from 'src/app/interfaces/filtro_procesados';
 import { muebles } from 'src/app/interfaces/muebles';
 import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -23,7 +24,7 @@ export class ValidadorComponent implements OnInit{
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
 
-  id_auditoria = null;        //                      ESTA VISTA SERA SOLO PARA (ADMIN || DESARROLLO)   ID_AUDITORIA -> NULL 
+
   //sfid = "FRANQ982";
   
   muebles: muebles[] = [];
@@ -45,20 +46,19 @@ export class ValidadorComponent implements OnInit{
     private mueblesService: MueblesService,
     private procesamientoService: ProcesamientoService,
     private messageService: MessageService, 
-    private localStorageService: LocalStorageService
+    private router: Router
     ) {}
 
   async inicializaImagenesReferencia( filtros?: filtro_procesados) {
-                                //id mobiliario
-
 
     //const tiendaSelected: number | undefined = this.localStorageService.getItem('tiendas');
     //const mobiliarioSelected: number | undefined= this.localStorageService.getItem('mobiliario');
                                 
-    this.mueblesService.getMuebles(undefined, filtros).subscribe( (data: muebles[]) => {
+    this.mueblesService.getMuebles(filtros).subscribe( (data: muebles[]) => {
       this.muebles = data;
       console.log("muebles", this.muebles);
     }), (error: Error) => { console.log(error) }
+
   }
 
 
@@ -68,12 +68,12 @@ export class ValidadorComponent implements OnInit{
 
   }
 
-  async recibirFile(event: {archivo:File}, id_expositor_selected: number) {
+  async recibirFile(event: {archivo:File}, id_expositor_selected: number, id_mueble_selected: number) {
     this.imagenAProcesar = event.archivo;
     this.cargas_procesamiento[id_expositor_selected]= true;   
     this.messageService.add({ severity: 'info', summary: 'Cargando', detail: 'La imagen se está procesando' });
 
-    this.procesamientoService.postProcesadoImagenes(id_expositor_selected, this.imagenAProcesar, this.id_auditoria).subscribe( 
+    this.procesamientoService.postProcesamientoImagenes(id_expositor_selected, id_mueble_selected, this.imagenAProcesar).subscribe( 
       ( response: procesados_imagenes ) => {
         console.log("response", response);
         this.cargas_procesamiento[id_expositor_selected] = false;
@@ -101,6 +101,8 @@ export class ValidadorComponent implements OnInit{
     console.log("filtros", filtros);
     this.inicializaImagenesReferencia( filtros);  
   }
-
+  volver() {
+    this.router.navigate(['/home']);
+  }
 
 }

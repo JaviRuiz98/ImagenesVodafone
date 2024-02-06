@@ -1,20 +1,19 @@
- 
-.paginaCompleta {
+ .paginaCompleta {
   display: flex;
   align-items: center;
   flex-direction: column;
   height: 100%;
   width: 100%;
 }
-
+  
 .card {
-  width: 60%; /* Ancho de la tarjeta */
-  height: 200px; /* Alto de la tarjeta */
-  margin-top: 25px; /* Distancia entre las tarjetas */
+  width: 60%; 
+  height: 200px; 
+  margin-top: 25px;
 }
-
+  
 .botonNuevaAuditoria {
-    width: 60%; /* Ancho de la tarjeta */
-    height: 200px; /* Alto de la tarjeta */
-    margin-top: 25px; /* Distancia entre las tarjetas */
+  width: 60%; 
+  height: 200px; 
+  margin-top: 25px; 
 }

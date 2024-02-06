@@ -13,6 +13,4 @@ export class auditoria {
         this.id_tienda = 0;
         this.id_mobiliario = 0;
     }
-
-
 }

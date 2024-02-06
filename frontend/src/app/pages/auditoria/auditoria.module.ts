@@ -4,7 +4,6 @@ import { AuditoriaComponent } from './auditoria.component';
 
 import { SidebarComponent } from '../../componentes/sidebar/sidebar.component';
 
-// modulos primeng:
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { PanelModule } from 'primeng/panel';
@@ -16,8 +15,6 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToastModule } from 'primeng/toast';
 
  
-
-// componentes nuestros
 import { BarraMenuComponent } from './../../componentes/barra-menu/barra-menu.component';
 import { MarcoElementoComponent } from './../../componentes/marco-elemento/marco-elemento.component';
 import { SelectorImagenesComponent } from './../../componentes/selector-imagenes/selector-imagenes.component';

@@ -5,10 +5,11 @@ import { getImagenesProcesado, getImagenesReferencia } from '../controller/image
 
 const router: Router = express.Router();
 
-
+// Comprobar si se usa y si no eliminarlas
 router.use('/imagenesReferencia',  express.static(getDestination('imagenesReferencia')));
 router.use('/imagenesProcesamiento',  express.static(getDestination('imagenesProcesamiento')));
 
+// Leer imagen a través de ruta estática
 router.get('/imagenesReferencia/:nombre', getImagenesReferencia );
 router.get('/imagenesProcesamiento/:nombre', getImagenesProcesado );
 

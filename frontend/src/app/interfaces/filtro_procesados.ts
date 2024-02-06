@@ -7,6 +7,7 @@ export interface filtro_procesados {
       max: number
     },
     respuestas_carteles: string [],
+    id_tienda?: number
 }
 export interface Filtro {
     label: string,
