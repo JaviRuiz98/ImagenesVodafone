@@ -4,6 +4,6 @@ import { getAllMuebles } from '../controller/mobiliarioController';
 
 const router: Router = express.Router();
 
-router.use('/muebles',  getAllMuebles);
+router.post('/muebles',  getAllMuebles);
 
 export default router

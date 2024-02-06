@@ -13,6 +13,15 @@
         </div>
         <p-slider [(ngModel)]="rangos_cuentas" [min]="0" [max]="15" [step]="1" [range]="true"></p-slider>
     </div> -->
+
+    <!-- <p-dropdown 
+    [options]="tiendas" 
+    [(ngModel)]="tiendaSeleccionada"
+    optionLabel="sfid" 
+    [showClear]="true" 
+    (ngModelChange)="onTiendaSelected()"
+    placeholder="Selecciona tu tienda" 
+    >  -->
     <p-button (click)="enviarFiltroProcesados()" icon="pi pi-search" label="Filtrar" severity="danger"></p-button>
 </div>
 

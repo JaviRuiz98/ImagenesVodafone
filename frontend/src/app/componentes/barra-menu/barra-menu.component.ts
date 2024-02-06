@@ -28,12 +28,9 @@ export class BarraMenuComponent implements OnInit {
 
 
   tiendas: tienda[] = [] ;
-  mobiliarios: {
-    id_mobiliario: number
-    fecha: string
-  } [] = [];
+
   tiendaSeleccionada: tienda | undefined;
-  mobiliarioSeleccionado: number | undefined;
+
   currentState: 'home' | 'auditoria' | 'admin' | 'empty' = 'home';
 
   constructor(
@@ -94,25 +91,15 @@ export class BarraMenuComponent implements OnInit {
 
     if (this.tiendaSeleccionada){
       this.localStorageService.setItem('tiendas', this.tiendaSeleccionada.id_tienda );
-      this.mobiliarios = this.tiendaSeleccionada.mobiliario.map((mobiliario) => ({
-        id_mobiliario: mobiliario.id_mobiliario,
-        fecha: this.formatDate(new Date(mobiliario.fecha)) 
-      }));
+     
     }else{
-      this.mobiliarioSeleccionado = undefined;
+   
       this.localStorageService.removeItem('tiendas');
-      this.localStorageService.removeItem('mobiliario');
+     
     }
    
   }
 
-  onMobiliarioSelected(){
-    if (this.mobiliarioSeleccionado){
-      this.localStorageService.setItem('mobiliario', this.mobiliarioSeleccionado );
-    }else{
-      this.localStorageService.removeItem('mobiliario');
-    }
-  }
 
   private  formatDate(date: Date): string {
     const day = String(date.getDate()).padStart(2, '0'); 

@@ -21,11 +21,7 @@ export async function getTiendaBySfid(req: Request, res: Response) {
     try{
         const sfid = req.params.sfid;
         console.log(req.body);
-        /*const orden_clause: 'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null  = req.body.orden;
-        const prompts_clause: number[] | null  = req.body.prompts;
-        const ia_clause: string | null = req.body.ia;     
-        const respuestas_carteles_clause: string[] | null = req.body.carteles;
-        const respuestas_dispositivos_clause: number[] | null = req.body.dispositivos;*/
+      
 
         //obtiene las tiendas ordenadas por categoría_clause
         const tienda: any = await tiendaService.getBySfid(sfid);

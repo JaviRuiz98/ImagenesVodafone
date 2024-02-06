@@ -16,7 +16,7 @@ export async function getAllPrompts( _req: Request, res: Response) {
 
 export async function estadisticasPrompts(_req: Request, res: Response) {
     try{      
-        console.log("estadisticasPrompts ||||||||||||");
+        
         const prompts_existentes: prompts[] = await promptService.getAll();
        
         let estadisticas_prompts: estadisticaPrompts[] = [];

@@ -8,6 +8,7 @@ import { parseBool } from '../utils/funcionesCompartidasController';
 import { imagenService } from '../services/imagenService';
 import { prompts } from '@prisma/client';
 import { promptService } from '../services/promptService';
+import { mobiliarioService } from '../services/mobiliarioService';
 
 
 // Constantes y configuracion de procesado
@@ -20,7 +21,8 @@ const id_prompt_dispositivos: number = 5;
 export async function procesarImagenes(req: Request, res: Response) {
   try {
     const file = req.file //as { [fieldname: string]: Express.Multer.File[] };
-    const idExpositor: number = parseInt(req.body.idExpositor);
+    const id_expositor: number = parseInt(req.body.idExpositor); //ojo refactor
+    const id_mueble: number = parseInt(req.body.id_mueble);
     
     //obtengo la imagen a procesar
     const imagenProcesada = file//(files['imagenesProcesamiento'] as Express.Multer.File[]).map(file => file.path)[0];
@@ -34,7 +36,7 @@ export async function procesarImagenes(req: Request, res: Response) {
     //creo la imagen nueva y compruebo que existe el expositor (falta tipar)
     const [nuevaImagen, existingExpositor]  = await Promise.all([
       imagenService.create(imagenProcesada.filename, imagenProcesada.originalname),
-      expositoresService.getById(idExpositor),
+      expositoresService.getById(id_expositor),
     ]);    
 
     if (!existingExpositor) {
@@ -43,17 +45,21 @@ export async function procesarImagenes(req: Request, res: Response) {
     }
 
     //obtengo la imagen de referencia y la cantidad de dispositivos 
-    const [imagenReferencia, dispositivosCount] = await Promise.all([
+    const [imagenReferencia, mueble] = await Promise.all([
       expositoresService.getImage(existingExpositor.id_imagen),
-      expositoresService.getDispositivosCount(existingExpositor.id_expositor)
+      mobiliarioService.getMuebleById(id_mueble),
+    
     ]);
+    
+
 
     if (!imagenReferencia) {
       res.status(500).json({ error: 'La imagen referencia no existe' });
       return;
     }
    
-    const id_prompt_usado: number = await getIdPromptDeNumeroDispositivos(dispositivosCount);
+    const dispositivosCount = mueble?.numero_dispositivos || 0;
+    const id_prompt_usado: number = await getIdPromptDeNumeroDispositivos(dispositivosCount); //refactor
 
     const promptObject: prompts | null = await promptService.getById(id_prompt_usado);
     if (!promptObject) {

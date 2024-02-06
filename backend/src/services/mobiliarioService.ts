@@ -1,56 +1,132 @@
 import {   muebles } from "@prisma/client";
 import db  from "../config/database";
+import {  MuebleFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
 
 
 export const mobiliarioService = {
-    getAllMuebles: async (id?: number,  categoria_clause: "carteles" | "dispositivos" | '' = '') : Promise<muebles[]> => {
+    getAllMuebles: async (
+        id?: number,
+        categoria_clause: "carteles" | "dispositivos" | null = null,
+        _orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null = null,
+        prompts_clause: number[] | null = null,
+        ia_clause: string | null = null,
+        respuestas_carteles_clause: string[] | null = null,
+        _respuestas_dispositivos_clause: number[] | null = null
+        ) : Promise<MuebleFrontInterfaz[]> => {
 
-        const whereClause = id ? { some:{id_mobiliario: id }}: {};
+        const whereClause = id ? { some:{id_tienda: id }}: {};
 
-        let categoryClause =  {};
-        if (categoria_clause != ''){
-            categoryClause = categoria_clause == "dispositivos" ? {some:{}}  : {none:{}};
-        }
+     
+
+        //const orderClause = getOrderClause(orden_clause);
+
 
         const muebles = await db.muebles.findMany({
             where:{
-                pertenencia_mueble_mobiliario:{
-                    ...whereClause
-                },
                 
-                expositores: {
-                    every: {
-                        dispositivos: categoryClause,
-                    }
-                }
+                pertenencia_mueble_tienda: whereClause,
                 
-                
-            }, include: {
+                categoria: categoria_clause ? categoria_clause : undefined
+                     
+            },
+            include: {
                                 
-                expositores: {
+                pertenencia_expositor_mueble: {
+                    //obtener el expositor mas reciente
+                    orderBy: {
+                        fecha: 'desc',
+                    },
+
+                    take:1,
                   
                     include: {
-                        imagenes: true, 
-                        procesados_imagenes: {
-                            include: {
-                                imagenes: true,
-                                respuestas_carteles: true,
-                                respuestas_dispositivos: true,
-                                prompts: true
-                            },
-                            orderBy: {
-                                fecha: 'desc'
-                            }
-                        }                                        
+                       expositores:{
+                        include:{
+                            imagenes: true,
+                            procesados_imagenes: {
+                                include: {
+                                    imagenes: true,
+                                    respuestas_carteles: true,
+                                    respuestas_dispositivos: true,
+                                    prompts: true
+                                    
+                                },
+                               orderBy: {
+                                  
+                               },
+    
+                               where: {
+                                   prompts:{
+                                       id_prompt:{
+                                        in: prompts_clause? prompts_clause : undefined
+                                       }
+                                   },
+    
+                                   IA_utilizada: ia_clause ? ia_clause : undefined,
+                                   respuestas_carteles:{
+                                       every:{
+                                           probabilidad:{
+                                               in: respuestas_carteles_clause ? respuestas_carteles_clause : undefined
+                                           }
+                                       }
+                                   },
+                                                                    
+                                }  
+                            }    
+                        }
+                       } 
+                                                         
                     }
                 }
             }
         });
 
-        return muebles;
+        
+        const result: MuebleFrontInterfaz[] = muebles.map((mueble:any) => {
+            return {
+                id_mueble: mueble.id_mueble, 
+                nombre_mueble: mueble.nombre_mueble, 
+                expositores: mueble.pertenencia_expositor_mueble.map((pem:any) => pem.expositores),
+            };
+        });
+    
+        return result;
+
+
+    },
+
+    async getMuebleById( id_mueble: number): Promise<muebles | null> {
+        return await db.muebles.findUnique({where: {id_mueble: id_mueble}});
     }
                                           
 }
+
+// function getOrderClause( orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null) {
+
+//     let orderDirection = orden_clause === 'result_asc' ? 'ASC' : 'DESC';
+
+//     if (orden_clause === 'date_asc' || orden_clause === 'date_desc') {
+//         return `ORDER BY procesados_imagenes.fecha ${orden_clause === 'date_asc' ? 'ASC' : 'DESC'}`;
+//     } else if (orden_clause === 'result_asc' || orden_clause === 'result_desc') {
+//         return `
+//             ORDER BY 
+//             CASE respuestas_carteles.probabilidad
+//                 WHEN 'ninguna' THEN 1
+//                 WHEN 'muy bajo' THEN 2
+//                 WHEN 'bajo' THEN 3
+//                 WHEN 'medio' THEN 4
+//                 WHEN 'otro idioma' THEN 5
+//                 WHEN 'alto' THEN 6
+//                 WHEN 'muy alto' THEN 7
+//                 ELSE 8
+//             END ${orderDirection},
+//             ABS(respuestas_dispositivos.huecos_esperados - respuestas_dispositivos.dispositivos_contados) ${orderDirection}
+//         `;
+//     } else {
+//         return 'ORDER BY procesados_imagenes.fecha DESC';
+//     }
+// }
+
 
 
 //     async  getProcesadosByIdExpositor(
@@ -131,42 +207,19 @@ export const mobiliarioService = {
 //         }finally{
 //             db.$disconnect();
 //         }
-    // }   
+ // }   
+
+//  function arrayToString(array: string[] | null ): string | null {
+//     return array && array.length > 0 ? array.map(item => `'${item}'`).join(", ") : null;
+// }
+
+// //comillas?
+// function numberArrayToString(array: number[] | null ): string | null {
+//     return array && array.length > 0 ? array.map(item => `${item.toString()}`).join(", ") : null;
+// }
 
 
-/*
- function getOrderClause( orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null) {
 
-    let orderDirection = orden_clause === 'result_asc' ? 'ASC' : 'DESC';
+ 
 
-    if (orden_clause === 'date_asc' || orden_clause === 'date_desc') {
-        return `ORDER BY procesados_imagenes.fecha ${orden_clause === 'date_asc' ? 'ASC' : 'DESC'}`;
-    } else if (orden_clause === 'result_asc' || orden_clause === 'result_desc') {
-        return `
-            ORDER BY 
-            CASE respuestas_carteles.probabilidad
-                WHEN 'ninguna' THEN 1
-                WHEN 'muy bajo' THEN 2
-                WHEN 'bajo' THEN 3
-                WHEN 'medio' THEN 4
-                WHEN 'otro idioma' THEN 5
-                WHEN 'alto' THEN 6
-                WHEN 'muy alto' THEN 7
-                ELSE 8
-            END ${orderDirection},
-            ABS(respuestas_dispositivos.huecos_esperados - respuestas_dispositivos.dispositivos_contados) ${orderDirection}
-        `;
-    } else {
-        return 'ORDER BY procesados_imagenes.fecha DESC';
-    }
-}
 
-function arrayToString(array: string[] | null ): string | null {
-    return array && array.length > 0 ? array.map(item => `'${item}'`).join(", ") : null;
-}
-
-//comillas?
-function numberArrayToString(array: number[] | null ): string | null {
-    return array && array.length > 0 ? array.map(item => `${item.toString()}`).join(", ") : null;
-}
-*/
