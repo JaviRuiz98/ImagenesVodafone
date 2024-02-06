@@ -2,15 +2,13 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
+import { AuditoriaService } from 'src/app/servicios/auditoria/auditoria.service';
 
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
-
 import { MessageService } from 'primeng/api';
 import { filtro_procesados } from 'src/app/interfaces/filtro_procesados';
 import { muebles } from 'src/app/interfaces/muebles';
 import { auditoria } from 'src/app/interfaces/auditoria';
-
-import { AuditoriaService } from 'src/app/servicios/auditoria/auditoria.service';
 
 @Component({
   selector: 'auditoria',

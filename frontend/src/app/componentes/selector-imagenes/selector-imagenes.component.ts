@@ -55,8 +55,9 @@ export class SelectorImagenesComponent {
     this.dropAreaRef.nativeElement.classList.add('active');
     event.stopPropagation();
     this.mouseSobre = true;
-}
+  }
  
+
 onDragLeave(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();

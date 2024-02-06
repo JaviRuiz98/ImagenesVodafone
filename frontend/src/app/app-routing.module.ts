@@ -7,7 +7,6 @@ import { GestionDeAuditoriasComponent } from './pages/gestion-de-auditorias/gest
 import { AuditoriaComponent } from './pages/auditoria/auditoria.component';
 
 const routes: Routes = [
-
   { 
     path: "home", component: HomeComponent ,
     data: { stateBarra: 'home' },
@@ -30,8 +29,9 @@ const routes: Routes = [
   // {path: "tiendas", },
 
   // { path:"expositores",}
-
-
+  {
+    path: '', redirectTo: '/home', pathMatch: 'full' 
+  }
 ];
 
 @NgModule({
