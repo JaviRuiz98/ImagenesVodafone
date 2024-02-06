@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { tiendaService } from '../services/tiendasServices';
-import { tiendas } from '@prisma/client';
+import { tiendas, procesados_imagenes } from '@prisma/client';
 
 export async function getAllTiendas(req: Request, res: Response) {
 
@@ -17,7 +17,7 @@ export async function getAllTiendas(req: Request, res: Response) {
    
 }
 
-export async function getTiendaBySfid(req: Request, res: Response) {
+/*export async function getTiendaBySfid(req: Request, res: Response) {
     try{
         const sfid = req.params.sfid;
         console.log(req.body);
@@ -60,7 +60,7 @@ export async function getTiendaBySfid(req: Request, res: Response) {
         console.error('Error al obtener tienda por sfid:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
-}
+}*/
 
 export async function getProcesadosByIdExpositor(req: Request, res: Response) {
     try{
