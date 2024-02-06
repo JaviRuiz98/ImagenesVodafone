@@ -2,11 +2,11 @@ import { procesados_imagenes } from "@prisma/client";
 import db  from "../config/database";
 
 
-//tipo_procesamiento
-export const procesamientoService = {
+//tipo_procesado
+export const procesadoService = {
     async create (id_imagen: number, id_expositor: number, comentarios: string, valido: boolean, IA_utilizada: string, id_prompt_usado: number, id_auditoria?: number) {
 
-        const procesamiento = await db.procesados_imagenes.create({
+        const procesado = await db.procesados_imagenes.create({
             data: {                
                 id_imagen: id_imagen,
                 id_expositor: id_expositor,
@@ -18,7 +18,7 @@ export const procesamientoService = {
             }
         });
         
-        return procesamiento.id_procesado_imagen
+        return procesado.id_procesado_imagen
     }, 
 
     getById(id_procesado_imagen: number): Promise<procesados_imagenes | null> {
