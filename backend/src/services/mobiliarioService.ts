@@ -4,7 +4,7 @@ import {  MuebleFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
 
 
 export const mobiliarioService = {
-    getAllMuebles: async (
+    getFilteredMuebles: async (
         id?: number,
         categoria_clause: "carteles" | "dispositivos" | null = null,
         _orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null = null,

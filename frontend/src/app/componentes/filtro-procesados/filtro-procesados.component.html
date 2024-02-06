@@ -3,8 +3,8 @@
     <form [formGroup]="filtro_procesados_form" >
         <p-dropdown formControlName="categoria" [options]="categorias" optionLabel="" placeholder="Tipo de procesado"></p-dropdown>
          <p-dropdown formControlName="orden" [options]="ordenes" optionLabel="label" placeholder="Selecciona orden"></p-dropdown> 
-        <!-- <p-multiSelect formControlName="prompts" [options]="prompts" optionLabel="nombre_prompt" placeholder="Selecciona prompt" [selectionLimit]="1"></p-multiSelect>
-        <p-multiSelect formControlName="respuestas_carteles" [options]="respuestas_carteles" optionLabel="" placeholder="Probabilidades de los carteles" [selectionLimit]="2"></p-multiSelect> -->
+        <p-multiSelect formControlName="prompts" [options]="prompts" optionLabel="nombre_prompt" placeholder="Selecciona prompt" [selectionLimit]="1"></p-multiSelect>
+        <!-- <p-multiSelect formControlName="respuestas_carteles" [options]="respuestas_carteles" optionLabel="" placeholder="Probabilidades de los carteles" [selectionLimit]="2"></p-multiSelect> -->
     </form>   
     <!-- <div>
         <div style="display: flex;">

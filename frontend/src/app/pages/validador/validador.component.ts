@@ -53,7 +53,7 @@ export class ValidadorComponent implements OnInit{
     //const tiendaSelected: number | undefined = this.localStorageService.getItem('tiendas');
     //const mobiliarioSelected: number | undefined= this.localStorageService.getItem('mobiliario');
                                 
-    this.mueblesService.getMuebles(undefined, filtros).subscribe( (data: muebles[]) => {
+    this.mueblesService.getMuebles(filtros).subscribe( (data: muebles[]) => {
       this.muebles = data;
       console.log("muebles", this.muebles);
     }), (error: Error) => { console.log(error) }
