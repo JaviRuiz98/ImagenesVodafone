@@ -5,6 +5,8 @@ import { ValidadorComponent } from './pages/validador/validador.component';
 import { HomeComponent } from './pages/home/home.component';
 import { GestionDeAuditoriasComponent } from './pages/gestion-de-auditorias/gestion-de-auditorias.component';
 import { AuditoriaComponent } from './pages/auditoria/auditoria.component';
+import { TiendasService } from './servicios/tiendas/tiendas.service';
+import { TiendasComponent } from './pages/tiendas/tiendas.component';
 
 const routes: Routes = [
   { 
@@ -26,7 +28,10 @@ const routes: Routes = [
 
   // { path: 'muebles', },
 
-  // {path: "tiendas", },
+  {
+    path: "tiendas", component: TiendasComponent,
+    data: { stateBarra: 'tiendas' },
+  },
 
   // { path:"expositores",}
   {

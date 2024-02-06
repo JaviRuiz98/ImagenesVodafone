@@ -25,11 +25,11 @@ export class HomeComponent implements OnInit{
   goToExpositor() {
     this.router.navigate(['/expositor']);
     }
-    goToMueble() {
+  goToMueble() {
     this.router.navigate(['/muebles']);
-    }
-    goToTienda() {
-    this.router.navigate(['/tienda']);
-    }
+  }
+  goToTienda() {
+    this.router.navigate(['/tiendas']);
+  }
     
 }
