@@ -3,9 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { ValidadorComponent } from './pages/validador/validador.component';
 import { HomeComponent } from './pages/home/home.component';
-
-
-
 import { GestionDeAuditoriasComponent } from './pages/gestion-de-auditorias/gestion-de-auditorias.component';
 import { AuditoriaComponent } from './pages/auditoria/auditoria.component';
 
@@ -15,16 +12,17 @@ const routes: Routes = [
     path: "home", component: HomeComponent ,
     data: { stateBarra: 'home' },
   },
- 
   { 
     path : "validator", component: ValidadorComponent, 
     data: { stateBarra: 'admin' },
   },
   { 
-    path: "", component: GestionDeAuditoriasComponent 
+    path: "gestionAuditorias", component: GestionDeAuditoriasComponent, 
+    data: { stateBarra: 'gestionAuditorias' },
   },
   { 
-    path: "auditoria", component: AuditoriaComponent 
+    path: "auditoria", component: AuditoriaComponent, 
+    data: { stateBarra: 'auditorias' },
   },
 ];
 

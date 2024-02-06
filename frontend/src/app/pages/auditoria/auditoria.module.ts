@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ValidadorComponent } from './validador.component';
+import { AuditoriaComponent } from './auditoria.component';
 
 import { SidebarComponent } from '../../componentes/sidebar/sidebar.component';
 
-// modulos primeng:
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
 import { PanelModule } from 'primeng/panel';
@@ -15,16 +14,16 @@ import { ImageModule } from 'primeng/image';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToastModule } from 'primeng/toast';
 
-// componentes nuestros
+ 
 import { BarraMenuComponent } from './../../componentes/barra-menu/barra-menu.component';
 import { MarcoElementoComponent } from './../../componentes/marco-elemento/marco-elemento.component';
 import { SelectorImagenesComponent } from './../../componentes/selector-imagenes/selector-imagenes.component';
 import { PaginadorProcesamientoSubidaComponent } from './../../componentes/paginador-procesamiento-subida/paginador-procesamiento-subida.component'; 
 import { IrArribaComponent } from 'src/app/componentes/ir-arriba/ir-arriba.component';import { FiltroProcesadosComponent } from 'src/app/componentes/filtro-procesados/filtro-procesados.component';
-import { ButtonModule } from 'primeng/button';
+
 @NgModule({
   declarations: [
-    ValidadorComponent
+    AuditoriaComponent
   ],
   imports: [
     CommonModule,
@@ -44,8 +43,7 @@ import { ButtonModule } from 'primeng/button';
     BadgeModule, 
     ImageModule,
     ProgressSpinnerModule,
-    ToastModule,
-    ButtonModule
+    ToastModule
   ]
 })
-export class ValidadorModule { }
+export class NuevaAuditoriaModule { }

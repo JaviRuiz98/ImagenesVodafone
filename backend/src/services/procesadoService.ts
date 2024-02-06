@@ -7,6 +7,7 @@ export const procesadoService = {
     async create (id_imagen: number, id_expositor: number, comentarios: string, valido: boolean, IA_utilizada: string, id_prompt_usado: number, id_auditoria?: number) {
 
         const procesado = await db.procesados_imagenes.create({
+        const procesado = await db.procesados_imagenes.create({
             data: {                
                 id_imagen: id_imagen,
                 id_expositor: id_expositor,
@@ -14,10 +15,10 @@ export const procesadoService = {
                 valido: valido,
                 IA_utilizada: IA_utilizada,
                 id_prompt_usado: id_prompt_usado,
-                id_auditoria: id_auditoria? id_auditoria : null
             }
         });
         
+        return procesado.id_procesado_imagen
         return procesado.id_procesado_imagen
     }, 
 
