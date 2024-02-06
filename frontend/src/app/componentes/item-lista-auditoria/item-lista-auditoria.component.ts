@@ -33,10 +33,10 @@ export class ItemListaAuditoriaComponent implements OnInit {
 
   inicializaItemListaAuditoria() {
 
-    this.procesamientoService.getProcesados(this.auditoria.id_auditoria).subscribe((procesados)=>{
-      this.procesados_imagenes = procesados
-      console.log("aa", this.procesados_imagenes)
-    });
+    // this.procesamientoService.getProcesados(this.auditoria.id_auditoria).subscribe((procesados)=>{
+    //   this.procesados_imagenes = procesados
+    //   console.log("aa", this.procesados_imagenes)
+    // });
 
   }
 

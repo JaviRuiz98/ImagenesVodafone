@@ -1,13 +1,13 @@
 import express, { Router } from 'express';
 import { procesarImagenes, borrarProcesado, feedbackProcesado } from '../controller/procesadoController';
-import { procesamientoValidator } from '../validator/procesadoValidator';
+import { procesadoValidator } from '../validator/procesadoValidator';
 import { uploadImagenProcesada, uploadImagenRepresentativa } from '../config/multer';
 import { uploadFileToFtp, uploadFileToFtpReferencia } from '../config/ftpUpload';
 
 
 const router: Router = express.Router();
 
-router.post('/procesado', uploadImagenProcesada, uploadFileToFtp('imagenesProcesamiento'), procesamientoValidator, procesarImagenes);
+router.post('/procesado', uploadImagenProcesada, uploadFileToFtp('imagenesProcesamiento'), procesadoValidator, procesarImagenes);
 
 router.post('/subirImagen', uploadImagenRepresentativa, uploadFileToFtpReferencia);
 
