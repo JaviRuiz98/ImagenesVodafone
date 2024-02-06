@@ -43,35 +43,28 @@ export const tiendaService = {
        
     },
 
-    async getBySfid(sfid: string): Promise<tiendas | null> {
-
-   
+    async getBySfid(sfid: string): Promise<tiendas | null> {   
         try {       
         
-        return await db.tiendas.findUnique({
-            where: {
-                sfid: sfid
-            },
-            include: {
-           
-                pertenencia_mueble_tienda:{
-                    include:{
-                        muebles:{
-                            select:{
-                                id_mueble: true,
-                                
+            return await db.tiendas.findUnique({
+                where: {
+                    sfid: sfid
+                },
+                include: {
+            
+                    pertenencia_mueble_tienda:{
+                        include:{
+                            muebles:{
+                                select:{
+                                    id_mueble: true,
+                                    
+                                }
                             }
-                        }
-                    }
-                    
-                }
-            
-            }
-                
-               
-            
-        });
-        
+                        }                        
+                    }                
+                }             
+                           
+        });        
         
       } catch (error) {
           console.log(error);

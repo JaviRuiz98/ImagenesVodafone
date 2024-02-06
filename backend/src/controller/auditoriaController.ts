@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { auditoriaService } from '../services/auditoria';
-import { auditoria, tiendas } from '@prisma/client';
+import { auditoria } from '@prisma/client';
 
 
 export async function getAuditorias(req: Request, res: Response) {
