@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { ChatMessage } from '../interfaces/procesamientoInterfaces';
+import { ChatMessage } from '../interfaces/procesadoInterfaces';
 import * as fs from 'fs';
 import openai from '../config/openAi';
 import { expositoresService } from '../services/expositorService';
@@ -9,6 +9,8 @@ import { imagenService } from '../services/imagenService';
 import { prompts } from '@prisma/client';
 import { promptService } from '../services/promptService';
 import { mobiliarioService } from '../services/mobiliarioService';
+import { procesados_imagenes } from '@prisma/client';
+
 
 
 // Constantes y configuracion de procesado
@@ -237,14 +239,30 @@ async function getOpenAiResults(filePaths: string[], instrucciones: string) {
 
 
   }
+  
+
+  export async function getProcesadosByIdExpositor(req: Request, res: Response) {
+    try{
+      
+    const id_expositor: number = parseInt(req.params.id_expositor);
+    const procesados: procesados_imagenes[] = await procesadoService.getProcesadosByIdExpositor(id_expositor);
+    res.status(200).json({ procesados });
+
+    }catch(error){
+      console.error('Error al obtener procesados:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+
+  }
 
 
   export async function getProcesadosByIdAuditoria(req: Request, res: Response) {
 
     try{
-
-
-      
+      const id_auditoria: number = parseInt(req.params.id_auditoria);
+      const procesados: procesados_imagenes[] = await procesadoService.getProcesadosByIdAuditoria(id_auditoria);
+      res.status(200).json({ procesados });
+           
     }catch{
 
     }

@@ -53,7 +53,26 @@ export const procesadoService = {
                 feedback_humano: feedback_Humano
             }
         });
+    },
+
+    async getProcesadosByIdExpositor(id_expositor: number) {
+        return await db.procesados_imagenes.findMany({
+            where: {
+                id_expositor: id_expositor
+            }
+        })
+    },
+
+    async getProcesadosByIdAuditoria(id_auditoria: number) {
+        return await db.procesados_imagenes.findMany({
+            where: {
+                id_auditoria: id_auditoria
+            }
+        })
     }
+
+
+
 }
 
 export const respuestaService = {
