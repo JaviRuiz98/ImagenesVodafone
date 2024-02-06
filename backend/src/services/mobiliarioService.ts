@@ -1,5 +1,6 @@
 import {   muebles } from "@prisma/client";
 import db  from "../config/database";
+import {  MuebleFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
 
 
 export const mobiliarioService = {
@@ -11,7 +12,7 @@ export const mobiliarioService = {
         ia_clause: string | null = null,
         respuestas_carteles_clause: string[] | null = null,
         _respuestas_dispositivos_clause: number[] | null = null
-        ) : Promise<muebles[]> => {
+        ) : Promise<MuebleFrontInterfaz[]> => {
 
         const whereClause = id ? { some:{id_tienda: id }}: {};
 
@@ -80,7 +81,18 @@ export const mobiliarioService = {
             }
         });
 
-        return muebles;
+        
+        const result: MuebleFrontInterfaz[] = muebles.map((mueble:any) => {
+            return {
+                id_mueble: mueble.id_mueble, 
+                nombre_mueble: mueble.nombre_mueble, 
+                expositores: mueble.pertenencia_expositor_mueble.map((pem:any) => pem.expositores),
+            };
+        });
+    
+        return result;
+
+
     },
 
     async getMuebleById( id_mueble: number): Promise<muebles | null> {
