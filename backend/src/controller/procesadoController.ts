@@ -240,5 +240,5 @@ async function getOpenAiResults(filePaths: string[], instrucciones: string) {
 
 
   export async function getProcesadosByIdAuditoria(req: Request, res: Response) {
-    
+      
   }
