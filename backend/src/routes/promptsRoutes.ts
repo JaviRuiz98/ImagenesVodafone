@@ -5,7 +5,6 @@ const router = express.Router();
 
 router.get('/prompts', getAllPrompts);
 
-
 router.get('/estadisticasPrompts', estadisticasPrompts );
 
 export default router;
