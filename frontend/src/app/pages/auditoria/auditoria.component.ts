@@ -3,7 +3,6 @@ import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
 
-
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 
 import { MessageService } from 'primeng/api';
