@@ -1,13 +1,15 @@
-import { auditoria } from "@prisma/client";
+import { auditoria, tiendas } from "@prisma/client";
 import db  from "../config/database";
 
 
 
 export const auditoriaService = {
 
-    async getAuditorias(id_tienda: number): Promise<auditoria[]> {
+    async getAuditoriasByIdTienda(id_tienda: number): Promise<auditoria[]> {
 
         try{
+
+
             return db.auditoria.findMany({
                 where: {
                     id_tienda: id_tienda

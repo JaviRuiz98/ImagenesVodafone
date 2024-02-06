@@ -3,6 +3,6 @@ import { getAuditorias } from '../controller/auditoriaController';
 
 const router: Router = express.Router();
 
-router.use('/auditorias',  getAuditorias);
+router.use('/auditorias/:id_tienda',  getAuditorias);
 
 export default router;

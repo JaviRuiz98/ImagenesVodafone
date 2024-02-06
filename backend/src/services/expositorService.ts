@@ -44,7 +44,7 @@ export const expositoresService = {
         }
       },
 
-      async  getDispositivosCount(idExpositor: number): Promise<number> {
+      /*async  getDispositivosCount(idExpositor: number): Promise<number> {
         try {
           const count = await db.dispositivos.count({
             where: {
@@ -59,7 +59,7 @@ export const expositoresService = {
         } finally {
           await db.$disconnect();
         }
-      }
+      }*/
       
 
 

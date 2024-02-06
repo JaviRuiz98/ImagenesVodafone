@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+/*import { Request, Response } from 'express';
 import { ChatMessage } from '../interfaces/procesamientoInterfaces';
 import * as fs from 'fs';
 import openai from '../config/openAi';
@@ -122,117 +122,117 @@ export async function borrarProcesamiento(req: Request, res: Response){
 
 
 function getIdPromptDeNumeroDispositivos(dispositivosCount: number): number {
-  if (dispositivosCount === 0) {
-    return id_prompt_carteles;
-  } else {
-    return id_prompt_dispositivos;
-  }
+if (dispositivosCount === 0) {
+  return id_prompt_carteles;
+} else {
+  return id_prompt_dispositivos;
+}
 }
 
 
 async function getOpenAiResults(filePaths: string[], instrucciones: string) {
-    console.log("procesando imagenes");
-  
-    // Codificar todas las imágenes en base64
-    const base64Images = await Promise.all(filePaths.map(filePath => encodeImage(filePath)));
-  
-    // Crear el mensaje inicial con las instrucciones como un mensaje de texto
-    const initialMessage: ChatMessage[] = [{
-        type: "text",
-        text: instrucciones,
-    }];
-  
-    // Agregar cada imagen codificada como un mensaje de imagen
-    const imageMessages: ChatMessage[] = base64Images.map(base64Image => ({
-        type: "image_url",
-        image_url: { "url": `data:image/jpg;base64,${base64Image}` },
-    }));
-  
-    // Combinar las instrucciones con las imágenes
-    const messages: any = initialMessage.concat(imageMessages);
-  
-    // Hacer la solicitud a la API de OpenAI
-    try {
-        const response = await openai.chat.completions.create({
-            model: "gpt-4-vision-preview",
-            max_tokens: max_tokens,
-            temperature: temperature,
-            messages: [
-              {
-              role:"user",
-              content: [...messages,],
-              },
-            ],
-        });
-  
-        console.log(response.choices[0]);
-        return response.choices[0].message.content;
-    } catch (error) {
-        console.error('Error al obtener resultados de OpenAI:', error);
-        throw error; // O manejar el error como prefieras
-    }
-  }
+  console.log("procesando imagenes");
 
-  async function encodeImage(filePath: string) {
-    return fs.promises.readFile(filePath, 'base64');
-  }
+  // Codificar todas las imágenes en base64
+  const base64Images = await Promise.all(filePaths.map(filePath => encodeImage(filePath)));
 
-  function isValidOpenAiResponse  (response: string, tipoProcesado: string): boolean {
-    try {
-      const responseObject = JSON.parse(response);
+  // Crear el mensaje inicial con las instrucciones como un mensaje de texto
+  const initialMessage: ChatMessage[] = [{
+      type: "text",
+      text: instrucciones,
+  }];
+
+  // Agregar cada imagen codificada como un mensaje de imagen
+  const imageMessages: ChatMessage[] = base64Images.map(base64Image => ({
+      type: "image_url",
+      image_url: { "url": `data:image/jpg;base64,${base64Image}` },
+  }));
+
+  // Combinar las instrucciones con las imágenes
+  const messages: any = initialMessage.concat(imageMessages);
+
+  // Hacer la solicitud a la API de OpenAI
+  try {
+      const response = await openai.chat.completions.create({
+          model: "gpt-4-vision-preview",
+          max_tokens: max_tokens,
+          temperature: temperature,
+          messages: [
+            {
+            role:"user",
+            content: [...messages,],
+            },
+          ],
+      });
+
+      console.log(response.choices[0]);
+      return response.choices[0].message.content;
+  } catch (error) {
+      console.error('Error al obtener resultados de OpenAI:', error);
+      throw error; // O manejar el error como prefieras
+  }
+}
+
+async function encodeImage(filePath: string) {
+  return fs.promises.readFile(filePath, 'base64');
+}
+
+function isValidOpenAiResponse  (response: string, tipoProcesado: string): boolean {
+  try {
+    const responseObject = JSON.parse(response);
+    
+    if (tipoProcesado === 'carteles') {
+      console.log(responseObject);
+      return true;
       
-      if (tipoProcesado === 'carteles') {
-        console.log(responseObject);
-        return true;
-       
-     
-      } else if (tipoProcesado === 'dispositivos') {
-        console.log(responseObject);
-        return true;
-      } 
+    
+    } else if (tipoProcesado === 'dispositivos') {
+      console.log(responseObject);
+      return true;
+    } 
+
+    return false;
+  } catch (error) {
+    console.error('Error, no es un formato JSON:', error);
+    return false; 
+  }
+}
+
+export async function borrarProcesado(req: Request, res: Response) {
+  try{
+    const id_procesado_imagen: number = parseInt(req.params.id_procesado_imagen);
+    await procesamientoService.borrarProcesado(id_procesado_imagen);
+    res.status(200).json({ message: 'Borrado exitoso' });
+    console.log('Procesado borrado: ', id_procesado_imagen);
+  }catch(error){
+      console.error('Error al borrar procesado:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+
+}
+
+export async function feedbackProcesado(req: Request, res: Response) {
   
-      return false;
-    } catch (error) {
-      console.error('Error, no es un formato JSON:', error);
-      return false; 
-    }
+  try{
+
+    const id_procesado_imagen = parseInt(req.body.id_procesado_imagen);  
+
+    const feedback = req.body.feedback;
+    console.log('id_procesado_imagen: ', id_procesado_imagen);
+    console.log('feedback: ', feedback);
+    await procesamientoService.feedbackProcesado(id_procesado_imagen, feedback);
+
+    res.status(200).json({ message: 'feedback insertado' });
+
+  }catch(error){
+      console.error('Error al editar el feedback del procesado:', error);
+      res.status(500).json({ error: 'error feedback' });
   }
 
-  export async function borrarProcesado(req: Request, res: Response) {
-    try{
-      const id_procesado_imagen: number = parseInt(req.params.id_procesado_imagen);
-      await procesamientoService.borrarProcesado(id_procesado_imagen);
-      res.status(200).json({ message: 'Borrado exitoso' });
-      console.log('Procesado borrado: ', id_procesado_imagen);
-    }catch(error){
-        console.error('Error al borrar procesado:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
 
-  }
+}
 
-  export async function feedbackProcesado(req: Request, res: Response) {
+
+  /*export async function getProcesadosByIdAuditoria(req: Request, res: Response) {
     
-    try{
-
-      const id_procesado_imagen = parseInt(req.body.id_procesado_imagen);  
-
-      const feedback = req.body.feedback;
-      console.log('id_procesado_imagen: ', id_procesado_imagen);
-      console.log('feedback: ', feedback);
-      await procesamientoService.feedbackProcesado(id_procesado_imagen, feedback);
- 
-      res.status(200).json({ message: 'feedback insertado' });
-
-    }catch(error){
-        console.error('Error al editar el feedback del procesado:', error);
-        res.status(500).json({ error: 'error feedback' });
-    }
-
-
-  }
-
-
-  export async function getProcesadosByIdAuditoria(req: Request, res: Response) {
-    
-  }
+  }*/
