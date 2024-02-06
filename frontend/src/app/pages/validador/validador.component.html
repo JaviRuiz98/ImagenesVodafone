@@ -40,7 +40,7 @@
                 [procesados]="mueble.expositores[0].procesados_imagenes" 
                 [cargando_procesamiento]="cargas_procesamiento[mueble.expositores[0].id_expositor]"
                 [valueSelected]="modos_visualizacion[mueble.expositores[0].id_expositor] === 'historial'? 'historial':'new'"
-                (archivoSeleccionadoChange)="recibirFile($event, mueble.expositores[0].id_expositor)">
+                (archivoSeleccionadoChange)="recibirFile($event, mueble.expositores[0].id_expositor, mueble.id_mueble)">
               </app-paginador-procesamiento-subida>            
             </div>
         
@@ -50,14 +50,14 @@
                   [procesados]="mueble.expositores[0].procesados_imagenes" 
                   [cargando_procesamiento]="cargas_procesamiento[mueble.expositores[0].id_expositor]"
                   [valueSelected]="modos_visualizacion[mueble.expositores[0].id_expositor] === 'historial'? 'historial':'new'"
-                  (archivoSeleccionadoChange)="recibirFile($event, mueble.expositores[0].id_expositor)">
+                  (archivoSeleccionadoChange)="recibirFile($event, mueble.expositores[0].id_expositor, mueble.id_mueble)">
                 </app-paginador-procesamiento-subida> 
                 <app-paginador-procesamiento-subida
                   [id_expositor_selected]="mueble.expositores[1].id_expositor"
                   [procesados]="mueble.expositores[1].procesados_imagenes" 
                   [cargando_procesamiento]="cargas_procesamiento[mueble.expositores[1].id_expositor]"
                   [valueSelected]="modos_visualizacion[mueble.expositores[1].id_expositor] === 'historial'? 'historial':'new'"                
-                  (archivoSeleccionadoChange)="recibirFile($event, mueble.expositores[1].id_expositor)">
+                  (archivoSeleccionadoChange)="recibirFile($event, mueble.expositores[1].id_expositor, mueble.id_mueble)">
                 </app-paginador-procesamiento-subida>                    
               </div>
    

@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import { ChatMessage } from '../interfaces/procesamientoInterfaces';
+import { ChatMessage } from '../interfaces/procesadoInterfaces';
 import * as fs from 'fs';
 import openai from '../config/openAi';
 import { expositoresService } from '../services/expositorService';
-import { procesamientoService, respuestaService } from '../services/procesamientoService';
+import { procesadoService, respuestaService } from '../services/procesadoService';
 import { parseBool } from '../utils/funcionesCompartidasController';
 import { imagenService } from '../services/imagenService';
 import { prompts } from '@prisma/client';
@@ -21,12 +21,12 @@ const id_prompt_dispositivos: number = 5;
 export async function procesarImagenes(req: Request, res: Response) {
   try {
     const file = req.file //as { [fieldname: string]: Express.Multer.File[] };
-    const id_expositor: number = parseInt(req.body.idExpositor); //ojo refactor
+    const id_expositor: number = parseInt(req.body.id_expositor); //ojo refactor
     const id_mueble: number = parseInt(req.body.id_mueble);
     
     
     //obtengo la imagen a procesar
-    const imagenProcesada = file//(files['imagenesProcesamiento'] as Express.Multer.File[]).map(file => file.path)[0];
+    const imagenProcesada = file//(files['imagenesprocesado'] as Express.Multer.File[]).map(file => file.path)[0];
 
     if (!imagenProcesada ||!imagenProcesada.path || !imagenProcesada.filename) {
       
@@ -52,7 +52,6 @@ export async function procesarImagenes(req: Request, res: Response) {
     
     ]);
     
-
 
     if (!imagenReferencia) {
       res.status(500).json({ error: 'La imagen referencia no existe' });
@@ -86,7 +85,7 @@ export async function procesarImagenes(req: Request, res: Response) {
 
     const similarityObject = JSON.parse(cleanedResponse);
     //Guardar en la base de datos (falta por implementar)
-    const id_procesado_imagen = await procesamientoService.create( //devuelve el id del procesado de imagen para usarlo en el almacenamiento de la respuesta
+    const id_procesado_imagen = await procesadoService.create( //devuelve el id del procesado de imagen para usarlo en el almacenamiento de la respuesta
       nuevaImagen.id_imagen, 
       existingExpositor.id_expositor, 
       similarityObject.comentarios, 
@@ -100,8 +99,8 @@ export async function procesarImagenes(req: Request, res: Response) {
     } else if (promptObject.categoria === 'dispositivos') {
       await respuestaService.createRespuestaDispositivo(id_procesado_imagen, dispositivosCount, parseInt(similarityObject.dispositivos_contados));
     }
-    const procesamiento_object = await procesamientoService.getById(id_procesado_imagen);
-    return res.status(200).json(procesamiento_object);
+    const procesado_object = await procesadoService.getById(id_procesado_imagen);
+    return res.status(200).json(procesado_object);
   } catch (error) {
     console.error('Error al procesar imágenes:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
@@ -110,11 +109,11 @@ export async function procesarImagenes(req: Request, res: Response) {
   }
 }
 
-export async function borrarProcesamiento(req: Request, res: Response){
+export async function borrarprocesado(req: Request, res: Response){
   try{
 
     const id_procesado: number = parseInt(req.params.id_procesado);
-    await procesamientoService.borrarProcesado(id_procesado);
+    await procesadoService.borrarProcesado(id_procesado);
     console.log('Eliminado: ', id_procesado);
     return res.status(200).json({mensaje: 'Eliminado'})
   
@@ -208,7 +207,7 @@ async function getOpenAiResults(filePaths: string[], instrucciones: string) {
   export async function borrarProcesado(req: Request, res: Response) {
     try{
       const id_procesado_imagen: number = parseInt(req.params.id_procesado_imagen);
-      await procesamientoService.borrarProcesado(id_procesado_imagen);
+      await procesadoService.borrarProcesado(id_procesado_imagen);
       res.status(200).json({ message: 'Borrado exitoso' });
       console.log('Procesado borrado: ', id_procesado_imagen);
     }catch(error){
@@ -227,7 +226,7 @@ async function getOpenAiResults(filePaths: string[], instrucciones: string) {
       const feedback = req.body.feedback;
       console.log('id_procesado_imagen: ', id_procesado_imagen);
       console.log('feedback: ', feedback);
-      await procesamientoService.feedbackProcesado(id_procesado_imagen, feedback);
+      await procesadoService.feedbackProcesado(id_procesado_imagen, feedback);
  
       res.status(200).json({ message: 'feedback insertado' });
 
