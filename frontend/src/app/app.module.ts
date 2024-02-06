@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { PrimeIcons } from 'primeng/api';
 
-//instancias del programa
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -12,6 +11,7 @@ import { AppComponent } from './app.component';
 import { ValidadorModule } from './pages/validador/validador.module';
 import { HomeModule } from './pages/home/home.module';
 import { BarraMenuComponent } from './componentes/barra-menu/barra-menu.component';
+import { AuditoriaComponent } from './pages/auditoria/auditoria.component';
 
 @NgModule({
   declarations: [

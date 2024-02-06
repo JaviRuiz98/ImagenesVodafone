@@ -47,13 +47,17 @@ export class SelectorImagenesComponent {
   getImageSrc() {
     return this.archivoSeleccionado ? URL.createObjectURL(this.archivoSeleccionado) : '';
   }
+
+  
+
   onDragOver(event: DragEvent) {
     event.preventDefault();
     this.dropAreaRef.nativeElement.classList.add('active');
     event.stopPropagation();
     this.mouseSobre = true;
-}
+  }
  
+
 onDragLeave(event: DragEvent) {
     event.preventDefault();
     event.stopPropagation();
@@ -74,8 +78,8 @@ onDrop(event: DragEvent) {
     const files = transferencia.files;
    
     if (files.length > 0) {
-        this.archivoSeleccionado = files[0];
-        this.archivoSeleccionadoChange.emit({ archivo: this.archivoSeleccionado });
+        const file = files[0];
+        this.archivoSeleccionadoChange.emit({ archivo:file});
     }
 }
 }

@@ -1,12 +1,9 @@
 .barraCompleta {
-  top: 0;
-  left: 0;
   display: grid;
   grid-template-columns: 10% 40% 50%;
   width: 100%;
   max-height: 80px;
   background-color: red;
-  z-index: 1;
 }
 .image-container {
   max-height: 80px;
@@ -32,13 +29,11 @@
 }
 
 .elementosValidator{
- 
   display: flex;
   justify-content: right;
   align-items: center;
   margin-right: 30%;
   height: 100%;
-
 }
 
 .scrolling-bar::before {

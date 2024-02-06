@@ -24,3 +24,26 @@ export async function getFilteredMuebles(req: Request, res: Response) {
     res.status(200).json(mobiliario);
 
 }
+
+export async function createMueble(req: Request, res: Response) {
+    const data = req.body; //tipar en un futuro
+
+    //hacer valdiator 
+
+    const mobiliario = await mobiliarioService.createMueble(data);
+    res.status(200).json(mobiliario);
+}
+
+export async function updateMueble(req: Request, res: Response) {
+    const data = req.body; //tipar
+    const id_mueble = req.params.id_mueble ? parseInt(req.params.id_mueble as string) : undefined;
+
+    //hacer validator
+    if (!id_mueble) {
+        res.status(400).json({ error: 'id_mueble es necesario' });
+        return;
+    }
+
+    const mobiliario = await mobiliarioService.updateMueble(id_mueble, data);
+    res.status(200).json(mobiliario);
+}

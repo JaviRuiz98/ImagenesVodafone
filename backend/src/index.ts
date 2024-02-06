@@ -4,9 +4,10 @@ import cors from 'cors';
 
 import tiendaRoutes from './routes/tiendasRoutes';
 import imagesRoutes from './routes/imagenesRoutes';
-import procesamientoRoutes from './routes/procesamientoRoutes';
+import procesamientoRoutes from './routes/procesadoRoutes';
 import promptsRoutes from './routes/promptsRoutes';
 import  mobiliarioRouter from './routes/mobiliarioRoutes';
+import auditoriaRouter from './routes/auditoriaRoutes';
 
 const app = express();
 app.use(bodyParser.json({ limit: '10mb' }));
@@ -19,6 +20,7 @@ app.use('/', imagesRoutes);
 app.use('/', procesamientoRoutes);
 app.use('/', promptsRoutes);
 app.use('/', mobiliarioRouter);
+app.use('/', auditoriaRouter);
 
 app.get('/', (_req: Request, res: Response) => {
     res.send('Hello World! ');

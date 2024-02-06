@@ -3,6 +3,7 @@ import { HttpClient,HttpParams } from '@angular/common/http';
 import { Observable } from "rxjs";
 
 import { procesados_imagenes } from '../../interfaces/procesados_imagenes';
+import { muebles } from 'src/app/interfaces/muebles';
 
  
 @Injectable({
@@ -14,12 +15,13 @@ export class ProcesamientoService {
 
   constructor(private http: HttpClient){ }
 
-  postProcesamientoImagenes(id_expositor:number,imageFile: File  ): Observable<procesados_imagenes> {
+  postProcesamientoImagenes(id_expositor:number, id_mueble_selected: number, imageFile: File  ): Observable<procesados_imagenes> {
     const formData = new FormData();
-    formData.append('idExpositor', id_expositor.toString());
+    formData.append('id_expositor', id_expositor.toString());
+    formData.append('id_mueble', id_mueble_selected.toString());
     formData.append('imagenesProcesamiento', imageFile);
 
-    return this.http.post<procesados_imagenes>(`${this.API_URI}/procesamiento`, formData);
+    return this.http.post<procesados_imagenes>(`${this.API_URI}/procesado`, formData);
   }
 
   deleteProcesado(procesado: procesados_imagenes){

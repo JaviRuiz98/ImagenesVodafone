@@ -20,65 +20,66 @@ export const mobiliarioService = {
 
         //const orderClause = getOrderClause(orden_clause);
 
+        try{
+            
+            const muebles = await db.muebles.findMany({
+                where:{
+                    
+                    pertenencia_mueble_tienda: whereClause,
+                    
+                    categoria: categoria_clause ? categoria_clause : undefined
+                        
+                },
+                include: {
+                                    
+                    pertenencia_expositor_mueble: {
+                        //obtener el expositor mas reciente
+                        orderBy: {
+                            fecha: 'desc',
+                        },
 
-        const muebles = await db.muebles.findMany({
-            where:{
-                
-                pertenencia_mueble_tienda: whereClause,
-                
-                categoria: categoria_clause ? categoria_clause : undefined
-                     
-            },
-            include: {
-                                
-                pertenencia_expositor_mueble: {
-                    //obtener el expositor mas reciente
-                    orderBy: {
-                        fecha: 'desc',
-                    },
-
-                    take:1,
-                  
-                    include: {
-                       expositores:{
-                        include:{
-                            imagenes: true,
-                            procesados_imagenes: {
-                                include: {
-                                    imagenes: true,
-                                    respuestas_carteles: true,
-                                    respuestas_dispositivos: true,
-                                    prompts: true
+                        take:1,
+                    
+                        include: {
+                        expositores:{
+                            include:{
+                                imagenes: true,
+                                procesados_imagenes: {
+                                    include: {
+                                        imagenes: true,
+                                        respuestas_carteles: true,
+                                        respuestas_dispositivos: true,
+                                        prompts: true
+                                        
+                                    },
+                                orderBy: {
                                     
                                 },
-                               orderBy: {
-                                  
-                               },
-    
-                               where: {
-                                   prompts:{
-                                       id_prompt:{
-                                        in: prompts_clause? prompts_clause : undefined
-                                       }
-                                   },
-    
-                                   IA_utilizada: ia_clause ? ia_clause : undefined,
-                                   respuestas_carteles:{
-                                       every:{
-                                           probabilidad:{
-                                               in: respuestas_carteles_clause ? respuestas_carteles_clause : undefined
-                                           }
-                                       }
-                                   },
-                                                                    
-                                }  
-                            }    
+        
+                                where: {
+                                    prompts:{
+                                        id_prompt:{
+                                            in: prompts_clause? prompts_clause : undefined
+                                        }
+                                    },
+        
+                                    IA_utilizada: ia_clause ? ia_clause : undefined,
+                                    respuestas_carteles:{
+                                        every:{
+                                            probabilidad:{
+                                                in: respuestas_carteles_clause ? respuestas_carteles_clause : undefined
+                                            }
+                                        }
+                                    },
+                                                                        
+                                    }  
+                                }    
+                            }
+                        } 
+                                                            
                         }
-                       } 
-                                                         
                     }
                 }
-            }
         });
 
         
@@ -91,12 +92,39 @@ export const mobiliarioService = {
         });
     
         return result;
+    } catch (error) {
+        throw error;
+    } finally {
+        await db.$disconnect();
+    }
 
 
     },
 
     async getMuebleById( id_mueble: number): Promise<muebles | null> {
         return await db.muebles.findUnique({where: {id_mueble: id_mueble}});
+    }, 
+
+    //tipar
+    async createMueble(mueble: any): Promise<muebles> {
+        try {
+            return await db.muebles.create({data: mueble});
+        } catch (error) {
+            throw error;
+        } finally{
+            await db.$disconnect();
+        }
+       
+    },  
+        //tipar
+    async updateMueble(id_mueble:number, mueble: any): Promise<muebles | null> {
+        try{
+            return await db.muebles.update({where: {id_mueble: id_mueble}, data: mueble});
+        } catch (error) {
+            throw error;
+        } finally{
+            await db.$disconnect();
+        }
     }
                                           
 }
