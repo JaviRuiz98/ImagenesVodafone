@@ -33,7 +33,7 @@ export async function getTiendaBySfid(req: Request, res: Response) {
             return;
         }
 
-        /*for (const mueble of tienda.muebles) {
+        for (const mueble of tienda.muebles) {
       
             const promises = mueble.expositores.map( async (expositores: expositores) => 
                 
@@ -53,7 +53,7 @@ export async function getTiendaBySfid(req: Request, res: Response) {
             for (let i = 0; i < mueble.expositores.length; i++) {
                 mueble.expositores[i].procesados_imagenes = resultados[i];
             }
-        }*/
+        }
         res.status(200).json(tienda);
                 
     }catch(error){
@@ -62,7 +62,7 @@ export async function getTiendaBySfid(req: Request, res: Response) {
     }
 }
 
-/*export async function getProcesadosByIdExpositor(req: Request, res: Response) {
+export async function getProcesadosByIdExpositor(req: Request, res: Response) {
     try{
         const idExpositor = parseInt(req.params.idExpositor);
         
@@ -90,4 +90,4 @@ export async function getTiendaBySfid(req: Request, res: Response) {
         res.status(500).json({ error: 'Internal server error' });
         throw error;
     }
-}*/
+}

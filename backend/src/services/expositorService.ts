@@ -67,7 +67,7 @@ export const expositoresService = {
         } finally {
           await db.$disconnect();
         }
-      }*/
+      }
       
 
 
