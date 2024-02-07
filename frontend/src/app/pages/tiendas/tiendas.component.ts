@@ -3,6 +3,8 @@ import { MessageService } from 'primeng/api';
 import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { tienda } from 'src/app/interfaces/tienda';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
+import { muebles } from 'src/app/interfaces/muebles';
+
 @Component({
   selector: 'app-tiendas',
   templateUrl: './tiendas.component.html',
@@ -30,7 +32,9 @@ export class TiendasComponent implements OnInit{
     this.TiendasService.getAllTiendas().subscribe((response: tienda[]) => {
       this.tiendas = response;
     })
-    
+    this.MueblesService.getAllMuebles().subscribe((response: muebles[]) => {
+      console.log(response)
+    })
     this.parametrosSteps = [
       {
         label: 'Datos Tienda',
