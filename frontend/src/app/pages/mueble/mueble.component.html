@@ -8,7 +8,7 @@
 
     <p-table
         class="table"
-        [value]="muebles"
+        [value]=" tableSelected === 'dispositivos' ? mueblesDispostivos : mueblesCarteles"
         [paginator]="true"
         [rows]="10"
         [scrollable]="true"
@@ -22,16 +22,19 @@
             <tr>
                 <th style="width:25%">Expositor</th>
                 <th style="width:25%">Nombre</th>
-                <th style="width:25%">Número de dispositivos</th>
-                <th style="width:25%">Categoría</th>
+                <th style="width:25%" *ngIf="tableSelected === 'dispositivos'"> Número de dispositivos </th> 
+                
+               
+              
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-mueble>
             <tr>
                 <td class="imagenSimple"><p-image [src]="url_imagenes_referencias + mueble.expositores[0].imagenes.url" [alt]="mueble.expositores[0].imagenes.url"  [width]="'40%'" [height]="'40%'" [preview]="true"></p-image></td>
                 <td>{{ mueble.nombre_mueble }}</td>
-                <td>{{ mueble.numero_dispositivos }}</td>
-                <td>{{ mueble.categoria }}</td>
+                <td *ngIf="tableSelected === 'dispositivos'">{{ mueble.numero_dispositivos }}</td>
+                
+       
             </tr>
         </ng-template>
         

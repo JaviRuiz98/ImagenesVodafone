@@ -13,6 +13,7 @@ import { TableModule } from 'primeng/table';
 import { ImageModule } from 'primeng/image';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import { ToastModule } from 'primeng/toast';
     ImageModule,
     SelectButtonModule,
     ToastModule,
+    ButtonModule,
 
     ReactiveFormsModule,
     FormsModule

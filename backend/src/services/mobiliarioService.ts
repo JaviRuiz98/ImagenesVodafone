@@ -155,7 +155,8 @@ function mapearResultadoParaFront(mueble: any): MuebleFrontInterfaz {
         nombre_mueble: mueble.nombre_mueble,
         expositores: expositores,
         categoria: mueble.categoria,
-        numero_dispositivos: mueble.dispositivos
+        numero_dispositivos: mueble.dispositivos,
+        
     };
 }
 
