@@ -1,29 +1,40 @@
-<div class="card">
-  <p-table
-      [value]="muebles"
-      [paginator]="true"
-      [rows]="10"
-      [showCurrentPageReport]="true"
-      [tableStyle]="{ 'min-width': '50rem' }"
-      currentPageReportTemplate="Enseñando {first} de {last} de en total {totalRecords} muebles"
-      [rowsPerPageOptions]="[10, 25, 50]"
-  >
-      <ng-template pTemplate="header">
-          <tr>
-              <th style="width:25%">Expositor</th>
-              <th style="width:25%">Nombre</th>
-              <th style="width:25%">Número de dispositivos</th>
-              <th style="width:25%">Categoría</th>
-          </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-mueble>
-          <tr>
-              <td><p-image [src]="url_imagenes_referencias + mueble.expositores[0].imagenes.url" [alt]="mueble.expositores[0].imagenes.url" class="imagenSimple" [width]="'100%'" [height]="'100%'" [preview]="true"></p-image></td>
-              <td>{{ mueble.nombre_mueble }}</td>
-              <td>{{ mueble.numero_dispositivos }}</td>
-              <td>{{ mueble.categoria }}</td>
-          </tr>
-      </ng-template>
-      
-  </p-table>
+
+<p-toast></p-toast>
+<div class="paginaCompleta">
+
+    <div class="selectButton">
+        <p-selectButton [options]="tableStateOption" [(ngModel)]="tableSelected" optionLabel="label" optionValue="value"></p-selectButton>
+    </div>
+
+    <p-table
+        class="table"
+        [value]="muebles"
+        [paginator]="true"
+        [rows]="10"
+        [scrollable]="true"
+        scrollHeight="100%"
+        [showCurrentPageReport]="true"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        currentPageReportTemplate="Enseñando {first} de {last} de en total {totalRecords} muebles"
+        [rowsPerPageOptions]="[10, 25, 50]"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width:25%">Expositor</th>
+                <th style="width:25%">Nombre</th>
+                <th style="width:25%">Número de dispositivos</th>
+                <th style="width:25%">Categoría</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-mueble>
+            <tr>
+                <td class="imagenSimple"><p-image [src]="url_imagenes_referencias + mueble.expositores[0].imagenes.url" [alt]="mueble.expositores[0].imagenes.url"  [width]="'40%'" [height]="'40%'" [preview]="true"></p-image></td>
+                <td>{{ mueble.nombre_mueble }}</td>
+                <td>{{ mueble.numero_dispositivos }}</td>
+                <td>{{ mueble.categoria }}</td>
+            </tr>
+        </ng-template>
+        
+    </p-table>
+
 </div>
