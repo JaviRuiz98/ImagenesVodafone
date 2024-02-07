@@ -3,7 +3,7 @@ import { ChatMessage } from '../interfaces/procesadoInterfaces';
 import * as fs from 'fs';
 import openai from '../config/openAi';
 import { expositoresService } from '../services/expositorService';
-import { procesadoService, respuestaService } from '../services/procesadoService';
+import { procesadoService } from '../services/procesadoService';
 import { parseBool } from '../utils/funcionesCompartidasController';
 import { imagenService } from '../services/imagenService';
 import { prompts } from '@prisma/client';
@@ -49,8 +49,7 @@ export async function procesarImagenes(req: Request, res: Response) {
     //obtengo la imagen de referencia y la cantidad de dispositivos 
     const [imagenReferencia, mueble] = await Promise.all([
       expositoresService.getImage(existingExpositor.id_imagen),
-      mobiliarioService.getMuebleById(id_mueble),
-    
+      mobiliarioService.getMuebleById(id_mueble),    
     ]);
     
 
@@ -60,6 +59,7 @@ export async function procesarImagenes(req: Request, res: Response) {
     }
    
     const dispositivosCount = mueble?.numero_dispositivos || 0;
+    const categoria = dispositivosCount > 0 ? 'dispositivos' : 'carteles';
     const id_prompt_usado: number = await getIdPromptDeNumeroDispositivos(dispositivosCount); //refactor
 
     const promptObject: prompts | null = await promptService.getById(id_prompt_usado);
@@ -68,7 +68,7 @@ export async function procesarImagenes(req: Request, res: Response) {
       return;
     }
 
-    //añadir num dispositivos al prompt
+    //añadir num dispositivos al prompt (por añadir)
 
     //llamada a OpenAI
     const filePaths = [imagenReferencia.url, imagenProcesada.path];
@@ -89,17 +89,15 @@ export async function procesarImagenes(req: Request, res: Response) {
     const id_procesado_imagen = await procesadoService.create( //devuelve el id del procesado de imagen para usarlo en el almacenamiento de la respuesta
       nuevaImagen.id_imagen, 
       existingExpositor.id_expositor, 
+      categoria,
       similarityObject.comentarios, 
       parseBool(similarityObject.valido), 
       IA_utilizada, 
-      promptObject.id_prompt);
+      promptObject.id_prompt,
+      similarityObject.probab_estar_contenido,
+      parseInt(similarityObject.dispositivos_contados),
+      dispositivosCount);    
     
-    //Almacenar los datos de las respuestas
-    if (promptObject.categoria === 'carteles') {
-      await respuestaService.createRespuestaCartel(id_procesado_imagen, similarityObject.probab_estar_contenido);
-    } else if (promptObject.categoria === 'dispositivos') {
-      await respuestaService.createRespuestaDispositivo(id_procesado_imagen, dispositivosCount, parseInt(similarityObject.dispositivos_contados));
-    }
     const procesado_object = await procesadoService.getById(id_procesado_imagen);
     return res.status(200).json(procesado_object);
   } catch (error) {
