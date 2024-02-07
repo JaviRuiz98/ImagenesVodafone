@@ -10,8 +10,6 @@ export const mobiliarioService = {
         _orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null = null,
         prompts_clause: number[] | null = null,
         ia_clause: string | null = null,
-        respuestas_carteles_clause: string[] | null = null,
-        _respuestas_dispositivos_clause: number[] | null = null
         ) : Promise<MuebleFrontInterfaz[]> => {
 
         const whereClause = id ? { some:{id_tienda: id }}: {};
@@ -47,8 +45,6 @@ export const mobiliarioService = {
                                 procesados_imagenes: {
                                     include: {
                                         imagenes: true,
-                                        respuestas_carteles: true,
-                                        respuestas_dispositivos: true,
                                         prompts: true
                                         
                                     },
@@ -63,15 +59,7 @@ export const mobiliarioService = {
                                         }
                                     },
         
-                                    IA_utilizada: ia_clause ? ia_clause : undefined,
-                                    respuestas_carteles:{
-                                        every:{
-                                            probabilidad:{
-                                                in: respuestas_carteles_clause ? respuestas_carteles_clause : undefined
-                                            }
-                                        }
-                                    },
-                                                                        
+                                    IA_utilizada: ia_clause ? ia_clause : undefined,                                                                        
                                     }  
                                 }    
                             }
