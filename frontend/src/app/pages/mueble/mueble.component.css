@@ -1,9 +1,6 @@
 .imagenSimple{
 
-    width: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+ margin-left: 10%;
 }
 
 .paginaCompleta {
@@ -14,8 +11,8 @@
 }
 
 .table{
-    margin-left: 1%;
-    margin-right: 1%;
+    margin-left: 10%;
+    margin-right: 10%;
  
 }
 .selectButton{

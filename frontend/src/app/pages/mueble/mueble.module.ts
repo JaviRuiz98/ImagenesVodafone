@@ -8,12 +8,17 @@ import { FormsModule } from '@angular/forms'; //select button
 
 
 import { MuebleComponent } from './mueble.component';
+import { IrArribaComponent } from 'src/app/componentes/ir-arriba/ir-arriba.component';
 
 import { TableModule } from 'primeng/table';
 import { ImageModule } from 'primeng/image';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
+import { ToolbarModule } from 'primeng/toolbar';
+
+
+
 
 @NgModule({
   imports: [
@@ -23,9 +28,13 @@ import { ButtonModule } from 'primeng/button';
     SelectButtonModule,
     ToastModule,
     ButtonModule,
+    ToolbarModule,
+
 
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+
+    IrArribaComponent,
     
   ],
   declarations: [MuebleComponent], 

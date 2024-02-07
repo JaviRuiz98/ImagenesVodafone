@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { dispositivos } from 'src/app/interfaces/dispositivos';
 import { muebles } from 'src/app/interfaces/muebles';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 
