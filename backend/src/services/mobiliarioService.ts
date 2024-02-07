@@ -145,16 +145,14 @@ export const mobiliarioService = {
        
     },
 
-    async  getMueblesAndExpositoresActivosBySfid( sfid: string): Promise<MuebleFrontInterfaz[]> {
+    async  getMueblesAndExpositoresActivosByIdTienda( id_tienda: number): Promise<MuebleFrontInterfaz[]> {
         try{
             const muebles: muebles[] = await db.muebles.findMany({
                 where: {
                    pertenencia_mueble_tienda:{
-                       some:{
-                           tiendas: {
-                               sfid: sfid
-                           }
-                       }
+                        every:{
+                            id_tienda: id_tienda
+                        }
                    }
                 }, 
                 include: {
@@ -180,12 +178,10 @@ export const mobiliarioService = {
             const mueblesModificados: muebles[] = muebles.map((mueble: any) => {
                 const num_expositores: number = mueble.numero_expositores ;
                 const expositoresLimitados = mueble.pertenencia_expositor_mueble.slice(0, num_expositores);
+            
                 return {
-                ...mueble,
-                pertenencia_expositor_mueble: {
-                    ...mueble.pertenencia_expositor_mueble,
-                    expositores: expositoresLimitados,
-                },
+                    ...mueble,
+                    pertenencia_expositor_mueble: expositoresLimitados
                 };
             });
 
