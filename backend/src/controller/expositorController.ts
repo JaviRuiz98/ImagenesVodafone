@@ -2,11 +2,12 @@ import { Request, Response } from 'express';
 import { expositoresService } from '../services/expositorService';
 
 export async function createExpositor(req: Request, res: Response) {
-    const data = req.body; //tipar en un futuro
+    const {nombre} = req.body; //tipar en un futuro
 
     //hacer valdiator 
 
-    const mobiliario = await expositoresService.createExpositor(data);
+
+    const mobiliario = await expositoresService.createExpositor(nombre);
     res.status(200).json(mobiliario);
 }
 
@@ -46,3 +47,4 @@ export async function deleteExpositor(req: Request, res: Response) {
         
     }
 }
+ 
