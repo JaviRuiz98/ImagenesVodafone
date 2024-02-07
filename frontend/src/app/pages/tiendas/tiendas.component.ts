@@ -16,14 +16,14 @@ export class TiendasComponent implements OnInit{
 
   tiendas: tienda[] = [];
   verFormularioNuevaTienda: boolean = false;
-  sfidInput: string = '';
-  comunidadInput: string = '';
+  sfidInput: string = 'vfvf';
+  comunidadInput: string = 'fvf';
   parametrosSteps: any; //TIPAR CON LABEL Y ROUTERLINK
   activeIndex: number = 0;
   botonSiguienteDeshabilitado: boolean = false;
   botonAtrasDeshabilitado: boolean = false;
   contenidoBotonSiguiente: string = 'Siguiente';
-  lista1: any[] = [];
+  listaTodosMuebles: muebles[] = [];
   lista2: any[] = [];
 
   
@@ -33,7 +33,7 @@ export class TiendasComponent implements OnInit{
       this.tiendas = response;
     })
     this.MueblesService.getAllMuebles().subscribe((response: muebles[]) => {
-      console.log(response)
+      this.listaTodosMuebles = response;
     })
     this.parametrosSteps = [
       {
