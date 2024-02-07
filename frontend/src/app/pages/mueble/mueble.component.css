@@ -1,0 +1,32 @@
+.imagenSimple{
+
+    width: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.paginaCompleta {
+    width: 95%; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.table{
+ 
+}
+.selectButton{
+    margin: 2%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+}
+
+:host::ng-deep {
+    .p-button.p-highlight.optionColorVodafone {
+       background: red;
+       border: rgb(87, 11, 11);
+    }
+}

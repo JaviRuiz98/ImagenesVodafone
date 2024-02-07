@@ -5,6 +5,7 @@ import { ValidadorComponent } from './pages/validador/validador.component';
 import { HomeComponent } from './pages/home/home.component';
 import { GestionDeAuditoriasComponent } from './pages/gestion-de-auditorias/gestion-de-auditorias.component';
 import { AuditoriaComponent } from './pages/auditoria/auditoria.component';
+import { MuebleComponent } from './pages/mueble/mueble.component';
 import { ExpositoresComponent } from './pages/expositores/expositores.component';
 
 const routes: Routes = [
@@ -30,7 +31,9 @@ const routes: Routes = [
     data: { stateBarra: 'auditorias' },
   },
 
-  // { path: 'muebles', },
+   { path: 'muebles', component: MuebleComponent , 
+    data: { stateBarra: 'empty' },
+   },
 
   // {path: "tiendas", },
 
