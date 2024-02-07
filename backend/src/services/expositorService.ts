@@ -88,11 +88,18 @@ export const expositoresService = {
        } finally {
          await db.$disconnect();
        }
-     }
+     },
+
+     async getExpositores(): Promise<expositores[]> {
+        try {
+          return await db.expositores.findMany();
+        } catch (error) {
+          throw error;
+        }
+      }
+}
+
+
+
 
       
-
-
-
-    
-}

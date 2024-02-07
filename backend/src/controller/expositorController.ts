@@ -23,3 +23,10 @@ export async function updateExpositor(req: Request, res: Response) {
     const mobiliario = await expositoresService.updateExpositor(id_expositor, data);
     res.status(200).json(mobiliario);
 }
+
+
+export async function getExpositores(_req: Request, res: Response) {
+
+    const expositores = await expositoresService.getExpositores();
+    res.status(200).json(expositores);
+}

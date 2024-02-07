@@ -18,8 +18,8 @@ export class ExpositoresComponent implements OnInit {
   
 
 
-  expositores: Expositor[] = [];
- 
+  expositores!: Expositor[];
+  expositorSeleccionado!: Expositor;
 
 
   constructor(private router: Router, private expositoresService: ExpositoresService) { }
@@ -27,12 +27,16 @@ export class ExpositoresComponent implements OnInit {
   inicializaExpositores() {
     this.expositoresService.getExpositores().subscribe((expositores: Expositor[]) => {
       this.expositores = expositores;
+      console.log("expositores", expositores);
     });
   }
 
 
   ngOnInit(): void {
     this.inicializaExpositores();
+
+
+
   }
 
 

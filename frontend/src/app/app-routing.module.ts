@@ -5,8 +5,14 @@ import { ValidadorComponent } from './pages/validador/validador.component';
 import { HomeComponent } from './pages/home/home.component';
 import { GestionDeAuditoriasComponent } from './pages/gestion-de-auditorias/gestion-de-auditorias.component';
 import { AuditoriaComponent } from './pages/auditoria/auditoria.component';
+import { ExpositoresComponent } from './pages/expositores/expositores.component';
 
 const routes: Routes = [
+
+  { 
+    path: "", component: ExpositoresComponent ,
+    data: { stateBarra: 'expositores' },
+  },
   { 
     path: "home", component: HomeComponent ,
     data: { stateBarra: 'home' },

@@ -17,7 +17,7 @@ import { BadgeModule } from 'primeng/badge';
 import { ImageModule } from 'primeng/image';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToastModule } from 'primeng/toast';
-
+import { TableModule } from 'primeng/table';
  
 
 // componentes nuestros
@@ -49,7 +49,8 @@ import { PaginadorProcesamientoSubidaComponent } from './../../componentes/pagin
     BadgeModule, 
     ImageModule,
     ProgressSpinnerModule,
-    ToastModule
+    ToastModule,
+    TableModule
 ]
 })
 
