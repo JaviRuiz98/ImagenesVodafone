@@ -1,0 +1,37 @@
+
+.paginaCompleta {
+    width: 100%; 
+    display: flex;
+ 
+    flex-direction: column;
+}
+
+.table{
+    margin-left: 10%;
+    margin-right: 10%;
+ 
+}
+.toolClass{
+   margin-right:10%;
+   margin-left: 10%;
+   margin-bottom: 2%;
+}
+:host::ng-deep {
+    .p-button.p-highlight.optionColorVodafone {
+       background: red;
+       border: rgb(87, 11, 11);
+    }
+}
+
+.marginRight{
+    margin-right: 10%;
+}
+
+.expositores-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.expositor-item {
+    margin-right: 2%; 
+}

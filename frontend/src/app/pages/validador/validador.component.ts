@@ -51,7 +51,7 @@ export class ValidadorComponent implements OnInit{
     //const tiendaSelected: number | undefined = this.localStorageService.getItem('tiendas');
     //const mobiliarioSelected: number | undefined= this.localStorageService.getItem('mobiliario');
                                 
-    this.mueblesService.getMuebles(filtros).subscribe( (data: muebles[]) => {
+    this.mueblesService.getMueblesFiltered(filtros).subscribe( (data: muebles[]) => {
       this.muebles = data;
       console.log("muebles", this.muebles);
     }), (error: Error) => { console.log(error) }
@@ -65,34 +65,34 @@ export class ValidadorComponent implements OnInit{
 
   }
 
-  async recibirFile(event: {archivo:File}, id_expositor_selected: number, id_mueble_selected: number) {
-    this.imagenAProcesar = event.archivo;
-    this.cargas_procesamiento[id_expositor_selected]= true;   
-    this.messageService.add({ severity: 'info', summary: 'Cargando', detail: 'La imagen se está procesando' });
+  // async recibirFile(event: {archivo:File}, id_expositor_selected: number, id_mueble_selected: number) {
+  //   this.imagenAProcesar = event.archivo;
+  //   this.cargas_procesamiento[id_expositor_selected]= true;   
+  //   this.messageService.add({ severity: 'info', summary: 'Cargando', detail: 'La imagen se está procesando' });
 
-    this.procesamientoService.postProcesamientoImagenes(id_expositor_selected, id_mueble_selected, this.imagenAProcesar).subscribe( 
-      ( response: procesados_imagenes ) => {
-        console.log("response", response);
-        this.cargas_procesamiento[id_expositor_selected] = false;
-        this.modos_visualizacion[id_expositor_selected] = 'historial';        
-        this.actualizarProcesamientoEnMueble(id_expositor_selected, response);
-        this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Imagen procesada correctamente' });
-      }, ( error: any ) => {
-        console.log("error", error);
-        this.cargas_procesamiento[id_expositor_selected] = false;
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error procesando imagen' });
-    })
-  }
+  //   this.procesamientoService.postProcesamientoImagenes(id_expositor_selected, id_mueble_selected, this.imagenAProcesar).subscribe( 
+  //     ( response: procesados_imagenes ) => {
+  //       console.log("response", response);
+  //       this.cargas_procesamiento[id_expositor_selected] = false;
+  //       this.modos_visualizacion[id_expositor_selected] = 'historial';        
+  //       this.actualizarProcesamientoEnMueble(id_expositor_selected, response);
+  //       this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Imagen procesada correctamente' });
+  //     }, ( error: any ) => {
+  //       console.log("error", error);
+  //       this.cargas_procesamiento[id_expositor_selected] = false;
+  //       this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error procesando imagen' });
+  //   })
+  // }
 
-  actualizarProcesamientoEnMueble(id_expositor_selected: number, response: procesados_imagenes) {
-    for (const mueble of this.muebles) {
-      const expositorIndex = mueble.expositores.findIndex((expositor) => expositor.id_expositor === id_expositor_selected);
-      if (expositorIndex !== -1) {
-        mueble.expositores[expositorIndex].procesados_imagenes.unshift(response);
-        break; 
-      }
-    }
-  }
+  // actualizarProcesamientoEnMueble(id_expositor_selected: number, response: procesados_imagenes) {
+  //   for (const mueble of this.muebles) {
+  //     const expositorIndex = mueble.expositores.findIndex((expositor) => expositor.id_expositor === id_expositor_selected);
+  //     if (expositorIndex !== -1) {
+  //       mueble.expositores[expositorIndex].procesados_imagenes.unshift(response);
+  //       break; 
+  //     }
+  //   }
+  // }
 
   enviarFiltroProcesados(filtros:filtro_procesados) {
     console.log("filtros", filtros);

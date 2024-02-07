@@ -12,6 +12,8 @@ import { ValidadorModule } from './pages/validador/validador.module';
 import { HomeModule } from './pages/home/home.module';
 import { BarraMenuComponent } from './componentes/barra-menu/barra-menu.component';
 import { TiendasModule } from './pages/tiendas/tiendas.module';
+import { MuebleModule } from './pages/mueble/mueble.module';
+
 
 @NgModule({
   declarations: [
@@ -19,6 +21,7 @@ import { TiendasModule } from './pages/tiendas/tiendas.module';
   ],
   imports: [
     BarraMenuComponent,
+    MuebleModule,
     ValidadorModule,
     AppRoutingModule,
     HomeModule,

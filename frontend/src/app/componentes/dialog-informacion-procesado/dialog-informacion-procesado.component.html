@@ -1,29 +1,29 @@
 
 <div class="tag-container"  (mouseover)="open.toggle($event)" (mouseout)="onMouseOut($event)">
-    <p-tag *ngIf="procesado.respuestas_carteles.length>0" 
+    <p-tag *ngIf="procesado.categoria === 'carteles'" 
         class = "cursor-pointer "
         icon="pi pi-info-circle" 
-        value="{{procesado.respuestas_carteles[0].probabilidad}}"
-        [severity]="getSeverityCartel(procesado.respuestas_carteles[0].probabilidad)" 
+        value="{{procesado.probabilidad_cartel}}"
+        [severity]="getSeverityCartel(procesado.probabilidad_cartel)" 
     ></p-tag>
-    <p-tag *ngIf="procesado.respuestas_dispositivos.length>0" 
+    <p-tag *ngIf="procesado.categoria === 'dispositivos'" 
         class = "cursor-pointer "
         icon="pi pi-info-circle"
-        value="{{procesado.respuestas_dispositivos[0].dispositivos_contados}}/{{procesado.respuestas_dispositivos[0].huecos_esperados}}"
-        [severity]="getSeverityDispositivos(procesado.respuestas_dispositivos[0].dispositivos_contados, procesado.respuestas_dispositivos[0].huecos_esperados)" 
+        value="{{procesado.dispositivos_contados}}/{{procesado.huecos_esperados}}"
+        [severity]="getSeverityDispositivos(procesado.dispositivos_contados, procesado.huecos_esperados)" 
     ></p-tag>     
 </div>
 <p-overlayPanel #open [showCloseIcon]="false" [style]="{width: '20vw'}">
-    <div *ngIf="procesado.respuestas_carteles.length > 0">
+    <div *ngIf="procesado.categoria === 'carteles'">
         <span style="font-weight: bold;">· Probabilidad: </span>  
-        <p-tag [severity]="getSeverityCartel(procesado.respuestas_carteles[0].probabilidad)" >
-            {{procesado.respuestas_carteles[0].probabilidad}}
+        <p-tag [severity]="getSeverityCartel(procesado.probabilidad_cartel)" >
+            {{procesado.probabilidad_cartel}}
         </p-tag>
     </div>
-    <div *ngIf="procesado.respuestas_dispositivos.length >0">
+    <div *ngIf="procesado.categoria === 'dispositivos'">
         <span style="font-weight: bold;">· Encontrados: </span>           
-        <p-tag [severity]="getSeverityDispositivos(procesado.respuestas_dispositivos[0].dispositivos_contados, procesado.respuestas_dispositivos[0].huecos_esperados)" >
-            {{procesado.respuestas_dispositivos[0].dispositivos_contados}}/{{procesado.respuestas_dispositivos[0].huecos_esperados}}
+        <p-tag [severity]="getSeverityDispositivos(procesado.dispositivos_contados, procesado.huecos_esperados)" >
+            {{procesado.dispositivos_contados}}/{{procesado.huecos_esperados}}
         </p-tag>
     </div>
     <h4>Comentarios: </h4> 

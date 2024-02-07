@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { tienda } from '../../interfaces/tienda';  
-import { expositores } from '../../interfaces/expositor';
+import { Expositor } from '../../interfaces/expositor';
 
 
 @Injectable({
@@ -47,9 +47,9 @@ export class TiendasService {
 
 
  
-  getExpositores(id_mueble: number): Observable<expositores[]> {
+  getExpositores(id_mueble: number): Observable<Expositor[]> {
     const params =  { id_mueble: id_mueble };
-    return this.http.get<expositores[]>(`${this.API_URI}/expositores`, { params: params });
+    return this.http.get<Expositor[]>(`${this.API_URI}/expositores`, { params: params });
   }
 
  

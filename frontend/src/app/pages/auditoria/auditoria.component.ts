@@ -50,7 +50,7 @@ export class AuditoriaComponent implements OnInit{
 
   async inicializaImagenesReferencia(id_mobiliario: number, filtros?: filtro_procesados) {
     //id mobiliario
-    this.mueblesService.getMuebles(filtros).subscribe( (data: muebles[]) => {
+    this.mueblesService.getMueblesFiltered(filtros).subscribe( (data: muebles[]) => {
       this.muebles = data;
       console.log("muebles", this.muebles);
     }), (error: Error) => { console.log(error) }
