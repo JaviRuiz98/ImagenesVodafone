@@ -20,7 +20,7 @@ export class ExpositoresComponent implements OnInit {
 
   expositores!: Expositor[];
   expositorSeleccionado!: Expositor;
-
+  url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
   constructor(private router: Router, private expositoresService: ExpositoresService) { }
 
@@ -31,6 +31,7 @@ export class ExpositoresComponent implements OnInit {
     });
   }
 
+ 
 
   ngOnInit(): void {
     this.inicializaExpositores();

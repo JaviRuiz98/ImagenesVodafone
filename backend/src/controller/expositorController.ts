@@ -30,3 +30,19 @@ export async function getExpositores(_req: Request, res: Response) {
     const expositores = await expositoresService.getExpositores();
     res.status(200).json(expositores);
 }
+
+
+export async function deleteExpositor(req: Request, res: Response) {
+    try{
+        const id_expositor = req.params.id_expositor ? parseInt(req.params.id_expositor as string) : undefined;
+        //hacer validator
+        if (!id_expositor) {
+            res.status(400).json({ error: 'id_expositor es necesario' });
+            return;
+        }
+        const mobiliario = await expositoresService.deleteExpositor(id_expositor);
+        res.status(200).json(mobiliario);
+    }catch(error){
+        
+    }
+}

@@ -4,14 +4,17 @@
         <ng-template pTemplate="header">
             <tr>
                 <th>ID</th>
-                <th>Name</th>
-                <th>id_imagen</th>
+                <th>imagen</th>
+                <th>Nombre</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-expositor>
             <tr>
                 <td>{{ expositor.id_expositor }}</td>
-                <td>{{ expositor.id_imagen }}</td>
+                <td>
+                    <p-image [src]="url_imagenes_referencias + expositor.imagenes.url"  [alt]="expositor.imagenes.url" class="imagenSimple" [width]="'10%'" [height]="'10%'" [preview]="true"></p-image>
+             
+                </td>
                 <td>{{ expositor.nombre }}</td>
                 
             </tr>

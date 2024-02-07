@@ -5,6 +5,6 @@ import { procesados_imagenes } from "./procesados_imagenes";
 
 export interface Expositor {
     id_expositor: number;
-    id_imagen: number;
+    imagen: imagenes;
     nombre: string;
 }
