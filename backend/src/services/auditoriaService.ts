@@ -1,20 +1,37 @@
 import db  from "../config/database";
+import { auditorias } from '@prisma/client';
 
 export const auditoriaService = {
 
-    async getFechaAuditoriaDadoId(id_auditoria: number): Promise<Date | null> {
-        try {
-            const auditoria =  await db.auditoria.findUnique({
+    async getAuditorias(id_tienda: number): Promise<auditorias[]| null> {
+        try{
+            return db.auditorias.findMany({
                 where: {
-                    id_auditoria: id_auditoria
-                },
-                select: {
-                    fecha: true
+                    id_tienda: id_tienda
                 }
-            });
-            return auditoria?.fecha ?? null;
-        } catch (error) {
+            })
+
+        }catch (error) {
+            console.error('No se pudo obtener el auditoria:', error);
             throw error;
+        }finally  {
+            await db.$disconnect();
+        }
+    },
+
+    async createAuditoria(id_tienda: number): Promise<auditorias> {
+        try{
+            return await db.auditorias.create({
+                data: {
+                    id_tienda: id_tienda,
+                    estado: 'en progreso'
+                }
+            })
+        }catch (error) {
+            console.error('No se pudo crear el auditoria:', error);
+            throw error;
+        }finally  {
+            await db.$disconnect();
         }
     }
 }

@@ -8,8 +8,8 @@ export const mobiliarioService = {
         id?: number,
         categoria_clause: "carteles" | "dispositivos" | null = null,
         _orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null = null,
-        prompts_clause: number[] | null = null,
-        ia_clause: string | null = null,
+        _prompts_clause: number[] | null = null,
+        _ia_clause: string | null = null,
         ) : Promise<MuebleFrontInterfaz[]> => {
 
         const whereClause = id ? { some:{id_tienda: id }}: {};
@@ -42,26 +42,26 @@ export const mobiliarioService = {
                         expositores:{
                             include:{
                                 imagenes: true,
-                                procesados_imagenes: {
+                                /*procesados_imagenes: {
                                     include: {
                                         imagenes: true,
                                         prompts: true
                                         
                                     },
-                                orderBy: {
-                                    fecha: 'desc',
-                                },
-        
-                                where: {
-                                    prompts:{
-                                        id_prompt:{
-                                            in: prompts_clause? prompts_clause : undefined
-                                        }
+                                    orderBy: {
+                                        fecha: 'desc',
                                     },
-        
-                                    IA_utilizada: ia_clause ? ia_clause : undefined,                                                                        
-                                    }  
-                                }    
+            
+                                    where: {
+                                        prompts:{
+                                            id_prompt:{
+                                                in: prompts_clause? prompts_clause : undefined
+                                            }
+                                        },
+            
+                                        IA_utilizada: ia_clause ? ia_clause : undefined,                                                                        
+                                        }  
+                                }*/    
                             }
                         } 
                                                             

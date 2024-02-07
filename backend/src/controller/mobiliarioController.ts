@@ -18,7 +18,6 @@ export async function getFilteredMuebles(req: Request, res: Response) {
     */
 
     const mobiliario: MuebleFrontInterfaz[] = await mobiliarioService.getFilteredMuebles(id_tienda, categoria_clause, orden_clause, prompts_clause, ia_clause);
-    console.log(mobiliario);
     res.status(200).json(mobiliario);
 
 }

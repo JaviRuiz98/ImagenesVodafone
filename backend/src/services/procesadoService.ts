@@ -10,7 +10,7 @@ export const procesadoService = {
         const procesado = await db.procesados_imagenes.create({
             data: {                
                 id_imagen: id_imagen,
-                id_expositor: id_expositor,
+                id_expositor_auditoria: id_expositor,
                 categoria: categoria,
                 comentarios: comentarios,
                 valido: valido,
@@ -58,10 +58,10 @@ export const procesadoService = {
         });
     },
 
-    async getProcesadosByIdExpositor(id_expositor: number) {
+    async getProcesadosByIdExpositor(id_expositor_auditoria: number) {
         return await db.procesados_imagenes.findMany({
             where: {
-                id_expositor: id_expositor
+                id_expositor_auditoria: id_expositor_auditoria
             }
         })
     },
