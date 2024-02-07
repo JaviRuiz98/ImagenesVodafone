@@ -88,11 +88,33 @@ export const expositoresService = {
        } finally {
          await db.$disconnect();
        }
-     }
+     },
+
+     async getExpositores(): Promise<expositores[]> {
+        try {
+          return await db.expositores.findMany({
+
+            include: {
+
+              imagenes: true
+            }
+          });
+        } catch (error) {
+          throw error;
+        }
+      },
+
+      async deleteExpositor(id_expositor: number): Promise<expositores | null> {
+        try {
+          return await db.expositores.delete({ where: { id_expositor: id_expositor } });
+        }catch (error) {
+          throw error;
+        }
+      }
+
+}
+
+
+
 
       
-
-
-
-    
-}
