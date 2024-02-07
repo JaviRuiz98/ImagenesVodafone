@@ -49,7 +49,7 @@ export const mobiliarioService = {
                                         
                                     },
                                 orderBy: {
-                                    
+                                    fecha: 'desc',
                                 },
         
                                 where: {
