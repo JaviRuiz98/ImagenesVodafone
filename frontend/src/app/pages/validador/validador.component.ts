@@ -3,7 +3,6 @@ import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
 
-
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 
 import { MessageService } from 'primeng/api';
@@ -22,8 +21,6 @@ import { Router } from '@angular/router';
 
 export class ValidadorComponent implements OnInit{
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
-
-
 
   //sfid = "FRANQ982";
   

@@ -30,5 +30,4 @@ export class HomeComponent implements OnInit{
   goToTienda() {
     this.router.navigate(['/tiendas']);
   }
-    
 }

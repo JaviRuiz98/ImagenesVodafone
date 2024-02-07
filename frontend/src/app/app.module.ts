@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
 import { ValidadorModule } from './pages/validador/validador.module';
 import { HomeModule } from './pages/home/home.module';
 import { BarraMenuComponent } from './componentes/barra-menu/barra-menu.component';
-
+import { TiendasModule } from './pages/tiendas/tiendas.module';
 
 @NgModule({
   declarations: [
@@ -22,6 +22,7 @@ import { BarraMenuComponent } from './componentes/barra-menu/barra-menu.componen
     ValidadorModule,
     AppRoutingModule,
     HomeModule,
+    TiendasModule,
     BrowserModule,
     HttpClientModule   
   ],

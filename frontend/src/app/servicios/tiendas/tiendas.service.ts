@@ -12,29 +12,31 @@ import { expositores } from '../../interfaces/expositor';
 export class TiendasService {
 
   API_URI = 'http://localhost:3000';
-
+/*
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
   });
 
   options = { 
     headers: this.headers
-  }
-
+  }*/
 
   constructor(private http: HttpClient){ }
 
-
-
-  getTiendaBySfid(sfid: string): Observable<tienda> {
-   
+  getAllTiendas(): Observable<tienda[]> {
+    return this.http.get<tienda[]>(`${this.API_URI}/tiendas`);
+  }
   
-    return this.http.get<tienda>(`${this.API_URI}/tiendas/${sfid}`);
 
+
+
+
+  //CODIGO ANTIGUO
+  getTiendaBySfid(sfid: string): Observable<tienda> {
+    return this.http.get<tienda>(`${this.API_URI}/tiendas/${sfid}`);
   }
 
   getTiendas(id_tienda?: number): Observable<tienda[]> {
-
     let url = `${this.API_URI}/tiendas`;
     if (id_tienda){
       url += `?id_tienda=${id_tienda}`
