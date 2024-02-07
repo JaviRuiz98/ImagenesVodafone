@@ -25,7 +25,7 @@ export class TiendasComponent implements OnInit{
   lista2: any[] = [];
 
   
-  constructor(private TiendasService: TiendasService, private MueblesService: MueblesService){}
+  constructor(private TiendasService: TiendasService, private MueblesService: MueblesService, private messageService: MessageService){}
   ngOnInit(): void {
     this.TiendasService.getAllTiendas().subscribe((response: tienda[]) => {
       this.tiendas = response;
@@ -50,14 +50,18 @@ export class TiendasComponent implements OnInit{
     this.verFormularioNuevaTienda = true;
   }
   botonSiguiente(){
-    if(this.activeIndex < 1){
-      this.activeIndex++;
-      this.botonAtrasDeshabilitado = false;
-      this.botonSiguienteDeshabilitado = false;
-      if(this.activeIndex === 1){
-        this.contenidoBotonSiguiente = 'Crear Tienda';        
-      }
-    } 
+    if(this.sfidInput === '' || this.comunidadInput === ''){
+      this.messageService.add({severity:'error', summary:'Error!', detail:'Los campos necesarios no estan completos.'});
+    } else{
+      if(this.activeIndex < 1){
+        this.activeIndex++;
+        this.botonAtrasDeshabilitado = false;
+        this.botonSiguienteDeshabilitado = false;
+        if(this.activeIndex === 1){
+          this.contenidoBotonSiguiente = 'Crear Tienda';        
+        }
+      } 
+    }
   }
   botonAtras(){
     if(this.activeIndex > 0){
