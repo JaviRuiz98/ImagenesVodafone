@@ -16,7 +16,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
-
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 
 
@@ -29,6 +29,7 @@ import { ToolbarModule } from 'primeng/toolbar';
     ToastModule,
     ButtonModule,
     ToolbarModule,
+    ProgressSpinnerModule,
 
 
     ReactiveFormsModule,
