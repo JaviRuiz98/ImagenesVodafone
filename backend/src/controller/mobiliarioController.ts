@@ -7,7 +7,8 @@ export async function getFilteredMuebles(req: Request, res: Response) {
     const categoria_clause:  "carteles" | "dispositivos"  | null = req.body.categoria as "carteles" | "dispositivos" | null;
     const orden_clause: 'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null  = req.body.orden;
     const prompts_clause: number[] | null  = req.body.prompts;
-    const ia_clause: string | null = req.body.ia;     
+    const ia_clause: string | null = req.body.ia;  
+       
 
 
     //validador 
