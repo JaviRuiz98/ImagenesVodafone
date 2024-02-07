@@ -143,6 +143,62 @@ export const mobiliarioService = {
             await db.$disconnect();
         }
        
+    },
+
+    async  getMueblesAndExpositoresActivosBySfid( sfid: string): Promise<MuebleFrontInterfaz[]> {
+        try{
+            const muebles = await db.muebles.findMany({
+                where: {
+                   pertenencia_mueble_tienda:{
+                       some:{
+                           tiendas: {
+                               sfid: sfid
+                           }
+                       }
+                   }
+                }, 
+                include: {
+                    pertenencia_expositor_mueble:{
+                        include: {
+                            expositores: {
+                                include: {
+                                    imagenes: true,
+                                    
+                                },
+                                
+                            },
+                            
+                        }, orderBy: {
+                            fecha: 'desc'
+                        }, 
+                        
+                    }
+                }
+            });
+
+            //Limitar expositores
+            const mueblesModificados = muebles.map((mueble) => {
+                const num_expositores: number = mueble.numero_expositores ;
+                const expositoresLimitados = mueble.pertenencia_expositor_mueble.slice(0, num_expositores);
+                return {
+                ...mueble,
+                pertenencia_expositor_mueble: {
+                    ...mueble.pertenencia_expositor_mueble,
+                    expositores: expositoresLimitados,
+                },
+                };
+            });
+
+            const result: MuebleFrontInterfaz[] = mueblesModificados.map((mueble: any) => {
+                return mapearResultadoParaFront(mueble);
+            })
+            return result;
+            
+        } catch (error) {
+            throw error;
+        } finally{
+            await db.$disconnect();
+        }
     }
                                           
 }
@@ -155,7 +211,8 @@ function mapearResultadoParaFront(mueble: any): MuebleFrontInterfaz {
         nombre_mueble: mueble.nombre_mueble,
         expositores: expositores,
         categoria: mueble.categoria,
-        numero_dispositivos: mueble.dispositivos
+        numero_dispositivos: mueble.dispositivos,
+        
     };
 }
 

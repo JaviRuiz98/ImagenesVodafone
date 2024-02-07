@@ -1,18 +1,28 @@
 
 <p-toast></p-toast>
+<app-ir-arriba></app-ir-arriba>
 <div class="paginaCompleta">
 
-    <div class="selectButton">
-        <p-selectButton [options]="tableStateOption" [(ngModel)]="tableSelected" optionLabel="label" optionValue="value"></p-selectButton>
+    
+<p-toolbar>
+    <div class="p-toolbar-group-start">
+        <p-button severity="danger" label="Nuevo" icon="pi pi-plus" ></p-button>
+        <p-button severity="danger" label="Editar" icon="pi pi-pencil" ></p-button>
     </div>
-
-    <p-table
+    <div class="p-toolbar-group-end">
+      <div></div>
+    </div>
+</p-toolbar>
+    <div class="selectButton">
+        <p-selectButton [allowEmpty]="false" [options]="tableStateOption" [(ngModel)]="tableSelected" optionLabel="label" optionValue="value"></p-selectButton>
+    </div>
+   
+        <p-table
         class="table"
-        [value]="muebles"
+        [value]=" tableSelected === 'dispositivos' ? mueblesDispostivos : mueblesCarteles"
         [paginator]="true"
         [rows]="10"
-        [scrollable]="true"
-        scrollHeight="100%"
+    
         [showCurrentPageReport]="true"
         [tableStyle]="{ 'min-width': '50rem' }"
         currentPageReportTemplate="Enseñando {first} de {last} de en total {totalRecords} muebles"
@@ -20,21 +30,23 @@
     >
         <ng-template pTemplate="header">
             <tr>
-                <th style="width:25%">Expositor</th>
-                <th style="width:25%">Nombre</th>
-                <th style="width:25%">Número de dispositivos</th>
-                <th style="width:25%">Categoría</th>
+                <th [ngStyle]="{ 'width': tableSelected === 'dispositivos' ? '70%' : '40%' }">Expositor</th>
+            <th style="width:20%">Nombre</th>
+            <th *ngIf="tableSelected === 'dispositivos'" style="width:10%">Número de dispositivos</th> 
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-mueble>
             <tr>
-                <td class="imagenSimple"><p-image [src]="url_imagenes_referencias + mueble.expositores[0].imagenes.url" [alt]="mueble.expositores[0].imagenes.url"  [width]="'40%'" [height]="'40%'" [preview]="true"></p-image></td>
+                <td  class="imagenSimple"><p-image [src]="url_imagenes_referencias + mueble.expositores[0].imagenes.url" [alt]="mueble.expositores[0].imagenes.url"  [width]="'40%'" [height]="'40%'" [preview]="true"></p-image></td>
                 <td>{{ mueble.nombre_mueble }}</td>
-                <td>{{ mueble.numero_dispositivos }}</td>
-                <td>{{ mueble.categoria }}</td>
+                <td *ngIf="tableSelected === 'dispositivos'">{{ mueble.numero_dispositivos }}</td>
+                
+       
             </tr>
         </ng-template>
         
     </p-table>
+
+    
 
 </div>

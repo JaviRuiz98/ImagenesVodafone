@@ -1,0 +1,23 @@
+ 
+<p-panel header="Expositores" [style]="{width: '70%', margin: '0 auto'}">
+    <p-table [value]="expositores" selectionMode="single" [style] = "{'width':'100%'}" [(selection)]="expositorSeleccionado" [rows]="40">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>ID</th>
+                <th>imagen</th>
+                <th>Nombre</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-expositor>
+            <tr>
+                <td>{{ expositor.id_expositor }}</td>
+                <td>
+                    <p-image [src]="url_imagenes_referencias + expositor.imagenes.url"  [alt]="expositor.imagenes.url" class="imagenSimple" [width]="'10%'" [height]="'10%'" [preview]="true"></p-image>
+             
+                </td>
+                <td>{{ expositor.nombre }}</td>
+                
+            </tr>
+        </ng-template>
+    </p-table>
+</p-panel>

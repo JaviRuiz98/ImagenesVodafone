@@ -1,19 +1,18 @@
 .imagenSimple{
 
-    width: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+ margin-left: 10%;
 }
 
 .paginaCompleta {
-    width: 95%; 
+    width: 100%; 
     display: flex;
-    justify-content: center;
-    align-items: center;
+ 
+    flex-direction: column;
 }
 
 .table{
+    margin-left: 10%;
+    margin-right: 10%;
  
 }
 .selectButton{
