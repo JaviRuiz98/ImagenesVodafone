@@ -6,5 +6,4 @@ export interface muebles {
     numero_dispositivos: number;
     categoria: string;
     expositores: Expositor[];
-    
 }

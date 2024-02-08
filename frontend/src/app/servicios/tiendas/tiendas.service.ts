@@ -26,7 +26,9 @@ export class TiendasService {
   getAllTiendas(): Observable<tienda[]> {
     return this.http.get<tienda[]>(`${this.API_URI}/tiendas`);
   }
-  
+  newTienda(nuevaTienda: tienda): Observable<tienda[]> {
+    return this.http.post<tienda[]>(`${this.API_URI}/tiendas`, nuevaTienda);
+  }
 
 
 
