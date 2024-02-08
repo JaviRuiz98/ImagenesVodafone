@@ -36,16 +36,16 @@ export class BarraMenuComponent implements OnInit {
   constructor(
     private localStorageService: LocalStorageService,
     private tiendasService: TiendasService,
-    private activatedRoute: ActivatedRoute, private router: Router) {}
+    private activatedRoute: ActivatedRoute, 
+    private router: Router) 
+  {}
 
   ngOnInit(): void {
     this.initTiendas();
-
     const routeChanges = this.router.events.pipe(
       filter((event: any) => event instanceof NavigationEnd),
       map(() => this.activatedRoute)
     );
-
     routeChanges.subscribe((route) => {
       while (route.firstChild) {
         route = route.firstChild;
@@ -57,20 +57,13 @@ export class BarraMenuComponent implements OnInit {
         console.warn(`La ruta "${route.pathFromRoot.map((r) => r).join('/')}" no ha definido "stateBarra"`);
       }
     });
-  
   }
-
 
   initTiendas() {
     this.tiendasService.getTiendas().subscribe((data: tienda[]) => {
-      
       this.tiendas = data;
-      
     })
   }
-
-
-  
 
   setStateBarra(newState: 'home' | 'auditoria' | 'admin' | 'empty'): void {
     console.log(`Estado actualizado a ${newState}`);
@@ -83,32 +76,23 @@ export class BarraMenuComponent implements OnInit {
     }else{
       return '';
     }
- 
   }
 
   onTiendaSelected(){
-
     if (this.tiendaSeleccionada){
       this.localStorageService.setItem('tiendas', this.tiendaSeleccionada.id_tienda );
-     
     }else{
-   
       this.localStorageService.removeItem('tiendas');
-     
     }
-   
   }
-
 
   private  formatDate(date: Date): string {
     const day = String(date.getDate()).padStart(2, '0'); 
     const month = String(date.getMonth() + 1).padStart(2, '0'); 
     const year = String(date.getFullYear());
-  
     return `${day}-${month}-${year}`;
   }
-  
-
-
-
+  volverInicio() {
+    this.router.navigate(['/home']);
+  }
 }

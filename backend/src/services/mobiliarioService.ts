@@ -4,14 +4,12 @@ import {  MuebleFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
 
 
 export const mobiliarioService = {
-    getAllMuebles: async (
+    getFilteredMuebles: async (
         id?: number,
         categoria_clause: "carteles" | "dispositivos" | null = null,
         _orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null = null,
-        prompts_clause: number[] | null = null,
-        ia_clause: string | null = null,
-        respuestas_carteles_clause: string[] | null = null,
-        _respuestas_dispositivos_clause: number[] | null = null
+        _prompts_clause: number[] | null = null,
+        _ia_clause: string | null = null,
         ) : Promise<MuebleFrontInterfaz[]> => {
 
         const whereClause = id ? { some:{id_tienda: id }}: {};
@@ -20,86 +18,201 @@ export const mobiliarioService = {
 
         //const orderClause = getOrderClause(orden_clause);
 
-
-        const muebles = await db.muebles.findMany({
-            where:{
-                
-                pertenencia_mueble_tienda: whereClause,
-                
-                categoria: categoria_clause ? categoria_clause : undefined
-                     
-            },
-            include: {
-                                
-                pertenencia_expositor_mueble: {
-                    //obtener el expositor mas reciente
-                    orderBy: {
-                        fecha: 'desc',
-                    },
-
-                    take:1,
-                  
-                    include: {
-                       expositores:{
-                        include:{
-                            imagenes: true,
-                            procesados_imagenes: {
-                                include: {
-                                    imagenes: true,
-                                    respuestas_carteles: true,
-                                    respuestas_dispositivos: true,
-                                    prompts: true
+        try{
+            
+            const muebles = await db.muebles.findMany({
+                where:{
+                    
+                    pertenencia_mueble_tienda: whereClause,
+                    
+                    categoria: categoria_clause ? categoria_clause : undefined
+                        
+                },
+                include: {
                                     
-                                },
-                               orderBy: {
-                                  
-                               },
-    
-                               where: {
-                                   prompts:{
-                                       id_prompt:{
-                                        in: prompts_clause? prompts_clause : undefined
-                                       }
-                                   },
-    
-                                   IA_utilizada: ia_clause ? ia_clause : undefined,
-                                   respuestas_carteles:{
-                                       every:{
-                                           probabilidad:{
-                                               in: respuestas_carteles_clause ? respuestas_carteles_clause : undefined
-                                           }
-                                       }
-                                   },
-                                                                    
-                                }  
-                            }    
+                    pertenencia_expositor_mueble: {
+                        //obtener el expositor mas reciente
+                        orderBy: {
+                            fecha: 'desc',
+                        },
+
+                        take:1,
+                    
+                        include: {
+                        expositores:{
+                            include:{
+                                imagenes: true,
+                                /*procesados_imagenes: {
+                                    include: {
+                                        imagenes: true,
+                                        prompts: true
+                                        
+                                    },
+                                    orderBy: {
+                                        fecha: 'desc',
+                                    },
+            
+                                    where: {
+                                        prompts:{
+                                            id_prompt:{
+                                                in: prompts_clause? prompts_clause : undefined
+                                            }
+                                        },
+            
+                                        IA_utilizada: ia_clause ? ia_clause : undefined,                                                                        
+                                        }  
+                                }*/    
+                            }
+                        } 
+                                                            
                         }
-                       } 
-                                                         
                     }
                 }
-            }
         });
 
         
-        const result: MuebleFrontInterfaz[] = muebles.map((mueble:any) => {
-            return {
-                id_mueble: mueble.id_mueble, 
-                nombre_mueble: mueble.nombre_mueble, 
-                expositores: mueble.pertenencia_expositor_mueble.map((pem:any) => pem.expositores),
-            };
-        });
+        const result: MuebleFrontInterfaz[]  = muebles.map((mueble:muebles) => {
+            return mapearResultadoParaFront(mueble);  
+        })
     
         return result;
+    } catch (error) {
+        throw error;
+    } finally {
+        await db.$disconnect();
+    }
 
 
     },
 
     async getMuebleById( id_mueble: number): Promise<muebles | null> {
         return await db.muebles.findUnique({where: {id_mueble: id_mueble}});
+    }, 
+
+    //tipar
+    async createMueble(mueble: any): Promise<MuebleFrontInterfaz> {
+        try {
+            const muebleCreated = await db.muebles.create({data: mueble});
+            const result = mapearResultadoParaFront(muebleCreated);
+            return result;
+        } catch (error) {
+            throw error;
+        } finally{
+            await db.$disconnect();
+        }
+       
+    },  
+        //tipar
+    async updateMueble(id_mueble:number, mueble: any): Promise<MuebleFrontInterfaz | null> {
+        try{
+            const muebleUpdated = await db.muebles.update({where: {id_mueble: id_mueble}, data: mueble});
+            const result = mapearResultadoParaFront(muebleUpdated);
+            return result;
+            
+        } catch (error) {
+            throw error;
+        } finally{
+            await db.$disconnect();
+        }
+    },
+    async getAllMuebles(): Promise<MuebleFrontInterfaz[]> {
+        try{
+            const muebles =  await db.muebles.findMany( {
+                include: {
+                    pertenencia_expositor_mueble:{
+                        include: {
+                            expositores: {
+                                include: {
+                                    imagenes: true, 
+                                   
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const result: MuebleFrontInterfaz[] = muebles.map((mueble: any) => {
+                return mapearResultadoParaFront(mueble);
+            });
+        
+            return result;
+        } catch (error) {
+            throw error;
+        } finally{
+            await db.$disconnect();
+        }
+       
+    },
+
+    async  getMueblesAndExpositoresActivosByIdTienda( id_tienda: number): Promise<MuebleFrontInterfaz[]> {
+        try{
+            const muebles: muebles[] = await db.muebles.findMany({
+                where: {
+                   pertenencia_mueble_tienda:{
+                        every:{
+                            id_tienda: id_tienda
+                        }
+                   }
+                }, 
+                include: {
+                    pertenencia_expositor_mueble:{
+                        include: {
+                            expositores: {
+                                include: {
+                                    imagenes: true,
+                                    
+                                },
+                                
+                            },
+                            
+                        }, orderBy: {
+                            fecha: 'desc'
+                        }, 
+                        
+                    }
+                }
+            });
+
+            //Limitar expositores
+            const mueblesModificados: muebles[] = muebles.map((mueble: any) => {
+                const num_expositores: number = mueble.numero_expositores ;
+                const expositoresLimitados = mueble.pertenencia_expositor_mueble.slice(0, num_expositores);
+            
+                return {
+                    ...mueble,
+                    pertenencia_expositor_mueble: expositoresLimitados
+                };
+            });
+
+            const result: MuebleFrontInterfaz[] = mueblesModificados.map((mueble: any) => {
+                return mapearResultadoParaFront(mueble);
+            })
+            return result;
+            
+        } catch (error) {
+            throw error;
+        } finally{
+            await db.$disconnect();
+        }
     }
                                           
 }
+
+//tipar adecuadamente
+function mapearResultadoParaFront(mueble: any): MuebleFrontInterfaz {
+    const expositores = mueble.pertenencia_expositor_mueble ? mueble.pertenencia_expositor_mueble.map((pem: any) => pem.expositores) : [];
+    return {
+        id_mueble: mueble.id_mueble,
+        nombre_mueble: mueble.nombre_mueble,
+        expositores: expositores,
+        categoria: mueble.categoria,
+        numero_dispositivos: mueble.numero_dispositivos,
+        
+    };
+}
+
+
 
 // function getOrderClause( orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null) {
 

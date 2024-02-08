@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { AuditoriaComponent } from './auditoria.component';
+import { ExpositoresComponent } from './expositores.component';
 
 import { SidebarComponent } from '../../componentes/sidebar/sidebar.component';
+
+
+
 
 // modulos primeng:
 import { CardModule } from 'primeng/card';
@@ -14,7 +17,7 @@ import { BadgeModule } from 'primeng/badge';
 import { ImageModule } from 'primeng/image';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToastModule } from 'primeng/toast';
-
+import { TableModule } from 'primeng/table';
  
 
 // componentes nuestros
@@ -22,11 +25,12 @@ import { BarraMenuComponent } from './../../componentes/barra-menu/barra-menu.co
 import { MarcoElementoComponent } from './../../componentes/marco-elemento/marco-elemento.component';
 import { SelectorImagenesComponent } from './../../componentes/selector-imagenes/selector-imagenes.component';
 import { PaginadorProcesamientoSubidaComponent } from './../../componentes/paginador-procesamiento-subida/paginador-procesamiento-subida.component'; 
-import { IrArribaComponent } from 'src/app/componentes/ir-arriba/ir-arriba.component';import { FiltroProcesadosComponent } from 'src/app/componentes/filtro-procesados/filtro-procesados.component';
+
+
 
 @NgModule({
   declarations: [
-    AuditoriaComponent
+    ExpositoresComponent
   ],
   imports: [
     CommonModule,
@@ -35,8 +39,7 @@ import { IrArribaComponent } from 'src/app/componentes/ir-arriba/ir-arriba.compo
     SelectorImagenesComponent,
     BarraMenuComponent,
     MarcoElementoComponent,
-    IrArribaComponent,
-    FiltroProcesadosComponent,
+
 
     BrowserAnimationsModule,    
     CardModule,
@@ -46,7 +49,10 @@ import { IrArribaComponent } from 'src/app/componentes/ir-arriba/ir-arriba.compo
     BadgeModule, 
     ImageModule,
     ProgressSpinnerModule,
-    ToastModule
-  ]
+    ToastModule,
+    TableModule
+]
 })
-export class NuevaAuditoriaModule { }
+
+
+export class ExpositorModule { }

@@ -21,6 +21,7 @@
     max-height: 600px;
     border: solid red 5px;
     border-radius: 10px;
+    cursor: pointer;
 }
 .image {
     width: 100%;
