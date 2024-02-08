@@ -26,6 +26,9 @@
 .marginRight{
     margin-right: 10%;
 }
+.smallMarginRight{
+    margin-right: 2%;
+}
 
 .expositores-container {
     display: flex;
@@ -38,4 +41,14 @@
 
 .expositor-item {
     margin-right: 2%; 
+}
+/* 
+.opciones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+
+.marginTop{
+    margin-top: 10%;
 }

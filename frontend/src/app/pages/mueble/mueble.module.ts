@@ -23,6 +23,7 @@ import { FormMuebleComponent } from './components/formMueble/formMueble.componen
 
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DialogService } from 'primeng/dynamicdialog';
+import { HistorialExpositoresComponent } from './components/historialExpositores/historialExpositores.component';
 
 
 @NgModule({
@@ -45,7 +46,7 @@ import { DialogService } from 'primeng/dynamicdialog';
     IrArribaComponent,
     
   ],
-  declarations: [MuebleComponent, FormMuebleComponent], 
+  declarations: [MuebleComponent, FormMuebleComponent, HistorialExpositoresComponent], 
   providers: [MessageService, DialogService],
 })
 export class MuebleModule { }

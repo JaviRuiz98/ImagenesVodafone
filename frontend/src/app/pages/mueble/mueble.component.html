@@ -7,7 +7,6 @@
         <p-toolbar class ="toolClass">
     <div class="p-toolbar-group-start">
         <p-button severity="danger" class="marginRight" label="Nuevo" icon="pi pi-plus" (onClick)="nuevoMueble()"></p-button>
-        <p-button severity="danger" label="Editar" icon="pi pi-pencil"  [disabled]="!selectedMueble " (click)="editMueble(selectedMueble)"></p-button>
     </div>
     <div class="p-toolbar-group-center">
      
@@ -31,8 +30,7 @@
         [rows]="10"
         [scrollable]="true"
         [scrollHeight]="'calc(100vh - 204px)'"
-        selectionMode="single" 
-        [(selection)]="selectedMueble"
+
    
         [showCurrentPageReport]="true"
         [tableStyle]="{ 'min-width': '50rem' }"
@@ -45,14 +43,15 @@
         <ng-template pTemplate="header">
             <tr>
              
-            <th [ngStyle]="{ 'width': tableSelected === 'dispositivos' ? '70%' : '40%' }">Expositor</th>
-            <th style="width:20%">Nombre</th>
-            <th *ngIf="tableSelected === 'dispositivos'" style="width:10%">Número de dispositivos</th> 
+            <th>Expositor</th>
+            <th>Nombre</th>
+            <th *ngIf="tableSelected === 'dispositivos'">Número de dispositivos</th> 
+            <th>Opciones</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-mueble>
             
-            <tr [pSelectableRow]="mueble">
+            <tr>
               
                 <td class="expositores-container">
                     <div *ngFor="let expositor of mueble.expositores" class="expositor-item">
@@ -62,6 +61,11 @@
                 </td>
                 <td>{{ mueble.nombre_mueble }}</td>
                 <td *ngIf="tableSelected === 'dispositivos'">{{ mueble.numero_dispositivos }}</td>
+                <td class="opciones">         
+                    <p-button class ="smallMarginRight" severity="danger" [raised]="true" [text]="true" [rounded]="true" label="Editar" icon="pi pi-pencil"  (click)="editMueble(mueble)"></p-button>
+                    <p-button  [raised]="true"  [text]="true" [rounded]="true" severity="danger" label="Historial de expositores" icon="pi pi-history" [disabled]="mueble.expositores.length < 1" (click) ="showHistorial(mueble)"></p-button>
+                    
+                </td>
             </tr>
         </ng-template>
 

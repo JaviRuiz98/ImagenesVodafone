@@ -5,6 +5,7 @@ import { Table } from 'primeng/table';
 import { muebles } from 'src/app/interfaces/muebles';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { FormMuebleComponent } from './components/formMueble/formMueble.component';
+import { HistorialExpositoresComponent } from './components/historialExpositores/historialExpositores.component';
 
 
 @Component({
@@ -22,7 +23,7 @@ export class MuebleComponent implements OnInit {
   tableStateOption: any[] = [{label:'Dispositivos', icon: 'pi pi-mobile', value: 'dispositivos',  styleClass: "optionColorVodafone" }, {label:'Carteles' ,icon: 'pi pi-book', value: 'cartel', styleClass: "optionColorVodafone" }];
   tableSelected:string = 'dispositivos';
 
-  selectedMueble: muebles | undefined;
+
   muebleFormVisibility: boolean = false;
 
   ref: DynamicDialogRef | undefined;
@@ -82,6 +83,19 @@ export class MuebleComponent implements OnInit {
   })
 
   this.ref.onMaximize.subscribe((value) => {
+      this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
+  });
+  }
+
+  showHistorial(mueble: muebles) {
+    this.ref = this.dialogService.open(HistorialExpositoresComponent, {
+      header: 'Historial de expositores de ' + mueble.nombre_mueble,
+      width: '70%',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 10000,
+      maximizable: true,
+    })
+    this.ref.onMaximize.subscribe((value) => {
       this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
   });
   }
