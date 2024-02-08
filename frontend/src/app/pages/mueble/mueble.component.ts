@@ -6,7 +6,7 @@ import { muebles } from 'src/app/interfaces/muebles';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { FormMuebleComponent } from './components/formMueble/formMueble.component';
 import { HistorialExpositoresComponent } from './components/historialExpositores/historialExpositores.component';
-
+import { FilterService } from 'primeng/api';
 
 @Component({
   selector: 'app-mueble',
@@ -22,6 +22,8 @@ export class MuebleComponent implements OnInit {
 
   tableStateOption: any[] = [{label:'Dispositivos', icon: 'pi pi-mobile', value: 'dispositivos',  styleClass: "optionColorVodafone" }, {label:'Carteles' ,icon: 'pi pi-book', value: 'cartel', styleClass: "optionColorVodafone" }];
   tableSelected:string = 'dispositivos';
+  nombreFiltro: string = '';
+
 
 
   muebleFormVisibility: boolean = false;
@@ -30,7 +32,7 @@ export class MuebleComponent implements OnInit {
 
   @ViewChild('miTabla') miTabla!: Table;
 
-  constructor( private muebleService: MueblesService, public dialogService: DialogService, public messageService: MessageService ) { }
+  constructor( private muebleService: MueblesService, public dialogService: DialogService, public messageService: MessageService) { }
 
   ngOnInit() {
     this.loadMuebles();
@@ -43,9 +45,26 @@ export class MuebleComponent implements OnInit {
    })
   }
 
-  cambiarTabla() {
+  resetTabla() {
     this.miTabla.reset();
   }
+  clearTabla()  {
+    this.miTabla.clear();
+  }
+
+  filtrarPorNombre() {
+   
+    if (this.tableSelected === 'dispositivos') {
+        this.mueblesDispostivos = this.filterByNombre(this.mueblesDispostivos);
+    } else {
+        this.mueblesCarteles = this.filterByNombre(this.mueblesCarteles);
+    }
+}
+
+filterByNombre(muebles: any[]): any[] {
+  
+    return muebles.filter(mueble => mueble.nombre_mueble.toLowerCase().includes(this.nombreFiltro.toLowerCase()));
+}
 
   editMueble(mueble: muebles|undefined) {
     if (mueble === undefined) return;

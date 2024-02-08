@@ -24,6 +24,7 @@ import { FormMuebleComponent } from './components/formMueble/formMueble.componen
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DialogService } from 'primeng/dynamicdialog';
 import { HistorialExpositoresComponent } from './components/historialExpositores/historialExpositores.component';
+import { InputTextModule } from 'primeng/inputtext';
 
 
 @NgModule({
@@ -38,7 +39,7 @@ import { HistorialExpositoresComponent } from './components/historialExpositores
     ProgressSpinnerModule,
     DynamicDialogModule,
     PanelModule,
-
+    InputTextModule,
 
     ReactiveFormsModule,
     FormsModule,
