@@ -248,7 +248,7 @@ export async function feedbackProcesado(req: Request, res: Response) {
 }
 
 
-  export async function getProcesadosByIdAuditoria(_req: Request, res: Response) {
+  export async function getProcesadosByIdAuditoria(req: Request, res: Response) {
 
     try{
       const id_auditoria: number = parseInt(req.params.id_auditoria);
@@ -259,4 +259,4 @@ export async function feedbackProcesado(req: Request, res: Response) {
     }
 
     
-  }*/
+  }

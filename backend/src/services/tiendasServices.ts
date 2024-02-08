@@ -2,7 +2,7 @@ import {  tiendas } from "@prisma/client";
 import db  from "../config/database";
 
 export const tiendaService = {
-
+    
     async getAllById(idTienda?: number): Promise<tiendas[]> {
         try{
             // Obtenemos todos los expositores junto con sus imágenes
