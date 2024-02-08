@@ -11,29 +11,28 @@
     <div class="p-toolbar-group-center">
          <span class="p-input-icon-left ml-auto">
             <i class="pi pi-search"></i>
-            <input pInputText type="text" [(ngModel)]="nombreFiltro" (input)="filtrarPorNombre()" placeholder="Filtrar por nombre" />        </span> 
+            <input pInputText type="text" [(ngModel)]="nombreFiltro" (input)="filtrarPorNombre()"    placeholder="Filtrar por nombre" /> 
+         </span> 
     </div>
     <div class="p-toolbar-group-end">
         <div >
-            <p-selectButton (onChange)="resetTabla()"  [allowEmpty]="false" [options]="tableStateOption" [(ngModel)]="tableSelected" optionLabel="label" optionValue="value"></p-selectButton>
+            <p-selectButton (onChange)="resetTabla()"  [allowEmpty]="false" [options]="tableStateOption" [(ngModel)]="tableSelected" optionLabel="label" optionValue="value" ></p-selectButton>
         </div>
 
-      <div>
-        <p-progressSpinner *ngIf="(mueblesDispostivos.length == 0 || mueblesCarteles.length == 0)? true: false" class="spinner" strokeWidth="6" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
-      </div>
+     
     </div>
 </p-toolbar>
    
         <p-table 
         #miTabla
         class="table"
-        [value]=" tableSelected === 'dispositivos' ? mueblesDispostivos : mueblesCarteles"
+        [value]=" tableSelected === 'dispositivos' ? mueblesDispositivosFiltrados : mueblesCartelesFiltrados"
         [paginator]="true"
         [rows]="10"
         [scrollable]="true"
         [scrollHeight]="'calc(100vh - 300px )'"
 
-   
+        paginatorStyleClass="background-color: rgba(232, 232, 232, 0.9);"
         [showCurrentPageReport]="true"
         [tableStyle]="{ 'min-width': '50rem' }"
         currentPageReportTemplate="Enseñando {first} de {last} de en total {totalRecords} muebles"
@@ -41,7 +40,10 @@
         [globalFilterFields]="['nombre_mueble', ]"
     >
         <ng-template pTemplate="caption" >
-             <h2> Muebles</h2>
+             <p class="p-m-0 text-2xl"> Muebles</p>
+
+            <p-progressSpinner *ngIf="(mueblesDispostivos.length == 0 || mueblesCarteles.length == 0)? true: false"   fill="var(--surface-ground)" [style]="{'width': '5%', 'height': '5%'}" animationDuration=".6s"  class="fadein animation-duration-1000 "></p-progressSpinner>
+            
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
@@ -79,6 +81,7 @@
         </ng-template>
         
     </p-table>
+
 
 
 

@@ -25,6 +25,7 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DialogService } from 'primeng/dynamicdialog';
 import { HistorialExpositoresComponent } from './components/historialExpositores/historialExpositores.component';
 import { InputTextModule } from 'primeng/inputtext';
+import { CardModule } from 'primeng/card';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { InputTextModule } from 'primeng/inputtext';
     DynamicDialogModule,
     PanelModule,
     InputTextModule,
+    CardModule,
 
     ReactiveFormsModule,
     FormsModule,
