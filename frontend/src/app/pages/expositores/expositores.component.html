@@ -66,10 +66,10 @@
 
     </p-table>
 
-    <p-dialog [(visible)]="mostrarDialogoNuevoExpositor" [style]="{ width: '450px' }" header="Product Details" [modal]="true" styleClass="p-fluid">
-        <ng-template pTemplate="content">
+    <p-dialog [(visible)]="mostrarDialogoNuevoExpositor" [style]="{height: '45%', width: '45%'  }" header="Product Details" [modal]="true" styleClass="p-fluid">
+        <ng-template pTemplate="content" style=" width: 10000px; height: 10000px">
              
-
+            
             <app-selector-imagenes></app-selector-imagenes>
 
             <div style="margin-top: 20px;">
@@ -81,8 +81,8 @@
         </ng-template>
     
         <ng-template pTemplate="footer">
-            <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-            <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="guardarExpositor()"></button>
+            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="guardarExpositor()"></button>
         </ng-template>
     </p-dialog>
 
