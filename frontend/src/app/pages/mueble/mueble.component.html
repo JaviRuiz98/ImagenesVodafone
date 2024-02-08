@@ -3,23 +3,24 @@
 <!-- <app-ir-arriba></app-ir-arriba> -->
 <div class="paginaCompleta">
 
-    
-<p-toolbar class ="toolClass">
+
+        <p-toolbar class ="toolClass">
     <div class="p-toolbar-group-start">
-        <p-button severity="danger" class="marginRight" label="Nuevo" icon="pi pi-plus" ></p-button>
-        <p-button severity="danger" label="Editar" icon="pi pi-pencil" ></p-button>
+        <p-button severity="danger" class="marginRight" label="Nuevo" icon="pi pi-plus" (onClick)="nuevoMueble()"></p-button>
     </div>
     <div class="p-toolbar-group-center">
-        <div >
-            <p-selectButton (onChange)="cambiarTabla()" [allowEmpty]="false" [options]="tableStateOption" [(ngModel)]="tableSelected" optionLabel="label" optionValue="value"></p-selectButton>
-        </div>
+     
     </div>
     <div class="p-toolbar-group-end">
-      <div></div>
+        <div >
+            <p-selectButton (onChange)="cambiarTabla()"  [allowEmpty]="false" [options]="tableStateOption" [(ngModel)]="tableSelected" optionLabel="label" optionValue="value"></p-selectButton>
+        </div>
+
+      <div>
+        <p-progressSpinner *ngIf="(mueblesDispostivos.length == 0 || mueblesCarteles.length == 0)? true: false" class="spinner" strokeWidth="6" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
+      </div>
     </div>
 </p-toolbar>
-   
-
    
         <p-table 
         #miTabla
@@ -29,23 +30,30 @@
         [rows]="10"
         [scrollable]="true"
         [scrollHeight]="'calc(100vh - 204px)'"
-        selectionMode="single" 
-        [(selection)]="selectedMueble"
+
+   
         [showCurrentPageReport]="true"
         [tableStyle]="{ 'min-width': '50rem' }"
         currentPageReportTemplate="Enseñando {first} de {last} de en total {totalRecords} muebles"
         [rowsPerPageOptions]="[10, 25, 50]"
     >
+        <ng-template pTemplate="caption" >
+             <h2> Muebles</h2>
+        </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th [ngStyle]="{ 'width': tableSelected === 'dispositivos' ? '70%' : '40%' }">Expositor</th>
-            <th style="width:20%">Nombre</th>
-            <th *ngIf="tableSelected === 'dispositivos'" style="width:10%">Número de dispositivos</th> 
+             
+            <th>Expositor</th>
+            <th>Nombre</th>
+            <th *ngIf="tableSelected === 'dispositivos'">Número de dispositivos</th> 
+            <th>Opciones</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-mueble>
+            
             <tr>
-                <td class="expositores-container">
+              
+                <td [ngClass]=" mueble.expositores.length > 1 ?  'expositores-container':''">
                     <div *ngFor="let expositor of mueble.expositores" class="expositor-item">
                         <p-image class ="imagenSimple" [src]="url_imagenes_referencias + expositor.imagenes.url" width="100" height="50%"  [alt]="expositor.imagenes.url"  [preview]="true"></p-image>
                     </div>
@@ -53,6 +61,11 @@
                 </td>
                 <td>{{ mueble.nombre_mueble }}</td>
                 <td *ngIf="tableSelected === 'dispositivos'">{{ mueble.numero_dispositivos }}</td>
+                <td class="opciones">         
+                    <p-button class ="smallMarginRight" severity="danger" [raised]="true" [text]="true" [rounded]="true" label="Editar" icon="pi pi-pencil"  (click)="editMueble(mueble)"></p-button>
+                    <p-button  [raised]="true"  [text]="true" [rounded]="true" severity="danger" label="Historial de expositores" icon="pi pi-history" [disabled]="mueble.expositores.length < 1" (click) ="showHistorial(mueble)"></p-button>
+                    
+                </td>
             </tr>
         </ng-template>
 
@@ -64,6 +77,6 @@
         
     </p-table>
 
-    
+
 
 </div>
