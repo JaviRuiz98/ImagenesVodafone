@@ -53,7 +53,7 @@
             
             <tr>
               
-                <td class="expositores-container">
+                <td [ngClass]=" mueble.expositores.length > 1 ?  'expositores-container':''">
                     <div *ngFor="let expositor of mueble.expositores" class="expositor-item">
                         <p-image class ="imagenSimple" [src]="url_imagenes_referencias + expositor.imagenes.url" width="100" height="50%"  [alt]="expositor.imagenes.url"  [preview]="true"></p-image>
                     </div>

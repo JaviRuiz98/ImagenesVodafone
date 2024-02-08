@@ -1,4 +1,5 @@
-import { expositores } from "@prisma/client";
+
+import { expositoresConProcesados } from "./expositoresProcesados";
 
 
 export interface MuebleFrontInterfaz {
@@ -6,6 +7,6 @@ export interface MuebleFrontInterfaz {
     nombre_mueble: string;
     numero_dispositivos: number;
     categoria: string;
-    expositores: expositores[];
+    expositores: expositoresConProcesados[];
     
 }
