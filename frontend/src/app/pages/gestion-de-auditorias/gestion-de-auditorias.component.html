@@ -1,6 +1,17 @@
 <div class="paginaCompleta">
-    <p-button label="Nueva auditoria" [rounded]="true" (click)="nuevaAuditoria()" [style]="{'width': '100%', 'height': '100px', backgroundColor: 'gray'}"  class="botonNuevaAuditoria"></p-button>
-    <div *ngFor="let auditoria of auditorias;">
-       <app-item-lista-auditoria [auditoria]="auditoria"></app-item-lista-auditoria>
-    </div>
+    <p-dropdown 
+        [options]="tiendas" 
+        [(ngModel)]="tiendaSeleccionada"
+        (ngModelChange)="onTiendaSelected()"
+        optionLabel="sfid" 
+        [showClear]="true" 
+        placeholder="Selecciona tu tienda" 
+        class="dropdown">
+    </p-dropdown>
+    <div class="gestionDeAuditorias" *ngIf="tiendaSeleccionada">
+        <p-button label="Nueva auditoria" [rounded]="true" (click)="nuevaAuditoria()" [style]="{'width': '100%', 'height': '100px', backgroundColor: 'gray'}"  class="botonNuevaAuditoria"></p-button>
+        <div *ngFor="let auditoria of auditorias;">
+            <app-item-lista-auditoria [auditoria]="auditoria"></app-item-lista-auditoria>
+        </div>
+    </div>    
 </div>

@@ -13,6 +13,7 @@ import { HomeModule } from './pages/home/home.module';
 import { BarraMenuComponent } from './componentes/barra-menu/barra-menu.component';
 import { AuditoriaComponent } from './pages/auditoria/auditoria.component';
 import { MuebleModule } from './pages/mueble/mueble.module';
+import { GestionDeAuditoriasModule } from './pages/gestion-de-auditorias/gestion-de-auditorias.module';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { MuebleModule } from './pages/mueble/mueble.module';
     AppRoutingModule,
     HomeModule,
     BrowserModule,
-    HttpClientModule   
+    HttpClientModule,
+    GestionDeAuditoriasModule  
   ],
   providers: [   
     PrimeIcons,
