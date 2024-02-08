@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { auditorias } from '@prisma/client';
 import { auditoriaService } from '../services/auditoriaService';
+import { auditoria_extended } from '../interfaces/auditoriaExtended';
 
 
 export async function getAuditorias(req: Request, res: Response) {
@@ -8,8 +9,21 @@ export async function getAuditorias(req: Request, res: Response) {
         const id_tienda = parseInt(req.params.id_tienda as string);
 
         const auditorias: auditorias[]|null = await auditoriaService.getAuditorias(id_tienda);
+        let auditoriasExtended: auditoria_extended[] = [];
+
+        if(auditorias) {
+            //añado el num_expositores_auditoria
+            for (let i = 0; i < auditorias.length; i++) {
+                const num_expositores = await auditoriaService.getNumExpositoresByAuditoria(auditorias[i].id_auditoria);
+                auditoriasExtended[i] = {
+                        ...auditorias[i],
+                        num_expositores: num_expositores                    
+                }
+            }
+            
+        }
         
-        res.status(200).json(auditorias);
+        res.status(200).json(auditoriasExtended);
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     }

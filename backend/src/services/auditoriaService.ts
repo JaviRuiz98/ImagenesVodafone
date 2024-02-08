@@ -60,5 +60,20 @@ export const auditoriaService = {
         }finally  {
             await db.$disconnect();
         }
+    },
+
+    getNumExpositoresByAuditoria(id_auditoria: number) {
+        try {
+            return db.pertenencia_expositor_auditoria.count({
+                where: {
+                    id_auditoria: id_auditoria
+                }
+            })
+        } catch (error) {
+            console.error('No se pudo obtener el numero de expositores:', error);
+            throw error;
+        } finally {
+            db.$disconnect();
+        }
     }
 }
