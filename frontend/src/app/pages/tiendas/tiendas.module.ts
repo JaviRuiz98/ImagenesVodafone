@@ -9,7 +9,7 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { StepsModule } from 'primeng/steps';
 import { PickListModule } from 'primeng/picklist';
-
+import { TableModule } from 'primeng/table';
 
 @NgModule({
   declarations: [
@@ -24,6 +24,7 @@ import { PickListModule } from 'primeng/picklist';
     InputTextModule,
     StepsModule,
     PickListModule,
+    TableModule
   ]
 })
 export class TiendasModule { }

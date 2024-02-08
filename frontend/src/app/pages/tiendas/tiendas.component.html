@@ -1,6 +1,9 @@
 <div class="paginaTiendaCompleta">
     <div class="contenedorBotonNuevaTienda">
-        <button class="botonNuevaTienda" (click)="iniciarFormularioNuevaTienda()">+</button>
+        <!--<button class="botonNuevaTienda" (click)="iniciarFormularioNuevaTienda()">+</button>-->
+        <div class="cabeceraAñadirTienda">
+            <button class="botonNuevaTienda" (click)="iniciarFormularioNuevaTienda()">+</button>
+        </div>
         <p-dialog header="Nueva Tienda" [(visible)]="verFormularioNuevaTienda" [style]="{'width': '80vw'}">
             <div class="formulario" *ngIf="activeIndex === 0">
                 <p><strong>Nuevo sfid:</strong></p>
@@ -48,9 +51,32 @@
         </p-dialog>
     </div>
     <div class="contenedorHistorialTiendas">
-        <button *ngFor="let tienda of tiendas" class="botonVerTienda">
-            {{ tienda.sfid }}
-        </button>
+        <p-table
+        [value]="tiendas"
+        [paginator]="true"
+        [rows]="5"
+        [showCurrentPageReport]="true"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        [rowsPerPageOptions]="[5, 10, 20]"
+        [ngStyle]="{ 'width': '80%' }"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width:25%">Sfid</th>
+                <th style="width:25%">id Tienda</th>
+                <th style="width:25%">Editar</th>
+                <th style="width:25%">Ejemplo</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-tiendas>
+            <tr>
+                <td>{{ tiendas.sfid }}</td>
+                <td>{{ tiendas.id_tienda }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+        </ng-template>
+    </p-table>
     </div>
 </div>
 <p-toast></p-toast>

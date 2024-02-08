@@ -78,12 +78,11 @@ export class TiendasComponent implements OnInit{
         this.botonAtrasDeshabilitado = false;
         this.botonSiguienteDeshabilitado = false;
         if(this.activeIndex === 2){
-          this.contenidoBotonSiguiente = 'Crear Tienda';        
+          this.contenidoBotonSiguiente = 'Crear Tienda'; 
         }
       } else{
         this.nuevaTienda.sfid = this.sfidInput;
-        this.TiendasService.newTienda(this.nuevaTienda).subscribe((response: any) => {
-          
+        this.TiendasService.newTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
         })
       }
     }

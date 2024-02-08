@@ -3,6 +3,7 @@ import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { tienda } from '../../interfaces/tienda';  
 import { Expositor } from '../../interfaces/expositor';
+import { muebles } from 'src/app/interfaces/muebles';
 
 
 @Injectable({
@@ -26,8 +27,12 @@ export class TiendasService {
   getAllTiendas(): Observable<tienda[]> {
     return this.http.get<tienda[]>(`${this.API_URI}/tiendas`);
   }
-  newTienda(nuevaTienda: tienda): Observable<tienda[]> {
-    return this.http.post<tienda[]>(`${this.API_URI}/tiendas`, nuevaTienda);
+  newTienda(nuevaTienda: tienda, listaNuevosMuebles: muebles[]): Observable<boolean> {
+    const datosNuevaTienda = {
+      nuevaTienda: nuevaTienda,
+      listaNuevosMuebles: listaNuevosMuebles
+    }
+    return this.http.post<boolean>(`${this.API_URI}/tiendas`, datosNuevaTienda);
   }
 
 
