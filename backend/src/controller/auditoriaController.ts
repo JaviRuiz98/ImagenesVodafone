@@ -17,7 +17,6 @@ export async function getAuditorias(req: Request, res: Response) {
 
 export async function createAuditoria(req: Request, res: Response) {
     try {
-        console.log(req.body)
         const id_tienda = parseInt(req.body.id_tienda as string);
         const createdAuditoria: auditorias = await auditoriaService.createAuditoria(id_tienda);
         res.status(201).json(createdAuditoria);

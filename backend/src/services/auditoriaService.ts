@@ -1,5 +1,5 @@
 import db  from "../config/database";
-import { auditorias } from '@prisma/client';
+import { auditorias, expositores } from '@prisma/client';
 import { MuebleFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
 import { mobiliarioService } from "./mobiliarioService";
 
@@ -21,6 +21,16 @@ export const auditoriaService = {
         }
     },
 
+    async createPertenenciaExpositorAuditoria(id_auditoria: number, mueble: MuebleFrontInterfaz, expositor: expositores) {
+        await db.pertenencia_expositor_auditoria.create({
+            data: {
+                id_auditoria: id_auditoria,
+                id_mueble: mueble.id_mueble,
+                id_expositor: expositor.id_expositor
+            }
+        });
+    },
+
     async createAuditoria(id_tienda: number): Promise<auditorias> {
         try{
             // Creo la auditoria
@@ -33,19 +43,15 @@ export const auditoriaService = {
 
             // Almaceno todos los expositores que posee la auditoria en la tabla de auditoria_expositores
             const muebles: MuebleFrontInterfaz[] = await mobiliarioService.getMueblesAndExpositoresActivosByIdTienda(id_tienda);
+            const promises = [];
 
             for (const mueble of muebles) {
-                for (const expositores of mueble.expositores) {
-                    await db.pertenencia_expositor_auditoria.create({
-                        data: {
-                            id_auditoria: auditoria.id_auditoria,
-                            id_mueble: mueble.id_mueble,
-                            id_expositor: expositores.id_expositor
-                        }
-                    })
+                for (const expositor of mueble.expositores) {
+                    promises.push(auditoriaService.createPertenenciaExpositorAuditoria(auditoria.id_auditoria, mueble, expositor));
                 }
             }
-            console.log('muebles añadidos')
+
+            await Promise.all(promises);
 
             return auditoria;
         }catch (error) {
