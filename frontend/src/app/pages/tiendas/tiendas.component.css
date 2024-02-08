@@ -80,7 +80,11 @@
     justify-content: center;
     align-items: center;
 }
-
+.ajusteImagenesAnchoAlto {
+    max-height: 80px; 
+    max-width: 50px; 
+    min-height: 50px;
+}
 ::ng-deep .p-picklist-list{
     max-height: 300px;
 }
