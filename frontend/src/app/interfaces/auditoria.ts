@@ -4,11 +4,11 @@ export class auditoria {
     id_tienda: number;
     id_mobiliario: number;
     fecha: Date;
-    terminado: boolean;
+    estado: string;
 
     constructor(valor: null){
         this.fecha = new Date();
-        this.terminado = false;
+        this.estado = 'en progreso';
         this.id_auditoria = 0;
         this.id_tienda = 0;
         this.id_mobiliario = 0;

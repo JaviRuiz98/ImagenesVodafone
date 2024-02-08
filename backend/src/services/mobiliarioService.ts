@@ -8,8 +8,8 @@ export const mobiliarioService = {
         id?: number,
         categoria_clause: "carteles" | "dispositivos" | null = null,
         _orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null = null,
-        prompts_clause: number[] | null = null,
-        ia_clause: string | null = null,
+        _prompts_clause: number[] | null = null,
+        _ia_clause: string | null = null,
         ) : Promise<MuebleFrontInterfaz[]> => {
 
         const whereClause = id ? { some:{id_tienda: id }}: {};
@@ -42,26 +42,26 @@ export const mobiliarioService = {
                         expositores:{
                             include:{
                                 imagenes: true,
-                                procesados_imagenes: {
+                                /*procesados_imagenes: {
                                     include: {
                                         imagenes: true,
                                         prompts: true
                                         
                                     },
-                                orderBy: {
-                                    fecha: 'desc',
-                                },
-        
-                                where: {
-                                    prompts:{
-                                        id_prompt:{
-                                            in: prompts_clause? prompts_clause : undefined
-                                        }
+                                    orderBy: {
+                                        fecha: 'desc',
                                     },
-        
-                                    IA_utilizada: ia_clause ? ia_clause : undefined,                                                                        
-                                    }  
-                                }    
+            
+                                    where: {
+                                        prompts:{
+                                            id_prompt:{
+                                                in: prompts_clause? prompts_clause : undefined
+                                            }
+                                        },
+            
+                                        IA_utilizada: ia_clause ? ia_clause : undefined,                                                                        
+                                        }  
+                                }*/    
                             }
                         } 
                                                             
@@ -143,6 +143,58 @@ export const mobiliarioService = {
             await db.$disconnect();
         }
        
+    },
+
+    async  getMueblesAndExpositoresActivosByIdTienda( id_tienda: number): Promise<MuebleFrontInterfaz[]> {
+        try{
+            const muebles: muebles[] = await db.muebles.findMany({
+                where: {
+                   pertenencia_mueble_tienda:{
+                        every:{
+                            id_tienda: id_tienda
+                        }
+                   }
+                }, 
+                include: {
+                    pertenencia_expositor_mueble:{
+                        include: {
+                            expositores: {
+                                include: {
+                                    imagenes: true,
+                                    
+                                },
+                                
+                            },
+                            
+                        }, orderBy: {
+                            fecha: 'desc'
+                        }, 
+                        
+                    }
+                }
+            });
+
+            //Limitar expositores
+            const mueblesModificados: muebles[] = muebles.map((mueble: any) => {
+                const num_expositores: number = mueble.numero_expositores ;
+                const expositoresLimitados = mueble.pertenencia_expositor_mueble.slice(0, num_expositores);
+            
+                return {
+                    ...mueble,
+                    pertenencia_expositor_mueble: expositoresLimitados
+                };
+            });
+
+            const result: MuebleFrontInterfaz[] = mueblesModificados.map((mueble: any) => {
+                return mapearResultadoParaFront(mueble);
+            })
+            return result;
+            
+        } catch (error) {
+            throw error;
+        } finally{
+            await db.$disconnect();
+        }
     }
                                           
 }
@@ -155,7 +207,8 @@ function mapearResultadoParaFront(mueble: any): MuebleFrontInterfaz {
         nombre_mueble: mueble.nombre_mueble,
         expositores: expositores,
         categoria: mueble.categoria,
-        numero_dispositivos: mueble.dispositivos
+        numero_dispositivos: mueble.numero_dispositivos,
+        
     };
 }
 
