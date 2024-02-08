@@ -1,7 +1,7 @@
 <div class="paginaTiendaCompleta">
     <div class="contenedorBotonNuevaTienda">
         <button class="botonNuevaTienda" (click)="iniciarFormularioNuevaTienda()">+</button>
-        <p-dialog header="Nueva Tienda" [(visible)]="verFormularioNuevaTienda" [style]="{'width': '50vw'}">
+        <p-dialog header="Nueva Tienda" [(visible)]="verFormularioNuevaTienda" [style]="{'width': '80vw'}">
             <div class="formulario" *ngIf="activeIndex === 0">
                 <p><strong>Nuevo sfid:</strong></p>
                 <input type="text" pInputText [(ngModel)]="sfidInput" />
@@ -9,9 +9,29 @@
                 <input type="text" pInputText [(ngModel)]="comunidadInput" />
             </div>
             <div class="formulario" *ngIf="activeIndex === 1">
-                <p-pickList [source]="listaTodosMuebles" [target]="listaMueblesNuevaTienda">
-                    <ng-template>
-                        
+                <p-pickList [source]="listaTodosMuebles" [target]="listaMueblesNuevaTienda" sourceHeader="Muebles disponibles"  targetHeader="Muebles nueva tienda" [dragdrop]="true" [responsive]="true">
+                    <ng-template let-mueble pTemplate="item">
+                        <div class="contenedorMuebleArrastras">
+                            <div *ngIf="mueble.expositores.length == 1">
+                                <div class="anchoAltoFotoReferencia">
+                                    <img src="{{imagenesRef}}/{{mueble.expositores[0].imagenes.url}}" alt="{{mueble.expositores[0].imagenes.url}}" style="max-height: 80px; max-width: 50px;">
+                                </div>
+                            </div>
+                            <div *ngIf="mueble.expositores.length == 2 && mueble.expositores[0] != undefined && mueble.expositores[1] != undefined" class="grid anchoAltoFotoReferencia">
+                                <div style="margin-right: 5px;">
+                                    <img src="{{imagenesRef}}/{{mueble.expositores[0].imagenes.url}}" alt="{{mueble.expositores[0].imagenes.url}}" style="max-height: 80px; max-width: 50px;">
+                                </div>
+                                <div> 
+                                    <img src="{{imagenesRef}}/{{mueble.expositores[1].imagenes.url}}" alt="{{mueble.expositores[1].imagenes.url}}" style="max-height: 80px; max-width: 50px;">
+                                </div>
+                            </div> 
+                            <div class="anchoAltoDescripcionFotoReferencia">
+                                <span class="font-bold">{{ mueble.nombre_mueble }}</span>
+                                <div class="flex align-items-center gap-2">
+                                    <span><strong>Categoria:</strong> {{ mueble.categoria }}</span>
+                                </div>
+                            </div>
+                        </div>
                     </ng-template>
                 </p-pickList>
             </div>

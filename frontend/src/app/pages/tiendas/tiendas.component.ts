@@ -18,6 +18,8 @@ import { response } from 'express';
 
 export class TiendasComponent implements OnInit{
 
+  imagenesRef: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
+
   tiendas: tienda[] = [];
   nuevaTienda: tienda = {
     sfid: '',
