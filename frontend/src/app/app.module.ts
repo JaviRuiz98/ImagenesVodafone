@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
 import { ValidadorModule } from './pages/validador/validador.module';
 import { HomeModule } from './pages/home/home.module';
 import { BarraMenuComponent } from './componentes/barra-menu/barra-menu.component';
-import { AuditoriaComponent } from './pages/auditoria/auditoria.component';
+import { TiendasModule } from './pages/tiendas/tiendas.module';
 import { MuebleModule } from './pages/mueble/mueble.module';
 import { GestionDeAuditoriasModule } from './pages/gestion-de-auditorias/gestion-de-auditorias.module';
 import { AuditoriaModule } from './pages/auditoria/auditoria.module';
@@ -28,6 +28,7 @@ import { DatePipe } from '@angular/common';
     ValidadorModule,
     AppRoutingModule,
     HomeModule,
+    TiendasModule,
     BrowserModule,
     HttpClientModule,
     GestionDeAuditoriasModule,

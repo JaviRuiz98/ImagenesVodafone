@@ -17,6 +17,21 @@ export async function getAllTiendas(req: Request, res: Response) {
    
 }
 
+export async function newTienda(req: Request, res: Response) {
+    res
+    try{
+        console.log(req.body.listaNuevosMuebles[0].expositores);
+    }catch (error) {
+        console.error('Error al crear tienda:', error);
+    }
+}
+
+
+
+
+
+
+
 export async function getTiendaBySfid(req: Request, res: Response) {
     try{
         const sfid = req.params.sfid;

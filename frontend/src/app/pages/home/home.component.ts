@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 })
 export class HomeComponent implements OnInit{
 
-
   constructor(private router: Router ) { }
 
   ngOnInit() {
@@ -24,12 +23,11 @@ export class HomeComponent implements OnInit{
 
   goToExpositor() {
     this.router.navigate(['/expositor']);
-    }
+  }
   goToMueble() {
-  this.router.navigate(['/muebles']);
+    this.router.navigate(['/muebles']);
   }
   goToTienda() {
-  this.router.navigate(['/tienda']);
+    this.router.navigate(['/tiendas']);
   }
-    
 }

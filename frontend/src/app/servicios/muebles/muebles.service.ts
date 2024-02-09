@@ -24,12 +24,10 @@ export class MueblesService {
     headers: this.headers
   }
 
-
   getMueblesFiltered(filtros?:filtro_procesados): Observable<muebles[]> {
-
-    let body: any = undefined;
-   ;    
     
+    let body: any = undefined;
+
     if(filtros){
       body = {
         orden: filtros.orden,
@@ -52,9 +50,6 @@ export class MueblesService {
   getAllMuebles(): Observable<muebles[]> {
     return this.http.get<muebles[]>(this.API_URI);
   }
-
-
-
 }
 
 
