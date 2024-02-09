@@ -1,7 +1,8 @@
 <p-card>
   <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+
     <div class="formgrid grid ">
-      <div class="field col-6">
+      <div class="field col-6 flex ">
         <span class="p-float-label">
           <input type="text" formControlName="nombre_mueble" pInputText class="w-full">
           <label >Nombre * </label>
@@ -12,7 +13,7 @@
         </small>
         
       </div>
-      <div class="field col-6">
+      <div class="field col-6 flex">
      
       
             <span class="p-float-label">
@@ -26,9 +27,9 @@
             </small>
       </div>
 
-      <div class="col-6 field" *ngIf ="categoria.value === 'dispositivos'" class=" input-number-custom fadeinleft animation-duration-1000">
+      <div class="field col-12 " *ngIf ="categoria.value === 'dispositivos'" class=" input-number-custom fadeinleft animation-duration-1000">
         
-          <label class = "text-xs  text-600 mb-2 block ">Número de dispositivos que esperas *</label>
+          <label class = "text-xs  text-600 mb-2  ">Número de dispositivos que esperas *</label>
           <p-inputNumber 
             class="block"
             formControlName="numero_dispositivos"
@@ -40,7 +41,18 @@
           </p-inputNumber>
           <!-- incrementButtonIcon="pi pi-plus"
           decrementButtonIcon="pi pi-minus"  -->
+
     
+      </div>
+
+      <div class="field col-12 mt-2" >
+        <label class = "text-xs  text-600 mb-2  ">Expositores </label>
+
+
+      </div>
+      
+      <div class="field col-12 flex justify-content-center" >
+        <p-button [disabled]="!formulario.valid" severity="danger" type="submit" label="Guardar"></p-button>
       </div>
 
      
