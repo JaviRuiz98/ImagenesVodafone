@@ -20,6 +20,8 @@ import { ToastModule } from 'primeng/toast';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { CheckboxModule } from 'primeng/checkbox';
+import { InputTextModule } from 'primeng/inputtext';
 // componentes nuestros
 import { BarraMenuComponent } from './../../componentes/barra-menu/barra-menu.component';
 import { MarcoElementoComponent } from './../../componentes/marco-elemento/marco-elemento.component';
@@ -48,7 +50,9 @@ import { FormsModule } from '@angular/forms'; // Add this import
     ToolbarModule,
     ProgressSpinnerModule,
     ToastModule,
-    TableModule
+    TableModule,
+    CheckboxModule,
+    InputTextModule
 ]
 })
 

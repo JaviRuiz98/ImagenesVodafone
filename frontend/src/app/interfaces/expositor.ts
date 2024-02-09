@@ -7,4 +7,5 @@ export interface Expositor {
     id_expositor: number;
     imagen: imagenes;
     nombre: string;
+    activo: boolean;
 }

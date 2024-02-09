@@ -1,5 +1,5 @@
-import { Component,  Input, OnInit  } from '@angular/core';
-
+ 
+import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ExpositoresService } from 'src/app/servicios/expositores/expositores.service';
 import { Expositor } from 'src/app/interfaces/expositor';
@@ -19,15 +19,19 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 export class ExpositoresComponent implements OnInit {
   
 
+  @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
+  @Input() id_expositor_selected: number = 0;
+  cargando_procesamiento: boolean = false;
 
   expositores!: Expositor[];
   expositoresSeleccionados!: Expositor[];
   nuevoExpositor!: Expositor;
+  archivoSeleccionado!: File;
 
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
   mostrarDialogoNuevoExpositor = false;
-  submitted: boolean = false;
+ 
   constructor(private router: Router, private expositoresService: ExpositoresService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
   inicializaExpositores() {
@@ -42,22 +46,34 @@ export class ExpositoresComponent implements OnInit {
     this.nuevoExpositor = {
       id_expositor: 0,
       nombre: '',
+      activo: true,
       imagen: {
         url:"",
         id_imagen: 0
       }
     };
-    this.mostrarDialogoNuevoExpositor = true;
-    this.submitted = false;
+    this.mostrarDialogoNuevoExpositor = true; 
   }
 
+  recibirFile(event: {archivo:File}) {
+    this.archivoSeleccionado = event.archivo;
+    const imagenAProcesar = event.archivo;
+    this.archivoSeleccionadoChange.emit({ archivo: imagenAProcesar });
+    this.cargando_procesamiento = true;
+}
 
-  guardarExpositor() {
-    this.submitted = true;
+
+  nuevoGuardar() {
+    this.expositoresService.guardarExpositor(this.nuevoExpositor.nombre, this.nuevoExpositor.activo, this.archivoSeleccionado).subscribe((expositor: Expositor) => {
+      this.inicializaExpositores();
+    })
+
+ 
+    this.mostrarDialogoNuevoExpositor = false;
   }
 
-  hideDialog() {
-    this.submitted = false;
+  nuevoCanelar() {
+    this.mostrarDialogoNuevoExpositor = false; 
     
   }
 

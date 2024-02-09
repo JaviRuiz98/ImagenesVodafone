@@ -111,6 +111,15 @@ export const expositoresService = {
         }catch (error) {
           throw error;
         }
+      },
+
+      async guardarExpositor(nombre: string, activo: boolean, id_imagen: number): Promise<expositores> {
+        try {
+          return await db.expositores.create({ data: { nombre: nombre, activo: activo, id_imagen: id_imagen } });
+        }catch (error) {
+          console.log(error)
+          throw error;
+        }
       }
 
 }
