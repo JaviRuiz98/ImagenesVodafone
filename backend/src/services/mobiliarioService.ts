@@ -227,19 +227,10 @@ export const mobiliarioService = {
                                         }
                                     }
                                 }
-                            }, 
-                            
+                            },                   
                     
                         }
-                    } , 
-                    procesados_imagenes: {
-                        
-                        include: {
-                            imagenes: true,
-                            prompts: true
-                            
-                        }
-                    }
+                    } 
                 }
             });
 
