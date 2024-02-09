@@ -6,46 +6,51 @@
 
         <p-toolbar class ="toolClass">
     <div class="p-toolbar-group-start">
-        <p-button severity="danger" class="marginRight" label="Nuevo" icon="pi pi-plus" (onClick)="nuevoMueble()"></p-button>
+        <p-button severity="danger"  label="Nuevo" icon="pi pi-plus" (onClick)="nuevoMueble()"></p-button>
     </div>
     <div class="p-toolbar-group-center">
-     
+         <span class="p-input-icon-left ml-auto">
+            <i class="pi pi-search"></i>
+            <input pInputText type="text" [(ngModel)]="nombreFiltro" (input)="filtrarPorNombre()"    placeholder="Filtrar por nombre" /> 
+         </span> 
     </div>
     <div class="p-toolbar-group-end">
         <div >
-            <p-selectButton (onChange)="cambiarTabla()"  [allowEmpty]="false" [options]="tableStateOption" [(ngModel)]="tableSelected" optionLabel="label" optionValue="value"></p-selectButton>
+            <p-selectButton (onChange)="resetTabla()"  [allowEmpty]="false" [options]="tableStateOption" [(ngModel)]="tableSelected" optionLabel="label" optionValue="value" ></p-selectButton>
         </div>
 
-      <div>
-        <p-progressSpinner *ngIf="(mueblesDispostivos.length == 0 || mueblesCarteles.length == 0)? true: false" class="spinner" strokeWidth="6" fill="var(--surface-ground)" animationDuration=".6s"></p-progressSpinner>
-      </div>
+     
     </div>
 </p-toolbar>
    
         <p-table 
-        #miTabla
-        class="table"
-        [value]=" tableSelected === 'dispositivos' ? mueblesDispostivos : mueblesCarteles"
-        [paginator]="true"
-        [rows]="10"
-        [scrollable]="true"
-        [scrollHeight]="'calc(100vh - 204px)'"
+            #miTabla
+            class="table"
+            [value]=" tableSelected === 'dispositivos' ? mueblesDispositivosFiltrados : mueblesCartelesFiltrados"
+            [paginator]="true"
+            [rows]="10"
+            [scrollable]="true"
+            [scrollHeight]="'calc(100vh - 300px )'"
 
-   
-        [showCurrentPageReport]="true"
-        [tableStyle]="{ 'min-width': '50rem' }"
-        currentPageReportTemplate="Enseñando {first} de {last} de en total {totalRecords} muebles"
-        [rowsPerPageOptions]="[10, 25, 50]"
+            paginatorStyleClass="background-color: rgba(232, 232, 232, 0.9);"
+            [showCurrentPageReport]="true"
+            [tableStyle]="{ 'min-width': '50rem' }"
+            currentPageReportTemplate="Enseñando {first} de {last} de en total {totalRecords} muebles"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            [globalFilterFields]="['nombre_mueble', ]"
     >
         <ng-template pTemplate="caption" >
-             <h2> Muebles</h2>
+             <p class="p-m-0 text-2xl"> Muebles</p>
+
+            <p-progressSpinner *ngIf="(mueblesDispostivos.length == 0 || mueblesCarteles.length == 0)? true: false"   fill="var(--surface-ground)" [style]="{'width': '5%', 'height': '5%'}" animationDuration=".6s"  class="fadein animation-duration-1000 "></p-progressSpinner>
+            
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
              
             <th>Expositor</th>
-            <th>Nombre</th>
-            <th *ngIf="tableSelected === 'dispositivos'">Número de dispositivos</th> 
+            <th pSortableColumn="nombre_mueble">Nombre <p-sortIcon field="nombre_mueble"></p-sortIcon></th>
+            <th pSortableColumn="numero_dispositivos" *ngIf="tableSelected === 'dispositivos'">Número de dispositivos <p-sortIcon field="numero_dispositivos"></p-sortIcon></th> 
             <th>Opciones</th>
             </tr>
         </ng-template>
@@ -55,14 +60,14 @@
               
                 <td [ngClass]=" mueble.expositores.length > 1 ?  'expositores-container':''">
                     <div *ngFor="let expositor of mueble.expositores" class="expositor-item">
-                        <p-image class ="imagenSimple" [src]="url_imagenes_referencias + expositor.imagenes.url" width="100" height="50%"  [alt]="expositor.imagenes.url"  [preview]="true"></p-image>
+                        <p-image class ="imagenSimple" [src]="url_imagenes_referencias + expositor.imagenes.url"  height="100vh"  [alt]="expositor.imagenes.url"  [preview]="true"></p-image>
                     </div>
                     <div *ngIf="mueble.expositores.length < 1">Sin Expositor</div>
                 </td>
                 <td>{{ mueble.nombre_mueble }}</td>
                 <td *ngIf="tableSelected === 'dispositivos'">{{ mueble.numero_dispositivos }}</td>
                 <td class="opciones">         
-                    <p-button class ="smallMarginRight" severity="danger" [raised]="true" [text]="true" [rounded]="true" label="Editar" icon="pi pi-pencil"  (click)="editMueble(mueble)"></p-button>
+                    <p-button severity="danger" class="mr-2" [raised]="true" [text]="true" [rounded]="true" label="Editar" icon="pi pi-pencil"  (click)="editMueble(mueble)"></p-button>
                     <p-button  [raised]="true"  [text]="true" [rounded]="true" severity="danger" label="Historial de expositores" icon="pi pi-history" [disabled]="mueble.expositores.length < 1" (click) ="showHistorial(mueble)"></p-button>
                     
                 </td>
@@ -76,6 +81,7 @@
         </ng-template>
         
     </p-table>
+
 
 
 

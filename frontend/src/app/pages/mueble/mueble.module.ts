@@ -24,6 +24,10 @@ import { FormMuebleComponent } from './components/formMueble/formMueble.componen
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DialogService } from 'primeng/dynamicdialog';
 import { HistorialExpositoresComponent } from './components/historialExpositores/historialExpositores.component';
+import { InputTextModule } from 'primeng/inputtext';
+import { CardModule } from 'primeng/card';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 
 @NgModule({
@@ -38,7 +42,10 @@ import { HistorialExpositoresComponent } from './components/historialExpositores
     ProgressSpinnerModule,
     DynamicDialogModule,
     PanelModule,
-
+    InputTextModule,
+    InputNumberModule,
+    CardModule,
+    DropdownModule,
 
     ReactiveFormsModule,
     FormsModule,
