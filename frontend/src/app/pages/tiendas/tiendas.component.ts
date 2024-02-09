@@ -6,8 +6,6 @@ import { ExpositoresService } from 'src/app/servicios/expositores/expositores.se
 
 import { tienda } from 'src/app/interfaces/tienda';
 import { muebles } from 'src/app/interfaces/muebles';
-import { Expositor } from 'src/app/interfaces/expositor';
-import { response } from 'express';
 
 @Component({
   selector: 'app-tiendas',
@@ -77,6 +75,7 @@ export class TiendasComponent implements OnInit{
         this.activeIndex++;
       } else{
         this.nuevaTienda.sfid = this.sfidInput;
+        this.verFormularioNuevaTienda = false;
         this.TiendasService.newTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
         })
       }
