@@ -62,5 +62,6 @@ export class GestionDeAuditoriasComponent implements OnInit {
   formatDate(date: Date): string | null {
     return this.datePipe.transform(date, 'dd/MM/yyyy HH:mm');
   }
+
   
 }
