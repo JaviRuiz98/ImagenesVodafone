@@ -3,6 +3,8 @@ import { auditoria } from '../../interfaces/auditoria';
 import { AuditoriaService } from 'src/app/servicios/auditoria/auditoria.service';
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
+import { CommonModule } from '@angular/common';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-item-lista-auditoria',
@@ -10,6 +12,8 @@ import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/p
   styleUrls: ['./item-lista-auditoria.component.css'],
   standalone: true,
   imports: [
+    CommonModule,
+    CardModule
   ],
 })
 

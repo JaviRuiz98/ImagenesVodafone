@@ -1,53 +1,58 @@
 import { Component,  Input, OnInit  } from '@angular/core';
-import { BarraMenuComponent } from 'src/app/componentes/barra-menu/barra-menu.component';
-import { CardModule } from 'primeng/card';
-import { PanelModule } from 'primeng/panel';
-import { ButtonModule } from 'primeng/button';
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-
 import { Router } from '@angular/router';
-import { ItemListaAuditoriaComponent } from 'src/app/componentes/item-lista-auditoria/item-lista-auditoria.component';
 import { auditoria } from 'src/app/interfaces/auditoria';
 import { AuditoriaService } from 'src/app/servicios/auditoria/auditoria.service';
+import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
+import { tienda } from 'src/app/interfaces/tienda';
 
 @Component({
   selector: 'app-gestion-de-auditorias',
   templateUrl: './gestion-de-auditorias.component.html',
-  styleUrls: ['./gestion-de-auditorias.component.css'],
-  standalone: true,
-  imports: [
-    BarraMenuComponent,
-    CardModule,
-    PanelModule,
-    ButtonModule,
-    ItemListaAuditoriaComponent,
-    CommonModule
-  ],
+  styleUrls: ['./gestion-de-auditorias.component.css']
 })
 
 export class GestionDeAuditoriasComponent implements OnInit {
 
   @Input() id_tienda: any;
-  id_tienda______SUSTITUIR: number = 1;
-  tiendaTitle: string = "FRANQ982"
+
+  tiendas: tienda[] = [];
+  tiendaSeleccionada: tienda | undefined;
   auditorias: auditoria[] = [];
 
-  constructor(private auditoriaService: AuditoriaService , private router: Router) { }
+  constructor(
+    private auditoriaService: AuditoriaService , 
+    private router: Router,
+    private tiendasService: TiendasService) { }
  
   ngOnInit(): void {
-    this.inicializaAuditorias();
+    this.initTiendas();
   }
 
-  nuevaAuditoria() {
-    this.auditoriaService.nuevaAuditoria(this.id_tienda______SUSTITUIR, this.auditorias[0].id_mobiliario).subscribe();
-    this.router.navigate(['/auditoria'], { queryParams: { id_tienda: this.id_tienda } });
+  initTiendas() {
+    this.tiendasService.getTiendas().subscribe((data: tienda[]) => {
+      this.tiendas = data;
+    })
+  }
+
+  onTiendaSelected(){
+    if(this.tiendaSeleccionada){
+      this.inicializaAuditorias();
+    }
+  }
+
+  async nuevaAuditoria() {
+    this.auditoriaService.nuevaAuditoria(this.tiendaSeleccionada!.id_tienda).subscribe();
+    this.inicializaAuditorias();
   } 
   inicializaAuditorias() {
-    this.auditoriaService
-    this.auditoriaService.getAuditorias(this.id_tienda______SUSTITUIR).subscribe((data)=>{
+    this.auditoriaService.getAuditorias(this.tiendaSeleccionada!.id_tienda).subscribe((data)=>{
       this.auditorias = data;
       console.log("auditorias", this.auditorias);
     })
+  }
+
+  goToAuditoria(id_auditoria: number){
+    this.auditoriaService.id_auditoria_seleccionada = id_auditoria;
+    this.router.navigate(['/auditoria']);
   }
 }

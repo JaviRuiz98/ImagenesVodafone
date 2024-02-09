@@ -98,6 +98,7 @@ export class ValidadorComponent implements OnInit{
     console.log("filtros", filtros);
     this.inicializaImagenesReferencia( filtros);  
   }
+  
   volver() {
     this.router.navigate(['/home']);
   }

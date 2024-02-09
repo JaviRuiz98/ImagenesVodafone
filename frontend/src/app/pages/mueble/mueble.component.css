@@ -23,15 +23,26 @@
     }
 }
 
-.marginRight{
-    margin-right: 10%;
-}
 
 .expositores-container {
     display: flex;
     flex-direction: row;
 }
 
+/* h2{
+    text-align: center;
+} */
+
 .expositor-item {
     margin-right: 2%; 
+}
+/* 
+.opciones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+} */
+
+.marginTop{
+    margin-top: 10%;
 }

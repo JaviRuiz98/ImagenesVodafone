@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import { createMueble, getAllMuebles, getFilteredMuebles, getMueblesAndExpositoresActivosBySfid, updateMueble } from '../controller/mobiliarioController';
+import { createMueble, getAllMuebles, getFilteredMuebles, getMueblesAndExpositoresActivosByIdTienda, getMueblesAndExpositoresWithProcesadosByIdAuditoria, updateMueble } from '../controller/mobiliarioController';
 
 
 const router: Router = express.Router();
@@ -10,6 +10,7 @@ router.post('/createMueble/',  createMueble);
 router.put('/muebles/:id_mueble',  updateMueble);
 
 router.get('/muebles',  getAllMuebles);
-router.get('/muebles/:sfid',  getMueblesAndExpositoresActivosBySfid);
+router.get('/muebles/:id_tienda',  getMueblesAndExpositoresActivosByIdTienda);
+router.get('/muebles_auditoria/:id_auditoria',  getMueblesAndExpositoresWithProcesadosByIdAuditoria);
 
 export default router

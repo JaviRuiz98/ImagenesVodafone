@@ -1,8 +1,11 @@
 import express, { Router } from 'express';
-import { getAuditorias } from '../controller/auditoriaController';
+import { getAuditorias, createAuditoria, getAuditoriaById } from '../controller/auditoriaController';
 
 const router: Router = express.Router();
 
-router.use('/auditorias',  getAuditorias);
+router.get('/auditorias/:id_tienda',  getAuditorias);
+router.get('/auditorias_by_id',  getAuditoriaById);
+
+router.post('/nueva_auditoria',  createAuditoria);
 
 export default router;

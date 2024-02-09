@@ -13,6 +13,8 @@ import { HomeModule } from './pages/home/home.module';
 import { BarraMenuComponent } from './componentes/barra-menu/barra-menu.component';
 import { TiendasModule } from './pages/tiendas/tiendas.module';
 import { MuebleModule } from './pages/mueble/mueble.module';
+import { GestionDeAuditoriasModule } from './pages/gestion-de-auditorias/gestion-de-auditorias.module';
+import { AuditoriaModule } from './pages/auditoria/auditoria.module';
 
 
 @NgModule({
@@ -27,7 +29,9 @@ import { MuebleModule } from './pages/mueble/mueble.module';
     HomeModule,
     TiendasModule,
     BrowserModule,
-    HttpClientModule   
+    HttpClientModule,
+    GestionDeAuditoriasModule,
+    AuditoriaModule
   ],
   providers: [   
     PrimeIcons,

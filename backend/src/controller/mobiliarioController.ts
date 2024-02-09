@@ -19,7 +19,6 @@ export async function getFilteredMuebles(req: Request, res: Response) {
     */
 
     const mobiliario: MuebleFrontInterfaz[] = await mobiliarioService.getFilteredMuebles(id_tienda, categoria_clause, orden_clause, prompts_clause, ia_clause);
-    console.log(mobiliario);
     res.status(200).json(mobiliario);
 
 }
@@ -55,9 +54,18 @@ export async function getAllMuebles(_req: Request, res: Response) {
     res.status(200).json(muebles);
 }
 
-export async function getMueblesAndExpositoresActivosBySfid(req: Request, res: Response) {
-    const sfid = req.params.sfid;
-    const muebles: MuebleFrontInterfaz[] = await mobiliarioService.getMueblesAndExpositoresActivosBySfid(sfid);
+export async function getMueblesAndExpositoresActivosByIdTienda(req: Request, res: Response) {
+    const id_tienda = parseInt(req.params.id_tienda);
+    const muebles: MuebleFrontInterfaz[] = await mobiliarioService.getMueblesAndExpositoresActivosByIdTienda(id_tienda);
+    if (!muebles) {
+        res.status(204).send();;
+    }
+    res.status(200).json(muebles);
+}
+
+export async function getMueblesAndExpositoresWithProcesadosByIdAuditoria(req: Request, res: Response) {
+    const id_auditoria = parseInt(req.params.id_auditoria);
+    const muebles: MuebleFrontInterfaz[] = await mobiliarioService.getMueblesAndExpositoresWithProcesadosByIdAuditoria(id_auditoria);
     if (!muebles) {
         res.status(204).send();;
     }
