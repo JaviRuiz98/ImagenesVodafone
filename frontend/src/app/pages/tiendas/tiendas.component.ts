@@ -38,7 +38,6 @@ export class TiendasComponent implements OnInit{
     })
     this.MueblesService.getAllMuebles().subscribe((response: muebles[]) => {
       this.listaTodosMuebles = response;
-      console.log(this.listaTodosMuebles)
     })
     this.parametrosSteps = [
       {
@@ -77,6 +76,7 @@ export class TiendasComponent implements OnInit{
         this.nuevaTienda.sfid = this.sfidInput;
         this.verFormularioNuevaTienda = false;
         this.TiendasService.newTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
+          this.tiendas = response;
         })
       }
     }

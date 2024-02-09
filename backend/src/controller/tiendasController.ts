@@ -15,14 +15,13 @@ export async function getAllTiendas(req: Request, res: Response) {
     }
 }
 
-export async function newTienda(req: Request) {
+export async function newTienda(req: Request, res: Response) {
     try{     
         const tienda: tiendas = await tiendaService.newTienda(req.body.sfid);
         const listaIdMuebles = req.body.listaNuevosMuebles.map((mueble: muebles) => mueble.id_mueble);
         const muebles = await tiendaService.asignarPertenenciaMuebleTienda(tienda.id_tienda, listaIdMuebles);
-
         console.log(tienda, listaIdMuebles, muebles);
-        
+        getAllTiendas(req, res);
     }catch (error) {
         console.error('Error al crear tienda:', error);
     }
