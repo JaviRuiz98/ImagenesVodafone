@@ -73,6 +73,7 @@ export class TiendasComponent implements OnInit{
   iniciarFormularioNuevaTienda(){
     this.verFormularioNuevaTienda = true;
     this.activeIndex = 0;
+    this.listaMueblesNuevaTienda = [];
   }
   botonSiguiente(){
     if(this.sfidInput === '' || this.comunidadInput === ''){
