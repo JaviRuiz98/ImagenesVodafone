@@ -17,15 +17,15 @@
                         <div class="contenedorMuebleArrastras">
                             <div *ngIf="mueble.expositores.length == 1">
                                 <div class="anchoAltoFotoReferencia">
-                                    <img src="{{imagenesRef}}/{{mueble.expositores[0].imagenes.url}}" alt="{{mueble.expositores[0].imagenes.url}}" class="ajusteImagenesAnchoAlto">
+                                    <img src="{{imagenesRef}}/{{mueble.expositores[0].imagen.url}}" alt="{{mueble.expositores[0].imagen.url}}" class="ajusteImagenesAnchoAlto">
                                 </div>
                             </div>
                             <div *ngIf="mueble.expositores.length == 2 && mueble.expositores[0] != undefined && mueble.expositores[1] != undefined" class="grid anchoAltoFotoReferencia">
                                 <div style="margin-right: 5px;">
-                                    <img src="{{imagenesRef}}/{{mueble.expositores[0].imagenes.url}}" alt="{{mueble.expositores[0].imagenes.url}}" class="ajusteImagenesAnchoAlto">
+                                    <img src="{{imagenesRef}}/{{mueble.expositores[0].imagen.url}}" alt="{{mueble.expositores[0].imagen.url}}" class="ajusteImagenesAnchoAlto">
                                 </div>
                                 <div> 
-                                    <img src="{{imagenesRef}}/{{mueble.expositores[1].imagenes.url}}" alt="{{mueble.expositores[1].imagenes.url}}" class="ajusteImagenesAnchoAlto">
+                                    <img src="{{imagenesRef}}/{{mueble.expositores[1].imagen.url}}" alt="{{mueble.expositores[1].imagen.url}}" class="ajusteImagenesAnchoAlto">
                                 </div>
                             </div> 
                             <div class="anchoAltoDescripcionFotoReferencia">
