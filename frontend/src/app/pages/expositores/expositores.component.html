@@ -1,36 +1,11 @@
- 
+ <p-toast>  </p-toast>
 <p-panel header="Expositores" [style]="{width: '70%', margin: '0 auto'}">
     <p-toolbar styleClass="mb-4 gap-2">
         <ng-template pTemplate="left">
             <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="AbrirnuevoExpositor()" ></button>
             <button pButton pRipple label="Desactivar" icon="pi pi-eye" class="p-button-danger" [style]="{'margin-left': '20px'}" (click)="activarDesactivarExpositores()" [disabled]="!expositoresSeleccionados|| !expositoresSeleccionados.length"></button>
         </ng-template>
-        
     </p-toolbar>
-
-    <!-- <p-panel header="Nuevo expositor" [style]="{width: '90%', margin: '0 auto', 'margin-top': '20px'}" *ngIf="mostrarDialogoNuevoExpositor">
-        <ng-template pTemplate="content" style=" width: 10000px; height: 10000px">
-             
-            
-            <app-selector-imagenes 
-            (archivoSeleccionadoChange)="recibirFile($event, id_expositor_selected)"
-            [cargando_procesado]="cargando_procesamiento">
-            </app-selector-imagenes>
-
-            <div style="margin-top: 20px;">
-                <label for="Nombre">Nombre</label>
-                <input type="text" pInputText id="name" [style]="{'margin-left': '10px'}"[(ngModel)]="nuevoExpositor.nombre" required autofocus />
-                <small class="p-error" *ngIf="submitted && !nuevoExpositor.nombre">Se requiere un nombre para el expositor.</small>
-            </div>
-
-        </ng-template>
-    
-        <ng-template pTemplate="footer">
-            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
-            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="guardarExpositor()"></button>
-        </ng-template>
-    </p-panel> -->
-
     <p-table
         #dt
         [value]="expositores" 
@@ -45,9 +20,7 @@
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
         [showCurrentPageReport]="true"
         [globalFilterFields]="['Nombre', 'ID']"
-
     >
-
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
                 <span class="p-input-icon-left">
@@ -69,47 +42,17 @@
         </ng-template>
         <ng-template pTemplate="body" let-expositor>
             <tr>
-            
                 <td>
                     <p-tableCheckbox [value]="expositor"></p-tableCheckbox>
                 </td>
                 <td>{{ expositor.id_expositor }}</td>
                 <td>
                     <p-image [src]="url_imagenes_referencias + expositor.imagenes.url" [alt]="expositor.imagenes.url" [width]="'100px'" [height]="'10%'" class="shadow-4" [preview]="true"></p-image>
-             
                 </td>
                 <td>{{ expositor.nombre }}</td>
-                <td>
-                   
-                </td>
-                
+                <td></td>
             </tr>
-        </ng-template>
-
+        </ng-template> 
     </p-table>
-
-    <p-dialog [(visible)]="mostrarDialogoNuevoExpositor" [style]="{height: '55%', width: '45%'  }" header="Crear un nuevo expositor" [modal]="true" styleClass="p-fluid">
-        <ng-template pTemplate="content" style=" width: 10000px; height: 10000px">
-             
-            
-            <app-selector-imagenes 
-            (archivoSeleccionadoChange)="recibirFile($event)"
-            [cargando_procesado]="cargando_procesamiento">
-            </app-selector-imagenes>
-
-            <div style="margin-top: 20px;">
-                <input pInputText pKeyFilter="int" placeholder="Nombre del expositor" [(ngModel)]="nuevoExpositor.nombre" />
-                <!-- <small class="p-error" *ngIf="submitted && !nuevoExpositor.nombre">Se requiere un nombre para el expositor.</small> -->
-                <!-- <p-checkbox label=" Desactivar el expositor" [(ngModel)]="nuevoExpositor.activo" [style]="{'margin-left': '10px'}"></p-checkbox> -->
-            </div>
-        </ng-template>
-        <ng-template pTemplate="footer">
-            <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="nuevoCanelar()"></button>
-            <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="nuevoGuardar()"></button>
-        </ng-template>
-
-    </p-dialog>
-
-
-
+    <app-nuevo-expositor *ngIf="mostrarDialogoNuevoExpositor == true" (mostrarDialogoNuevoExpositor)="cerrarDialog($event)" ></app-nuevo-expositor>
 </p-panel>

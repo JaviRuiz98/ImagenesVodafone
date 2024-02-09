@@ -21,6 +21,8 @@ export class ExpositoresComponent implements OnInit {
 
   @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
   @Input() id_expositor_selected: number = 0;
+  @Input() mostrarDialogoNuevoExpositor: boolean = false;
+
   cargando_procesamiento: boolean = false;
 
   expositores!: Expositor[];
@@ -30,8 +32,8 @@ export class ExpositoresComponent implements OnInit {
 
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
-  mostrarDialogoNuevoExpositor = false;
- 
+
+  submitted: boolean = false;
   constructor(private router: Router, private expositoresService: ExpositoresService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
   inicializaExpositores() {
@@ -43,6 +45,8 @@ export class ExpositoresComponent implements OnInit {
 
  
   AbrirnuevoExpositor() {
+ 
+
     this.nuevoExpositor = {
       id_expositor: 0,
       nombre: '',
@@ -53,7 +57,8 @@ export class ExpositoresComponent implements OnInit {
       },
       procesados_imagenes: []
     };
-    this.mostrarDialogoNuevoExpositor = true; 
+    this.mostrarDialogoNuevoExpositor = true;
+    this.submitted = false;
   }
 
   recibirFile(event: {archivo:File}) {
@@ -61,20 +66,26 @@ export class ExpositoresComponent implements OnInit {
     const imagenAProcesar = event.archivo;
     this.archivoSeleccionadoChange.emit({ archivo: imagenAProcesar });
     this.cargando_procesamiento = true;
-}
+  }
 
+
+  cerrarDialog(value: boolean) {
+    this.mostrarDialogoNuevoExpositor = false;
+    this.cargando_procesamiento = true;
+  }
 
   nuevoGuardar() {
     this.expositoresService.guardarExpositor(this.nuevoExpositor.nombre, this.nuevoExpositor.activo, this.archivoSeleccionado).subscribe((expositor: Expositor) => {
       this.inicializaExpositores();
     })
 
- 
-    this.mostrarDialogoNuevoExpositor = false;
+
+
+    //this.mostrarDialogoNuevoExpositor = false;
   }
 
   nuevoCanelar() {
-    this.mostrarDialogoNuevoExpositor = false; 
+    this.mostrarDialogoNuevoExpositor = false;
     
   }
 
@@ -97,7 +108,8 @@ export class ExpositoresComponent implements OnInit {
 
   ngOnInit(): void {
     this.inicializaExpositores();
-
+ 
+  
 
 
   }

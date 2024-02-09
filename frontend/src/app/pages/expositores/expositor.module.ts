@@ -22,6 +22,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
+
 // componentes nuestros
 import { BarraMenuComponent } from './../../componentes/barra-menu/barra-menu.component';
 import { MarcoElementoComponent } from './../../componentes/marco-elemento/marco-elemento.component';
@@ -29,6 +30,8 @@ import { SelectorImagenesComponent } from './../../componentes/selector-imagenes
 import { PaginadorProcesamientoSubidaComponent } from './../../componentes/paginador-procesamiento-subida/paginador-procesamiento-subida.component'; 
 import { FileUploadModule } from 'primeng/fileupload';
 import { FormsModule } from '@angular/forms'; // Add this import 
+import { NuevoExpositorComponent } from 'src/app/componentes/nuevo-expositor/nuevo-expositor.component';
+
 
 @NgModule({
   declarations: [
@@ -52,7 +55,8 @@ import { FormsModule } from '@angular/forms'; // Add this import
     ToastModule,
     TableModule,
     CheckboxModule,
-    InputTextModule
+    InputTextModule,
+    NuevoExpositorComponent
 ]
 })
 
