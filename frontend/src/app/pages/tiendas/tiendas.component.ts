@@ -82,6 +82,7 @@ export class TiendasComponent implements OnInit{
         this.activeIndex++;
         this.botonAtrasDeshabilitado = false;
         this.botonSiguienteDeshabilitado = false;
+        console.log(this.listaMueblesNuevaTienda)
       } else{
         this.nuevaTienda.sfid = this.sfidInput;
         this.TiendasService.newTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {

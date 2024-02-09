@@ -38,10 +38,30 @@
                     </ng-template>
                 </p-pickList>
             </div>
-            <div class="formulario" *ngIf="activeIndex === 2">
-                <p><strong>Resumen de la tienda:</strong></p>
-                <p><strong>sfid:</strong> {{sfidInput}}</p>
-                <p><strong>Comunidad:</strong> {{comunidadInput}}</p>
+            <div class="resumentNuevaTienda" *ngIf="activeIndex === 2">
+                <div>
+                    <p><strong>Resumen de la tienda:</strong></p>
+                    <p><strong>sfid:</strong> {{sfidInput}}</p>
+                    <p><strong>Comunidad:</strong> {{comunidadInput}}</p>
+                </div>
+                <div>
+                    <p-orderList [value]="listaMueblesNuevaTienda" [listStyle]="{ height: '20rem' }" header="Muebles Seleccionados">
+                        <ng-template let-mueble pTemplate="item">
+                            <div class="flex flex-wrap p-2 align-items-center gap-3">
+                                <img src="{{imagenesRef}}/{{mueble.expositores[0].imagen.url}}" alt="{{mueble.expositores[0].imagen.url}}"  class="w-4rem shadow-2 flex-shrink-0 border-round" />
+                                <div class="flex-1 flex flex-column gap-2">
+                                    <span class="font-bold">{{ mueble.expositores[0] }}</span>
+                                    <!--
+                                    <div class="flex align-items-center gap-2">
+                                        <i class="pi pi-tag text-sm"></i>
+                                        <span>{{ product.category }}</span>
+                                    </div>
+                                -->
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-orderList>
+                </div>
             </div>
             <p-steps [model]="parametrosSteps" [readonly]="false" [activeIndex]="activeIndex" [style]="{'margin-top': '5%'}"></p-steps>
             <div class="botonesAtrasSiguiente">
