@@ -50,6 +50,11 @@
 .formulario {
     margin: 5%;
 }
+.resumentNuevaTienda{
+    display: grid;
+    grid-template-columns:40% 60%;
+    margin: 0;
+}
 .botonSiguienteAtras{
     margin-top: 5%;
     width: 20%;
