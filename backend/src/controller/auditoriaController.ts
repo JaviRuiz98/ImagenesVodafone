@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { auditoriaService } from '../services/auditoriaService';
 import { auditoria_extended } from '../interfaces/auditoriaExtended';
-
+import { auditorias } from '@prisma/client';
 
 export async function getAuditorias(req: Request, res: Response) {
     try {

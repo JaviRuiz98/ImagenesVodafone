@@ -6,6 +6,6 @@ const router: Router = express.Router();
 router.get('/auditorias/:id_tienda',  getAuditorias);
 router.get('/auditorias_by_id',  getAuditoriaById);
 
-// router.post('/nueva_auditoria',  createAuditoria);
+router.post('/nueva_auditoria',  createAuditoria);
 
 export default router;
