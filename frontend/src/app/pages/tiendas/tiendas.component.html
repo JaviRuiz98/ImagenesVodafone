@@ -74,8 +74,9 @@
             </div>
             <p-steps [model]="parametrosSteps" [readonly]="false" [activeIndex]="activeIndex" [style]="{'margin-top': '5%'}"></p-steps>
             <div class="botonesAtrasSiguiente">
-                <p-button (click)="botonAtras()" class="botonSiguienteAtras" label="Atrás" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px'}"></p-button>
-                <p-button (click)="botonSiguiente()" class="botonSiguienteAtras"  [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px', 'justify-content': 'center'}"><strong>{{contenidoBotonSiguiente}}</strong></p-button>
+                <p-button (click)="botonAtras()" class="botonSiguienteAtras" label="Atrás" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px'}" [disabled]="activeIndex === 0"></p-button>
+                <p-button (click)="botonSiguiente()" class="botonSiguienteAtras" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px', 'justify-content': 'center'}"
+                [label]="(activeIndex === 2) ? 'Crear Tienda' : 'Siguiente'"></p-button>
             </div>
         </p-dialog>
     </div>

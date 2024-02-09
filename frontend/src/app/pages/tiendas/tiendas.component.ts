@@ -30,9 +30,6 @@ export class TiendasComponent implements OnInit{
   comunidadInput: string = 'fvf';
   parametrosSteps: any; //TIPAR CON LABEL Y ROUTERLINK
   activeIndex: number = 0;
-  botonSiguienteDeshabilitado: boolean = false;
-  botonAtrasDeshabilitado: boolean = false;
-  contenidoBotonSiguiente: string = 'Siguiente';
   listaTodosMuebles: muebles[] = [];
   listaMueblesNuevaTienda: muebles[] = [];
 
@@ -50,14 +47,12 @@ export class TiendasComponent implements OnInit{
         label: 'Datos Tienda',
         command: (event: any) => {
           this.activeIndex = 0;
-          this.contenidoBotonSiguiente = 'Siguiente'; 
         }
       },
       {
         label: 'Muebles',
         command: (event: any) => {
             this.activeIndex = 1;
-            this.contenidoBotonSiguiente = 'Siguiente'; 
 
         }
       },
@@ -65,7 +60,6 @@ export class TiendasComponent implements OnInit{
         label: 'Confirmar',
         command: (event: any) => {
             this.activeIndex = 2;
-            this.contenidoBotonSiguiente = 'Crear Tienda'; 
         }
       }
     ];
@@ -79,11 +73,8 @@ export class TiendasComponent implements OnInit{
     if(this.sfidInput === '' || this.comunidadInput === ''){
       this.messageService.add({severity:'error', summary:'Error!', detail:'Los campos necesarios no estan completos.'});
     } else{
-      if(this.contenidoBotonSiguiente === 'Siguiente'){
+      if(this.activeIndex < 2){
         this.activeIndex++;
-        this.botonAtrasDeshabilitado = false;
-        this.botonSiguienteDeshabilitado = false;
-        console.log(this.listaMueblesNuevaTienda)
       } else{
         this.nuevaTienda.sfid = this.sfidInput;
         this.TiendasService.newTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
@@ -94,14 +85,9 @@ export class TiendasComponent implements OnInit{
   botonAtras(){
     if(this.activeIndex > 0){
       this.activeIndex--;
-      this.botonAtrasDeshabilitado = false;
-      this.contenidoBotonSiguiente = 'Siguiente';
-    } else{
-      this.botonAtrasDeshabilitado = true;
     }
   }
   editarTienda(tienda: tienda){
-    console.log(tienda)
     this.activeIndex = 1;
     this.verFormularioNuevaTienda = true;
   }
