@@ -1,10 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
+import { Component, OnInit } from '@angular/core';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
 import { AuditoriaService } from 'src/app/servicios/auditoria/auditoria.service';
 
-import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 import { MessageService } from 'primeng/api';
 import { filtro_procesados } from 'src/app/interfaces/filtro_procesados';
 import { muebles } from 'src/app/interfaces/muebles';
@@ -18,9 +16,9 @@ import { auditoria } from 'src/app/interfaces/auditoria';
 
 export class AuditoriaComponent implements OnInit{
 
-  //url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
+  url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
-  @Input() auditoria = new auditoria(null);
+  muebles_auditoria: muebles[] | undefined;
 
   muebles: muebles[] = [];
 
@@ -38,21 +36,34 @@ export class AuditoriaComponent implements OnInit{
   }
 
   constructor( 
-    private tiendasService: TiendasService,
+    private auditoriaService: AuditoriaService ,
     private mueblesService: MueblesService,
     private procesamientoService: ProcesamientoService,
     private messageService: MessageService
     ) {}
 
     ngOnInit(): void {
-      this.inicializaImagenesReferencia(this.auditoria.id_mobiliario);
+      
+      this.inicializaImagenesReferencia();
     }
 
-  async inicializaImagenesReferencia(id_mobiliario: number, filtros?: filtro_procesados) {
-    //id mobiliario
-    this.mueblesService.getMueblesFiltered(filtros).subscribe( (data: muebles[]) => {
-      this.muebles = data;
-      console.log("muebles", this.muebles);
-    }), (error: Error) => { console.log(error) }
-  }
+    async inicializaImagenesReferencia() {
+
+      //const tiendaSelected: number | undefined = this.localStorageService.getItem('tiendas');
+      //const mobiliarioSelected: number | undefined= this.localStorageService.getItem('mobiliario');
+                                  
+      this.auditoriaService.getMueblesAndExpositoresWithProcesadosByIdAuditoria(this.auditoriaService.id_auditoria_seleccionada).subscribe(
+        (data: muebles[]) => {
+          this.muebles = data;
+          console.log('muebles', this.muebles);
+        }, (error: Error) => { console.log(error) }
+      );
+
+  
+    }
+
+    enviarFiltroProcesados(filtros:filtro_procesados) {
+      console.log("filtros", filtros);
+      this.inicializaImagenesReferencia();  
+    }
 }

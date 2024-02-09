@@ -40,14 +40,19 @@ export class GestionDeAuditoriasComponent implements OnInit {
     }
   }
 
-  nuevaAuditoria() {
+  async nuevaAuditoria() {
     this.auditoriaService.nuevaAuditoria(this.tiendaSeleccionada!.id_tienda).subscribe();
-    this.router.navigate(['/auditoria'], { queryParams: { id_tienda: this.id_tienda } });
+    this.inicializaAuditorias();
   } 
   inicializaAuditorias() {
     this.auditoriaService.getAuditorias(this.tiendaSeleccionada!.id_tienda).subscribe((data)=>{
       this.auditorias = data;
       console.log("auditorias", this.auditorias);
     })
+  }
+
+  goToAuditoria(id_auditoria: number){
+    this.auditoriaService.id_auditoria_seleccionada = id_auditoria;
+    this.router.navigate(['/auditoria']);
   }
 }

@@ -14,6 +14,7 @@ import { BarraMenuComponent } from './componentes/barra-menu/barra-menu.componen
 import { AuditoriaComponent } from './pages/auditoria/auditoria.component';
 import { MuebleModule } from './pages/mueble/mueble.module';
 import { GestionDeAuditoriasModule } from './pages/gestion-de-auditorias/gestion-de-auditorias.module';
+import { AuditoriaModule } from './pages/auditoria/auditoria.module';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { GestionDeAuditoriasModule } from './pages/gestion-de-auditorias/gestion
     HomeModule,
     BrowserModule,
     HttpClientModule,
-    GestionDeAuditoriasModule  
+    GestionDeAuditoriasModule,
+    AuditoriaModule
   ],
   providers: [   
     PrimeIcons,

@@ -5,6 +5,5 @@ export interface muebles {
     nombre_mueble: string;
     numero_dispositivos: number;
     categoria: string;
-    expositores: Expositor[];
-    
+    expositores: Expositor[];  
 }

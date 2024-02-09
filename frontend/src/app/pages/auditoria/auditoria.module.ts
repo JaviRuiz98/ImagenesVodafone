@@ -46,4 +46,4 @@ import { IrArribaComponent } from 'src/app/componentes/ir-arriba/ir-arriba.compo
     ToastModule
   ]
 })
-export class NuevaAuditoriaModule { }
+export class AuditoriaModule { }

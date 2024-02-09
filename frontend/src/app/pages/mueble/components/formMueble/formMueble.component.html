@@ -1,0 +1,52 @@
+<p-card>
+  <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+    <div class="formgrid grid ">
+      <div class="field col-6">
+        <span class="p-float-label">
+          <input type="text" formControlName="nombre_mueble" pInputText class="w-full">
+          <label >Nombre * </label>
+        </span>
+        <small *ngIf="nombre_mueble.invalid && (nombre_mueble.dirty || nombre_mueble.touched)" class="block p-error">
+          <div *ngIf="nombre_mueble.errors?.['required']">El nombre es obligatorio.</div>
+          <!-- <div *ngIf="nombre_mueble.errors?.['maxlength']">El nombre debe tener como máximo 50 caracteres.</div> -->
+        </small>
+        
+      </div>
+      <div class="field col-6">
+     
+      
+            <span class="p-float-label">
+              <p-dropdown formControlName="categoria" [options]="categorias_opciones"  class="w-full" placeholder="Selecciona una categoria"></p-dropdown>
+              <label >Categoría *</label>
+            </span>
+    
+            <small *ngIf="categoria.invalid && (categoria.dirty || categoria.touched)" class="block p-error">
+              <div *ngIf="categoria.errors?.['required']">La categoría es obligatoria.</div>
+             
+            </small>
+      </div>
+
+      <div class="col-6 field" *ngIf ="categoria.value === 'dispositivos'" class=" input-number-custom fadeinleft animation-duration-1000">
+        
+          <label class = "text-xs  text-600 mb-2 block ">Número de dispositivos que esperas *</label>
+          <p-inputNumber 
+            class="block"
+            formControlName="numero_dispositivos"
+            [min]="0"
+            [showButtons]="true"
+            decrementButtonClass="p-button-danger p-button-outlined"
+            incrementButtonClass="p-button-danger p-button-outlined"
+          >
+          </p-inputNumber>
+          <!-- incrementButtonIcon="pi pi-plus"
+          decrementButtonIcon="pi pi-minus"  -->
+    
+      </div>
+
+     
+       
+    </div>
+
+  </form>
+ 
+</p-card>
