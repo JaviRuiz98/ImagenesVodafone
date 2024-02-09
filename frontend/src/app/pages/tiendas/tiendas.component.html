@@ -2,7 +2,7 @@
     <div class="contenedorBotonNuevaTienda">
         <!--<button class="botonNuevaTienda" (click)="iniciarFormularioNuevaTienda()">+</button>-->
         <div class="cabeceraAñadirTienda">
-            <button class="botonNuevaTienda" (click)="iniciarFormularioNuevaTienda()">+</button>
+            <p-button class="botonNuevaTienda" label="+ Añadir Tienda" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="iniciarFormularioNuevaTienda()" [style]="{'cursor': 'pointer'}"></p-button>
         </div>
         <p-dialog header="Nueva Tienda" [(visible)]="verFormularioNuevaTienda" [style]="{'width': '80vw'}">
             <div class="formulario" *ngIf="activeIndex === 0">
@@ -45,8 +45,8 @@
             </div>
             <p-steps [model]="parametrosSteps" [readonly]="false" [activeIndex]="activeIndex" [style]="{'margin-top': '5%'}"></p-steps>
             <div class="botonesAtrasSiguiente">
-                <button ngClass="botonSiguienteAtras" (click)="botonAtras()" [disabled]="botonAtrasDeshabilitado">Atrás</button>
-                <button ngClass="botonSiguienteAtras" (click)="botonSiguiente()">{{contenidoBotonSiguiente}}</button>
+                <p-button (click)="botonAtras()" class="botonSiguienteAtras" label="Atrás" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px'}"></p-button>
+                <p-button (click)="botonSiguiente()" class="botonSiguienteAtras"  [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px', 'justify-content': 'center'}"><strong>{{contenidoBotonSiguiente}}</strong></p-button>
             </div>
         </p-dialog>
     </div>
@@ -72,7 +72,7 @@
             <tr>
                 <td>{{ tiendas.sfid }}</td>
                 <td>{{ tiendas.id_tienda }}</td>
-                <td></td>
+                <td><p-button class="botonNuevaTienda" label="Editar Tienda" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="editarTienda(tiendas)"></p-button></td>
                 <td></td>
             </tr>
         </ng-template>

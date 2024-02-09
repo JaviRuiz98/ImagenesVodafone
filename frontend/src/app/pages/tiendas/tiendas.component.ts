@@ -50,24 +50,29 @@ export class TiendasComponent implements OnInit{
         label: 'Datos Tienda',
         command: (event: any) => {
           this.activeIndex = 0;
+          this.contenidoBotonSiguiente = 'Siguiente'; 
         }
       },
       {
         label: 'Muebles',
         command: (event: any) => {
             this.activeIndex = 1;
+            this.contenidoBotonSiguiente = 'Siguiente'; 
+
         }
       },
       {
         label: 'Confirmar',
         command: (event: any) => {
             this.activeIndex = 2;
+            this.contenidoBotonSiguiente = 'Crear Tienda'; 
         }
       }
     ];
   }
   iniciarFormularioNuevaTienda(){
     this.verFormularioNuevaTienda = true;
+    this.activeIndex = 0;
   }
   botonSiguiente(){
     if(this.sfidInput === '' || this.comunidadInput === ''){
@@ -77,9 +82,6 @@ export class TiendasComponent implements OnInit{
         this.activeIndex++;
         this.botonAtrasDeshabilitado = false;
         this.botonSiguienteDeshabilitado = false;
-        if(this.activeIndex === 2){
-          this.contenidoBotonSiguiente = 'Crear Tienda'; 
-        }
       } else{
         this.nuevaTienda.sfid = this.sfidInput;
         this.TiendasService.newTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
@@ -95,5 +97,10 @@ export class TiendasComponent implements OnInit{
     } else{
       this.botonAtrasDeshabilitado = true;
     }
+  }
+  editarTienda(tienda: tienda){
+    console.log(tienda)
+    this.activeIndex = 1;
+    this.verFormularioNuevaTienda = true;
   }
 }
