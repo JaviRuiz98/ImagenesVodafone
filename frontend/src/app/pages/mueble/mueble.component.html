@@ -24,20 +24,20 @@
 </p-toolbar>
    
         <p-table 
-        #miTabla
-        class="table"
-        [value]=" tableSelected === 'dispositivos' ? mueblesDispositivosFiltrados : mueblesCartelesFiltrados"
-        [paginator]="true"
-        [rows]="10"
-        [scrollable]="true"
-        [scrollHeight]="'calc(100vh - 300px )'"
+            #miTabla
+            class="table"
+            [value]=" tableSelected === 'dispositivos' ? mueblesDispositivosFiltrados : mueblesCartelesFiltrados"
+            [paginator]="true"
+            [rows]="10"
+            [scrollable]="true"
+            [scrollHeight]="'calc(100vh - 300px )'"
 
-        paginatorStyleClass="background-color: rgba(232, 232, 232, 0.9);"
-        [showCurrentPageReport]="true"
-        [tableStyle]="{ 'min-width': '50rem' }"
-        currentPageReportTemplate="Enseñando {first} de {last} de en total {totalRecords} muebles"
-        [rowsPerPageOptions]="[10, 25, 50]"
-        [globalFilterFields]="['nombre_mueble', ]"
+            paginatorStyleClass="background-color: rgba(232, 232, 232, 0.9);"
+            [showCurrentPageReport]="true"
+            [tableStyle]="{ 'min-width': '50rem' }"
+            currentPageReportTemplate="Enseñando {first} de {last} de en total {totalRecords} muebles"
+            [rowsPerPageOptions]="[10, 25, 50]"
+            [globalFilterFields]="['nombre_mueble', ]"
     >
         <ng-template pTemplate="caption" >
              <p class="p-m-0 text-2xl"> Muebles</p>

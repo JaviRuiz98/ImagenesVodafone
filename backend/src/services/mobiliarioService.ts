@@ -2,6 +2,7 @@ import {     muebles, pertenencia_expositor_auditoria, pertenencia_mueble_tienda
 import db  from "../config/database";
 
 import {  MuebleFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
+import { expositoresConProcesados } from "../interfaces/expositoresProcesados";
 // import {expositoresConProcesados} from "../interfaces/expositoresProcesados"
 
 
@@ -217,6 +218,12 @@ export const mobiliarioService = {
                                     expositores: {
                                         include: {
                                             imagenes: true,
+                                            pertenencia_expositor_auditoria: {
+                                                include: {
+                                                    procesados_imagenes: true
+                                                }
+                                            }
+                                            
                                         }
                                     }
                                 }
@@ -245,11 +252,6 @@ export const mobiliarioService = {
                  return mapearResultadoParaFront(mueble);
              });
 
-             const procesados = mueblesPertenencia.map((mueblesPertenencia: any) => mueblesPertenencia.procesados_imagenes);
-
-             muebleExpositorFormateado.forEach((mueble: any) => {
-                mueble.procesados_imagenes = procesados.filter((procesado: any) => procesado.id_mueble === mueble.id_mueble);
-             })
 
              return muebleExpositorFormateado;
 
@@ -268,19 +270,26 @@ export const mobiliarioService = {
 
 //tipar adecuadamente
 function mapearResultadoParaFront(mueble: any): MuebleFrontInterfaz {
-    const expositores: any[] = 
-    mueble.pertenencia_expositor_mueble ? mueble.pertenencia_expositor_mueble.map((pem: any) =>pem.expositores) : []; //expositores
-  
-
-    //const expositoresConProcesado: expositoresConProcesados[] = mapearExpositoresConProcesados(expositores, procesados, );
+    let expositores: expositoresConProcesados[] = [];
+    if (mueble.pertenencia_expositor_mueble) {
+        expositores = mueble.pertenencia_expositor_mueble.map((pem: any) => {
+            const procesados_imagenes = pem.expositores.pertenencia_expositor_auditoria ?
+                pem.expositores.pertenencia_expositor_auditoria.flatMap((pea: any) => pea.procesados_imagenes || []) : [];
+            return {
+                id_expositor: pem.expositores.id_expositor,
+                imagen: pem.expositores.imagenes,
+                nombre: pem.expositores.nombre,
+                procesados_imagenes: procesados_imagenes
+            };
+        });
+    } // expositores
 
     return {
         id_mueble: mueble.id_mueble,
         nombre_mueble: mueble.nombre_mueble,
-        expositores:  expositores,
+        expositores: expositores,
         categoria: mueble.categoria,
         numero_dispositivos: mueble.numero_dispositivos,
-        
     };
 }
 

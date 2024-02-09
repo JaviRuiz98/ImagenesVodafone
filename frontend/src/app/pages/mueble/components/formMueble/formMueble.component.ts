@@ -17,37 +17,43 @@ export class FormMuebleComponent implements OnInit {
   
   constructor( public dialogConfig : DynamicDialogConfig, private fb: FormBuilder) { }
 
+  categorias_opciones = ['cartel', 'dispositivos'];
+
   formulario:FormGroup = this.fb.group({
     nombre_mueble: ['', Validators.required],
-    categoria: ['dispositivos', [Validators.required, this.categoriaValidator()]],
+    categoria: [, [Validators.required, this.categoriaValidator()]],
     numero_dispositivos: [0, [Validators.required, Validators.min(0)]],
     expositores: [[], ]
   })
 
 
-  mueble : muebles | null = this.dialogConfig.data.mueble;
+  mueble?: muebles;
 
   get nombre_mueble() {
-    return this.formulario.get('nombre_mueble');
+    return this.formulario.controls['nombre_mueble'];
   }
   get numero_dispositivos() {
-    return this.formulario.get('numero_dispositivos');
+    return this.formulario.controls['numero_dispositivos'];
   } 
 
   get categoria() {
-    return this.formulario.get('categoria');
+    return this.formulario.controls['categoria'];
   }
 
   ngOnInit() {
-    console.log("hola");
-    console.log (this.mueble);
-    if (this.mueble) {
+   
+    if (this.dialogConfig.data) {
+      console.log ("editar");
+      this.mueble = this.dialogConfig.data.mueble;
+
       this.formulario.patchValue({
         nombre_mueble: this.mueble?.nombre_mueble,
         categoria: this.mueble?.categoria,
         numero_dispositivos: this.mueble?.numero_dispositivos,
         expositores: this.mueble?.expositores
       })
+    }else{
+      console.log ("nuevo");
     }
   }
 
@@ -60,6 +66,15 @@ export class FormMuebleComponent implements OnInit {
       }
       return null;
     };
+  }
+
+  onSubmit() {
+  
+    if (this.formulario.invalid) {
+      return;
+    }
+    // Si el formulario es válido, puedes enviar los datos
+    console.log(this.formulario.value);
   }
   
 
