@@ -1,20 +1,68 @@
+<p-toast></p-toast>
+<!-- <app-ir-arriba></app-ir-arriba> -->
 <div class="paginaCompleta">
-    <p-dropdown 
-        [options]="tiendas" 
-        [(ngModel)]="tiendaSeleccionada"
-        (ngModelChange)="onTiendaSelected()"
-        optionLabel="sfid" 
-        [showClear]="true" 
-        placeholder="Selecciona tu tienda" 
-        class="dropdown">
-    </p-dropdown>
-    <div class="gestionDeAuditorias" *ngIf="tiendaSeleccionada">
-        <p-button label="Nueva auditoria" [rounded]="true" (click)="nuevaAuditoria()" [style]="{'width': '100%', 'height': '100px', backgroundColor: 'gray'}"  class="botonNuevaAuditoria"></p-button>
-        <div *ngFor="let auditoria of auditorias;">
-            <app-item-lista-auditoria 
-                [auditoria]="auditoria"
-                (click) = goToAuditoria(auditoria.id_auditoria)
-            ></app-item-lista-auditoria>
-        </div>
-    </div>    
+
+    <p-toolbar class ="toolClass">
+        <p-dropdown 
+            [options]="tiendas" 
+            [(ngModel)]="tiendaSeleccionada"
+            (ngModelChange)="onTiendaSelected()"
+            optionLabel="sfid" 
+            [showClear]="true" 
+            placeholder="Selecciona tu tienda"
+            class="dropdown">
+        </p-dropdown>
+        <div class="p-toolbar-group-start">
+            <p-button severity="danger" class="marginRight" label="Nuevo" icon="pi pi-plus" (onClick)="nuevaAuditoria()"></p-button>
+        </div>        
+    </p-toolbar>
+   
+    <p-table 
+        #miTabla
+        *ngIf="this.auditorias != []"
+        class="table"
+        [value]="this.auditorias"
+        [paginator]="true"
+        [rows]="10"
+        [scrollable]="true"
+        [scrollHeight]="'calc(100vh - 204px)'"  
+        [showCurrentPageReport]="true"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        currentPageReportTemplate="Enseñando {first} de {last} de en total {totalRecords} muebles"
+        [rowsPerPageOptions]="[10, 25, 50]"
+    >
+        <ng-template pTemplate="caption" >
+             <h2> Auditorias</h2>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>             
+                <th>Id.</th>
+                <th>Fecha</th>
+                <th>Estado</th> 
+                <th>Progreso</th>
+                <th>Opciones</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-auditoria>            
+            <tr>              
+                <td>{{ auditoria.id_auditoria }}</td>
+                <td>{{ auditoria.fecha }}</td>
+                <td>{{ auditoria.estado }}</td>
+                <td>-/{{ auditoria.num_expositores }}</td>
+                <td class="opciones">         
+                    <p-button class ="smallMarginRight" severity="danger" [raised]="true" [text]="true" [rounded]="true" label="Editar" icon="pi pi-pencil"  (click)="goToAuditoria(auditoria.id_auditoria)"></p-button>                    
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="3">No hay auditorías, selecciona una tienda</td>
+            </tr>
+        </ng-template>
+        
+    </p-table>
+
+
+
 </div>

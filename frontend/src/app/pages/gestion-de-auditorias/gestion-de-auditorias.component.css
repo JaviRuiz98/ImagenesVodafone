@@ -1,23 +1,54 @@
- .paginaCompleta {
+
+.paginaCompleta {
+  width: 100%; 
   display: flex;
-  align-items: center;
+
   flex-direction: column;
-  height: 100%;
-  width: 100%;
-}
-  
-.card {
-  width: 60%; 
-  height: 200px; 
-  margin-top: 25px;
-}
-  
-.botonNuevaAuditoria {
-  width: 60%; 
-  height: 200px; 
-  margin-top: 25px; 
 }
 
-.dropdown {
-  margin-bottom: 20px;
+.table{
+  margin-left: 10%;
+  margin-right: 10%;
+
+}
+.toolClass{
+ margin-right:10%;
+ margin-left: 10%;
+ margin-bottom: 2%;
+}
+:host::ng-deep {
+  .p-button.p-highlight.optionColorVodafone {
+     background: red;
+     border: rgb(87, 11, 11);
+  }
+}
+
+.marginRight{
+  margin-right: 10%;
+}
+.smallMarginRight{
+  margin-right: 2%;
+}
+
+.expositores-container {
+  display: flex;
+  flex-direction: row;
+}
+
+/* h2{
+  text-align: center;
+} */
+
+.expositor-item {
+  margin-right: 2%; 
+}
+/* 
+.opciones {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+
+.marginTop{
+  margin-top: 10%;
 }

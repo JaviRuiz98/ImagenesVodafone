@@ -5,6 +5,9 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { ItemListaAuditoriaComponent } from 'src/app/componentes/item-lista-auditoria/item-lista-auditoria.component';
+import { ToastModule } from 'primeng/toast';
+import { ToolbarModule } from 'primeng/toolbar';
+import { TableModule } from 'primeng/table';
 
 
 @NgModule({
@@ -16,7 +19,10 @@ import { ItemListaAuditoriaComponent } from 'src/app/componentes/item-lista-audi
     DropdownModule,
     FormsModule,
     ButtonModule,
-    ItemListaAuditoriaComponent
+    ItemListaAuditoriaComponent,
+    ToastModule,
+    ToolbarModule,
+    TableModule
   ]
 })
 export class GestionDeAuditoriasModule { }
