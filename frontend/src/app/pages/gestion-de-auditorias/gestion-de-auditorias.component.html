@@ -48,7 +48,7 @@
                 <td>{{ auditoria.id_auditoria }}</td>
                 <td>{{ formatDate(auditoria.fecha) }}</td>
                 <td>{{ auditoria.estado }}</td>
-                <td>-/{{ auditoria.num_expositores }}</td>
+                <td>{{ auditoria.num_expositores_procesados }}/{{ auditoria.num_expositores }}</td>
                 <td class="opciones">         
                     <p-button class ="smallMarginRight" severity="danger" [raised]="true" [text]="true" [rounded]="true" label="Ir auditoría" icon="pi pi-pencil"  (click)="goToAuditoria(auditoria.id_auditoria)"></p-button>                    
                 </td>
@@ -57,7 +57,7 @@
 
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="3">No hay auditorías, selecciona una tienda</td>
+                <td colspan="3">No hay auditorías en esta tienda</td>
             </tr>
         </ng-template>
         

@@ -92,5 +92,23 @@ export const auditoriaService = {
         } finally {
             db.$disconnect();
         }
+    },
+    
+    getNumExpositoresProcesadosByAuditoria(id_auditoria: number) {
+        try {
+            return db.pertenencia_expositor_auditoria.count({
+                where: {
+                    id_auditoria: id_auditoria,
+                    procesados_imagenes: {
+                        some: {  }
+                    }
+                }
+            })
+        } catch (error) {
+            console.error('No se pudo obtener el numero de procesados por expositor:', error);
+            throw error;
+        } finally {
+            db.$disconnect();
+        }
     }
 }
