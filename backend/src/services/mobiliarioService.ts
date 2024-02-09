@@ -1,4 +1,4 @@
-import {      muebles, pertenencia_mueble_tienda } from "@prisma/client";
+import {       muebles, pertenencia_mueble_tienda } from "@prisma/client";
 import db  from "../config/database";
 
 import {  MuebleFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
@@ -206,46 +206,62 @@ export const mobiliarioService = {
     async getMueblesAndExpositoresWithProcesadosByIdAuditoria( id_auditoria: number): Promise<any> {
         try{
 
-        const muebles = await db.muebles.findMany({
-           where: {
-               pertenencia_expositor_auditoria: {
-                   some: {
-                       id_auditoria: id_auditoria
-                   }
-               }
-           }, 
-           include: {
-               pertenencia_expositor_auditoria:{
-                   include: {
-                       expositores: {
-                           include: {
-                               imagenes: true,
-                           }
-                       }, 
-                       procesados_imagenes: true
-                   }
-               }
-           }
-         
-          
-        });
-
-      
-        // let mueblesConExpositoresProcesados = [];
-        
-        // for (let i = 0; i < muebles.length; i++) {
-        //     do {
+            const muebles = await db.muebles.findMany({
+                where: {
+                  pertenencia_expositor_auditoria: {
+                    some: {
+                      id_auditoria: id_auditoria
+                    }
+                  }
+                },
+                include: {
+                  pertenencia_expositor_auditoria: {
+                    include: {
+                      expositores: {
+                        include: {
+                          imagenes: true,
+                          // No incluyes directamente procesados_imagenes aquí
+                        }
+                      },
+                      procesados_imagenes: true // Suponiendo que esto es posible según tu esquema
+                    }
+                  }
+                }
+              });
+              
+              const resultado = muebles.map(mueble => {
+                const expositores: any[] = mueble.pertenencia_expositor_auditoria.reduce((acc: any[], auditoria) => {
+                    let expositor = acc.find(ex => ex.id_expositor === auditoria.expositores.id_expositor);
+                    if (!expositor) {
+                      expositor = {
+                        id_expositor: auditoria.expositores.id_expositor,
+                        id_imagen: auditoria.expositores.id_imagen,
+                        nombre: auditoria.expositores.nombre,
+                        imagenes: auditoria.expositores.imagenes,
+                        procesados_imagenes: [],
+                      };
+                      acc.push(expositor);
+                    }
                 
-        //     } while (muebles[i].id_mueble.length > 0);
-        // }
-
-        const result = mapearResultadoParaFrontConProcesado(muebles);
-        
-
-
-        return result;
-    
-       
+              
+                  // Agregar procesados_imagenes a este expositor
+                  expositor.procesados_imagenes.push(...auditoria.procesados_imagenes);
+              
+                  return acc;
+                }, []);
+              
+                return {
+                  id_mueble: mueble.id_mueble,
+                  nombre_mueble: mueble.nombre_mueble,
+                  numero_dispositivos: mueble.numero_dispositivos,
+                  categoria: mueble.categoria,
+                  numero_expositores: mueble.numero_expositores,
+                  expositores
+                };
+              });
+              
+              return resultado;
+              
           
 
         }  catch (error) {
@@ -259,23 +275,23 @@ export const mobiliarioService = {
                                           
 }
 
-function mapearResultadoParaFrontConProcesado(mueble: any) {
-    let expositores = [];
-    if (mueble.pertenencia_expositor_auditoria) {
-        expositores = mueble.pertenencia_expositor_auditoria.flatMap((pem: any) => pem.expositores);
+// function mapearResultadoParaFrontConProcesado(mueble: any) {
+//     let expositores = [];
+//     if (mueble.pertenencia_expositor_auditoria) {
+//         expositores = mueble.pertenencia_expositor_auditoria.flatMap((pem: any) => pem.expositores);
         
-        // for (let i = 0; i < expositores.length; i++) {
-        //     expositores[i].procesados_imagenes = 
-        // }
-    } 
-    return {
-        id_mueble: mueble.id_mueble,
-        nombre_mueble: mueble.nombre_mueble,
-        expositores: expositores, 
-        categoria: mueble.categoria,
-        numero_dispositivos: mueble.numero_dispositivos,
-    };
-}
+//         // for (let i = 0; i < expositores.length; i++) {
+//         //     expositores[i].procesados_imagenes = 
+//         // }
+//     } 
+//     return {
+//         id_mueble: mueble.id_mueble,
+//         nombre_mueble: mueble.nombre_mueble,
+//         expositores: expositores, 
+//         categoria: mueble.categoria,
+//         numero_dispositivos: mueble.numero_dispositivos,
+//     };
+// }
 
 
 
