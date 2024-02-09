@@ -47,16 +47,25 @@
                 <div>
                     <p-orderList [value]="listaMueblesNuevaTienda" [listStyle]="{ height: '20rem' }" header="Muebles Seleccionados">
                         <ng-template let-mueble pTemplate="item">
-                            <div class="flex flex-wrap p-2 align-items-center gap-3">
-                                <img src="{{imagenesRef}}/{{mueble.expositores[0].imagen.url}}" alt="{{mueble.expositores[0].imagen.url}}"  class="w-4rem shadow-2 flex-shrink-0 border-round" />
-                                <div class="flex-1 flex flex-column gap-2">
-                                    <span class="font-bold">{{ mueble.expositores[0] }}</span>
-                                    <!--
-                                    <div class="flex align-items-center gap-2">
-                                        <i class="pi pi-tag text-sm"></i>
-                                        <span>{{ product.category }}</span>
+                            <div class="contenedorMuebleArrastras">
+                                <div *ngIf="mueble.expositores.length == 1">
+                                    <div class="anchoAltoFotoReferencia">
+                                        <img src="{{imagenesRef}}/{{mueble.expositores[0].imagen.url}}" alt="{{mueble.expositores[0].imagen.url}}" class="ajusteImagenesAnchoAlto">
                                     </div>
-                                -->
+                                </div>
+                                <div *ngIf="mueble.expositores.length == 2 && mueble.expositores[0] != undefined && mueble.expositores[1] != undefined" class="grid anchoAltoFotoReferencia">
+                                    <div style="margin-right: 5px;">
+                                        <img src="{{imagenesRef}}/{{mueble.expositores[0].imagen.url}}" alt="{{mueble.expositores[0].imagen.url}}" class="ajusteImagenesAnchoAlto">
+                                    </div>
+                                    <div> 
+                                        <img src="{{imagenesRef}}/{{mueble.expositores[1].imagen.url}}" alt="{{mueble.expositores[1].imagen.url}}" class="ajusteImagenesAnchoAlto">
+                                    </div>
+                                </div> 
+                                <div class="anchoAltoDescripcionFotoReferencia">
+                                    <span class="font-bold">{{ mueble.nombre_mueble }}</span>
+                                    <div class="flex align-items-center gap-2">
+                                        <span><strong>Categoria:</strong> {{ mueble.categoria }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </ng-template>
