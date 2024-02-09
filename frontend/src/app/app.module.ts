@@ -15,6 +15,7 @@ import { AuditoriaComponent } from './pages/auditoria/auditoria.component';
 import { MuebleModule } from './pages/mueble/mueble.module';
 import { GestionDeAuditoriasModule } from './pages/gestion-de-auditorias/gestion-de-auditorias.module';
 import { AuditoriaModule } from './pages/auditoria/auditoria.module';
+import { DatePipe } from '@angular/common';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { AuditoriaModule } from './pages/auditoria/auditoria.module';
   ],
   providers: [   
     PrimeIcons,
+    DatePipe
   ],
   
   bootstrap: [AppComponent]

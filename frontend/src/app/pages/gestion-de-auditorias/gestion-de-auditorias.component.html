@@ -46,11 +46,11 @@
         <ng-template pTemplate="body" let-auditoria>            
             <tr>              
                 <td>{{ auditoria.id_auditoria }}</td>
-                <td>{{ auditoria.fecha }}</td>
+                <td>{{ formatDate(auditoria.fecha) }}</td>
                 <td>{{ auditoria.estado }}</td>
                 <td>-/{{ auditoria.num_expositores }}</td>
                 <td class="opciones">         
-                    <p-button class ="smallMarginRight" severity="danger" [raised]="true" [text]="true" [rounded]="true" label="Editar" icon="pi pi-pencil"  (click)="goToAuditoria(auditoria.id_auditoria)"></p-button>                    
+                    <p-button class ="smallMarginRight" severity="danger" [raised]="true" [text]="true" [rounded]="true" label="Ir auditoría" icon="pi pi-pencil"  (click)="goToAuditoria(auditoria.id_auditoria)"></p-button>                    
                 </td>
             </tr>
         </ng-template>

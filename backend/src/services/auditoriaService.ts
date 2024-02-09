@@ -10,6 +10,8 @@ export const auditoriaService = {
             return db.auditorias.findMany({
                 where: {
                     id_tienda: id_tienda
+                }, orderBy: {
+                    id_auditoria: 'desc'
                 }
             })
 
