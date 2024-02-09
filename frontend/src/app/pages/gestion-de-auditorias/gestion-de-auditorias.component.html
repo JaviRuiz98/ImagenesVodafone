@@ -11,7 +11,10 @@
     <div class="gestionDeAuditorias" *ngIf="tiendaSeleccionada">
         <p-button label="Nueva auditoria" [rounded]="true" (click)="nuevaAuditoria()" [style]="{'width': '100%', 'height': '100px', backgroundColor: 'gray'}"  class="botonNuevaAuditoria"></p-button>
         <div *ngFor="let auditoria of auditorias;">
-            <app-item-lista-auditoria [auditoria]="auditoria"></app-item-lista-auditoria>
+            <app-item-lista-auditoria 
+                [auditoria]="auditoria"
+                (click) = goToAuditoria(auditoria.id_auditoria)
+            ></app-item-lista-auditoria>
         </div>
     </div>    
 </div>

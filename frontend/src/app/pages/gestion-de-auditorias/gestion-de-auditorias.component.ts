@@ -50,4 +50,9 @@ export class GestionDeAuditoriasComponent implements OnInit {
       console.log("auditorias", this.auditorias);
     })
   }
+
+  goToAuditoria(id_auditoria: number){
+    this.auditoriaService.id_auditoria_seleccionada = id_auditoria;
+    this.router.navigate(['/auditoria']);
+  }
 }

@@ -29,6 +29,16 @@ export async function getAuditorias(req: Request, res: Response) {
     }
 }
 
+export async function getAuditoriaById(req: Request, res: Response) {
+    try {
+        const id_auditoria = parseInt(req.params.id_auditoria as string);
+        const auditoria: auditorias | null = await auditoriaService.getAuditoriaById(id_auditoria);
+        res.status(200).json(auditoria);
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
 export async function createAuditoria(req: Request, res: Response) {
     try {
         const id_tienda = parseInt(req.body.id_tienda as string);

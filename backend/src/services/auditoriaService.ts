@@ -21,6 +21,21 @@ export const auditoriaService = {
         }
     },
 
+    async getAuditoriaById(id_auditoria: number): Promise<auditorias | null> {
+        try{
+            return db.auditorias.findUnique({
+                where: {
+                    id_auditoria: id_auditoria
+                }
+            })
+        } catch (error) {
+            console.error('No se pudo obtener el auditoria:', error);
+            throw error;
+        } finally  {
+            await db.$disconnect();
+        }
+    },
+
     async createPertenenciaExpositorAuditoria(id_auditoria: number, mueble: MuebleFrontInterfaz, expositor: expositores) {
         await db.pertenencia_expositor_auditoria.create({
             data: {

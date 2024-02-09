@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { auditoria } from '../../interfaces/auditoria';
 import { procesados_imagenes } from '../../interfaces/procesados_imagenes';
 import { BaseRouteReuseStrategy } from '@angular/router';
+import { muebles } from 'src/app/interfaces/muebles';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,8 @@ import { BaseRouteReuseStrategy } from '@angular/router';
 export class AuditoriaService {
 
   API_URI = 'http://localhost:3000';
+
+  id_auditoria_seleccionada: number = 0;
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -31,7 +34,11 @@ export class AuditoriaService {
   }
 
   getAuditorias(id_tienda: number): Observable<auditoria[]> {
-    const params =  { id_tienda: id_tienda };
     return this.http.get<auditoria[]>(`${this.API_URI}/auditorias/${id_tienda}`);
+  }
+
+  getMueblesAndExpositoresWithProcesadosByIdAuditoria(id_auditoria: number): Observable<muebles[]> {
+
+    return this.http.get<muebles[]>(`${this.API_URI}/muebles_auditoria/${id_auditoria}`);
   }
 }
