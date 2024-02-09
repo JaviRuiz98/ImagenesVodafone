@@ -19,7 +19,9 @@ export async function newTienda(req: Request) {
     try{     
         const tienda: tiendas = await tiendaService.newTienda(req.body.sfid);
         const listaIdMuebles = req.body.listaNuevosMuebles.map((mueble: muebles) => mueble.id_mueble);
-        console.log(tienda, listaIdMuebles);
+        const muebles = await tiendaService.asignarPertenenciaMuebleTienda(tienda.id_tienda, listaIdMuebles);
+
+        console.log(tienda, listaIdMuebles, muebles);
         
     }catch (error) {
         console.error('Error al crear tienda:', error);

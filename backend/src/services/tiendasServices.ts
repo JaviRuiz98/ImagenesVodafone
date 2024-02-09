@@ -1,5 +1,6 @@
 import {   tiendas } from "@prisma/client";
 import db  from "../config/database";
+//import { InternalServerError } from "openai";
 
 export const tiendaService = {
 
@@ -12,7 +13,6 @@ export const tiendaService = {
                     orderBy: {
                         id_tienda: 'asc'
                     },
-
                     where : whereClause,
                     include:{
                         pertenencia_mueble_tienda:{
@@ -30,17 +30,12 @@ export const tiendaService = {
                 }
             );
             return tiendas as tiendas[];
-        
         }  catch(error){
             console.log(error);
             throw error;
-
         }finally{
             db.$disconnect();
         }
-        
-        
-       
     },
 
 
@@ -87,14 +82,26 @@ export const tiendaService = {
     }
   },
 
-  /*async asignarMueblesTienda(muebles[]: muebles[]): Promise<muebles> {
-    try{
-        return await db.tiendas.create({data: tienda});
-    } catch (error) {
-        console.log(error);
-        throw error;
-    } finally{
-        db.$disconnect();
+  async asignarPertenenciaMuebleTienda(id_tienda: number, listaIdMuebles: number[]): Promise<any[]> {
+        let resultados = [];
+        try {
+            for (let i = 0; i < listaIdMuebles.length; i++) {
+                const insertarMuebles = await db.pertenencia_mueble_tienda.create({
+                    data: {
+                        id_mueble: listaIdMuebles[i],
+                        id_tienda: id_tienda,
+                    },
+                });
+                resultados.push(insertarMuebles);
+            }
+            return resultados;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        } finally {
+            await db.$disconnect();
+        }
     }
-  }*/
+
+
 }
