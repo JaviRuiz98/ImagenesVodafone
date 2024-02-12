@@ -45,11 +45,11 @@
         </ng-template>
         <ng-template pTemplate="body" let-auditoria>            
             <tr>              
-                <td>{{ auditoria.id_auditoria }}</td>
+                <td>{{ auditoria.id_auditoria }}</td>                
                 <td>{{ formatDate(auditoria.fecha) }}</td>
                 <td>
-                    <p-tag>{{ auditoria.estado }}</p-tag>
-                </td>                
+                    <p-tag [severity]="getSeverityEstadoAuditoria(auditoria.estado)">{{ auditoria.estado }}</p-tag>                    
+                </td>               
                 <td>{{ auditoria.num_expositores_procesados }}/{{ auditoria.num_expositores }}</td>
                 <td class="opciones">         
                     <p-button class ="smallMarginRight" severity="danger" [raised]="true" [text]="true" [rounded]="true" label="Ir auditoría" icon="pi pi-pencil"  (click)="goToAuditoria(auditoria.id_auditoria)"></p-button>                    

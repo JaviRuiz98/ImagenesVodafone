@@ -17,14 +17,15 @@ import { procesados_imagenes } from '@prisma/client';
 const IA_utilizada = 'openai';
 const max_tokens = 500;
 const temperature = 0;
-const id_prompt_carteles: number = 4;
-const id_prompt_dispositivos: number = 5;
+const id_prompt_carteles: number = 4; //prompt usado actualmente para carteles
+const id_prompt_dispositivos: number = 5; //prompt usado actualmente para dispositivos
 
 export async function procesarImagenes(req: Request, res: Response) {
   try {
     const file = req.file //as { [fieldname: string]: Express.Multer.File[] };
-    const id_expositor: number = parseInt(req.body.id_expositor); //ojo refactor
+    const id_expositor_auditoria: number = parseInt(req.body.id_expositor_auditoria); //ojo refactor
     const id_mueble: number = parseInt(req.body.id_mueble);
+    const id_auditoria_selected: number = parseInt(req.body.id_auditoria_selected);
     
     //obtengo la imagen a procesar
     const imagenProcesada = file//(files['imagenesprocesado'] as Express.Multer.File[]).map(file => file.path)[0];
@@ -34,6 +35,9 @@ export async function procesarImagenes(req: Request, res: Response) {
        res.status(500).json({ error: 'La imagen procesada no existe' });
        return;
     }
+
+    // obtener los datos del expositor a través del expositor-auditoria
+
     
     //creo la imagen nueva y compruebo que existe el expositor (falta tipar)
     const [nuevaImagen, existingExpositor]  = await Promise.all([
@@ -59,8 +63,8 @@ export async function procesarImagenes(req: Request, res: Response) {
     }
    
     const dispositivosCount = mueble?.numero_dispositivos || 0;
-    const categoria = dispositivosCount > 0 ? 'dispositivos' : 'carteles';
-    const id_prompt_usado: number = await getIdPromptDeNumeroDispositivos(dispositivosCount); //refactor
+    const categoria = mueble?.categoria || '';
+    const id_prompt_usado: number = categoria == 'carteles'?  id_prompt_carteles : id_prompt_dispositivos;
 
     const promptObject: prompts | null = await promptService.getById(id_prompt_usado);
     if (!promptObject) {
@@ -87,8 +91,9 @@ export async function procesarImagenes(req: Request, res: Response) {
     const similarityObject = JSON.parse(cleanedResponse);
     //Guardar en la base de datos (falta por implementar)
     const id_procesado_imagen = await procesadoService.create( //devuelve el id del procesado de imagen para usarlo en el almacenamiento de la respuesta
-      nuevaImagen.id_imagen, 
-      existingExpositor.id_expositor, 
+      id_expositor_auditoria, 
+      nuevaImagen.id_imagen,       
+      id_auditoria_selected,
       categoria,
       similarityObject.comentarios, 
       parseBool(similarityObject.valido), 
@@ -96,10 +101,12 @@ export async function procesarImagenes(req: Request, res: Response) {
       promptObject.id_prompt,
       similarityObject.probab_estar_contenido,
       parseInt(similarityObject.dispositivos_contados),
-      dispositivosCount);    
+      dispositivosCount
+      );    
     
     const procesado_object = await procesadoService.getById(id_procesado_imagen);
     return res.status(200).json(procesado_object);
+    
   } catch (error) {
     console.error('Error al procesar imágenes:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
@@ -118,15 +125,6 @@ export async function borrarprocesado(req: Request, res: Response){
 
     res.status(500).json({ error: error });
     throw error;
-  }
-}
-
-
-function getIdPromptDeNumeroDispositivos(dispositivosCount: number): number {
-  if (dispositivosCount === 0) {
-    return id_prompt_carteles;
-  } else {
-    return id_prompt_dispositivos;
   }
 }
 

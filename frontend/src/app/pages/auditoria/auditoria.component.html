@@ -31,7 +31,7 @@
               
               </div> 
             </div>
-            <!-- <div class="panelDerecha">
+            <div class="panelDerecha">
               <div *ngIf="mueble.expositores.length == 1 && mueble.expositores[0] != undefined" class="anchoAltoSubirFoto">              
                 <app-paginador-procesamiento-subida  
                   class="anchoAltoPaginador"
@@ -43,7 +43,7 @@
                 </app-paginador-procesamiento-subida>            
               </div>
           
-                <div *ngIf="mueble.expositores.length == 2 && mueble.expositores[0] != undefined && mueble.expositores[1] != undefined" class="gridDoble" >
+                <!-- <div *ngIf="mueble.expositores.length == 2 && mueble.expositores[0] != undefined && mueble.expositores[1] != undefined" class="gridDoble" >
                   <app-paginador-procesamiento-subida 
                     [id_expositor_selected]="mueble.expositores[0].id_expositor"
                     [procesados]="mueble.expositores[0].procesados_imagenes" 
@@ -58,9 +58,9 @@
                     [valueSelected]="modos_visualizacion[mueble.expositores[1].id_expositor] === 'historial'? 'historial':'new'"                
                     (archivoSeleccionadoChange)="recibirFile($event, mueble.expositores[1].id_expositor, mueble.id_mueble)">
                   </app-paginador-procesamiento-subida>                    
-                </div>
+                </div> -->
      
-            </div> -->
+            </div>
           </div>
       </p-panel>
     </div>

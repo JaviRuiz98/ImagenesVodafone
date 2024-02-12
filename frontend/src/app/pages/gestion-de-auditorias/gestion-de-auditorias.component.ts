@@ -4,6 +4,7 @@ import { auditoria } from 'src/app/interfaces/auditoria';
 import { AuditoriaService } from 'src/app/servicios/auditoria/auditoria.service';
 import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { tienda } from 'src/app/interfaces/tienda';
+import { PublicMethodsService } from 'src/app/shared/public-methods.service';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -24,7 +25,9 @@ export class GestionDeAuditoriasComponent implements OnInit {
     private auditoriaService: AuditoriaService , 
     private router: Router,
     private tiendasService: TiendasService,
-    private datePipe: DatePipe) { }
+    private publicMethodsService: PublicMethodsService,
+    private datePipe: DatePipe
+  ) { }
  
   ngOnInit(): void {
     this.initTiendas();
@@ -57,6 +60,10 @@ export class GestionDeAuditoriasComponent implements OnInit {
   goToAuditoria(id_auditoria: number){
     this.auditoriaService.id_auditoria_seleccionada = id_auditoria;
     this.router.navigate(['/auditoria']);
+  }
+
+  getSeverityEstadoAuditoria(estado: string): string {
+    return this.publicMethodsService.getSeverityEstadoAuditoria(estado);
   }
 
   formatDate(date: Date): string | null {

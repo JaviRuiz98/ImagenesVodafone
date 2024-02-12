@@ -37,7 +37,7 @@ export class PublicMethodsService {
         }
     }
 
-    getSeverityAuditoria(estado: string): string {
+    getSeverityEstadoAuditoria(estado: string): string {
         switch (estado) {
             case 'en progreso':
                 return 'warning' as string;
