@@ -93,6 +93,8 @@ export class ExpositoresComponent implements OnInit {
     
   }
 
+  
+
   findIndexById(id: string): number {
     let index = -1;
     for (let i = 0; i < this.expositores.length; i++) {

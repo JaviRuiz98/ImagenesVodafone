@@ -11,7 +11,7 @@ import { ExpositoresComponent } from './pages/expositores/expositores.component'
 const routes: Routes = [
 
   { 
-    path: "", component: ExpositoresComponent ,
+    path: "expositor", component: ExpositoresComponent ,
     data: { stateBarra: 'expositores' },
   },
   { 
@@ -30,7 +30,6 @@ const routes: Routes = [
     path: "auditoria", component: AuditoriaComponent, 
     data: { stateBarra: 'auditorias' },
   },
-
    { path: 'muebles', component: MuebleComponent , 
     data: { stateBarra: 'empty' },
    },

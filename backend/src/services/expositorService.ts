@@ -1,7 +1,7 @@
 import { expositores,  muebles } from "@prisma/client";
 import db  from "../config/database";
 import { getDestination } from "../config/multer";
-import { imagenes } from "@prisma/client";
+import { imagenes, pertenencia_expositor_auditoria } from "@prisma/client";
 
 export const expositoresService = {
 
@@ -120,6 +120,24 @@ export const expositoresService = {
           console.log(error)
           throw error;
         }
+      },
+
+      //ide auditoria -> objeto pertenencia_expositor_auditoria
+
+      async peaByIdAuditoria(id_expositor_auditoria: number): Promise<pertenencia_expositor_auditoria | null>{
+        try{
+          return await db.pertenencia_expositor_auditoria.findUnique({
+          where: {
+            id_expositor_auditoria: id_expositor_auditoria
+          }
+          });
+
+        }catch(error){
+          console.log(error)
+          throw error;
+        }
+
+
       }
 
 }

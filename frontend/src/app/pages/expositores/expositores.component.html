@@ -4,6 +4,10 @@
         <ng-template pTemplate="left">
             <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="AbrirnuevoExpositor()" ></button>
             <button pButton pRipple label="Desactivar" icon="pi pi-eye" class="p-button-danger" [style]="{'margin-left': '20px'}" (click)="activarDesactivarExpositores()" [disabled]="!expositoresSeleccionados|| !expositoresSeleccionados.length"></button>
+            <span class="p-input-icon-left" style="margin-left: 20px">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt.filterGlobal($event.target, 'contains')"  />
+            </span>
         </ng-template>
     </p-toolbar>
     <p-table
@@ -23,10 +27,7 @@
     >
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
-                <span class="p-input-icon-left">
-                    <i class="pi pi-search"></i>
-                    <input pInputText type="text" (input)="dt.filterGlobal($event.target, 'contains')"  />
-                </span>
+
             </div>
         </ng-template>
         <ng-template pTemplate="header">
@@ -47,12 +48,21 @@
                 </td>
                 <td>{{ expositor.id_expositor }}</td>
                 <td>
-                    <p-image [src]="url_imagenes_referencias + expositor.imagenes.url" [alt]="expositor.imagenes.url" [width]="'100px'" [height]="'10%'" class="shadow-4" [preview]="true"></p-image>
+                    <p-image [src]="url_imagenes_referencias + expositor.imagenes.url" [alt]="expositor.imagenes.url" [width]="'70px'" [height]="'100px'" class="shadow-4" [preview]="true"></p-image>
                 </td>
                 <td>{{ expositor.nombre }}</td>
-                <td></td>
+                <td>
+                    <p-button *ngIf="expositor.activo == 0" icon="pi pi-eye-slash" [rounded]="true" [text]="true" severity="danger "></p-button>
+                    <p-button *ngIf="expositor.activo == 1" icon="pi pi-eye" [rounded]="true" [text]="true" severity="danger "></p-button>
+                </td>
             </tr>
         </ng-template> 
+        <p-overlayPanel #descatalogar>
+            <img src="https://primefaces.org/cdn/primeng/images/demo/product/bamboo-watch.jpg" alt="product" />
+        </p-overlayPanel>
+        <p-overlayPanel #op>
+            <img src="https://primefaces.org/cdn/primeng/images/demo/product/bamboo-watch.jpg" alt="product" />
+        </p-overlayPanel>
     </p-table>
     <app-nuevo-expositor *ngIf="mostrarDialogoNuevoExpositor == true" (mostrarDialogoNuevoExpositor)="cerrarDialog($event)" ></app-nuevo-expositor>
 </p-panel>
