@@ -2,3 +2,13 @@
     width: 100px; /* ajusta el ancho según sea necesario */
   }
   
+  .p-float-label label {
+    width: 100px; /* width of the input */
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.p-float-label input:focus + label {
+    width: auto;
+}
