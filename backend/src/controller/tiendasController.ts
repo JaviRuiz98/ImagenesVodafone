@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { tiendaService } from '../services/tiendasServices';
 import { muebles, tiendas } from '@prisma/client';
-//import { muebles } from '@prisma/client';
 
 export async function getAllTiendas(req: Request, res: Response) {
     try{
