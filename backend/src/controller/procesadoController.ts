@@ -6,7 +6,7 @@ import { expositoresService } from '../services/expositorService';
 import { procesadoService } from '../services/procesadoService';
 import { parseBool } from '../utils/funcionesCompartidasController';
 import { imagenService } from '../services/imagenService';
-import { prompts } from '@prisma/client';
+import { pertenencia_expositor_auditoria, prompts } from '@prisma/client';
 import { promptService } from '../services/promptService';
 import { mobiliarioService } from '../services/mobiliarioService';
 import { procesados_imagenes } from '@prisma/client';
@@ -37,12 +37,15 @@ export async function procesarImagenes(req: Request, res: Response) {
     }
 
     // obtener los datos del expositor a través del expositor-auditoria
-
+    const pea: pertenencia_expositor_auditoria | null = await expositoresService.peaByIdAuditoria(id_expositor_auditoria);
+    if (!pea) {
+      throw new Error('No se encontró el elemento.');
+    }
     
     //creo la imagen nueva y compruebo que existe el expositor (falta tipar)
     const [nuevaImagen, existingExpositor]  = await Promise.all([
       imagenService.create(imagenProcesada.filename, imagenProcesada.originalname),
-      expositoresService.getById(id_expositor),
+      expositoresService.getById(pea?.id_expositor),
     ]);    
 
     if (!existingExpositor) {
