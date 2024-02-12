@@ -32,7 +32,7 @@ export class TiendasComponent implements OnInit{
   listaTodosMuebles: muebles[] = [];
   listaMueblesNuevaTienda: muebles[] = [];
   editarTiendaCreada: boolean = false;
-
+  crearEditarTienda: string = 'Crear Tienda';
 
   constructor(private TiendasService: TiendasService, private MueblesService: MueblesService, private messageService: MessageService, private ExpositoresService: ExpositoresService){}
   ngOnInit(): void {
@@ -69,6 +69,7 @@ export class TiendasComponent implements OnInit{
     this.activeIndex = 0;
     this.listaMueblesNuevaTienda = [];
     this.editarTiendaCreada = false;
+    this.crearEditarTienda = 'Crear Tienda';
   }
   botonSiguiente(){
     if(this.sfidInput === '' || this.comunidadInput === ''){
@@ -91,6 +92,7 @@ export class TiendasComponent implements OnInit{
     }
   }
   editarTienda(tienda: tienda){
+    this.crearEditarTienda = 'Editar tienda';
     this.MueblesService.getMueblesTiendaByIdTienda(tienda.id_tienda).subscribe((response: muebles[]) => {
       this.listaMueblesNuevaTienda = response;
     })
