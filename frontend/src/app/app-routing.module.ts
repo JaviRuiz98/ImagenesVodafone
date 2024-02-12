@@ -7,11 +7,12 @@ import { GestionDeAuditoriasComponent } from './pages/gestion-de-auditorias/gest
 import { AuditoriaComponent } from './pages/auditoria/auditoria.component';
 import { MuebleComponent } from './pages/mueble/mueble.component';
 import { ExpositoresComponent } from './pages/expositores/expositores.component';
+import { TiendasComponent } from './pages/tiendas/tiendas.component';
 
 const routes: Routes = [
 
   { 
-    path: "", component: ExpositoresComponent ,
+    path: "expositor", component: ExpositoresComponent ,
     data: { stateBarra: 'expositores' },
   },
   { 
@@ -30,16 +31,18 @@ const routes: Routes = [
     path: "auditoria", component: AuditoriaComponent, 
     data: { stateBarra: 'auditorias' },
   },
-
    { path: 'muebles', component: MuebleComponent , 
     data: { stateBarra: 'empty' },
    },
 
-  // {path: "tiendas", },
+  {
+    path: "tiendas", component: TiendasComponent,
+    data: { stateBarra: 'tiendas' },
+  },
 
   // { path:"expositores",}
   {
-    path: '', redirectTo: '/home', pathMatch: 'full' 
+    path: '', redirectTo: '/tiendas', pathMatch: 'full' 
   }
 ];
 

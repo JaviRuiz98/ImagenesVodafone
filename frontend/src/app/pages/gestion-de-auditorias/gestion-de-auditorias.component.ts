@@ -4,6 +4,7 @@ import { auditoria } from 'src/app/interfaces/auditoria';
 import { AuditoriaService } from 'src/app/servicios/auditoria/auditoria.service';
 import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { tienda } from 'src/app/interfaces/tienda';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-gestion-de-auditorias',
@@ -22,7 +23,8 @@ export class GestionDeAuditoriasComponent implements OnInit {
   constructor(
     private auditoriaService: AuditoriaService , 
     private router: Router,
-    private tiendasService: TiendasService) { }
+    private tiendasService: TiendasService,
+    private datePipe: DatePipe) { }
  
   ngOnInit(): void {
     this.initTiendas();
@@ -47,6 +49,7 @@ export class GestionDeAuditoriasComponent implements OnInit {
   inicializaAuditorias() {
     this.auditoriaService.getAuditorias(this.tiendaSeleccionada!.id_tienda).subscribe((data)=>{
       this.auditorias = data;
+
       console.log("auditorias", this.auditorias);
     })
   }
@@ -55,4 +58,9 @@ export class GestionDeAuditoriasComponent implements OnInit {
     this.auditoriaService.id_auditoria_seleccionada = id_auditoria;
     this.router.navigate(['/auditoria']);
   }
+
+  formatDate(date: Date): string | null {
+    return this.datePipe.transform(date, 'dd/MM/yyyy HH:mm');
+  }
+  
 }

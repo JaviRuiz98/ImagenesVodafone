@@ -1,13 +1,11 @@
 import { Request, Response } from 'express';
-import { auditorias } from '@prisma/client';
 import { auditoriaService } from '../services/auditoriaService';
 import { auditoria_extended } from '../interfaces/auditoriaExtended';
-
+import { auditorias } from '@prisma/client';
 
 export async function getAuditorias(req: Request, res: Response) {
     try {
         const id_tienda = parseInt(req.params.id_tienda as string);
-
         const auditorias: auditorias[]|null = await auditoriaService.getAuditorias(id_tienda);
         let auditoriasExtended: auditoria_extended[] = [];
 
@@ -15,8 +13,11 @@ export async function getAuditorias(req: Request, res: Response) {
             //añado el num_expositores_auditoria
             for (let i = 0; i < auditorias.length; i++) {
                 const num_expositores = await auditoriaService.getNumExpositoresByAuditoria(auditorias[i].id_auditoria);
+                const num_expositores_procesados = await auditoriaService.getNumExpositoresProcesadosByAuditoria(auditorias[i].id_auditoria);
+
                 auditoriasExtended[i] = {
                         ...auditorias[i],
+                        num_expositores_procesados: num_expositores_procesados,
                         num_expositores: num_expositores                    
                 }
             }

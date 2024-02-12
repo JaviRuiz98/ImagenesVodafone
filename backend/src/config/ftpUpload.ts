@@ -50,7 +50,7 @@ export const  uploadFileToFtp = (foldername:string) => async (req: Request, res:
     
 }
 
-export const  uploadFileToFtpReferencia  = async (req: Request, res: Response) => {
+export const  uploadFileToFtpReferencia = (foldername:string) => async (req: Request, res: Response) => {
     
     const files =  req.files
     if (!files || !Array.isArray(files)) {
@@ -61,7 +61,7 @@ export const  uploadFileToFtpReferencia  = async (req: Request, res: Response) =
         try {
             for (let i = 0; i < files.length; i++) {
                 const localPath = files[i].path;
-                const remotePath =`./imagenes/imagenesReferencia/${files[i].originalname}`;
+                const remotePath =`./imagenes/${foldername}/${files[i].originalname}`;
                 await uploadFile(localPath, remotePath); 
             }
            

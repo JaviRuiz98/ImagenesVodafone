@@ -1,0 +1,111 @@
+<div class="paginaTiendaCompleta">
+    <div class="contenedorBotonNuevaTienda">
+        <div class="cabeceraAñadirTienda">
+            <p-button class="botonNuevaTienda" label="+ Añadir Tienda" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="iniciarFormularioNuevaTienda()" [style]="{'cursor': 'pointer'}"></p-button>
+        </div>
+        <p-dialog header="Nueva Tienda" [(visible)]="verFormularioNuevaTienda" [style]="{'width': '80vw'}">
+            <div class="formulario" *ngIf="activeIndex === 0">
+                <p><strong>Nuevo sfid:</strong></p>
+                <input type="text" pInputText [(ngModel)]="sfidInput" [disabled]="editarTiendaCreada"/>
+                <p><strong>Comunidad:</strong></p>
+                <input type="text" pInputText [(ngModel)]="comunidadInput" [disabled]="editarTiendaCreada"/>
+            </div>
+            <div class="formulario" *ngIf="activeIndex === 1">
+                <p-pickList [source]="listaTodosMuebles" [target]="listaMueblesNuevaTienda" sourceHeader="Muebles disponibles"  targetHeader="Muebles nueva tienda" [dragdrop]="true" [responsive]="true">
+                    <ng-template let-mueble pTemplate="item">
+                        <div class="contenedorMuebleArrastras">
+                            <div *ngIf="mueble.expositores.length == 1">
+                                <div class="anchoAltoFotoReferencia">
+                                    <img src="{{imagenesRef}}/{{mueble.expositores[0].imagenes.url}}" alt="{{mueble.expositores[0].imagenes.url}}" class="ajusteImagenesAnchoAlto">
+                                </div>
+                            </div>
+                            <div *ngIf="mueble.expositores.length == 2 && mueble.expositores[0] != undefined && mueble.expositores[1] != undefined" class="grid anchoAltoFotoReferencia">
+                                <div style="margin-right: 5px;">
+                                    <img src="{{imagenesRef}}/{{mueble.expositores[0].imagenes.url}}" alt="{{mueble.expositores[0].imagenes.url}}" class="ajusteImagenesAnchoAlto">
+                                </div>
+                                <div> 
+                                    <img src="{{imagenesRef}}/{{mueble.expositores[1].imagenes.url}}" alt="{{mueble.expositores[1].imagenes.url}}" class="ajusteImagenesAnchoAlto">
+                                </div>
+                            </div> 
+                            <div class="anchoAltoDescripcionFotoReferencia">
+                                <span class="font-bold">{{ mueble.nombre_mueble }}</span>
+                                <div class="flex align-items-center gap-2">
+                                    <span><strong>Categoria:</strong> {{ mueble.categoria }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-pickList>
+            </div>
+            <div class="resumentNuevaTienda" *ngIf="activeIndex === 2">
+                <div>
+                    <p><strong>Resumen de la tienda:</strong></p>
+                    <p><strong>sfid:</strong> {{sfidInput}}</p>
+                    <p><strong>Comunidad:</strong> {{comunidadInput}}</p>
+                </div>
+                <div>
+                    <p-orderList [value]="listaMueblesNuevaTienda" [listStyle]="{ height: '20rem' }" header="Muebles Seleccionados">
+                        <ng-template let-mueble pTemplate="item">
+                            <div class="contenedorMuebleArrastras">
+                                <div *ngIf="mueble.expositores.length == 1">
+                                    <div class="anchoAltoFotoReferencia">
+                                        <img src="{{imagenesRef}}/{{mueble.expositores[0].imagenes.url}}" alt="{{mueble.expositores[0].imagenes.url}}" class="ajusteImagenesAnchoAlto">
+                                    </div>
+                                </div>
+                                <div *ngIf="mueble.expositores.length == 2 && mueble.expositores[0] != undefined && mueble.expositores[1] != undefined" class="grid anchoAltoFotoReferencia">
+                                    <div style="margin-right: 5px;">
+                                        <img src="{{imagenesRef}}/{{mueble.expositores[0].imagenes.url}}" alt="{{mueble.expositores[0].imagenes.url}}" class="ajusteImagenesAnchoAlto">
+                                    </div>
+                                    <div> 
+                                        <img src="{{imagenesRef}}/{{mueble.expositores[1].imagenes.url}}" alt="{{mueble.expositores[1].imagenes.url}}" class="ajusteImagenesAnchoAlto">
+                                    </div>
+                                </div> 
+                                <div class="anchoAltoDescripcionFotoReferencia">
+                                    <span class="font-bold">{{ mueble.nombre_mueble }}</span>
+                                    <div class="flex align-items-center gap-2">
+                                        <span><strong>Categoria:</strong> {{ mueble.categoria }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-orderList>
+                </div>
+            </div>
+            <p-steps [model]="parametrosSteps" [readonly]="false" [activeIndex]="activeIndex" [style]="{'margin-top': '5%'}"></p-steps>
+            <div class="botonesAtrasSiguiente">
+                <p-button (click)="botonAtras()" class="botonSiguienteAtras" label="Atrás" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px'}" [disabled]="activeIndex === 0"></p-button>
+                <p-button (click)="botonSiguiente()" class="botonSiguienteAtras" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px', 'justify-content': 'center'}"
+                [label]="(activeIndex === 2) ? crearEditarTienda : 'Siguiente'"></p-button>
+            </div>
+        </p-dialog>
+    </div>
+    <div class="contenedorHistorialTiendas">
+        <p-table
+        [value]="tiendas"
+        [paginator]="true"
+        [rows]="5"
+        [showCurrentPageReport]="true"
+        [tableStyle]="{ 'min-width': '50rem' }"
+        [rowsPerPageOptions]="[5, 10, 20]"
+        [ngStyle]="{ 'width': '80%' }"
+    >
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width:25%">Sfid</th>
+                <th style="width:25%">id Tienda</th>
+                <th style="width:25%">Editar</th>
+                <th style="width:25%">Ejemplo</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-tiendas>
+            <tr>
+                <td>{{ tiendas.sfid }}</td>
+                <td>{{ tiendas.id_tienda }}</td>
+                <td><p-button class="botonNuevaTienda" label="Editar Tienda" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="editarTienda(tiendas)"></p-button></td>
+                <td></td>
+            </tr>
+        </ng-template>
+    </p-table>
+    </div>
+</div>
+<p-toast></p-toast>

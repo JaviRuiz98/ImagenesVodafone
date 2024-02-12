@@ -5,6 +5,7 @@ export class auditoria {
     id_mobiliario: number;
     fecha: Date;
     estado: string;
+    num_expositores_procesados: number;
     num_expositores: number;
 
     constructor(valor: null){
@@ -13,6 +14,7 @@ export class auditoria {
         this.id_auditoria = 0;
         this.id_tienda = 0;
         this.id_mobiliario = 0;
+        this.num_expositores_procesados = 0;
         this.num_expositores = 0;
     }
 }

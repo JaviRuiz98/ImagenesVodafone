@@ -10,6 +10,8 @@ export const auditoriaService = {
             return db.auditorias.findMany({
                 where: {
                     id_tienda: id_tienda
+                }, orderBy: {
+                    id_auditoria: 'desc'
                 }
             })
 
@@ -86,6 +88,24 @@ export const auditoriaService = {
             })
         } catch (error) {
             console.error('No se pudo obtener el numero de expositores:', error);
+            throw error;
+        } finally {
+            db.$disconnect();
+        }
+    },
+    
+    getNumExpositoresProcesadosByAuditoria(id_auditoria: number) {
+        try {
+            return db.pertenencia_expositor_auditoria.count({
+                where: {
+                    id_auditoria: id_auditoria,
+                    procesados_imagenes: {
+                        some: {  }
+                    }
+                }
+            })
+        } catch (error) {
+            console.error('No se pudo obtener el numero de procesados por expositor:', error);
             throw error;
         } finally {
             db.$disconnect();
