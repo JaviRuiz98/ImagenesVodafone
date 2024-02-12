@@ -228,7 +228,8 @@ export const mobiliarioService = {
                             id_auditoria: id_auditoria
                         }, include: {
                             prompts: true,
-                            imagenes: true
+                            imagenes: true,
+                            probabilidades_respuesta_carteles: true
                         }, orderBy: {
                             fecha: 'desc'
                         }

@@ -3,8 +3,8 @@
     <p-tag *ngIf="procesado.categoria === 'carteles'" 
         class = "cursor-pointer "
         icon="pi pi-info-circle" 
-        value="{{procesado.probabilidad_cartel}}"
-        [severity]="getSeverityCartel(procesado.probabilidad_cartel)" 
+        value="{{procesado.probabilidades_respuesta_carteles.probabilidad}}"
+        [severity]="getSeverityCartel(procesado.probabilidades_respuesta_carteles.probabilidad)" 
     ></p-tag>
     <p-tag *ngIf="procesado.categoria === 'dispositivos'" 
         class = "cursor-pointer "
@@ -16,8 +16,8 @@
 <p-overlayPanel #open [showCloseIcon]="false" [style]="{width: '20vw'}">
     <div *ngIf="procesado.categoria === 'carteles'">
         <span style="font-weight: bold;">· Probabilidad: </span>  
-        <p-tag [severity]="getSeverityCartel(procesado.probabilidad_cartel)" >
-            {{procesado.probabilidad_cartel}}
+        <p-tag [severity]="getSeverityCartel(procesado.probabilidades_respuesta_carteles.probabilidad)" >
+            {{procesado.probabilidades_respuesta_carteles.probabilidad}}
         </p-tag>
     </div>
     <div *ngIf="procesado.categoria === 'dispositivos'">
