@@ -26,12 +26,23 @@ export async function newTienda(req: Request, res: Response) {
         console.error('Error al crear tienda:', error);
     }
 }
+export async function updateTienda(req: Request, res: Response) {
+    try{     
+        const id_tienda = parseInt(req.params.id_tienda);
+        deleteMueblesTienda(id_tienda);
+        const listaIdMuebles = req.body.map((mueble: muebles) => mueble.id_mueble);
+        await tiendaService.asignarPertenenciaMuebleTienda(id_tienda, listaIdMuebles);
+        res.status(200).json(id_tienda);
+    }catch (error) {
+        console.error('Error al crear tienda:', error);
+    }
+}
+
 
 export async function asignarPertenenciaMuebleTienda(req: Request, res: Response) {
     try{     
         const listaMuebles = req.body as { id_mueble: number, nombre_mueble: string, expositores: any[], categoria: string, numero_dispositivos: number | null }[];
         const listaIdMuebles: number[] = listaMuebles.map(mueble => mueble.id_mueble);
-        console.log(listaIdMuebles);
         const muebles = await tiendaService.asignarPertenenciaMuebleTienda(parseInt(req.params.id_tienda), listaIdMuebles);
         res.status(200).json(muebles);
 
@@ -40,6 +51,13 @@ export async function asignarPertenenciaMuebleTienda(req: Request, res: Response
     }
 }
 
+export async function deleteMueblesTienda(id_tienda: number) {
+    try{     
+       await tiendaService.deleteMueblesTienda(id_tienda);
+    }catch (error) {
+        console.error('Error al crear tienda:', error);
+    }
+}
 
 
 
