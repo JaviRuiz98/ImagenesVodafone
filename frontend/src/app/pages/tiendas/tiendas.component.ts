@@ -79,10 +79,9 @@ export class TiendasComponent implements OnInit{
       } else{
         this.nuevaTienda.sfid = this.sfidInput;
         this.verFormularioNuevaTienda = false;
-
-        /*this.TiendasService.newTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
+        this.TiendasService.newTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
           this.tiendas = response;
-        })*/
+        })
       }
     }
   }
@@ -93,12 +92,10 @@ export class TiendasComponent implements OnInit{
   }
   editarTienda(tienda: tienda){
     this.MueblesService.getMueblesTiendaByIdTienda(tienda.id_tienda).subscribe((response: muebles[]) => {
-      console.log(response)
       this.listaMueblesNuevaTienda = response;
     })
     this.activeIndex = 1;
     this.verFormularioNuevaTienda = true;
     this.editarTiendaCreada = true;
-    
   }
 }
