@@ -1,4 +1,4 @@
-import {       muebles, pertenencia_mueble_tienda } from "@prisma/client";
+import { muebles, pertenencia_mueble_tienda } from "@prisma/client";
 import db  from "../config/database";
 
 import {  MuebleFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";

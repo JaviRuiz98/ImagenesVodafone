@@ -104,6 +104,7 @@ export class TiendasComponent implements OnInit{
     }
   }
   editarTienda(tienda: tienda){
+    this.nuevaTienda = tienda;
     this.crearEditarTienda = 'Editar tienda';
     this.sfidInput = tienda.sfid;
     this.comunidadInput = 'prueba';

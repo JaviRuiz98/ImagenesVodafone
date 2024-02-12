@@ -1,4 +1,4 @@
-import { tiendas } from "@prisma/client";
+import {  tiendas } from "@prisma/client";
 import db  from "../config/database";
 
 export const tiendaService = {

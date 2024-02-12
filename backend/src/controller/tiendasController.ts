@@ -29,9 +29,12 @@ export async function newTienda(req: Request, res: Response) {
 
 export async function asignarPertenenciaMuebleTienda(req: Request, res: Response) {
     try{     
-        res
-        console.log(req.body)
-        console.log(req.params)
+        const listaMuebles = req.body as { id_mueble: number, nombre_mueble: string, expositores: any[], categoria: string, numero_dispositivos: number | null }[];
+        const listaIdMuebles: number[] = listaMuebles.map(mueble => mueble.id_mueble);
+        console.log(listaIdMuebles);
+        const muebles = await tiendaService.asignarPertenenciaMuebleTienda(parseInt(req.params.id_tienda), listaIdMuebles);
+        res.status(200).json(muebles);
+
     }catch (error) {
         console.error('Error al crear tienda:', error);
     }
