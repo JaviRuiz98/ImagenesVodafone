@@ -26,6 +26,8 @@ export async function procesarImagenes(req: Request, res: Response) {
     const id_expositor_auditoria: number = parseInt(req.body.id_expositor_auditoria); //ojo refactor
     const id_mueble: number = parseInt(req.body.id_mueble);
     const id_auditoria_selected: number = parseInt(req.body.id_auditoria_selected);
+
+    console.log('Procesado para expositor auditoria: ', id_expositor_auditoria)
     
     //obtengo la imagen a procesar
     const imagenProcesada = file//(files['imagenesprocesado'] as Express.Multer.File[]).map(file => file.path)[0];

@@ -38,7 +38,6 @@ export class AuditoriaComponent implements OnInit{
 
   constructor( 
     private auditoriaService: AuditoriaService ,
-    private mueblesService: MueblesService,
     private procesamientoService: ProcesamientoService,
     private messageService: MessageService
     ) {}
