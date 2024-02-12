@@ -43,8 +43,9 @@ export class AuditoriaComponent implements OnInit{
     ) {}
 
     ngOnInit(): void {
-      
       this.inicializaImagenesReferencia();
+      console.log('Auditoria seleccionada: ', this.auditoriaService.id_auditoria_seleccionada)
+
     }
 
     async inicializaImagenesReferencia() {
