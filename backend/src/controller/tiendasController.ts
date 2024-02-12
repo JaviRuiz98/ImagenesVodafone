@@ -39,70 +39,71 @@ export async function getTiendaBySfid(req: Request, res: Response) {
         console.log(req.body);
       
 
-//         //obtiene las tiendas ordenadas por categoría_clause
-//         const tienda: any = await tiendaService.getBySfid(sfid);
+        //obtiene las tiendas ordenadas por categoría_clause
+        const tienda: any = await tiendaService.getBySfid(sfid);
 
       
-//         if (!tienda) {
-//             //Contenido vacio
-//             res.status(204).send();
-//             return;
-//         }
+        if (!tienda) {
+            //Contenido vacio
+            res.status(204).send();
+            return;
+        }
 
-//         for (const mueble of tienda.muebles) {
+        /*for (const mueble of tienda.muebles) {
       
-//             const promises = mueble.expositores.map( async (expositores: expositores) => 
+            const promises = mueble.expositores.map( async (expositores: expositores) => 
                 
-//                 tiendaService.getProcesadosByIdExpositor(
-//                     expositores.id_expositor,
-//                     orden_clause,
-//                     prompts_clause,
-//                     ia_clause,
-//                     respuestas_carteles_clause,
-//                     respuestas_dispositivos_clause
-//                 )
-//             );
+                tiendaService.getProcesadosByIdExpositor(
+                    expositores.id_expositor,
+                    orden_clause,
+                    prompts_clause,
+                    ia_clause,
+                    respuestas_carteles_clause,
+                    respuestas_dispositivos_clause
+                )
+            );
         
-//             const resultados = await Promise.all(promises);
+            const resultados = await Promise.all(promises);
           
            
-//             for (let i = 0; i < mueble.expositores.length; i++) {
-//                 mueble.expositores[i].procesados_imagenes = resultados[i];
-//             }
-//         }
-//         res.status(200).json(tienda);
+            for (let i = 0; i < mueble.expositores.length; i++) {
+                mueble.expositores[i].procesados_imagenes = resultados[i];
+            }
+        }*/
+        res.status(200).json(tienda);
                 
-//     }catch(error){
-//         console.error('Error al obtener tienda por sfid:', error);
-//         res.status(500).json({ error: 'Internal server error' });
-//     }
-// }
+    }catch(error){
+        console.error('Error al obtener tienda por sfid:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
 
-// export async function getProcesadosByIdExpositor(req: Request, res: Response) {
-//     try{
-//         const idExpositor = parseInt(req.params.idExpositor);
+/*export async function getProcesadosByIdExpositor(req: Request, res: Response) {
+    try{
+        const idExpositor = parseInt(req.params.idExpositor);
         
-//         const orden_clause: 'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null  = req.body.orden;
-//         const prompts_clause: number[] | null  = req.body.prompt;
-//         const ia_clause: string | null = req.body.ia;     
-//         const respuestas_carteles_clause: string[] | null = req.body.carteles;
-//         const respuestas_carteles_dispositivos_clause: number[] | null = req.body.dispositivos;
+        const orden_clause: 'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null  = req.body.orden;
+        const prompts_clause: number[] | null  = req.body.prompt;
+        const ia_clause: string | null = req.body.ia;     
+        const respuestas_carteles_clause: string[] | null = req.body.carteles;
+        const respuestas_carteles_dispositivos_clause: number[] | null = req.body.dispositivos;
 
-//         const procesados: procesados_imagenes[] | null =  await tiendaService.getProcesadosByIdExpositor(idExpositor, orden_clause, prompts_clause, ia_clause, respuestas_carteles_clause, respuestas_carteles_dispositivos_clause);
+        const procesados: procesados_imagenes[] | null = 
+        await tiendaService.getProcesadosByIdExpositor(idExpositor, orden_clause, prompts_clause, ia_clause, respuestas_carteles_clause, respuestas_carteles_dispositivos_clause);
 
-//         if (procesados?.length === 0) {
-//              res.status(204).json({ error: 'procesados vacíos' });
-//              return;
+        if (procesados?.length === 0) {
+             res.status(204).json({ error: 'procesados vacíos' });
+             return;
                    
-//         }
-//         if (procesados) {
-//              res.status(200).json(procesados);
-//              return;
-//         }
+        }
+        if (procesados) {
+             res.status(200).json(procesados);
+             return;
+        }
 
-//     } catch(error){
-//         console.error('Error al obtener tienda por sfid:', error);
-//         res.status(500).json({ error: 'Internal server error' });
-//         throw error;
-//     }
-// }
+    } catch(error){
+        console.error('Error al obtener tienda por sfid:', error);
+        res.status(500).json({ error: 'Internal server error' });
+        throw error;
+    }
+}*/
