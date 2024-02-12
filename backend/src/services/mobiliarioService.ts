@@ -1,8 +1,7 @@
-import {     muebles, pertenencia_expositor_auditoria, pertenencia_mueble_tienda } from "@prisma/client";
+import {       muebles, pertenencia_mueble_tienda } from "@prisma/client";
 import db  from "../config/database";
 
 import {  MuebleFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
-import { expositoresConProcesados } from "../interfaces/expositoresProcesados";
 // import {expositoresConProcesados} from "../interfaces/expositoresProcesados"
 
 
@@ -204,47 +203,66 @@ export const mobiliarioService = {
         }
     },
 
-    async getMueblesAndExpositoresWithProcesadosByIdAuditoria( id_auditoria: number): Promise<MuebleFrontInterfaz[]> {
+    async getMueblesAndExpositoresWithProcesadosByIdAuditoria( id_auditoria: number): Promise<any> {
         try{
-            const mueblesPertenencia: pertenencia_expositor_auditoria[] = await db.pertenencia_expositor_auditoria.findMany({
+
+            const muebles = await db.muebles.findMany({
                 where: {
-                  id_auditoria: id_auditoria
-                }, 
+                  pertenencia_expositor_auditoria: {
+                    some: {
+                      id_auditoria: id_auditoria
+                    }
+                  }
+                },
                 include: {
-                    muebles: {
+                  pertenencia_expositor_auditoria: {
+                    include: {
+                      expositores: {
                         include: {
-                            pertenencia_expositor_mueble:{
-                                include: {
-                                    expositores: {
-                                        include: {
-                                            imagenes: true,
-                                            pertenencia_expositor_auditoria: {
-                                                include: {
-                                                    procesados_imagenes: true
-                                                }
-                                            }
-                                            
-                                        }
-                                    }
-                                }
-                            },                   
-                    
+                          imagenes: true,
+                          // No incluyes directamente procesados_imagenes aquí
                         }
-                    } 
+                      },
+                      procesados_imagenes: true // Suponiendo que esto es posible según tu esquema
+                    }
+                  }
                 }
-            });
-
-            const muebles = mueblesPertenencia.map((mueblesPertenencia: any) => mueblesPertenencia.muebles);
-
-             //Limitar expositores
-             const mueblesConExpositoresActivos: muebles[] =  mapearResultadoParaDevolverExpositoresActivos(muebles);
-             //Ajustar el resultado para que coincida con la interfaz esperada en el front
-             const muebleExpositorFormateado: MuebleFrontInterfaz[] = mueblesConExpositoresActivos.map((mueble: any) => {
-                 return mapearResultadoParaFront(mueble);
-             });
-
-
-             return muebleExpositorFormateado;
+              });
+              
+              const resultado = muebles.map(mueble => {
+                const expositores: any[] = mueble.pertenencia_expositor_auditoria.reduce((acc: any[], auditoria) => {
+                    let expositor = acc.find(ex => ex.id_expositor === auditoria.expositores.id_expositor);
+                    if (!expositor) {
+                      expositor = {
+                        id_expositor: auditoria.expositores.id_expositor,
+                        id_imagen: auditoria.expositores.id_imagen,
+                        nombre: auditoria.expositores.nombre,
+                        imagenes: auditoria.expositores.imagenes,
+                        procesados_imagenes: [],
+                      };
+                      acc.push(expositor);
+                    }
+                
+              
+                  // Agregar procesados_imagenes a este expositor
+                  expositor.procesados_imagenes.push(...auditoria.procesados_imagenes);
+              
+                  return acc;
+                }, []);
+              
+                return {
+                  id_mueble: mueble.id_mueble,
+                  nombre_mueble: mueble.nombre_mueble,
+                  numero_dispositivos: mueble.numero_dispositivos,
+                  categoria: mueble.categoria,
+                  numero_expositores: mueble.numero_expositores,
+                  expositores
+                };
+              });
+              
+              return resultado;
+              
+          
 
         }  catch (error) {
             throw error;
@@ -257,28 +275,42 @@ export const mobiliarioService = {
                                           
 }
 
+// function mapearResultadoParaFrontConProcesado(mueble: any) {
+//     let expositores = [];
+//     if (mueble.pertenencia_expositor_auditoria) {
+//         expositores = mueble.pertenencia_expositor_auditoria.flatMap((pem: any) => pem.expositores);
+        
+//         // for (let i = 0; i < expositores.length; i++) {
+//         //     expositores[i].procesados_imagenes = 
+//         // }
+//     } 
+//     return {
+//         id_mueble: mueble.id_mueble,
+//         nombre_mueble: mueble.nombre_mueble,
+//         expositores: expositores, 
+//         categoria: mueble.categoria,
+//         numero_dispositivos: mueble.numero_dispositivos,
+//     };
+// }
+
 
 
 //tipar adecuadamente
-function mapearResultadoParaFront(mueble: any): MuebleFrontInterfaz {
-    let expositores: expositoresConProcesados[] = [];
+function mapearResultadoParaFront(mueble: any) {
+
+    let expositores = [];
+
     if (mueble.pertenencia_expositor_mueble) {
-        expositores = mueble.pertenencia_expositor_mueble.map((pem: any) => {
-            const procesados_imagenes = pem.expositores.pertenencia_expositor_auditoria ?
-                pem.expositores.pertenencia_expositor_auditoria.flatMap((pea: any) => pea.procesados_imagenes || []) : [];
-            return {
-                id_expositor: pem.expositores.id_expositor,
-                imagen: pem.expositores.imagenes,
-                nombre: pem.expositores.nombre,
-                procesados_imagenes: procesados_imagenes
-            };
-        });
-    } // expositores
+        expositores = mueble.pertenencia_expositor_mueble.map((pem: any) => pem.expositores);
+    }
+    
+    
+    
 
     return {
         id_mueble: mueble.id_mueble,
         nombre_mueble: mueble.nombre_mueble,
-        expositores: expositores,
+        expositores: expositores, 
         categoria: mueble.categoria,
         numero_dispositivos: mueble.numero_dispositivos,
     };
@@ -295,6 +327,16 @@ function mapearResultadoParaDevolverExpositoresActivos(muebles: muebles[]): mueb
         };
     });
 }
+ //     let procesados_imagenes = [];
+            //     if (pem.expositores.pertenencia_expositor_auditoria) {
+            //         procesados_imagenes = pem.expositores.pertenencia_expositor_auditoria.map((pea: any) => pea.procesados_imagenes);
+            //     }
+            //     return [{
+            //         ...pem.expositores,
+            //         procesados_imagenes: procesados_imagenes
+            //     }];
+        
+            // });
 
 
 // function getOrderClause( orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null) {
