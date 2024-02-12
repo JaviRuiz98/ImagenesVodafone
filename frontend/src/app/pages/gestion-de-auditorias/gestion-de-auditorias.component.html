@@ -13,13 +13,13 @@
             class="dropdown">
         </p-dropdown>
         <div class="p-toolbar-group-start">
-            <p-button severity="danger" class="marginRight" label="Nuevo" icon="pi pi-plus" (onClick)="nuevaAuditoria()"></p-button>
+            <p-button severity="danger" class="marginRight" label="Nuevo" icon="pi pi-plus" (onClick)="nuevaAuditoria()" [disabled]="tiendaSeleccionada == undefined"></p-button>
         </div>        
     </p-toolbar>
    
     <p-table 
+        *ngIf="tiendaSeleccionada != undefined"
         #miTabla
-        *ngIf="this.auditorias != []"
         class="table"
         [value]="this.auditorias"
         [paginator]="true"
@@ -45,9 +45,11 @@
         </ng-template>
         <ng-template pTemplate="body" let-auditoria>            
             <tr>              
-                <td>{{ auditoria.id_auditoria }}</td>
+                <td>{{ auditoria.id_auditoria }}</td>                
                 <td>{{ formatDate(auditoria.fecha) }}</td>
-                <td>{{ auditoria.estado }}</td>
+                <td>
+                    <p-tag [severity]="getSeverityEstadoAuditoria(auditoria.estado)">{{ auditoria.estado }}</p-tag>                    
+                </td>               
                 <td>{{ auditoria.num_expositores_procesados }}/{{ auditoria.num_expositores }}</td>
                 <td class="opciones">         
                     <p-button class ="smallMarginRight" severity="danger" [raised]="true" [text]="true" [rounded]="true" label="Ir auditoría" icon="pi pi-pencil"  (click)="goToAuditoria(auditoria.id_auditoria)"></p-button>                    
@@ -62,6 +64,10 @@
         </ng-template>
         
     </p-table>
+
+    <div *ngIf="tiendaSeleccionada == undefined">
+        <p class="text-center">Selecciona una tienda</p>
+    </div>
 
 
 

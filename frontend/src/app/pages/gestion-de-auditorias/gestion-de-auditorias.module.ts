@@ -8,6 +8,7 @@ import { ItemListaAuditoriaComponent } from 'src/app/componentes/item-lista-audi
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { TableModule } from 'primeng/table';
     ItemListaAuditoriaComponent,
     ToastModule,
     ToolbarModule,
-    TableModule
+    TableModule,
+    TagModule
   ]
 })
 export class GestionDeAuditoriasModule { }

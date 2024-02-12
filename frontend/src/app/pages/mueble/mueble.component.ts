@@ -59,8 +59,6 @@ export class MuebleComponent implements OnInit {
     this.miTabla.clear();
   }
 
- 
-
   filtrarPorNombre() {
    
     if (this.tableSelected === 'dispositivos') {

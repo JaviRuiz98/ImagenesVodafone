@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validator, ValidatorFn, Validators } from '@angular/forms';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { Expositor } from 'src/app/interfaces/expositor';
 import { muebles } from 'src/app/interfaces/muebles';
+import { ExpositoresService } from 'src/app/servicios/expositores/expositores.service';
 
 
 @Component({
@@ -15,9 +17,14 @@ export class FormMuebleComponent implements OnInit {
 
   
   
-  constructor( public dialogConfig : DynamicDialogConfig, private fb: FormBuilder) { }
+  constructor( public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private expositoresService: ExpositoresService) { }
 
+  showing_expositores: boolean = false;
+  all_expositores: Expositor[] = [];
+
+  objetivo_form: 'crear' | 'editar' = 'crear';
   categorias_opciones = ['cartel', 'dispositivos'];
+  url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
   formulario:FormGroup = this.fb.group({
     nombre_mueble: ['', Validators.required],
@@ -25,8 +32,6 @@ export class FormMuebleComponent implements OnInit {
     numero_dispositivos: [0, [Validators.required, Validators.min(0)]],
     expositores: [[], ]
   })
-
-
   mueble?: muebles;
 
   get nombre_mueble() {
@@ -40,10 +45,15 @@ export class FormMuebleComponent implements OnInit {
     return this.formulario.controls['categoria'];
   }
 
+  get expositores() {
+    return this.formulario.controls['expositores'];
+  }
+
   ngOnInit() {
    
     if (this.dialogConfig.data) {
       console.log ("editar");
+      this.objetivo_form='editar';
       this.mueble = this.dialogConfig.data.mueble;
 
       this.formulario.patchValue({
@@ -54,6 +64,7 @@ export class FormMuebleComponent implements OnInit {
       })
     }else{
       console.log ("nuevo");
+      this.objetivo_form='crear';
     }
   }
 
@@ -68,12 +79,22 @@ export class FormMuebleComponent implements OnInit {
     };
   }
 
+  showExpositores() {
+    
+   this.expositoresService.getExpositores().subscribe((data: Expositor[]) => {
+    this.all_expositores = data;
+    this.showing_expositores=true;
+   })
+  }
+    
+
   onSubmit() {
   
     if (this.formulario.invalid) {
       return;
+    
     }
-    // Si el formulario es válido, puedes enviar los datos
+   
     console.log(this.formulario.value);
   }
   
