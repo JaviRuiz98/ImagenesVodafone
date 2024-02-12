@@ -60,17 +60,16 @@ export class MuebleComponent implements OnInit {
   }
 
   filtrarPorNombre() {
-   
     if (this.tableSelected === 'dispositivos') {
         this.mueblesDispositivosFiltrados = this.filterByNombre(this.mueblesDispostivos);
     } else {
         this.mueblesCartelesFiltrados = this.filterByNombre(this.mueblesCarteles);
     }
-}
+  }
 
 filterByNombre(muebles: any[]): any[] {
-  
-    return muebles.filter(mueble => mueble.nombre_mueble.toLowerCase().includes(this.nombreFiltro.toLowerCase()));
+
+  return muebles.filter(mueble => mueble.nombre_mueble.toLowerCase().includes(this.nombreFiltro.toLowerCase()));
 }
 
   editMueble(mueble: muebles) {
