@@ -8,8 +8,7 @@ import procesamientoRoutes from './routes/procesadoRoutes';
 import promptsRoutes from './routes/promptsRoutes';
 import  mobiliarioRouter from './routes/mobiliarioRoutes';
 import auditoriaRouter from './routes/auditoriaRoutes';
-import expositorRouter from './routes/expositoresRoutes';
-
+import expositoresRoutes from './routes/expositoresRoutes';
 
 const app = express();
 app.use(bodyParser.json({ limit: '10mb' }));
@@ -23,7 +22,7 @@ app.use('/', procesamientoRoutes);
 app.use('/', promptsRoutes);
 app.use('/', mobiliarioRouter);
 app.use('/', auditoriaRouter);
-app.use('/', expositorRouter);
+app.use('/', expositoresRoutes);
 
 app.get('/', (_req: Request, res: Response) => {
     res.send('Hello World! ');

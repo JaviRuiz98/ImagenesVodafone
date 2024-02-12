@@ -15,4 +15,23 @@ export class ExpositoresService {
   getExpositores(): Observable<Expositor[]> {
     return this.http.get<Expositor[]>(`${this.API_URI}/expositores`);
   }
+
+  
+  guardarExpositor(nombre: string, activo: boolean, imageFile: File  ): Observable<Expositor> {
+    const formData = new FormData();
+
+    formData.append('imagenesReferencia', imageFile);
+    formData.append('nombre', nombre);
+    formData.append('activo', 'true');
+
+    return this.http.post<Expositor>(`${this.API_URI}/expositor`, formData);
+  }
+
+  
+
+
+
+
+
+  
 }

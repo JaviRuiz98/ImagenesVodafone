@@ -3,7 +3,7 @@ import db  from "../config/database";
 //import { InternalServerError } from "openai";
 
 export const tiendaService = {
-
+    
     async getAllById(idTienda?: number): Promise<tiendas[]> {
         try{
             // Obtenemos todos los expositores junto con sus imágenes

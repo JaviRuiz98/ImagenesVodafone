@@ -1,23 +1,68 @@
- 
+ <p-toast>  </p-toast>
 <p-panel header="Expositores" [style]="{width: '70%', margin: '0 auto'}">
-    <p-table [value]="expositores" selectionMode="single" [style] = "{'width':'100%'}" [(selection)]="expositorSeleccionado" [rows]="40">
+    <p-toolbar styleClass="mb-4 gap-2">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="AbrirnuevoExpositor()" ></button>
+            <button pButton pRipple label="Desactivar" icon="pi pi-eye" class="p-button-danger" [style]="{'margin-left': '20px'}" (click)="activarDesactivarExpositores()" [disabled]="!expositoresSeleccionados|| !expositoresSeleccionados.length"></button>
+            <span class="p-input-icon-left" style="margin-left: 20px">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt.filterGlobal($event.target, 'contains')"  />
+            </span>
+        </ng-template>
+    </p-toolbar>
+    <p-table
+        #dt
+        [value]="expositores" 
+        [rows]="20"
+        [paginator]="true"
+        [scrollable]="true"
+        [scrollHeight]="'calc(100vh - 204px)'"
+        [(selection)]="expositoresSeleccionados"
+        [rowHover]="true"
+        dataKey="id_expositor"       
+        [style] = "{'width':'100%', 'margin-top': '20px'}"  
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [showCurrentPageReport]="true"
+        [globalFilterFields]="['Nombre', 'ID']"
+    >
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+
+            </div>
+        </ng-template>
         <ng-template pTemplate="header">
             <tr>
+                <th style="width: 4rem">
+                    <p-tableHeaderCheckbox> </p-tableHeaderCheckbox>
+                </th>
                 <th>ID</th>
                 <th>imagen</th>
                 <th>Nombre</th>
+                <th></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-expositor>
             <tr>
+                <td>
+                    <p-tableCheckbox [value]="expositor"></p-tableCheckbox>
+                </td>
                 <td>{{ expositor.id_expositor }}</td>
                 <td>
-                    <p-image [src]="url_imagenes_referencias + expositor.imagenes.url"  [alt]="expositor.imagenes.url" class="imagenSimple" [width]="'10%'" [height]="'10%'" [preview]="true"></p-image>
-             
+                    <p-image [src]="url_imagenes_referencias + expositor.imagenes.url" [alt]="expositor.imagenes.url" [width]="'70px'" [height]="'100px'" class="shadow-4" [preview]="true"></p-image>
                 </td>
                 <td>{{ expositor.nombre }}</td>
-                
+                <td>
+                    <p-button *ngIf="expositor.activo == 0" icon="pi pi-eye-slash" [rounded]="true" [text]="true" severity="danger "></p-button>
+                    <p-button *ngIf="expositor.activo == 1" icon="pi pi-eye" [rounded]="true" [text]="true" severity="danger "></p-button>
+                </td>
             </tr>
-        </ng-template>
+        </ng-template> 
+        <p-overlayPanel #descatalogar>
+            <img src="https://primefaces.org/cdn/primeng/images/demo/product/bamboo-watch.jpg" alt="product" />
+        </p-overlayPanel>
+        <p-overlayPanel #op>
+            <img src="https://primefaces.org/cdn/primeng/images/demo/product/bamboo-watch.jpg" alt="product" />
+        </p-overlayPanel>
     </p-table>
+    <app-nuevo-expositor *ngIf="mostrarDialogoNuevoExpositor == true" (mostrarDialogoNuevoExpositor)="cerrarDialog($event)" ></app-nuevo-expositor>
 </p-panel>
