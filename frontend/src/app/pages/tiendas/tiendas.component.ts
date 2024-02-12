@@ -94,6 +94,7 @@ export class TiendasComponent implements OnInit{
   editarTienda(tienda: tienda){
     this.MueblesService.getMueblesTiendaByIdTienda(tienda.id_tienda).subscribe((response: muebles[]) => {
       console.log(response)
+      this.listaMueblesNuevaTienda = response;
     })
     this.activeIndex = 1;
     this.verFormularioNuevaTienda = true;
