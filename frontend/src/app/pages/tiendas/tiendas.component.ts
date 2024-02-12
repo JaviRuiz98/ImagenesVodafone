@@ -6,6 +6,7 @@ import { ExpositoresService } from 'src/app/servicios/expositores/expositores.se
 
 import { tienda } from 'src/app/interfaces/tienda';
 import { muebles } from 'src/app/interfaces/muebles';
+import { response } from 'express';
 @Component({
   selector: 'app-tiendas',
   templateUrl: './tiendas.component.html',
@@ -37,12 +38,9 @@ export class TiendasComponent implements OnInit{
   ngOnInit(): void {
     this.TiendasService.getAllTiendas().subscribe((response: tienda[]) => {
       this.tiendas = response;
-      console.log(response)
     })
     this.MueblesService.getAllMuebles().subscribe((response: muebles[]) => {
       this.listaTodosMuebles = response;
-      console.log(response)
-
     })
     this.parametrosSteps = [
       {
@@ -81,7 +79,6 @@ export class TiendasComponent implements OnInit{
       } else{
         this.nuevaTienda.sfid = this.sfidInput;
         this.verFormularioNuevaTienda = false;
-        console.log(this.listaMueblesNuevaTienda, this.nuevaTienda);
 
         /*this.TiendasService.newTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
           this.tiendas = response;
@@ -95,7 +92,9 @@ export class TiendasComponent implements OnInit{
     }
   }
   editarTienda(tienda: tienda){
-    
+    this.MueblesService.getMueblesTiendaByIdTienda(tienda.id_tienda).subscribe((response: muebles[]) => {
+      console.log(response)
+    })
     this.activeIndex = 1;
     this.verFormularioNuevaTienda = true;
     this.editarTiendaCreada = true;
