@@ -25,8 +25,8 @@ export class TiendasComponent implements OnInit{
     pertenencia_mueble_tienda: []
   };
   verFormularioNuevaTienda: boolean = false;
-  sfidInput: string = 'vfvf';
-  comunidadInput: string = 'fvf';
+  sfidInput: string = '';
+  comunidadInput: string = '';
   parametrosSteps: any; //TIPAR CON LABEL Y ROUTERLINK
   activeIndex: number = 0;
   listaTodosMuebles: muebles[] = [];
