@@ -4,8 +4,6 @@ import { Observable } from "rxjs";
 import { muebles } from '../../interfaces/muebles';
 import { filtro_procesados } from 'src/app/interfaces/filtro_procesados';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -18,16 +16,12 @@ export class MueblesService {
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
   });
-
-  
   options = { 
     headers: this.headers
   }
 
   getMueblesFiltered(filtros?:filtro_procesados): Observable<muebles[]> {
-    
     let body: any = undefined;
-
     if(filtros){
       body = {
         orden: filtros.orden,
@@ -38,17 +32,19 @@ export class MueblesService {
         id_tienda: filtros.id_tienda
       }
     }    
-  
     return this.http.post<muebles[]>(this.API_URI, body, this.options);
   }
 
   getMueblesAuditoria(id_auditoria:number): Observable<muebles[]> {
-
     return this.http.get<muebles[]>(this.API_URI + 'muebles_auditoria/' + id_auditoria);
   }
 
   getAllMuebles(): Observable<muebles[]> {
     return this.http.get<muebles[]>(this.API_URI);
+  }
+
+  getMueblesTiendaByIdTienda(id_tienda: number): Observable<muebles[]> {
+    return this.http.get<muebles[]>(this.API_URI+id_tienda);
   }
 }
 

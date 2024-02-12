@@ -16,15 +16,15 @@
                         <div class="contenedorMuebleArrastras">
                             <div *ngIf="mueble.expositores.length == 1">
                                 <div class="anchoAltoFotoReferencia">
-                                    <img src="{{imagenesRef}}/{{mueble.expositores[0].imagen.url}}" alt="{{mueble.expositores[0].imagen.url}}" class="ajusteImagenesAnchoAlto">
+                                    <img src="{{imagenesRef}}/{{mueble.expositores[0].imagenes.url}}" alt="{{mueble.expositores[0].imagenes.url}}" class="ajusteImagenesAnchoAlto">
                                 </div>
                             </div>
                             <div *ngIf="mueble.expositores.length == 2 && mueble.expositores[0] != undefined && mueble.expositores[1] != undefined" class="grid anchoAltoFotoReferencia">
                                 <div style="margin-right: 5px;">
-                                    <img src="{{imagenesRef}}/{{mueble.expositores[0].imagen.url}}" alt="{{mueble.expositores[0].imagen.url}}" class="ajusteImagenesAnchoAlto">
+                                    <img src="{{imagenesRef}}/{{mueble.expositores[0].imagenes.url}}" alt="{{mueble.expositores[0].imagenes.url}}" class="ajusteImagenesAnchoAlto">
                                 </div>
                                 <div> 
-                                    <img src="{{imagenesRef}}/{{mueble.expositores[1].imagen.url}}" alt="{{mueble.expositores[1].imagen.url}}" class="ajusteImagenesAnchoAlto">
+                                    <img src="{{imagenesRef}}/{{mueble.expositores[1].imagenes.url}}" alt="{{mueble.expositores[1].imagenes.url}}" class="ajusteImagenesAnchoAlto">
                                 </div>
                             </div> 
                             <div class="anchoAltoDescripcionFotoReferencia">
@@ -49,15 +49,15 @@
                             <div class="contenedorMuebleArrastras">
                                 <div *ngIf="mueble.expositores.length == 1">
                                     <div class="anchoAltoFotoReferencia">
-                                        <img src="{{imagenesRef}}/{{mueble.expositores[0].imagen.url}}" alt="{{mueble.expositores[0].imagen.url}}" class="ajusteImagenesAnchoAlto">
+                                        <img src="{{imagenesRef}}/{{mueble.expositores[0].imagenes.url}}" alt="{{mueble.expositores[0].imagenes.url}}" class="ajusteImagenesAnchoAlto">
                                     </div>
                                 </div>
                                 <div *ngIf="mueble.expositores.length == 2 && mueble.expositores[0] != undefined && mueble.expositores[1] != undefined" class="grid anchoAltoFotoReferencia">
                                     <div style="margin-right: 5px;">
-                                        <img src="{{imagenesRef}}/{{mueble.expositores[0].imagen.url}}" alt="{{mueble.expositores[0].imagen.url}}" class="ajusteImagenesAnchoAlto">
+                                        <img src="{{imagenesRef}}/{{mueble.expositores[0].imagenes.url}}" alt="{{mueble.expositores[0].imagenes.url}}" class="ajusteImagenesAnchoAlto">
                                     </div>
                                     <div> 
-                                        <img src="{{imagenesRef}}/{{mueble.expositores[1].imagen.url}}" alt="{{mueble.expositores[1].imagen.url}}" class="ajusteImagenesAnchoAlto">
+                                        <img src="{{imagenesRef}}/{{mueble.expositores[1].imagenes.url}}" alt="{{mueble.expositores[1].imagenes.url}}" class="ajusteImagenesAnchoAlto">
                                     </div>
                                 </div> 
                                 <div class="anchoAltoDescripcionFotoReferencia">
@@ -75,7 +75,7 @@
             <div class="botonesAtrasSiguiente">
                 <p-button (click)="botonAtras()" class="botonSiguienteAtras" label="Atrás" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px'}" [disabled]="activeIndex === 0"></p-button>
                 <p-button (click)="botonSiguiente()" class="botonSiguienteAtras" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px', 'justify-content': 'center'}"
-                [label]="(activeIndex === 2) ? 'Crear Tienda' : 'Siguiente'"></p-button>
+                [label]="(activeIndex === 2) ? crearEditarTienda : 'Siguiente'"></p-button>
             </div>
         </p-dialog>
     </div>

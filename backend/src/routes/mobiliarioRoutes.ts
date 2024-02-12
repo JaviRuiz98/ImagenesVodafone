@@ -12,5 +12,6 @@ router.put('/muebles/:id_mueble',  updateMueble);
 router.get('/muebles',  getAllMuebles);
 router.get('/muebles/:id_tienda',  getMueblesAndExpositoresActivosByIdTienda);
 router.get('/muebles_auditoria/:id_auditoria',  getMueblesAndExpositoresWithProcesadosByIdAuditoria);
+router.get('muebles/:id_tienda', getMueblesAndExpositoresActivosByIdTienda)
 
 export default router

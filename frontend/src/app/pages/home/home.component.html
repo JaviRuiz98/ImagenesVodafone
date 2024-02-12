@@ -1,4 +1,4 @@
-<div class="paginaCompleta"> 
+<!-- <div class="paginaCompleta"> 
     <div class="p-cardsRuta">
         <p-card class="card" (click)="goToGestionAuditorias()">
             Auditorias
@@ -19,6 +19,14 @@
             Expositor
         </p-card>
     </div>
+</div> -->
+
+<div class="paginaCompleta">
+    <p-button label="Auditorías" severity="danger" (onClick)="goToGestionAuditorias()" class="mt-2"></p-button>
+    <p-button label="Admin" severity="danger" (onClick)="goToAdmin()" class="mt-2"></p-button>
+    <p-button label="Tienda" severity="danger" (onClick)="goToTienda()" class="mt-2"></p-button>
+    <p-button label="Mueble" severity="danger" (onClick)="goToMueble()" class="mt-2"></p-button>
+    <p-button label="Expositores" severity="danger" (onClick)="goToExpositor()" class="mt-2"></p-button>
 </div>
 
 
