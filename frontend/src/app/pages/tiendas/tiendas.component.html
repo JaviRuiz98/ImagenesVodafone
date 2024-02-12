@@ -2,10 +2,12 @@
     <div class="contenedorBotonNuevaTienda">
         <div class="cabeceraAñadirTienda">
             <p-button class="botonNuevaTienda" label="+ Añadir Tienda" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="iniciarFormularioNuevaTienda()" [style]="{'cursor': 'pointer'}"></p-button>
-            <span class="p-input-icon-left ml-auto">
-                <i class="pi pi-search"></i>
-                <input pInputText type="text" [(ngModel)]="nombreFiltro" (input)="filtrarPorSfid()" placeholder="Filtrar por nombre" /> 
-            </span> 
+            <div class="filtro">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" [(ngModel)]="nombreFiltro" (input)="filtrarPorSfid()" placeholder="Filtrar por nombre" /> 
+                </span> 
+            </div>
         </div>
         <p-dialog header="Nueva Tienda" [(visible)]="verFormularioNuevaTienda" [style]="{'width': '80vw'}">
             <div class="formulario" *ngIf="activeIndex === 0">
