@@ -79,10 +79,9 @@ export class TiendasComponent implements OnInit{
       } else{
         this.nuevaTienda.sfid = this.sfidInput;
         this.verFormularioNuevaTienda = false;
-
-        /*this.TiendasService.newTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
+        this.TiendasService.newTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
           this.tiendas = response;
-        })*/
+        })
       }
     }
   }
