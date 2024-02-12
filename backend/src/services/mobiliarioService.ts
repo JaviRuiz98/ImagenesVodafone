@@ -223,7 +223,16 @@ export const mobiliarioService = {
                           // No incluyes directamente procesados_imagenes aquí
                         }
                       },
-                      procesados_imagenes: true // Suponiendo que esto es posible según tu esquema
+                      procesados_imagenes: { // Suponiendo que esto es posible según tu esquema 
+                        where: {
+                            id_auditoria: id_auditoria
+                        }, include: {
+                            prompts: true,
+                            imagenes: true
+                        }, orderBy: {
+                            fecha: 'desc'
+                        }
+                      }
                     }
                   }
                 }

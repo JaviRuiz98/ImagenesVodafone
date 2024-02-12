@@ -13,7 +13,7 @@
             class="dropdown">
         </p-dropdown>
         <div class="p-toolbar-group-start">
-            <p-button severity="danger" class="marginRight" label="Nuevo" icon="pi pi-plus" (onClick)="nuevaAuditoria()" [disabled]="tiendaSeleccionada == undefined"></p-button>
+            <p-button severity="danger" class="marginRight" label="Nueva auditoría" icon="pi pi-plus" (onClick)="nuevaAuditoria()" [disabled]="tiendaSeleccionada == undefined"></p-button>
         </div>        
     </p-toolbar>
    
@@ -37,7 +37,7 @@
         <ng-template pTemplate="header">
             <tr>             
                 <th>Id.</th>
-                <th>Fecha</th>
+                <th>Fecha inicio</th>
                 <th>Estado</th> 
                 <th>Progreso</th>
                 <th>Opciones</th>
@@ -59,7 +59,7 @@
 
         <ng-template pTemplate="emptymessage">
             <tr>
-                <td colspan="3">No hay auditorías en esta tienda</td>
+                <td colspan="3">Todavía no hay auditorías en esta tienda</td>
             </tr>
         </ng-template>
         
