@@ -13,8 +13,11 @@ export async function getAuditorias(req: Request, res: Response) {
             //añado el num_expositores_auditoria
             for (let i = 0; i < auditorias.length; i++) {
                 const num_expositores = await auditoriaService.getNumExpositoresByAuditoria(auditorias[i].id_auditoria);
+                const num_expositores_procesados = await auditoriaService.getNumExpositoresProcesadosByAuditoria(auditorias[i].id_auditoria);
+
                 auditoriasExtended[i] = {
                         ...auditorias[i],
+                        num_expositores_procesados: num_expositores_procesados,
                         num_expositores: num_expositores                    
                 }
             }

@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { tiendaService } from '../services/tiendasServices';
-import { tiendas} from '@prisma/client';
+import { muebles, tiendas } from '@prisma/client';
+//import { muebles } from '@prisma/client';
 
 export async function getAllTiendas(req: Request, res: Response) {
-
     try{
         const tiendaId: number | undefined = req.query.tiendaId ? parseInt(req.query.tiendaId as string) : undefined;
         const tiendas: tiendas[] = await tiendaService.getAllById(tiendaId);
@@ -12,16 +12,31 @@ export async function getAllTiendas(req: Request, res: Response) {
     catch (error) {
         console.error('Error al obtener tiendas:', error);
         res.status(500).json({ error: 'Internal server error' });
-      }
+    }
+}
 
-   
+export async function newTienda(req: Request, res: Response) {
+    try{     
+        const tienda: tiendas = await tiendaService.newTienda(req.body.sfid);
+        const listaIdMuebles = req.body.listaNuevosMuebles.map((mueble: muebles) => mueble.id_mueble);
+        const muebles = await tiendaService.asignarPertenenciaMuebleTienda(tienda.id_tienda, listaIdMuebles);
+        console.log(tienda, listaIdMuebles, muebles);
+        getAllTiendas(req, res);
+    }catch (error) {
+        console.error('Error al crear tienda:', error);
+    }
 }
 
 
-// export async function getTiendaBySfid(req: Request, res: Response) {
-//     try{
-//         const sfid = req.params.sfid;
-//         console.log(req.body);
+
+
+
+
+
+export async function getTiendaBySfid(req: Request, res: Response) {
+    try{
+        const sfid = req.params.sfid;
+        console.log(req.body);
       
 
 //         //obtiene las tiendas ordenadas por categoría_clause

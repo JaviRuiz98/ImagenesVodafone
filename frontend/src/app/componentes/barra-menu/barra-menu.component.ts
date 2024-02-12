@@ -25,12 +25,8 @@ import { LocalStorageService } from 'src/app/servicios/local-storage/localStorag
 })
 export class BarraMenuComponent implements OnInit {
 
-
-
   tiendas: tienda[] = [] ;
-
   tiendaSeleccionada: tienda | undefined;
-
   currentState: 'home' | 'auditoria' | 'admin' | 'empty' = 'home';
 
   constructor(
@@ -50,7 +46,6 @@ export class BarraMenuComponent implements OnInit {
       while (route.firstChild) {
         route = route.firstChild;
       }
-  
       if (route.snapshot.data['stateBarra']) {
         this.setStateBarra(route.snapshot.data['stateBarra']);
       } else {
