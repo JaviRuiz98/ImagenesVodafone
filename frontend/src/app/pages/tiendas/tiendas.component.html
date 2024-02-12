@@ -2,10 +2,12 @@
     <div class="contenedorBotonNuevaTienda">
         <div class="cabeceraAñadirTienda">
             <p-button class="botonNuevaTienda" label="+ Añadir Tienda" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="iniciarFormularioNuevaTienda()" [style]="{'cursor': 'pointer'}"></p-button>
-            <span class="p-input-icon-left ml-auto">
-                <i class="pi pi-search"></i>
-                <input pInputText type="text" [(ngModel)]="nombreFiltro" (input)="filtrarPorSfid()" placeholder="Filtrar por nombre" /> 
-            </span> 
+            <div class="filtro">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" [(ngModel)]="nombreFiltro" (input)="filtrarPorSfid()" placeholder="Filtrar por nombre" /> 
+                </span> 
+            </div>
         </div>
         <p-dialog header="Nueva Tienda" [(visible)]="verFormularioNuevaTienda" [style]="{'width': '80vw'}">
             <div class="formulario" *ngIf="activeIndex === 0">
@@ -98,7 +100,7 @@
                 <th style="width:25%">Sfid</th>
                 <th style="width:25%">id Tienda</th>
                 <th style="width:25%">Editar</th>
-                <th style="width:25%">Ejemplo</th>
+                <th style="width:25%">Eliminar</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-tiendas>
@@ -106,7 +108,7 @@
                 <td>{{ tiendas.sfid }}</td>
                 <td>{{ tiendas.id_tienda }}</td>
                 <td><p-button class="botonNuevaTienda" label="Editar Tienda" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="editarTienda(tiendas)"></p-button></td>
-                <td></td>
+                <td><p-button class="botonNuevaTienda" label="Eliminar Tienda" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="editarTienda(tiendas)"></p-button></td>
             </tr>
         </ng-template>
     </p-table>
