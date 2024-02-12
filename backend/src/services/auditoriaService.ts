@@ -54,7 +54,7 @@ export const auditoriaService = {
             const auditoria = await db.auditorias.create({
                 data: {
                     id_tienda: id_tienda,
-                    estado: 'en progreso'
+                    //estado: 'en progreso'
                 }
             })
 

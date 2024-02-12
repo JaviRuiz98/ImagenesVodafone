@@ -27,8 +27,15 @@ export async function newTienda(req: Request, res: Response) {
     }
 }
 
-
-
+export async function asignarPertenenciaMuebleTienda(req: Request, res: Response) {
+    try{     
+        res
+        console.log(req.body)
+        console.log(req.params)
+    }catch (error) {
+        console.error('Error al crear tienda:', error);
+    }
+}
 
 
 

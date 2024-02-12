@@ -34,7 +34,9 @@ export class TiendasService {
     }
     return this.http.post<boolean>(`${this.API_URI}/tiendas`, datosNuevaTienda);
   }
-
+  editarTienda(tienda: tienda, listaNuevosMuebles: muebles[]): Observable<boolean> {
+    return this.http.post<boolean>(`${this.API_URI}/tiendas/`+tienda.id_tienda, listaNuevosMuebles);
+  }
 
 
 
