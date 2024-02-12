@@ -101,6 +101,19 @@ export const tiendaService = {
             await db.$disconnect();
         }
     },
-
-
+    async deleteMueblesTienda(id_tienda: number): Promise<any> {
+        try {
+            await db.pertenencia_mueble_tienda.deleteMany({
+                where: {
+                    id_tienda: id_tienda,
+                },
+            });
+            return true;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        } finally {
+            await db.$disconnect();
+        }
+    },
 }

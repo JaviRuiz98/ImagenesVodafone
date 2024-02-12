@@ -1,6 +1,6 @@
 
 import express from 'express';
-import { getAllTiendas, newTienda, getTiendaBySfid, asignarPertenenciaMuebleTienda } from '../controller/tiendasController';
+import { getAllTiendas, newTienda, getTiendaBySfid, updateTienda} from '../controller/tiendasController';
 import { validateGetTiendasBySfid } from '../validator/tiendaValidator';
 
 
@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/tiendas',getAllTiendas);
 router.post('/tiendas', newTienda);
-router.post('/tiendas/:id_tienda', asignarPertenenciaMuebleTienda);
+router.post('/tiendas/:id_tienda', updateTienda);
 
 
 
