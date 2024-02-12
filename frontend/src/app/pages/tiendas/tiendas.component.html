@@ -1,15 +1,14 @@
 <div class="paginaTiendaCompleta">
     <div class="contenedorBotonNuevaTienda">
-        <!--<button class="botonNuevaTienda" (click)="iniciarFormularioNuevaTienda()">+</button>-->
         <div class="cabeceraAñadirTienda">
             <p-button class="botonNuevaTienda" label="+ Añadir Tienda" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="iniciarFormularioNuevaTienda()" [style]="{'cursor': 'pointer'}"></p-button>
         </div>
         <p-dialog header="Nueva Tienda" [(visible)]="verFormularioNuevaTienda" [style]="{'width': '80vw'}">
             <div class="formulario" *ngIf="activeIndex === 0">
                 <p><strong>Nuevo sfid:</strong></p>
-                <input type="text" pInputText [(ngModel)]="sfidInput" />
+                <input type="text" pInputText [(ngModel)]="sfidInput" [disabled]="editarTiendaCreada"/>
                 <p><strong>Comunidad:</strong></p>
-                <input type="text" pInputText [(ngModel)]="comunidadInput" />
+                <input type="text" pInputText [(ngModel)]="comunidadInput" [disabled]="editarTiendaCreada"/>
             </div>
             <div class="formulario" *ngIf="activeIndex === 1">
                 <p-pickList [source]="listaTodosMuebles" [target]="listaMueblesNuevaTienda" sourceHeader="Muebles disponibles"  targetHeader="Muebles nueva tienda" [dragdrop]="true" [responsive]="true">

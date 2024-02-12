@@ -6,6 +6,7 @@ import { ExpositoresService } from 'src/app/servicios/expositores/expositores.se
 
 import { tienda } from 'src/app/interfaces/tienda';
 import { muebles } from 'src/app/interfaces/muebles';
+import { pertenencia_mueble_tienda } from 'src/app/interfaces/pertenencia_muebles_tienda';
 
 @Component({
   selector: 'app-tiendas',
@@ -21,7 +22,8 @@ export class TiendasComponent implements OnInit{
   tiendas: tienda[] = [];
   nuevaTienda: tienda = {
     sfid: '',
-    id_tienda: 0
+    id_tienda: 0,
+    pertenencia_mueble_tienda: []
   };
   verFormularioNuevaTienda: boolean = false;
   sfidInput: string = 'vfvf';
@@ -30,14 +32,19 @@ export class TiendasComponent implements OnInit{
   activeIndex: number = 0;
   listaTodosMuebles: muebles[] = [];
   listaMueblesNuevaTienda: muebles[] = [];
+  editarTiendaCreada: boolean = false;
+
 
   constructor(private TiendasService: TiendasService, private MueblesService: MueblesService, private messageService: MessageService, private ExpositoresService: ExpositoresService){}
   ngOnInit(): void {
     this.TiendasService.getAllTiendas().subscribe((response: tienda[]) => {
       this.tiendas = response;
+      console.log(response)
     })
     this.MueblesService.getAllMuebles().subscribe((response: muebles[]) => {
       this.listaTodosMuebles = response;
+      console.log(response)
+
     })
     this.parametrosSteps = [
       {
@@ -65,6 +72,7 @@ export class TiendasComponent implements OnInit{
     this.verFormularioNuevaTienda = true;
     this.activeIndex = 0;
     this.listaMueblesNuevaTienda = [];
+    this.editarTiendaCreada = false;
   }
   botonSiguiente(){
     if(this.sfidInput === '' || this.comunidadInput === ''){
@@ -75,9 +83,11 @@ export class TiendasComponent implements OnInit{
       } else{
         this.nuevaTienda.sfid = this.sfidInput;
         this.verFormularioNuevaTienda = false;
-        this.TiendasService.newTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
+        console.log(this.listaMueblesNuevaTienda, this.nuevaTienda);
+
+        /*this.TiendasService.newTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
           this.tiendas = response;
-        })
+        })*/
       }
     }
   }
@@ -87,7 +97,10 @@ export class TiendasComponent implements OnInit{
     }
   }
   editarTienda(tienda: tienda){
+    //this.listaMueblesNuevaTienda = 
     this.activeIndex = 1;
     this.verFormularioNuevaTienda = true;
+    this.editarTiendaCreada = true;
+    
   }
 }
