@@ -6,8 +6,6 @@ import { ExpositoresService } from 'src/app/servicios/expositores/expositores.se
 
 import { tienda } from 'src/app/interfaces/tienda';
 import { muebles } from 'src/app/interfaces/muebles';
-import { pertenencia_mueble_tienda } from 'src/app/interfaces/pertenencia_muebles_tienda';
-
 @Component({
   selector: 'app-tiendas',
   templateUrl: './tiendas.component.html',
@@ -97,7 +95,7 @@ export class TiendasComponent implements OnInit{
     }
   }
   editarTienda(tienda: tienda){
-    //this.listaMueblesNuevaTienda = 
+    
     this.activeIndex = 1;
     this.verFormularioNuevaTienda = true;
     this.editarTiendaCreada = true;

@@ -50,6 +50,8 @@ export class MueblesService {
   getAllMuebles(): Observable<muebles[]> {
     return this.http.get<muebles[]>(this.API_URI);
   }
+
+  
 }
 
 
