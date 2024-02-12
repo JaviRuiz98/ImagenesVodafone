@@ -1,6 +1,5 @@
-import {   tiendas } from "@prisma/client";
+import { tiendas } from "@prisma/client";
 import db  from "../config/database";
-//import { InternalServerError } from "openai";
 
 export const tiendaService = {
     
@@ -67,7 +66,7 @@ export const tiendaService = {
       }
   },
       
-  async  newTienda(sfid: string): Promise<tiendas> {
+  async newTienda(sfid: string): Promise<tiendas> {
     try{
         return await db.tiendas.create({
             data: ({
@@ -101,7 +100,7 @@ export const tiendaService = {
         } finally {
             await db.$disconnect();
         }
-    }
+    },
 
 
 }
