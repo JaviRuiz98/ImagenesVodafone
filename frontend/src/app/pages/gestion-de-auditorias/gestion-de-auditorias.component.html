@@ -48,7 +48,7 @@
                 <td>{{ auditoria.id_auditoria }}</td>                
                 <td>{{ formatDate(auditoria.fecha) }}</td>
                 <td>
-                    <p-tag [severity]="getSeverityEstadoAuditoria(auditoria.estado)">{{ auditoria.estado }}</p-tag>                    
+                    <p-tag [severity]="getSeverityEstadoAuditoria(auditoria.estados_auditoria.estado)">{{ auditoria.estados_auditoria.estado }}</p-tag>                    
                 </td>               
                 <td>{{ auditoria.num_expositores_procesados }}/{{ auditoria.num_expositores }}</td>
                 <td class="opciones">         

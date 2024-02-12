@@ -10,6 +10,8 @@ export const auditoriaService = {
             return db.auditorias.findMany({
                 where: {
                     id_tienda: id_tienda
+                }, include: {
+                    estados_auditoria: true
                 }, orderBy: {
                     id_auditoria: 'desc'
                 }
@@ -54,7 +56,7 @@ export const auditoriaService = {
             const auditoria = await db.auditorias.create({
                 data: {
                     id_tienda: id_tienda,
-                    //estado: 'en progreso'
+                    id_estado: 1
                 }
             })
 
