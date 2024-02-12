@@ -6,7 +6,7 @@ import { expositoresService } from '../services/expositorService';
 import { procesadoService } from '../services/procesadoService';
 import { parseBool } from '../utils/funcionesCompartidasController';
 import { imagenService } from '../services/imagenService';
-import { pertenencia_expositor_auditoria, prompts } from '@prisma/client';
+import { prompts } from '@prisma/client';
 import { promptService } from '../services/promptService';
 import { mobiliarioService } from '../services/mobiliarioService';
 import { procesados_imagenes } from '@prisma/client';
@@ -23,11 +23,10 @@ const id_prompt_dispositivos: number = 5; //prompt usado actualmente para dispos
 export async function procesarImagenes(req: Request, res: Response) {
   try {
     const file = req.file //as { [fieldname: string]: Express.Multer.File[] };
-    const id_expositor_auditoria: number = parseInt(req.body.id_expositor_auditoria); //ojo refactor
+    const id_expositor: number = parseInt(req.body.id_expositor); //ojo refactor
     const id_mueble: number = parseInt(req.body.id_mueble);
-    const id_auditoria_selected: number = parseInt(req.body.id_auditoria_selected);
-
-    console.log('Procesado para expositor auditoria: ', id_expositor_auditoria)
+    const id_auditoria: number = parseInt(req.body.id_auditoria);
+    console.log(id_auditoria)
     
     //obtengo la imagen a procesar
     const imagenProcesada = file//(files['imagenesprocesado'] as Express.Multer.File[]).map(file => file.path)[0];
@@ -37,20 +36,15 @@ export async function procesarImagenes(req: Request, res: Response) {
        res.status(500).json({ error: 'La imagen procesada no existe' });
        return;
     }
-
-    // obtener los datos del expositor a través del expositor-auditoria
-    const pea: pertenencia_expositor_auditoria | null = await expositoresService.peaByIdAuditoria(id_expositor_auditoria);
-    if (!pea) {
-      throw new Error('No se encontró el elemento.');
-    }
     
     //creo la imagen nueva y compruebo que existe el expositor (falta tipar)
-    const [nuevaImagen, existingExpositor]  = await Promise.all([
+    const [nuevaImagen, existingExpositor, id_expositor_auditoria]  = await Promise.all([
       imagenService.create(imagenProcesada.filename, imagenProcesada.originalname),
-      expositoresService.getById(pea?.id_expositor),
+      expositoresService.getById(id_expositor),
+      procesadoService.getIdExpositorAuditoria(id_expositor, id_mueble, id_auditoria)
     ]);    
 
-    if (!existingExpositor) {
+    if (!existingExpositor || !id_expositor_auditoria) {
         res.status(404).json({ error: 'Expositor no encontrado' });
         return;
     }
@@ -93,12 +87,14 @@ export async function procesarImagenes(req: Request, res: Response) {
       return;
     }
 
+    
+
     const similarityObject = JSON.parse(cleanedResponse);
     //Guardar en la base de datos (falta por implementar)
     const id_procesado_imagen = await procesadoService.create( //devuelve el id del procesado de imagen para usarlo en el almacenamiento de la respuesta
       id_expositor_auditoria, 
       nuevaImagen.id_imagen,       
-      id_auditoria_selected,
+      id_auditoria,
       categoria,
       similarityObject.comentarios, 
       parseBool(similarityObject.valido), 
