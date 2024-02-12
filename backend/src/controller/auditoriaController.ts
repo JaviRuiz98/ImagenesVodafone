@@ -1,13 +1,11 @@
 import { Request, Response } from 'express';
-import { auditorias } from '@prisma/client';
 import { auditoriaService } from '../services/auditoriaService';
 import { auditoria_extended } from '../interfaces/auditoriaExtended';
-
+import { auditorias } from '@prisma/client';
 
 export async function getAuditorias(req: Request, res: Response) {
     try {
         const id_tienda = parseInt(req.params.id_tienda as string);
-
         const auditorias: auditorias[]|null = await auditoriaService.getAuditorias(id_tienda);
         let auditoriasExtended: auditoria_extended[] = [];
 

@@ -6,8 +6,7 @@ import { ExpositoresService } from 'src/app/servicios/expositores/expositores.se
 
 import { tienda } from 'src/app/interfaces/tienda';
 import { muebles } from 'src/app/interfaces/muebles';
-import { Expositor } from 'src/app/interfaces/expositor';
-import { response } from 'express';
+import { pertenencia_mueble_tienda } from 'src/app/interfaces/pertenencia_muebles_tienda';
 
 @Component({
   selector: 'app-tiendas',
@@ -23,41 +22,41 @@ export class TiendasComponent implements OnInit{
   tiendas: tienda[] = [];
   nuevaTienda: tienda = {
     sfid: '',
-    id_tienda: 0
+    id_tienda: 0,
+    pertenencia_mueble_tienda: []
   };
   verFormularioNuevaTienda: boolean = false;
   sfidInput: string = 'vfvf';
   comunidadInput: string = 'fvf';
   parametrosSteps: any; //TIPAR CON LABEL Y ROUTERLINK
   activeIndex: number = 0;
-  botonSiguienteDeshabilitado: boolean = false;
-  botonAtrasDeshabilitado: boolean = false;
-  contenidoBotonSiguiente: string = 'Siguiente';
   listaTodosMuebles: muebles[] = [];
   listaMueblesNuevaTienda: muebles[] = [];
+  editarTiendaCreada: boolean = false;
+
 
   constructor(private TiendasService: TiendasService, private MueblesService: MueblesService, private messageService: MessageService, private ExpositoresService: ExpositoresService){}
   ngOnInit(): void {
     this.TiendasService.getAllTiendas().subscribe((response: tienda[]) => {
       this.tiendas = response;
+      console.log(response)
     })
     this.MueblesService.getAllMuebles().subscribe((response: muebles[]) => {
       this.listaTodosMuebles = response;
-      console.log(this.listaTodosMuebles)
+      console.log(response)
+
     })
     this.parametrosSteps = [
       {
         label: 'Datos Tienda',
         command: (event: any) => {
           this.activeIndex = 0;
-          this.contenidoBotonSiguiente = 'Siguiente'; 
         }
       },
       {
         label: 'Muebles',
         command: (event: any) => {
             this.activeIndex = 1;
-            this.contenidoBotonSiguiente = 'Siguiente'; 
 
         }
       },
@@ -65,7 +64,6 @@ export class TiendasComponent implements OnInit{
         label: 'Confirmar',
         command: (event: any) => {
             this.activeIndex = 2;
-            this.contenidoBotonSiguiente = 'Crear Tienda'; 
         }
       }
     ];
@@ -74,35 +72,35 @@ export class TiendasComponent implements OnInit{
     this.verFormularioNuevaTienda = true;
     this.activeIndex = 0;
     this.listaMueblesNuevaTienda = [];
+    this.editarTiendaCreada = false;
   }
   botonSiguiente(){
     if(this.sfidInput === '' || this.comunidadInput === ''){
       this.messageService.add({severity:'error', summary:'Error!', detail:'Los campos necesarios no estan completos.'});
     } else{
-      if(this.contenidoBotonSiguiente === 'Siguiente'){
+      if(this.activeIndex < 2){
         this.activeIndex++;
-        this.botonAtrasDeshabilitado = false;
-        this.botonSiguienteDeshabilitado = false;
-        console.log(this.listaMueblesNuevaTienda)
       } else{
         this.nuevaTienda.sfid = this.sfidInput;
-        this.TiendasService.newTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
-        })
+        this.verFormularioNuevaTienda = false;
+        console.log(this.listaMueblesNuevaTienda, this.nuevaTienda);
+
+        /*this.TiendasService.newTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
+          this.tiendas = response;
+        })*/
       }
     }
   }
   botonAtras(){
     if(this.activeIndex > 0){
       this.activeIndex--;
-      this.botonAtrasDeshabilitado = false;
-      this.contenidoBotonSiguiente = 'Siguiente';
-    } else{
-      this.botonAtrasDeshabilitado = true;
     }
   }
   editarTienda(tienda: tienda){
-    console.log(tienda)
+    //this.listaMueblesNuevaTienda = 
     this.activeIndex = 1;
     this.verFormularioNuevaTienda = true;
+    this.editarTiendaCreada = true;
+    
   }
 }

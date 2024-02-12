@@ -1,6 +1,7 @@
-import { expositores, imagenes, muebles } from "@prisma/client";
+import { expositores,  muebles } from "@prisma/client";
 import db  from "../config/database";
 import { getDestination } from "../config/multer";
+import { imagenes, pertenencia_expositor_auditoria } from "@prisma/client";
 
 export const expositoresService = {
 
@@ -21,7 +22,7 @@ export const expositoresService = {
         
     },
 
-    //repasar
+// repasar
     async  getImage(id_image: number): Promise<imagenes> {
         try {
           const image = await db.imagenes.findUnique({
@@ -110,6 +111,33 @@ export const expositoresService = {
         }catch (error) {
           throw error;
         }
+      },
+
+      async guardarExpositor(nombre: string, activo: boolean, id_imagen: number): Promise<expositores> {
+        try {
+          return await db.expositores.create({ data: { nombre: nombre, activo: activo, id_imagen: id_imagen } });
+        }catch (error) {
+          console.log(error)
+          throw error;
+        }
+      },
+
+      //ide auditoria -> objeto pertenencia_expositor_auditoria
+
+      async peaByIdAuditoria(id_expositor_auditoria: number): Promise<pertenencia_expositor_auditoria | null>{
+        try{
+          return await db.pertenencia_expositor_auditoria.findUnique({
+          where: {
+            id_expositor_auditoria: id_expositor_auditoria
+          }
+          });
+
+        }catch(error){
+          console.log(error)
+          throw error;
+        }
+
+
       }
 
 }
