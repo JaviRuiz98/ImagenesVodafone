@@ -70,7 +70,8 @@ export const tiendaService = {
     try{
         return await db.tiendas.create({
             data: ({
-                sfid: sfid
+                sfid: sfid,
+                activa: true
             })
         });
     } catch (error) {

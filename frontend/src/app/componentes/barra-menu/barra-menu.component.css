@@ -1,6 +1,6 @@
 .barraCompletaBotonInicio {
   display: grid;
-  grid-template-rows: 80% 20%;
+  grid-template-rows: 100% 20%;
 }
 .barraCompleta {
   display: grid;

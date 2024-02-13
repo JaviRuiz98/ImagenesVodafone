@@ -90,6 +90,12 @@ export async function procesarImagenes(req: Request, res: Response) {
     
 
     const similarityObject = JSON.parse(cleanedResponse);
+
+    const id_probabilidad_cartel: number | null = await procesadoService.getIdProbabilidadCartelDadaProbabilidad(similarityObject.probabilidad_cartel)
+    if(!id_probabilidad_cartel) {
+      throw new Error('Probabilidad cartel no valida')
+    }
+
     //Guardar en la base de datos (falta por implementar)
     const id_procesado_imagen = await procesadoService.create( //devuelve el id del procesado de imagen para usarlo en el almacenamiento de la respuesta
       id_expositor_auditoria, 
@@ -100,7 +106,7 @@ export async function procesarImagenes(req: Request, res: Response) {
       parseBool(similarityObject.valido), 
       IA_utilizada, 
       promptObject.id_prompt,
-      similarityObject.probab_estar_contenido,
+      id_probabilidad_cartel,
       parseInt(similarityObject.dispositivos_contados),
       dispositivosCount
       );    

@@ -24,7 +24,8 @@ export class TiendasComponent implements OnInit{
   nuevaTienda: tienda = {
     sfid: '',
     id_tienda: 0,
-    pertenencia_mueble_tienda: []
+    pertenencia_mueble_tienda: [],
+    activa: true
   };
   verFormularioNuevaTienda: boolean = false;
   sfidInput: string = '';
@@ -56,14 +57,13 @@ export class TiendasComponent implements OnInit{
       {
         label: 'Muebles',
         command: (event: any) => {
-            this.activeIndex = 1;
-
+          this.activeIndex = 1;
         }
       },
       {
         label: 'Confirmar',
         command: (event: any) => {
-            this.activeIndex = 2;
+          this.activeIndex = 2;
         }
       }
     ];
