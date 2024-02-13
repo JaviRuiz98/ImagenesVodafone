@@ -8,7 +8,6 @@ import { parseBool } from '../utils/funcionesCompartidasController';
 import { imagenService } from '../services/imagenService';
 import { prompts } from '@prisma/client';
 import { promptService } from '../services/promptService';
-import { mobiliarioService } from '../services/mobiliarioService';
 import { procesados_imagenes } from '@prisma/client';
 
 
@@ -24,7 +23,6 @@ export async function procesarImagenes(req: Request, res: Response) {
   try {
     const file = req.file //as { [fieldname: string]: Express.Multer.File[] };
     const id_expositor: number = parseInt(req.body.id_expositor); //ojo refactor
-    const id_mueble: number = parseInt(req.body.id_mueble);
     const id_auditoria: number = parseInt(req.body.id_auditoria);
     console.log('id_auditoria: ',id_auditoria)
     
@@ -41,7 +39,7 @@ export async function procesarImagenes(req: Request, res: Response) {
     const [nuevaImagen, existingExpositor, id_expositor_auditoria]  = await Promise.all([
       imagenService.create(imagenProcesada.filename, imagenProcesada.originalname),
       expositoresService.getById(id_expositor),
-      procesadoService.getIdExpositorAuditoria(id_expositor, id_mueble, id_auditoria)
+      procesadoService.getIdExpositorAuditoria(id_expositor, id_auditoria)
     ]);    
 
     if (!existingExpositor || !id_expositor_auditoria) {
@@ -49,11 +47,10 @@ export async function procesarImagenes(req: Request, res: Response) {
         return;
     }
 
-    //obtengo la imagen de referencia y la cantidad de dispositivos 
-    const [imagenReferencia, mueble] = await Promise.all([
-      expositoresService.getImage(existingExpositor.id_imagen),
-      mobiliarioService.getMuebleById(id_mueble),    
-    ]);
+    //obtengo la imagen de referencia
+    const imagenReferencia = await expositoresService.getImage(existingExpositor.id_imagen);
+       
+
     
 
     if (!imagenReferencia) {
@@ -61,8 +58,8 @@ export async function procesarImagenes(req: Request, res: Response) {
       return;
     }
    
-    const dispositivosCount = mueble?.numero_dispositivos || 0;
-    const categoria = mueble?.categoria || '';
+    const dispositivos_esperados:number =  existingExpositor.numero_dispositivos || 0;
+    const categoria = existingExpositor.categoria || '';
     const id_prompt_usado: number = categoria == 'carteles'?  id_prompt_carteles : id_prompt_dispositivos;
 
     const promptObject: prompts | null = await promptService.getById(id_prompt_usado);
@@ -108,7 +105,7 @@ export async function procesarImagenes(req: Request, res: Response) {
       promptObject.id_prompt,
       id_probabilidad_cartel,
       parseInt(similarityObject.dispositivos_contados),
-      dispositivosCount
+      dispositivos_esperados
       );    
     
     const procesado_object = await procesadoService.getById(id_procesado_imagen);

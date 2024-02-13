@@ -18,7 +18,7 @@ export const tiendaService = {
                             include:{
                                 muebles:{
                                     select:{
-                                        id_mueble: true,
+                                        id: true,
                                         
                                     }
                                 }
@@ -50,7 +50,7 @@ export const tiendaService = {
                         include:{
                             muebles:{
                                 select:{
-                                    id_mueble: true,
+                                    id: true,
                                     
                                 }
                             }

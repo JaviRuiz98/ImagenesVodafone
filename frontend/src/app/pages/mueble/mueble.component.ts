@@ -16,16 +16,14 @@ import { HistorialExpositoresComponent } from './components/historialExpositores
 export class MuebleComponent implements OnInit {
 
 
-  mueblesDispostivos: muebles[] = [];
-  mueblesDispositivosFiltrados: muebles[] = [];
+  muebles: muebles[] = [];
+  mueblesFiltrados: muebles[] = [];
 
-  mueblesCarteles: muebles[] = [];
-  mueblesCartelesFiltrados: muebles[] = [];
+
 
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
-  tableStateOption: any[] = [{label:'Dispositivos', icon: 'pi pi-mobile', value: 'dispositivos',  styleClass: "optionColorVodafone" }, {label:'Carteles' ,icon: 'pi pi-book', value: 'cartel', styleClass: "optionColorVodafone" }];
-  tableSelected:string = 'dispositivos';
+
   nombreFiltro: string = '';
 
 
@@ -43,11 +41,8 @@ export class MuebleComponent implements OnInit {
   }
   private loadMuebles() {
    this.muebleService.getAllMuebles().subscribe(muebles => {
-     this.mueblesDispostivos = muebles.filter(mueble => mueble.categoria === 'dispositivos');
-     this.mueblesDispositivosFiltrados = this.mueblesDispostivos;
-
-     this.mueblesCarteles = muebles.filter(mueble => mueble.categoria === 'cartel');
-     this.mueblesCartelesFiltrados = this.mueblesCarteles;
+     this.muebles = muebles;
+     this.mueblesFiltrados = muebles;
      console.log(muebles);
    })
   }
@@ -60,11 +55,9 @@ export class MuebleComponent implements OnInit {
   }
 
   filtrarPorNombre() {
-    if (this.tableSelected === 'dispositivos') {
-        this.mueblesDispositivosFiltrados = this.filterByNombre(this.mueblesDispostivos);
-    } else {
-        this.mueblesCartelesFiltrados = this.filterByNombre(this.mueblesCarteles);
-    }
+   
+    this.mueblesFiltrados = this.filterByNombre(this.mueblesFiltrados);
+   
   }
 
 filterByNombre(muebles: any[]): any[] {

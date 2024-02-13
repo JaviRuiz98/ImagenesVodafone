@@ -45,7 +45,7 @@ export const auditoriaService = {
             data: {
                 id_auditoria: id_auditoria,
                 id_mueble: mueble.id_mueble,
-                id_expositor: expositor.id_expositor
+                id_expositor: expositor.id
             }
         });
     },
