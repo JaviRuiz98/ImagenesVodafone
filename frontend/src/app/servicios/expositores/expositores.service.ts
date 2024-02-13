@@ -36,6 +36,10 @@ export class ExpositoresService {
     return this.http.post<Expositor>(`${this.API_URI}/expositorActivaDesactiva`, body);
   }
 
+
+  getAllZonas(){
+    return this.http.get<string[]>(`${this.API_URI}/zonas`);
+  }
   
 
 }

@@ -141,7 +141,7 @@ export const expositoresService = {
       async editarEstadoExpositor(idExpositor: number, valActivo: boolean){
         try{
           return await db.expositores.update({
-            where: {id_expositor: idExpositor },
+            where: {id: idExpositor },
             data: { activo: valActivo },
           });
         }catch(error){
