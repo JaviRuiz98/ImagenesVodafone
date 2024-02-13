@@ -60,6 +60,11 @@ export async function deleteMueblesTienda(id_tienda: number) {
 
 
 
+
+
+
+
+
 export async function getTiendaBySfid(req: Request, res: Response) {
     try{
         const sfid = req.params.sfid;
