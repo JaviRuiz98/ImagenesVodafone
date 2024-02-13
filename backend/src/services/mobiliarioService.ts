@@ -1,4 +1,4 @@
-import {       muebles, pertenencia_mueble_tienda } from "@prisma/client";
+import { muebles, pertenencia_mueble_tienda } from "@prisma/client";
 import db  from "../config/database";
 
 import {  MuebleFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
@@ -6,6 +6,8 @@ import {  MuebleFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
 
 
 export const mobiliarioService = {
+
+
     getFilteredMuebles: async (
         id?: number,
         categoria_clause: "carteles" | "dispositivos" | null = null,
@@ -88,7 +90,7 @@ export const mobiliarioService = {
     },
 
     async getMuebleById( id_mueble: number): Promise<muebles | null> {
-        return await db.muebles.findUnique({where: {id_mueble: id_mueble}});
+        return await db.muebles.findUnique({where: {id: id_mueble}});
     }, 
 
     //tipar
@@ -107,7 +109,7 @@ export const mobiliarioService = {
         //tipar
     async updateMueble(id_mueble:number, mueble: any): Promise<MuebleFrontInterfaz | null> {
         try{
-            const muebleUpdated = await db.muebles.update({where: {id_mueble: id_mueble}, data: mueble});
+            const muebleUpdated = await db.muebles.update({where: {id: id_mueble}, data: mueble});
             const result = mapearResultadoParaFront(muebleUpdated);
             return result;
             
@@ -241,10 +243,10 @@ export const mobiliarioService = {
               
               const resultado = muebles.map(mueble => {
                 const expositores: any[] = mueble.pertenencia_expositor_auditoria.reduce((acc: any[], auditoria) => {
-                    let expositor = acc.find(ex => ex.id_expositor === auditoria.expositores.id_expositor);
+                    let expositor = acc.find(ex => ex.id_expositor === auditoria.expositores.id);
                     if (!expositor) {
                       expositor = {
-                        id_expositor: auditoria.expositores.id_expositor,
+                        id_expositor: auditoria.expositores.id,
                         id_imagen: auditoria.expositores.id_imagen,
                         nombre: auditoria.expositores.nombre,
                         imagenes: auditoria.expositores.imagenes,
@@ -261,11 +263,11 @@ export const mobiliarioService = {
                 }, []);
               
                 return {
-                  id_mueble: mueble.id_mueble,
+                  id_mueble: mueble.id,
                   nombre_mueble: mueble.nombre_mueble,
-                  numero_dispositivos: mueble.numero_dispositivos,
                   categoria: mueble.categoria,
-                  numero_expositores: mueble.numero_expositores,
+                  numero_expositores_carteles: mueble.numero_expositores_carteles,
+                  numero_expositores_dispostivos:mueble.numero_expositores_dispositivos,
                   expositores
                 };
               });
@@ -306,7 +308,7 @@ export const mobiliarioService = {
 
 
 //tipar adecuadamente
-function mapearResultadoParaFront(mueble: any) {
+function mapearResultadoParaFront(mueble: any): MuebleFrontInterfaz {
 
     let expositores = [];
 
@@ -321,8 +323,8 @@ function mapearResultadoParaFront(mueble: any) {
         id_mueble: mueble.id_mueble,
         nombre_mueble: mueble.nombre_mueble,
         expositores: expositores, 
-        categoria: mueble.categoria,
-        numero_dispositivos: mueble.numero_dispositivos,
+        numero_expositores_carteles: mueble.numero_expositores_carteles,
+        numero_expositores_dispositivos: mueble.numero_expositores_dispositivos,
     };
 }
 

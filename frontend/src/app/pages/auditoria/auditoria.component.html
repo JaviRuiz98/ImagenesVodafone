@@ -9,7 +9,7 @@
           <div class="custom-header" >
             Elemento/mueble {{mueble.nombre_mueble !== undefined ? ' - ' + mueble.nombre_mueble : mueble.id_mueble}}
             
-             <p-progressSpinner *ngIf="mueble.expositores[0] != undefined? cargas_procesamiento[mueble.expositores[0].id_expositor]: false" 
+             <p-progressSpinner *ngIf="mueble.expositores[0] != undefined? cargas_procesamiento[mueble.expositores[0].id]: false" 
               class="spinner" strokeWidth="6" fill="var(--surface-ground)" animationDuration=".6s"
               [style]="{'width': '30px', 'height': '30px'}"></p-progressSpinner> 
           </div>
@@ -38,11 +38,11 @@
               <div *ngIf="mueble.expositores.length == 1 && mueble.expositores[0] != undefined" class="anchoAltoSubirFoto">              
                 <app-paginador-procesamiento-subida  
                   class="anchoAltoPaginador"
-                  [id_expositor_selected]="mueble.expositores[0].id_expositor"
+                  [id_expositor_selected]="mueble.expositores[0].id"
                   [procesados]="mueble.expositores[0].procesados_imagenes" 
-                  [cargando_procesamiento]="cargas_procesamiento[mueble.expositores[0].id_expositor]"
-                  [valueSelected]="modos_visualizacion[mueble.expositores[0].id_expositor] === 'historial'? 'historial':'new'"
-                  (archivoSeleccionadoChange)="recibirFile($event, mueble.expositores[0].id_expositor, mueble.id_mueble)">
+                  [cargando_procesamiento]="cargas_procesamiento[mueble.expositores[0].id]"
+                  [valueSelected]="modos_visualizacion[mueble.expositores[0].id] === 'historial'? 'historial':'new'"
+                  (archivoSeleccionadoChange)="recibirFile($event, mueble.expositores[0].id, mueble.id_mueble)">
                 </app-paginador-procesamiento-subida>            
               </div>
           

@@ -9,7 +9,8 @@ import { Expositor } from '../../interfaces/expositor';
 })
 export class ExpositoresService {
 
-  API_URI = 'http://localhost:3000';
+  private API_URI = 'http://localhost:3000';
+  
   constructor(private http: HttpClient) { }
   
   getExpositores(): Observable<Expositor[]> {
@@ -27,11 +28,14 @@ export class ExpositoresService {
     return this.http.post<Expositor>(`${this.API_URI}/expositor`, formData);
   }
 
+  cambiarActivo(id_expositor: number, activo: boolean){
+    const body = {
+      id_expositor,
+      activo
+    };
+    return this.http.post<Expositor>(`${this.API_URI}/expositorActivaDesactiva`, body);
+  }
+
   
 
-
-
-
-
-  
 }

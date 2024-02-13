@@ -11,14 +11,11 @@
     <div class="p-toolbar-group-center">
          <span class="p-input-icon-left ml-auto">
             <i class="pi pi-search"></i>
-            <input pInputText type="text" [(ngModel)]="nombreFiltro" (input)="filtrarPorNombre()"    placeholder="Filtrar por nombre" /> 
+            <input pInputText type="text" [(ngModel)]="nombreFiltro" (input)="filtrarPorNombre()"  placeholder="Filtrar por nombre" /> 
          </span> 
     </div>
     <div class="p-toolbar-group-end">
-        <div >
-            <p-selectButton (onChange)="resetTabla()"  [allowEmpty]="false" [options]="tableStateOption" [(ngModel)]="tableSelected" optionLabel="label" optionValue="value" ></p-selectButton>
-        </div>
-
+      
      
     </div>
 </p-toolbar>
@@ -26,7 +23,7 @@
         <p-table 
             #miTabla
             class="table"
-            [value]=" tableSelected === 'dispositivos' ? mueblesDispositivosFiltrados : mueblesCartelesFiltrados"
+            [value]="muebles"
             [paginator]="true"
             [rows]="10"
             [scrollable]="true"
@@ -42,7 +39,7 @@
         <ng-template pTemplate="caption" >
              <p class="p-m-0 text-2xl"> Muebles</p>
 
-            <p-progressSpinner *ngIf="(mueblesDispostivos.length == 0 || mueblesCarteles.length == 0)? true: false"   fill="var(--surface-ground)" [style]="{'width': '5%', 'height': '5%'}" animationDuration=".6s"  class="fadein animation-duration-1000 "></p-progressSpinner>
+            <p-progressSpinner *ngIf="(muebles.length == 0 )"   fill="var(--surface-ground)" [style]="{'width': '5%', 'height': '5%'}" animationDuration=".6s"  class="fadein animation-duration-1000 "></p-progressSpinner>
             
         </ng-template>
         <ng-template pTemplate="header">
@@ -50,7 +47,7 @@
              
             <th>Expositor</th>
             <th pSortableColumn="nombre_mueble">Nombre <p-sortIcon field="nombre_mueble"></p-sortIcon></th>
-            <th pSortableColumn="numero_dispositivos" *ngIf="tableSelected === 'dispositivos'">Número de dispositivos <p-sortIcon field="numero_dispositivos"></p-sortIcon></th> 
+            <th pSortableColumn="numero_dispositivos" >Número de dispositivos <p-sortIcon field="numero_dispositivos"></p-sortIcon></th> 
             <th>Opciones</th>
             </tr>
         </ng-template>
@@ -65,7 +62,7 @@
                     <div *ngIf="mueble.expositores.length < 1">Sin Expositor</div>
                 </td>
                 <td>{{ mueble.nombre_mueble }}</td>
-                <td *ngIf="tableSelected === 'dispositivos'">{{ mueble.numero_dispositivos }}</td>
+                <td >{{ mueble.numero_dispositivos }}</td>
                 <td class="opciones">         
                     <p-button severity="danger" class="mr-2" [raised]="true" [text]="true" [rounded]="true" label="Editar" icon="pi pi-pencil"  (click)="editMueble(mueble)"></p-button>
                     <p-button  [raised]="true"  [text]="true" [rounded]="true" severity="danger" label="Historial de expositores" icon="pi pi-history" [disabled]="mueble.expositores.length < 1" (click) ="showHistorial(mueble)"></p-button>
