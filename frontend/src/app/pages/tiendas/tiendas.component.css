@@ -9,6 +9,12 @@
     justify-content: center;
     align-items: center;
 }
+.filtro{
+    display: flex;
+    justify-content: end;
+    margin-right: 1%;
+
+}
 .cabeceraAñadirTienda{
     display: grid;
     grid-template-columns:50% 50% ;
@@ -48,7 +54,7 @@
     color: black;
 }
 .formulario {
-    margin: 5%;
+    margin: 2%;
 }
 .resumentNuevaTienda{
     display: grid;

@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { tiendaService } from '../services/tiendasServices';
 import { muebles, tiendas } from '@prisma/client';
-//import { muebles } from '@prisma/client';
 
 export async function getAllTiendas(req: Request, res: Response) {
     try{
@@ -19,13 +18,60 @@ export async function newTienda(req: Request, res: Response) {
     try{     
         const tienda: tiendas = await tiendaService.newTienda(req.body.sfid);
         const listaIdMuebles = req.body.listaNuevosMuebles.map((mueble: muebles) => mueble.id_mueble);
-        const muebles = await tiendaService.asignarPertenenciaMuebleTienda(tienda.id_tienda, listaIdMuebles);
-        console.log(tienda, listaIdMuebles, muebles);
+        await tiendaService.asignarPertenenciaMuebleTienda(tienda.id_tienda, listaIdMuebles);
         getAllTiendas(req, res);
     }catch (error) {
         console.error('Error al crear tienda:', error);
     }
 }
+
+export async function updateTienda(req: Request, res: Response) {
+    try{     
+        const id_tienda = parseInt(req.params.id_tienda);
+        desactivarMueblesTienda(id_tienda);
+        const listaIdMuebles = req.body.map((mueble: muebles) => mueble.id_mueble);
+        await tiendaService.asignarPertenenciaMuebleTienda(id_tienda, listaIdMuebles);
+        res.status(200).json(id_tienda);
+    }catch (error) {
+        console.error('Error al crear tienda:', error);
+    }
+}
+
+export async function asignarPertenenciaMuebleTienda(req: Request, res: Response) {
+    try{     
+        const listaMuebles = req.body as { id_mueble: number, nombre_mueble: string, expositores: any[], categoria: string, numero_dispositivos: number | null }[];
+        const listaIdMuebles: number[] = listaMuebles.map(mueble => mueble.id_mueble);
+        const muebles = await tiendaService.asignarPertenenciaMuebleTienda(parseInt(req.params.id_tienda), listaIdMuebles);
+        res.status(200).json(muebles);
+
+    }catch (error) {
+        console.error('Error al crear tienda:', error);
+    }
+}
+
+export async function desactivarMueblesTienda(id_tienda: number) {
+    try{     
+       await tiendaService.deleteMueblesTienda(id_tienda);
+    }catch (error) {
+        console.error('Error al crear tienda:', error);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

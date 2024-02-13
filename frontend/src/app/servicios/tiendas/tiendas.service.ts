@@ -13,14 +13,6 @@ import { muebles } from 'src/app/interfaces/muebles';
 export class TiendasService {
 
   API_URI = 'http://localhost:3000';
-/*
-  headers = new HttpHeaders({
-    'Content-Type': 'application/json',
-  });
-
-  options = { 
-    headers: this.headers
-  }*/
 
   constructor(private http: HttpClient){ }
 
@@ -34,6 +26,16 @@ export class TiendasService {
     }
     return this.http.post<boolean>(`${this.API_URI}/tiendas`, datosNuevaTienda);
   }
+  editarTienda(tienda: tienda, listaNuevosMuebles: muebles[]): Observable<boolean> {
+    return this.http.post<boolean>(`${this.API_URI}/tiendas/`+tienda.id_tienda, listaNuevosMuebles);
+  }
+
+
+
+
+
+
+
 
 
 

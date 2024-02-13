@@ -1,4 +1,4 @@
-import {       muebles, pertenencia_mueble_tienda } from "@prisma/client";
+import { muebles, pertenencia_mueble_tienda } from "@prisma/client";
 import db  from "../config/database";
 
 import {  MuebleFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
@@ -223,7 +223,17 @@ export const mobiliarioService = {
                           // No incluyes directamente procesados_imagenes aquí
                         }
                       },
-                      procesados_imagenes: true // Suponiendo que esto es posible según tu esquema
+                      procesados_imagenes: { // Suponiendo que esto es posible según tu esquema 
+                        where: {
+                            id_auditoria: id_auditoria
+                        }, include: {
+                            prompts: true,
+                            imagenes: true,
+                            probabilidades_respuesta_carteles: true
+                        }, orderBy: {
+                            fecha: 'desc'
+                        }
+                      }
                     }
                   }
                 }

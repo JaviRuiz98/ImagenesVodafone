@@ -9,7 +9,7 @@ export const expositoresService = {
         try{
             return db.expositores.findUnique({
                 where: {
-                    id_expositor: id_expositor
+                  id_expositor: id_expositor
                 }
             })
         }

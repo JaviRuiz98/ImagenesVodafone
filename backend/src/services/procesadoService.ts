@@ -4,19 +4,20 @@ import db  from "../config/database";
 
 //tipo_procesado
 export const procesadoService = {
-    async create (id_imagen: number, id_expositor: number, categoria: string, comentarios: string, valido: boolean, IA_utilizada: string, id_prompt_usado: number, probabilidad_cartel?: string, dispositivos_contados?: number, huecos_esperados?: number) {
+    async create (id_expositor: number, id_imagen: number, id_auditoria: number, categoria: string, comentarios: string, valido: boolean, IA_utilizada: string, id_prompt_usado: number, id_probabilidad_cartel?: number, dispositivos_contados?: number, huecos_esperados?: number) {
 
        
         const procesado = await db.procesados_imagenes.create({
             data: {                
-                id_imagen: id_imagen,
                 id_expositor_auditoria: id_expositor,
+                id_imagen: id_imagen,                
+                id_auditoria: id_auditoria,
                 categoria: categoria,
                 comentarios: comentarios,
                 valido: valido,
                 IA_utilizada: IA_utilizada,
                 id_prompt_usado: id_prompt_usado,
-                probabilidad_cartel: probabilidad_cartel,
+                id_probabilidad_cartel: id_probabilidad_cartel,
                 dispositivos_contados: dispositivos_contados,
                 huecos_esperados: huecos_esperados,
             }
@@ -72,8 +73,27 @@ export const procesadoService = {
                 id_auditoria: id_auditoria
             }
         })
+    },
+
+    async getIdExpositorAuditoria(id_expositor: number, id_mueble: number, id_auditoria: number): Promise<number | undefined> {
+        const pea = await db.pertenencia_expositor_auditoria.findMany({
+            where: {
+                id_expositor: id_expositor,
+                id_auditoria: id_auditoria,
+                id_mueble: id_mueble
+            }
+        })
+
+        return pea[0]?.id_expositor_auditoria;
+    },
+
+    async getIdProbabilidadCartelDadaProbabilidad(probabilidad: string) : Promise<number | null> {
+        const probabilidad_object: any = db.probabilidades_respuesta_carteles.findUnique({
+            where: {
+                probabilidad: probabilidad
+            }
+        })
+
+        return probabilidad_object.id;
     }
-
-
-
 }

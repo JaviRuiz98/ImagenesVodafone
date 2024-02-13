@@ -19,25 +19,30 @@ export class TiendasComponent implements OnInit{
   imagenesRef: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
   tiendas: tienda[] = [];
+  tiendasFiltradas: tienda[] = []
+  tiendasMostrar: tienda[] = [];
   nuevaTienda: tienda = {
     sfid: '',
     id_tienda: 0,
-    pertenencia_mueble_tienda: []
+    pertenencia_mueble_tienda: [],
+    activa: true
   };
   verFormularioNuevaTienda: boolean = false;
-  sfidInput: string = 'vfvf';
-  comunidadInput: string = 'fvf';
+  sfidInput: string = '';
+  comunidadInput: string = '';
   parametrosSteps: any; //TIPAR CON LABEL Y ROUTERLINK
   activeIndex: number = 0;
   listaTodosMuebles: muebles[] = [];
   listaMueblesNuevaTienda: muebles[] = [];
   editarTiendaCreada: boolean = false;
   crearEditarTienda: string = 'Crear Tienda';
+  nombreFiltro: string = '';
 
   constructor(private TiendasService: TiendasService, private MueblesService: MueblesService, private messageService: MessageService, private ExpositoresService: ExpositoresService){}
   ngOnInit(): void {
     this.TiendasService.getAllTiendas().subscribe((response: tienda[]) => {
       this.tiendas = response;
+      this.tiendasMostrar = response;
     })
     this.MueblesService.getAllMuebles().subscribe((response: muebles[]) => {
       this.listaTodosMuebles = response;
@@ -52,14 +57,13 @@ export class TiendasComponent implements OnInit{
       {
         label: 'Muebles',
         command: (event: any) => {
-            this.activeIndex = 1;
-
+          this.activeIndex = 1;
         }
       },
       {
         label: 'Confirmar',
         command: (event: any) => {
-            this.activeIndex = 2;
+          this.activeIndex = 2;
         }
       }
     ];
@@ -70,6 +74,8 @@ export class TiendasComponent implements OnInit{
     this.listaMueblesNuevaTienda = [];
     this.editarTiendaCreada = false;
     this.crearEditarTienda = 'Crear Tienda';
+    this.sfidInput = '';
+    this.comunidadInput = '';
   }
   botonSiguiente(){
     if(this.sfidInput === '' || this.comunidadInput === ''){
@@ -80,9 +86,15 @@ export class TiendasComponent implements OnInit{
       } else{
         this.nuevaTienda.sfid = this.sfidInput;
         this.verFormularioNuevaTienda = false;
-        this.TiendasService.newTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
-          this.tiendas = response;
-        })
+        if(this.crearEditarTienda == 'Crear Tienda'){
+          this.TiendasService.newTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
+            this.tiendasMostrar = response;
+          })
+        } else{
+          this.TiendasService.editarTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
+            this.tiendasMostrar = response;
+          })
+        }
       }
     }
   }
@@ -92,12 +104,22 @@ export class TiendasComponent implements OnInit{
     }
   }
   editarTienda(tienda: tienda){
+    this.nuevaTienda = tienda;
     this.crearEditarTienda = 'Editar tienda';
+    this.sfidInput = tienda.sfid;
+    this.comunidadInput = 'prueba';
     this.MueblesService.getMueblesTiendaByIdTienda(tienda.id_tienda).subscribe((response: muebles[]) => {
       this.listaMueblesNuevaTienda = response;
     })
     this.activeIndex = 1;
     this.verFormularioNuevaTienda = true;
     this.editarTiendaCreada = true;
+  }
+  filtrarPorSfid() {
+    this.tiendasFiltradas = this.filterByNombre(this.tiendas);
+    this.tiendasMostrar = this.tiendasFiltradas;
+  }
+  filterByNombre(tiendas: tienda[]): tienda[] {
+    return tiendas.filter(tiendas => tiendas.sfid.toLowerCase().includes(this.nombreFiltro.toLowerCase()));
   }
 }
