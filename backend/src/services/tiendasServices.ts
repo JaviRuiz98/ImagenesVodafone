@@ -117,4 +117,22 @@ export const tiendaService = {
             await db.$disconnect();
         }
     },
+
+    async activarDesactivarTienda(tienda: tiendas): Promise<any> {
+        try {
+            return await db.tiendas.update({
+                where: {
+                    id_tienda: tienda.id_tienda,
+                },
+                data: {
+                    activa: !tienda.activa
+                }
+            })
+        } catch (error) {
+            console.error(error);
+            throw error;
+        } finally {
+            await db.$disconnect();
+        }
+    }
 }
