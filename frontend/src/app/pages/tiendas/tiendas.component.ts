@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
 import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
-import { ExpositoresService } from 'src/app/servicios/expositores/expositores.service';
 
 import { tienda } from 'src/app/interfaces/tienda';
 import { muebles } from 'src/app/interfaces/muebles';
-import { response } from 'express';
+
 @Component({
   selector: 'app-tiendas',
   templateUrl: './tiendas.component.html',
   styleUrls: ['./tiendas.component.css'],
-  providers: [MessageService]
+  providers: [MessageService, ConfirmationService]
 })
 
 export class TiendasComponent implements OnInit{
@@ -37,7 +36,7 @@ export class TiendasComponent implements OnInit{
   crearEditarTienda: string = 'Crear Tienda';
   nombreFiltro: string = '';
 
-  constructor(private TiendasService: TiendasService, private MueblesService: MueblesService, private messageService: MessageService, private ExpositoresService: ExpositoresService){}
+  constructor(private TiendasService: TiendasService, private MueblesService: MueblesService, private messageService: MessageService, private ConfirmationService: ConfirmationService){}
   ngOnInit(): void {
     this.TiendasService.getAllTiendas().subscribe((response: tienda[]) => {
       this.tiendas = response;
@@ -56,14 +55,13 @@ export class TiendasComponent implements OnInit{
       {
         label: 'Muebles',
         command: (event: any) => {
-            this.activeIndex = 1;
-
+          this.activeIndex = 1;
         }
       },
       {
         label: 'Confirmar',
         command: (event: any) => {
-            this.activeIndex = 2;
+          this.activeIndex = 2;
         }
       }
     ];
@@ -121,5 +119,26 @@ export class TiendasComponent implements OnInit{
   }
   filterByNombre(tiendas: tienda[]): tienda[] {
     return tiendas.filter(tiendas => tiendas.sfid.toLowerCase().includes(this.nombreFiltro.toLowerCase()));
+  }
+
+  confirmarCambio(tienda: tienda) {
+    this.ConfirmationService.confirm({
+      message: 'Do you want to delete this record?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+          this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
+      },
+      reject: (type: ConfirmEventType) => {
+          switch (type) {
+              case ConfirmEventType.REJECT:
+                  this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
+                  break;
+              case ConfirmEventType.CANCEL:
+                  this.messageService.add({ severity: 'warn', summary: 'Cancelled', detail: 'You have cancelled' });
+                  break;
+        }
+      }
+  });
   }
 }
