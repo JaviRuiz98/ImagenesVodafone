@@ -36,6 +36,8 @@ export class TiendasComponent implements OnInit{
   editarTiendaCreada: boolean = false;
   crearEditarTienda: string = 'Crear Tienda';
   nombreFiltro: string = '';
+  mensajeActivarDesactivar: string = 'Desactivar';
+  mensajeDialog: string = '¿Seguro que desea desactivar la tienda?';
 
   constructor(private TiendasService: TiendasService, private MueblesService: MueblesService, private messageService: MessageService, private ConfirmationService: ConfirmationService){}
   ngOnInit(): void {
@@ -125,22 +127,28 @@ export class TiendasComponent implements OnInit{
   confirmarCambio(tienda: tienda) {
     console.log(tienda)
     this.ConfirmationService.confirm({
-      message: 'Do you want to delete this record?',
-      header: 'Delete Confirmation',
-      icon: 'pi pi-info-circle',
+      message: this.mensajeDialog,
+      header: this.mensajeActivarDesactivar,
+      icon: 'pi pi-info-circle', 
+      acceptLabel: 'Sí', 
+      rejectLabel: 'No',
       accept: () => {
-          this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted' });
+        this.messageService.add({ severity: 'info', summary: 'Confirmado!', detail: 'La tienda ha sido desactivada.' });
+        this.TiendasService.activarDesactivarTienda(tienda).subscribe((response: tienda) => {
+          const index = this.tiendas.findIndex(t => t.id_tienda === tienda.id_tienda && t.sfid === tienda.sfid);
+          console.log(index)
+          if (index !== -1) {
+            this.tiendas[index].activa = response.activa;
+          }
+        })
       },
       reject: (type: ConfirmEventType) => {
-          switch (type) {
-              case ConfirmEventType.REJECT:
-                  this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected' });
-                  break;
-              case ConfirmEventType.CANCEL:
-                  this.messageService.add({ severity: 'warn', summary: 'Cancelled', detail: 'You have cancelled' });
-                  break;
-        }
-      }
-  });
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({ severity: 'error', summary: 'Error!', detail: 'La tienda no ha sido desactivada' });
+            break;
+        } 
+      },
+    });
   }
 }
