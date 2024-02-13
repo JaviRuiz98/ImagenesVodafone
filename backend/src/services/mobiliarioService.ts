@@ -10,7 +10,6 @@ export const mobiliarioService = {
 
     getFilteredMuebles: async (
         id?: number,
-        categoria_clause: "carteles" | "dispositivos" | null = null,
         _orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null = null,
         _prompts_clause: number[] | null = null,
         _ia_clause: string | null = null,
@@ -29,7 +28,6 @@ export const mobiliarioService = {
                     
                     pertenencia_mueble_tienda: whereClause,
                     
-                    categoria: categoria_clause ? categoria_clause : undefined
                         
                 },
                 include: {
@@ -265,7 +263,6 @@ export const mobiliarioService = {
                 return {
                   id_mueble: mueble.id,
                   nombre_mueble: mueble.nombre_mueble,
-                  categoria: mueble.categoria,
                   numero_expositores_carteles: mueble.numero_expositores_carteles,
                   numero_expositores_dispostivos:mueble.numero_expositores_dispositivos,
                   expositores
