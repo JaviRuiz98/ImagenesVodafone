@@ -52,9 +52,10 @@ export class ExpositoresComponent implements OnInit {
  
 
     this.nuevoExpositor = {
-      id_expositor: 0,
+      id: 0,
       nombre: '',
       activo: true,
+      categoria: "",
       imagenes: {
         url:"",
         id_imagen: 0
@@ -96,7 +97,7 @@ export class ExpositoresComponent implements OnInit {
   activarDesactivarExpositores(expositor: Expositor) {
     //this.opcionMostrarCambia
 
-    this.expositoresService.cambiarActivo(expositor.id_expositor, !expositor.activo).subscribe((expositor: Expositor) => {
+    this.expositoresService.cambiarActivo(expositor.id, !expositor.activo).subscribe((expositor: Expositor) => {
       
       this.inicializaExpositores();
       if(!expositor.activo){
@@ -113,7 +114,7 @@ export class ExpositoresComponent implements OnInit {
   findIndexById(id: string): number {
     let index = -1;
     for (let i = 0; i < this.expositores.length; i++) {
-      if (this.expositores[i].id_expositor === parseInt(id)) {
+      if (this.expositores[i].id === parseInt(id)) {
           index = i;
           break;
       }

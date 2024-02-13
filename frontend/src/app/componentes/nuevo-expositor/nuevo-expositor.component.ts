@@ -87,24 +87,12 @@ export class NuevoExpositorComponent implements OnInit {
   }
 
   nuevoGuardar() {
-<<<<<<< Updated upstream
-    this.expositoresService.guardarExpositor(this.nuevoExpositor.nombre, this.nuevoExpositor.activo, this.archivoSeleccionado).subscribe((expositor) => {
-      if(expositor.id > 0) {
-        this.messageService.add({severity:'success', summary: 'Guardado', detail: 'Expositor guardado correctamente'});
-      }else{
-        this.messageService.add({severity:'error', summary: 'Error', detail: 'Expositor no guardado'});
-      }
-    })
-    this.messageService.add({ key: 'tc', severity: 'warn', summary: 'Warn', detail: 'Message Content' });
-    this.mostrar = false;
-    this.mostrarDialogoNuevoExpositor.emit(this.mostrar);
-=======
     if(this.nuevoExpositor.nombre == '') {
       this.messageService.add({severity:'error', summary: 'Error', detail: 'Expositor no guardado'});
       this.submitted = true;
     }else{
       this.expositoresService.guardarExpositor(this.nuevoExpositor.nombre, this.nuevoExpositor.activo, this.archivoSeleccionado).subscribe((expositor) => {
-        if(expositor.id_expositor > 0) {
+        if(expositor.id> 0) {
           this.messageService.add({severity:'success', summary: 'Guardado', detail: 'Expositor guardado correctamente'});
         }else{
           this.messageService.add({severity:'error', summary: 'Error', detail: 'Expositor no guardado'});
@@ -115,7 +103,6 @@ export class NuevoExpositorComponent implements OnInit {
       this.mostrarDialogoNuevoExpositor.emit(this.mostrar);
     }
 
->>>>>>> Stashed changes
   }
 
   nuevoCancelar() {
