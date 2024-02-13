@@ -122,6 +122,7 @@ export class TiendasComponent implements OnInit{
   }
 
   confirmarCambio(tienda: tienda) {
+    console.log(tienda)
     this.ConfirmationService.confirm({
       message: 'Do you want to delete this record?',
       header: 'Delete Confirmation',
