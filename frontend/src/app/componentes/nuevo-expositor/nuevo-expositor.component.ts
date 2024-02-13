@@ -49,13 +49,14 @@ export class NuevoExpositorComponent implements OnInit {
 
   AbrirnuevoExpositor() {
     this.nuevoExpositor = {
-      id_expositor: 0,
+      id: 0,
       nombre: '',
       activo: true,
       imagenes: {
         url:"",
         id_imagen: 0
       },
+      categoria: "cartel",
       procesados_imagenes: []
     };
   }
@@ -69,7 +70,7 @@ export class NuevoExpositorComponent implements OnInit {
 
   nuevoGuardar() {
     this.expositoresService.guardarExpositor(this.nuevoExpositor.nombre, this.nuevoExpositor.activo, this.archivoSeleccionado).subscribe((expositor) => {
-      if(expositor.id_expositor > 0) {
+      if(expositor.id > 0) {
         this.messageService.add({severity:'success', summary: 'Guardado', detail: 'Expositor guardado correctamente'});
       }else{
         this.messageService.add({severity:'error', summary: 'Error', detail: 'Expositor no guardado'});
