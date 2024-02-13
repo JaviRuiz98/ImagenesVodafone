@@ -89,7 +89,7 @@ export class AuditoriaComponent implements OnInit{
 
     actualizarProcesamientoEnMueble(id_expositor_selected: number, response: procesados_imagenes) {
       for (const mueble of this.muebles) {
-        const expositorIndex = mueble.expositores.findIndex((expositor) => expositor.id_expositor === id_expositor_selected);
+        const expositorIndex = mueble.expositores.findIndex((expositor) => expositor.id === id_expositor_selected);
         if (expositorIndex !== -1) {
           mueble.expositores[expositorIndex].procesados_imagenes.unshift(response);
           break; 

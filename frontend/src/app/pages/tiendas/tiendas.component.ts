@@ -23,7 +23,8 @@ export class TiendasComponent implements OnInit{
   nuevaTienda: tienda = {
     sfid: '',
     id_tienda: 0,
-    pertenencia_mueble_tienda: []
+    pertenencia_mueble_tienda: [],
+    activa: true
   };
   verFormularioNuevaTienda: boolean = false;
   sfidInput: string = '';

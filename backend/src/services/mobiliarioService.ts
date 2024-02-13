@@ -6,9 +6,10 @@ import {  MuebleFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
 
 
 export const mobiliarioService = {
+
+
     getFilteredMuebles: async (
         id?: number,
-        categoria_clause: "carteles" | "dispositivos" | null = null,
         _orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null = null,
         _prompts_clause: number[] | null = null,
         _ia_clause: string | null = null,
@@ -27,7 +28,6 @@ export const mobiliarioService = {
                     
                     pertenencia_mueble_tienda: whereClause,
                     
-                    categoria: categoria_clause ? categoria_clause : undefined
                         
                 },
                 include: {
@@ -88,7 +88,7 @@ export const mobiliarioService = {
     },
 
     async getMuebleById( id_mueble: number): Promise<muebles | null> {
-        return await db.muebles.findUnique({where: {id_mueble: id_mueble}});
+        return await db.muebles.findUnique({where: {id: id_mueble}});
     }, 
 
     //tipar
@@ -107,7 +107,7 @@ export const mobiliarioService = {
         //tipar
     async updateMueble(id_mueble:number, mueble: any): Promise<MuebleFrontInterfaz | null> {
         try{
-            const muebleUpdated = await db.muebles.update({where: {id_mueble: id_mueble}, data: mueble});
+            const muebleUpdated = await db.muebles.update({where: {id: id_mueble}, data: mueble});
             const result = mapearResultadoParaFront(muebleUpdated);
             return result;
             
@@ -241,10 +241,10 @@ export const mobiliarioService = {
               
               const resultado = muebles.map(mueble => {
                 const expositores: any[] = mueble.pertenencia_expositor_auditoria.reduce((acc: any[], auditoria) => {
-                    let expositor = acc.find(ex => ex.id_expositor === auditoria.expositores.id_expositor);
+                    let expositor = acc.find(ex => ex.id_expositor === auditoria.expositores.id);
                     if (!expositor) {
                       expositor = {
-                        id_expositor: auditoria.expositores.id_expositor,
+                        id_expositor: auditoria.expositores.id,
                         id_imagen: auditoria.expositores.id_imagen,
                         nombre: auditoria.expositores.nombre,
                         imagenes: auditoria.expositores.imagenes,
@@ -261,11 +261,10 @@ export const mobiliarioService = {
                 }, []);
               
                 return {
-                  id_mueble: mueble.id_mueble,
+                  id_mueble: mueble.id,
                   nombre_mueble: mueble.nombre_mueble,
-                  numero_dispositivos: mueble.numero_dispositivos,
-                  categoria: mueble.categoria,
-                  numero_expositores: mueble.numero_expositores,
+                  numero_expositores_carteles: mueble.numero_expositores_carteles,
+                  numero_expositores_dispostivos:mueble.numero_expositores_dispositivos,
                   expositores
                 };
               });
@@ -306,23 +305,20 @@ export const mobiliarioService = {
 
 
 //tipar adecuadamente
-function mapearResultadoParaFront(mueble: any) {
+function mapearResultadoParaFront(mueble: any): MuebleFrontInterfaz {
 
     let expositores = [];
 
     if (mueble.pertenencia_expositor_mueble) {
         expositores = mueble.pertenencia_expositor_mueble.map((pem: any) => pem.expositores);
     }
-    
-    
-    
 
     return {
-        id_mueble: mueble.id_mueble,
+        id: mueble.id_mueble,
         nombre_mueble: mueble.nombre_mueble,
         expositores: expositores, 
-        categoria: mueble.categoria,
-        numero_dispositivos: mueble.numero_dispositivos,
+        numero_expositores_carteles: mueble.numero_expositores_carteles,
+        numero_expositores_dispositivos: mueble.numero_expositores_dispositivos,
     };
 }
 

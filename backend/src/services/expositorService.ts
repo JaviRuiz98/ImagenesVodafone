@@ -9,7 +9,7 @@ export const expositoresService = {
         try{
             return db.expositores.findUnique({
                 where: {
-                    id_expositor: id_expositor
+                  id: id_expositor
                 }
             })
         }
@@ -82,7 +82,7 @@ export const expositoresService = {
      }, 
      async updateExpositor(id_expositor: number, expositor: any): Promise<expositores | null> {
        try {
-         return await db.expositores.update({ where: { id_expositor: id_expositor }, data: expositor });
+         return await db.expositores.update({ where: { id: id_expositor }, data: expositor });
         
        } catch (error) {
          throw error;
@@ -107,7 +107,7 @@ export const expositoresService = {
 
       async deleteExpositor(id_expositor: number): Promise<expositores | null> {
         try {
-          return await db.expositores.delete({ where: { id_expositor: id_expositor } });
+          return await db.expositores.delete({ where: { id: id_expositor } });
         }catch (error) {
           throw error;
         }
@@ -136,7 +136,18 @@ export const expositoresService = {
           console.log(error)
           throw error;
         }
+      },
 
+      async editarEstadoExpositor(idExpositor: number, valActivo: boolean){
+        try{
+          return await db.expositores.update({
+            where: {id: idExpositor },
+            data: { activo: valActivo },
+          });
+        }catch(error){
+          console.error(`Error al intentar actualizar el estado del expositor ${idExpositor}:`, error);
+          throw error;
+        }
 
       }
 

@@ -62,4 +62,17 @@ export async function guardarExpositor(req: Request, res: Response) {
         res.status(500).json({ error: 'Error interno del servidor' });        
     }
 }
+
+export async function editarEstadoExpositor(req: Request, res: Response){
+    try{
+        const id_expositor = req.body.id_expositor;
+        const activo = req.body.activo;
+
+        const row = await expositoresService.editarEstadoExpositor(id_expositor, activo);
+        res.status(200).json(row)
+
+    }catch(error){
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}
   

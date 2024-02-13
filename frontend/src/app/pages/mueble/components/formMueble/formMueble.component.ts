@@ -28,9 +28,10 @@ export class FormMuebleComponent implements OnInit {
 
   formulario:FormGroup = this.fb.group({
     nombre_mueble: ['', Validators.required],
-    categoria: [, [Validators.required, this.categoriaValidator()]],
-    numero_dispositivos: [0, [Validators.required, Validators.min(0)]],
-    expositores: [[], ]
+
+    numero_expositores_dispositivos: [0, [Validators.required, Validators.min(0)]],
+    numero_expositores_carteles: [0, [Validators.required, Validators.min(0)]],
+    expositores: [[],]
   })
   mueble?: muebles;
 
@@ -58,8 +59,9 @@ export class FormMuebleComponent implements OnInit {
 
       this.formulario.patchValue({
         nombre_mueble: this.mueble?.nombre_mueble,
-        categoria: this.mueble?.categoria,
-        numero_dispositivos: this.mueble?.numero_dispositivos,
+       
+        numero_exposirotes_carteles: this.mueble?.numero_expositores_carteles,
+        numero_exposirotes_dispositivos: this.mueble?.numero_expositores_dispositivos,
         expositores: this.mueble?.expositores
       })
     }else{

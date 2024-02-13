@@ -75,12 +75,12 @@ export const procesadoService = {
         })
     },
 
-    async getIdExpositorAuditoria(id_expositor: number, id_mueble: number, id_auditoria: number): Promise<number | undefined> {
+    async getIdExpositorAuditoria(id_expositor: number,  id_auditoria: number): Promise<number | undefined> {
         const pea = await db.pertenencia_expositor_auditoria.findMany({
             where: {
                 id_expositor: id_expositor,
                 id_auditoria: id_auditoria,
-                id_mueble: id_mueble
+            
             }
         })
 

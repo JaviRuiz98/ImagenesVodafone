@@ -24,13 +24,17 @@ export class ExpositoresComponent implements OnInit {
   @Input() mostrarDialogoNuevoExpositor: boolean = false;
 
   cargando_procesamiento: boolean = false;
-
+  imputSearch!: string;
   expositores!: Expositor[];
   expositoresSeleccionados!: Expositor[];
+  expositoresFiltrados!: Expositor[];
   nuevoExpositor!: Expositor;
   archivoSeleccionado!: File;
 
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
+
+  opcionesMostrar!: any[];
+  opcionSeleccionada = {estado: 'Todos'};
 
 
   submitted: boolean = false;
@@ -48,9 +52,10 @@ export class ExpositoresComponent implements OnInit {
  
 
     this.nuevoExpositor = {
-      id_expositor: 0,
+      id: 0,
       nombre: '',
       activo: true,
+      categoria: "",
       imagenes: {
         url:"",
         id_imagen: 0
@@ -89,32 +94,68 @@ export class ExpositoresComponent implements OnInit {
     
   }
 
-  activarDesactivarExpositores() {
-    
+  activarDesactivarExpositores(expositor: Expositor) {
+    //this.opcionMostrarCambia
+
+    this.expositoresService.cambiarActivo(expositor.id, !expositor.activo).subscribe((expositor: Expositor) => {
+      
+      this.inicializaExpositores();
+      if(!expositor.activo){
+        this.messageService.add({ severity: 'success', summary: 'Modificado con exito', detail: 'Expositor descatalogado' });
+      }else{
+        this.messageService.add({ severity: 'success', summary: 'Modificado con exito', detail: 'Expositor añadido al catalogo' });
+      }
+      
+  
+    })
   }
 
   
-
   findIndexById(id: string): number {
     let index = -1;
     for (let i = 0; i < this.expositores.length; i++) {
-        if (this.expositores[i].id_expositor === parseInt(id)) {
-            index = i;
-            break;
-        }
+      if (this.expositores[i].id === parseInt(id)) {
+          index = i;
+          break;
+      }
     }
     return index;
-}
+  }
+
+  filterByNombre(event: Event) {
+    if(this.imputSearch == ""){
+      this.inicializaExpositores();
+    }else{
+      if (this.expositores !== undefined) {
+        this.expositores = this.expositores.filter(expositor => expositor.nombre?.includes(this.imputSearch));
+        console.log("expositores flitrados")
+      }
+    }
+
+
+  }
+
+
+
+  opcionMostrarCambia(){
+
+  }
+
+ 
 
 
 
   ngOnInit(): void {
     this.inicializaExpositores();
- 
-  
+    
+    this.opcionesMostrar = [
+      {estado: 'Todos'}, 
+      {estado: 'Catalogados'}, 
+      {estado: 'Descatalogados'}
+    ]
 
 
   }
 
-
+  
 }

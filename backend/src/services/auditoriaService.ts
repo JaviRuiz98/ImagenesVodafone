@@ -44,8 +44,8 @@ export const auditoriaService = {
         await db.pertenencia_expositor_auditoria.create({
             data: {
                 id_auditoria: id_auditoria,
-                id_mueble: mueble.id_mueble,
-                id_expositor: expositor.id_expositor
+                id_mueble: mueble.id,
+                id_expositor: expositor.id
             }
         });
     },

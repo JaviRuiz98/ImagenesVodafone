@@ -20,7 +20,7 @@
                 <p-pickList [source]="listaTodosMuebles" [target]="listaMueblesNuevaTienda" sourceHeader="Muebles disponibles"  targetHeader="Muebles nueva tienda" [dragdrop]="true" [responsive]="true">
                     <ng-template let-mueble pTemplate="item">
                         <div class="contenedorMuebleArrastras">
-                            <div *ngIf="mueble.expositores.length == 1">
+                         <!--   <div *ngIf="mueble.expositores.length == 1">
                                 <div class="anchoAltoFotoReferencia">
                                     <img src="{{imagenesRef}}/{{mueble.expositores[0].imagenes.url}}" alt="{{mueble.expositores[0].imagenes.url}}" class="ajusteImagenesAnchoAlto">
                                 </div>
@@ -32,7 +32,7 @@
                                 <div> 
                                     <img src="{{imagenesRef}}/{{mueble.expositores[1].imagenes.url}}" alt="{{mueble.expositores[1].imagenes.url}}" class="ajusteImagenesAnchoAlto">
                                 </div>
-                            </div> 
+                            </div> -->
                             <div class="anchoAltoDescripcionFotoReferencia">
                                 <span class="font-bold">{{ mueble.nombre_mueble }}</span>
                                 <div class="flex align-items-center gap-2">

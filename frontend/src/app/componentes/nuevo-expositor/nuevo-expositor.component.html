@@ -10,7 +10,7 @@ header="Crear un nuevo expositor"
 styleClass="p-fluid"
 [closeOnEscape] = "false"
 (onHide)="onDialogHidden()"
->
+> 
  
     <ng-template pTemplate="content" style=" width: 10000px; height: 10000px">
         <p-toast position="top-center" key="tc"></p-toast>
@@ -21,8 +21,12 @@ styleClass="p-fluid"
 
         <div style="margin-top: 20px;">
             <input pInputText pKeyFilter="int" [style]="{'width': '30%'}" placeholder="Nombre del expositor" [(ngModel)]="nuevoExpositor.nombre" />
+<<<<<<< Updated upstream
             <!-- <small class="p-error" *ngIf="submitted && !nuevoExpositor.nombre">Se requiere un nombre para el expositor.</small> -->
-            <!-- <p-checkbox label=" Desactivar el expositor" [(ngModel)]="nuevoExpositor.activo" [style]="{'margin-left': '10px'}"></p-checkbox> -->
+            <!-- <p-checkbox label=" Desactivar sel expositor" [(ngModel)]="nuevoExpositor.activo" [style]="{'margin-left': '10px'}"></p-checkbox> -->
+=======
+            <small class="p-error" *ngIf="submitted && nuevoExpositor.nombre==''">Se requiere un nombre para el expositor.</small>
+>>>>>>> Stashed changes
         </div>
     </ng-template>
 

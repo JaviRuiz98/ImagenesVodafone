@@ -3,10 +3,10 @@ import { expositoresConProcesados } from "./expositoresProcesados";
 
 
 export interface MuebleFrontInterfaz {
-    id_mueble: number;
+    id: number;
     nombre_mueble: string;
-    numero_dispositivos: number;
-    categoria: string;
+    numero_expositores_dispositivos: number;
+    numero_expositores_carteles: number;
     expositores: expositoresConProcesados[];
     
 }
