@@ -133,19 +133,19 @@ export class TiendasComponent implements OnInit{
       acceptLabel: 'Sí', 
       rejectLabel: 'No',
       accept: () => {
-        this.messageService.add({ severity: 'info', summary: 'Confirmado!', detail: 'La tienda ha sido desactivada.' });
         this.TiendasService.activarDesactivarTienda(tienda).subscribe((response: tienda) => {
           const index = this.tiendas.findIndex(t => t.id_tienda === tienda.id_tienda && t.sfid === tienda.sfid);
-          console.log(index)
           if (index !== -1) {
             this.tiendas[index].activa = response.activa;
           }
         })
+        const mensajeDetalle = tienda.activa ? 'La tienda ha sido desactivada.' : 'La tienda ha sido activada.';
+        this.messageService.add({ severity: 'info', summary: 'Confirmado!', detail: mensajeDetalle });
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
           case ConfirmEventType.REJECT:
-            this.messageService.add({ severity: 'error', summary: 'Error!', detail: 'La tienda no ha sido desactivada' });
+            this.messageService.add({ severity: 'error', summary: 'Error!', detail: 'La tienda no ha tenido cambios.' });
             break;
         } 
       },

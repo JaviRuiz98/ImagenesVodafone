@@ -107,10 +107,8 @@
             <tr>
                 <td>{{ tiendas.sfid }}</td>
                 <td>{{ tiendas.id_tienda }}</td>
-                <td><p-button class="botonNuevaTienda" label="Editar Tienda" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="editarTienda(tiendas)"></p-button></td>
-                <td>
-                    <p-button class="botonNuevaTienda" [label]="tiendas.activa ? 'Desactivar' : 'Activar'"  [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="confirmarCambio(tiendas)"></p-button>
-                </td>
+                <td><p-button class="botonNuevaTienda" label="Editar Tienda" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="editarTienda(tiendas)" [style]="{'min-width': '130px'}" [disabled]="!tiendas.activa"></p-button></td>
+                <td><p-button class="botonNuevaTienda" [label]="tiendas.activa ? 'Desactivar' : 'Activar'"  [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="confirmarCambio(tiendas)" [style]="{'min-width': '130px'}"></p-button></td>
             </tr>
         </ng-template>
     </p-table>
