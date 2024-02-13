@@ -136,7 +136,18 @@ export const expositoresService = {
           console.log(error)
           throw error;
         }
+      },
 
+      async editarEstadoExpositor(idExpositor: number, valActivo: boolean){
+        try{
+          return await db.expositores.update({
+            where: {id_expositor: idExpositor },
+            data: { activo: valActivo },
+          });
+        }catch(error){
+          console.error(`Error al intentar actualizar el estado del expositor ${idExpositor}:`, error);
+          throw error;
+        }
 
       }
 

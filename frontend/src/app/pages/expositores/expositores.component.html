@@ -3,11 +3,13 @@
     <p-toolbar styleClass="mb-4 gap-2">
         <ng-template pTemplate="left">
             <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="AbrirnuevoExpositor()" ></button>
-            <button pButton pRipple label="Desactivar" icon="pi pi-eye" class="p-button-danger" [style]="{'margin-left': '20px'}" (click)="activarDesactivarExpositores()" [disabled]="!expositoresSeleccionados|| !expositoresSeleccionados.length"></button>
+            <!-- <button pButton pRipple label="Desactivar" icon="pi pi-eye" class="p-button-danger" [style]="{'margin-left': '20px'}" (click)="activarDesactivarExpositores()" [disabled]="!expositoresSeleccionados|| !expositoresSeleccionados.length"></button> -->
             <span class="p-input-icon-left" style="margin-left: 20px">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" (input)="dt.filterGlobal($event.target, 'contains')"  />
+                <input pInputText type="text" [(ngModel)]="imputSearch" (input)="filterByNombre($event)"    placeholder="Filtrar por nombre" /> 
             </span>
+            <p-dropdown [options]="opcionesMostrar" [(ngModel)]="opcionSeleccionada" optionLabel="estado" [showClear]="true" placeholder="Estado del catalogo" [style] = "{'margin-left': '20px'}" ></p-dropdown>
+            
         </ng-template>
     </p-toolbar>
     <p-table
@@ -42,27 +44,28 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-expositor>
-            <tr>
+            <tr *ngIf=" (this.opcionSeleccionada.estado == 'Todos') || (this.opcionSeleccionada.estado == 'Catalogados' && expositor.activo==1) || (this.opcionSeleccionada.estado == 'Descatalogados' && expositor.activo==0) ">
                 <td>
                     <p-tableCheckbox [value]="expositor"></p-tableCheckbox>
                 </td>
                 <td>{{ expositor.id_expositor }}</td>
                 <td>
-                    <p-image [src]="url_imagenes_referencias + expositor.imagenes.url" [alt]="expositor.imagenes.url" [width]="'70px'" [height]="'100px'" class="shadow-4" [preview]="true"></p-image>
+                    <p-image [src]="url_imagenes_referencias + expositor.imagenes.url" [alt]="expositor.imagenes.url" [width]="'auto'" [height]="'100px'" class="shadow-4" [preview]="true"></p-image>
                 </td>
                 <td>{{ expositor.nombre }}</td>
                 <td>
-                    <p-button *ngIf="expositor.activo == 0" icon="pi pi-eye-slash" [rounded]="true" [text]="true" severity="danger "></p-button>
-                    <p-button *ngIf="expositor.activo == 1" icon="pi pi-eye" [rounded]="true" [text]="true" severity="danger "></p-button>
+                    <p-button *ngIf="expositor.activo == 1" (mouseover)="descatalogar.toggle($event)" (click)="activarDesactivarExpositores(expositor)" icon="pi pi-eye-slash" [rounded]="true" [text]="true" severity="danger "></p-button>
+                    <p-button *ngIf="expositor.activo == 0" (mouseover)="catalogar.toggle($event)" (click)="activarDesactivarExpositores(expositor)" icon="pi pi-eye" [rounded]="true" [text]="true" severity="info "></p-button>
+                    <p-overlayPanel #descatalogar>
+                        Descatalogar
+                    </p-overlayPanel>
+                    <p-overlayPanel #catalogar>
+                        Añadir al catalogo
+                    </p-overlayPanel>
                 </td>
             </tr>
         </ng-template> 
-        <p-overlayPanel #descatalogar>
-            <img src="https://primefaces.org/cdn/primeng/images/demo/product/bamboo-watch.jpg" alt="product" />
-        </p-overlayPanel>
-        <p-overlayPanel #op>
-            <img src="https://primefaces.org/cdn/primeng/images/demo/product/bamboo-watch.jpg" alt="product" />
-        </p-overlayPanel>
+
     </p-table>
     <app-nuevo-expositor *ngIf="mostrarDialogoNuevoExpositor == true" (mostrarDialogoNuevoExpositor)="cerrarDialog($event)" ></app-nuevo-expositor>
 </p-panel>
