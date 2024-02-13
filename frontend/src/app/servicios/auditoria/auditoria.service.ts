@@ -33,6 +33,10 @@ export class AuditoriaService {
     return this.http.post<any>(`${this.API_URI}/nueva_auditoria`,body_data, this.options);
   }
 
+  getAuditoriaById(id_auditoria: number): Observable<auditoria> {
+    return this.http.get<auditoria>(`${this.API_URI}/auditoria_by_id/${id_auditoria}`);
+  }
+
   getAuditorias(id_tienda: number): Observable<auditoria[]> {
     return this.http.get<auditoria[]>(`${this.API_URI}/auditorias/${id_tienda}`);
   }
