@@ -52,9 +52,10 @@ export class ExpositoresComponent implements OnInit {
  
 
     this.nuevoExpositor = {
-      id_expositor: 0,
+      id: 0,
       nombre: '',
       activo: true,
+      categoria: "",
       imagenes: {
         url:"",
         id_imagen: 0
