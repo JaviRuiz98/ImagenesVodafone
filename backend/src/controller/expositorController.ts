@@ -22,9 +22,16 @@ export async function updateExpositor(req: Request, res: Response) {
 }
 
 
-export async function getExpositores(_req: Request, res: Response) {
-    const expositores = await expositoresService.getExpositores();
-    res.status(200).json(expositores);
+export async function getExpositores(req: Request, res: Response) {
+    try{
+        const categoria = req.query.categoria as string | undefined;
+        const expositores = await expositoresService.getExpositores(categoria);
+        res.status(200).json(expositores);
+    } catch(error){
+        res.status(500).json({ error: 'Error interno del servidor' });
+        throw error;
+    }
+  
 }
 
 
