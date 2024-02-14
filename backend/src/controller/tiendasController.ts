@@ -27,7 +27,6 @@ export async function newTienda(req: Request, res: Response) {
 
 export async function updateTienda(req: Request, res: Response) {
     try{     
-        console.log('entro')
         const id_tienda = parseInt(req.params.id_tienda);
         desactivarMueblesTienda(id_tienda);
         const listaIdMuebles = req.body.map((mueble: muebles) => mueble.id);

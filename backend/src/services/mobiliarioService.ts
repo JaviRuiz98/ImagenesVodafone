@@ -323,7 +323,7 @@ function mapearResultadoParaFront(mueble: any): MuebleFrontInterfaz {
     
 
     return {
-        id: mueble.id_mueble,
+        id: mueble.id,
         nombre_mueble: mueble.nombre_mueble,
         expositores: expositores, 
         numero_expositores_carteles: mueble.numero_expositores_carteles,

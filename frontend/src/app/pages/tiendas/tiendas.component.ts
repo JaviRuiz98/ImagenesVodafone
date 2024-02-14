@@ -94,7 +94,6 @@ export class TiendasComponent implements OnInit{
           })
         } else{
           this.TiendasService.editarTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
-            this.tiendasMostrar = response;
           })
         }
       }
