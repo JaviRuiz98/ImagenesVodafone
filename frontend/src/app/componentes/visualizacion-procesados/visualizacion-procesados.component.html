@@ -1,10 +1,12 @@
 <div class="gridHistorial">
     <div *ngFor="let item of getElementosPaginados()" class="imagenProcesadaComentarios">
         <div class="anchoAltoImagenProcesada">
-            <app-dialog-informacion-procesado [procesado]="item" ></app-dialog-informacion-procesado>
-            <p-toast></p-toast>
-            <p-confirmDialog></p-confirmDialog> 
+            <!--
+
+                        -->
+
             <p-image [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" [preview]="true" class="p-image"></p-image>
+            <app-dialog-informacion-procesado [procesado]="item" ></app-dialog-informacion-procesado>
         </div>
         <div class="respuestaProcesado">
             <div class="contenido">
