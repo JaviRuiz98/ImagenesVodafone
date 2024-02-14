@@ -17,7 +17,7 @@
         <div style="display: flex; flex-direction: row; width: 100%" height="100%">
             <form [formGroup]="nuevoExpositor_form" style="width: 50%">
                 <input type="text" pInputText pKeyFilter="int" placeholder="Nombre del expositor" [formControlName]="'nombre'" style="margin-top: 10px;"/>
-                <p-dropdown name="id_region" [options]="Dropdown_regiones" value="#id_region" [placeholder]="'Seleccione región'" [formControlName]="'id_region'" [style]="{marginTop: '10px'}" ></p-dropdown>
+                <p-dropdown name="region" (onChange)="onRegionChange($event)" [options]="Dropdown_regiones" value="#region" [placeholder]="'Seleccione región'" [formControlName]="'id_region'" [style]="{marginTop: '10px'}" ></p-dropdown>
                 <p-dropdown name="categoria" [options]="Dropdown_categorias" value="#categoria" [placeholder]="'Seleccione categoria'" [formControlName]="'categoria'" [style]="{marginTop: '10px'}" ></p-dropdown>
             
                 <div *ngIf="categoria?.value == 'Dispositivos'" style="margin-top: 10px;">
@@ -29,12 +29,14 @@
                 </div>
 
  
-                <small class="p-error" *ngIf="submitted && nuevoExpositor.nombre==''">Han de rellenarse todos los campos.</small>
+                <!-- <small class="p-error" *ngIf="submitted && (nombre?.valid || region?.value=='' || categoria?.value=='' || imagen?.valid  || (categoria?.value=='Dispositivos' && numero_dispositivos?.value==0))">Han de rellenarse todos los campos.</small> -->
+                <small class="p-error" *ngIf="submitted && (nombre?.invalid )">Han de rellenarse todos los campos.</small>
+         
             </form>
             <div style="width: 50%; margin-left: 20px; height: 300px; overflow: hidden;">
                 <app-selector-imagenes 
                     (archivoSeleccionadoChange)="recibirFile($event)"
-                    [cargando_procesado]="cargando_procesamiento">
+                    [cargando_procesado]="true">
                 </app-selector-imagenes>
             </div>
         </div>

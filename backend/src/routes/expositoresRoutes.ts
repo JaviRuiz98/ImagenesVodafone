@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
 import {  uploadImagenRepresentativa } from '../config/multer';
-import { getExpositores, deleteExpositor,guardarExpositor,editarEstadoExpositor,getRegionesDisponibles } from '../controller/expositorController';
-import { uploadFileToFtp } from '../config/ftpUpload';
+import { getExpositores, deleteExpositor,guardarExpositor,editarEstadoExpositor,getRegionesDisponibles,getExpositoresByIdMueble } from '../controller/expositorController';
+import { uploadFileToFtp } from '../config/ftpUpload'; 
 
 const router: Router = express.Router();
 
@@ -13,5 +13,7 @@ router.post('/expositor', uploadImagenRepresentativa, uploadFileToFtp('imagenesR
 router.post('/expositorActivaDesactiva', editarEstadoExpositor);
 
 router.get('/regiones', getRegionesDisponibles);
+
+router.get('/expositores/:id_mueble', getExpositoresByIdMueble);
 
 export default router;

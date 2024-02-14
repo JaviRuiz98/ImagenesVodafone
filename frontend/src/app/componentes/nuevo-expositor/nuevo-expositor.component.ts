@@ -42,19 +42,17 @@ import { regiones } from 'src/app/interfaces/regiones';
 
 export class NuevoExpositorComponent implements OnInit {
 
+  @Input() categoriaPredefinida: string = ''; //sin implementar
   @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
   @Output() mostrarDialogoNuevoExpositor = new EventEmitter<boolean>();
 
   nuevoExpositor_form: FormGroup = this.formBuilder.group({
-    nombre: new FormControl('', [
-      Validators.required,
-      Validators.minLength(5)
-    ]),
+    nombre: new FormControl('', [Validators.required, Validators.minLength(5)]),
     activo: new FormControl(false),
-    id_region: new FormControl(0, Validators.required),
-    id_imagen: new FormControl(0, Validators.required),
-    categoria: new FormControl('', Validators.required),
-    numero_dispositivos: new FormControl(0),
+    region: new FormControl(0, [Validators.required, Validators.minLength(1)]),  // interfaz
+    imagen: new FormControl(0, [Validators.required, this.fileValidator]), // interfaz ?
+    categoria: new FormControl('', Validators.required),                                            //////// POR AQUI
+    numero_dispositivos: new FormControl(0), 
   });
 
 
@@ -68,9 +66,9 @@ export class NuevoExpositorComponent implements OnInit {
   nuevoExpositor!: Expositor;
   
   archivoSeleccionado!: File;
+ 
 
-  cargando_procesamiento: boolean = false; // ? para el loading
-
+  regiones: regiones[] = [];
   Dropdown_regiones: string[] = [];
   Dropdown_categorias: string[] = ["Carteles", "Dispositivos"];
 
@@ -96,18 +94,23 @@ export class NuevoExpositorComponent implements OnInit {
   }
   
   recibirFile(event: {archivo:File}) {
-    this.archivoSeleccionado = event.archivo;
+    this.nuevoExpositor_form.patchValue({ imagen: event.archivo });
     const imagenAProcesar = event.archivo;
     this.archivoSeleccionadoChange.emit({ archivo: imagenAProcesar });
-    this.cargando_procesamiento = true;
+  }
+
+  onRegionChange(event: any) {
+    const selectedRegionValue = this.regiones.find((region) => region.nombre === event.value);
+    this.nuevoExpositor_form.patchValue({ region: selectedRegionValue });
   }
 
   nuevoGuardar() {
-    if(this.nuevoExpositor.nombre == '') {
+    console.log(this.nuevoExpositor_form.get('nombre')?.value);
+    if(this.nuevoExpositor_form.get('nombre')?.value == '') {
       this.messageService.add({severity:'error', summary: 'Error', detail: 'Expositor no guardado'});
       this.submitted = true;
     }else{
-      this.expositoresService.guardarExpositor(this.nuevoExpositor.nombre, this.nuevoExpositor.activo, this.archivoSeleccionado).subscribe((expositor) => {
+      this.expositoresService.guardarExpositor(this.nombre?.value, this.nuevoExpositor.activo, this.region?.value, this.imagen?.value, this.categoria?.value, this.numero_dispositivos?.value).subscribe((expositor) => {
         if(expositor.id> 0) {
           this.messageService.add({severity:'success', summary: 'Guardado', detail: 'Expositor guardado correctamente'});
         }else{
@@ -135,7 +138,8 @@ export class NuevoExpositorComponent implements OnInit {
 
   inicializaDropDownZonas(){
     this.expositoresService.getAllRegiones().subscribe((regiones)=>{
-      this.Dropdown_regiones = regiones
+      this.regiones = regiones;
+      this.Dropdown_regiones = regiones.map((region) => region.nombre);
     })
   }
 
@@ -146,5 +150,40 @@ export class NuevoExpositorComponent implements OnInit {
     this.inicializaDropDownZonas();
   }
 
-  get categoria() { return this.nuevoExpositor_form.get('categoria') }
+
+
+  get categoria() { return this.nuevoExpositor_form.get('categoria')}
+  get nombre() { return this.nuevoExpositor_form.get('nombre') }
+  get region() { return this.nuevoExpositor_form.get('region') }
+  get numero_dispositivos() { return this.nuevoExpositor_form.get('numero_dispositivos') }
+  get imagen() { return this.nuevoExpositor_form.get('imagen') }
+
+
+
+ fileValidator(control: FormControl): { [key: string]: any } | null {
+    const file = control.value;
+    if (file instanceof File) {
+      return null; // Es un tipo File válido
+    } else {
+      return { 'invalidFile': true }; // No es un tipo File válido
+    }
+  }
+
+
+  validateNumeroDispositivos(control: FormControl): {[key: string]: any} | null {
+    if (!control.parent || !control.parent.get('categoria')) {
+      return null; // No hay control 'categoria' padre
+    }
+  
+    const categoriaValor = control.parent.get('categoria')?.value;
+    if (categoriaValor === 'Dispositivos' && control.value <= 0) {
+      return {'invalido': true};
+    }
+  
+    return null;
+  }
+
+ 
+
+
 }
