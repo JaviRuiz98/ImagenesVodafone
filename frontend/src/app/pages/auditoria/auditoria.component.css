@@ -127,4 +127,16 @@
     min-width: 369px;
   }
   
-  
+  .floatintPanel {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 300px; /* Ajusta según necesites */
+    height: 150px; /* Ajusta según necesites */
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    z-index: 1000;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 8px;
+  }

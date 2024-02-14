@@ -4,7 +4,7 @@ import { getAuditorias, createAuditoria, getAuditoriaById } from '../controller/
 const router: Router = express.Router();
 
 router.get('/auditorias/:id_tienda',  getAuditorias);
-router.get('/auditorias_by_id',  getAuditoriaById);
+router.get('/auditoria_by_id/:id_auditoria',  getAuditoriaById);
 
 router.post('/nueva_auditoria',  createAuditoria);
 

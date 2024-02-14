@@ -20,6 +20,7 @@ import { MarcoElementoComponent } from './../../componentes/marco-elemento/marco
 import { SelectorImagenesComponent } from './../../componentes/selector-imagenes/selector-imagenes.component';
 import { PaginadorProcesamientoSubidaComponent } from './../../componentes/paginador-procesamiento-subida/paginador-procesamiento-subida.component'; 
 import { IrArribaComponent } from 'src/app/componentes/ir-arriba/ir-arriba.component';import { FiltroProcesadosComponent } from 'src/app/componentes/filtro-procesados/filtro-procesados.component';
+import { ProgresoAuditoriaComponent } from 'src/app/componentes/progreso-auditoria/progreso-auditoria.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { IrArribaComponent } from 'src/app/componentes/ir-arriba/ir-arriba.compo
     MarcoElementoComponent,
     IrArribaComponent,
     FiltroProcesadosComponent,
+    ProgresoAuditoriaComponent,
 
     BrowserAnimationsModule,    
     CardModule,

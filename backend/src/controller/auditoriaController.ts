@@ -32,7 +32,7 @@ export async function getAuditorias(req: Request, res: Response) {
 
 export async function getAuditoriaById(req: Request, res: Response) {
     try {
-        const id_auditoria = parseInt(req.params.id_auditoria as string);
+        const id_auditoria = parseInt(req.params.id_auditoria);
         const auditoria: auditorias | null = await auditoriaService.getAuditoriaById(id_auditoria);
         res.status(200).json(auditoria);
     } catch (error) {

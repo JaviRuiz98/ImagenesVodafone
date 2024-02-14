@@ -1,5 +1,8 @@
 <div class="paginaCompleta">
     <p-toast></p-toast>
+    <div class="floatintPanel">
+      <app-progreso-auditoria ></app-progreso-auditoria>
+    </div>    
     <div *ngFor="let mueble of this.muebles" class="contornoPanel">
       <p-panel [style]="{'border': '1px solid black', 'margin-bottom': '20px'}">
         <ng-template pTemplate="header">
