@@ -67,7 +67,6 @@ export class FormMuebleComponent implements OnInit {
       console.log ("editar");
       this.objetivo_form='editar';
       const mueble = this.dialogConfig.data.mueble;
-
       this.expositores_carteles = mueble?.expositores_carteles;
       this.expositores_dispositivos = mueble?.expositores_dispositivos;
 

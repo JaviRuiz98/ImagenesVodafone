@@ -11,3 +11,7 @@
     color: white; /* Color de texto blanco */
   }
   
+  .p-datatable .p-datatable-tbody > tr.p-highlight {
+    background-color: #ffecec; /* Color de fondo rojo para la página activa */
+    color: red; /* Color de texto blanco */
+  }
