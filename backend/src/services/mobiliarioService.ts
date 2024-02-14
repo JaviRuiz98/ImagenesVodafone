@@ -133,10 +133,17 @@ export const mobiliarioService = {
                     }
                 }
             });
+            
 
-            const result: MuebleFrontInterfaz[] = muebles.map((mueble: any) => {
+            //Limitar expositores
+            const mueblesModificados = mapearResultadoParaDevolverExpositoresActivos(muebles);
+            
+       
+           
+             //Ajustar el resultado para que coincida con la interfaz esperada en el front
+             const result: MuebleFrontInterfaz[] = mueblesModificados.map((mueble: any) => {
                 return mapearResultadoParaFront(mueble);
-            });
+            })
         
             return result;
         } catch (error) {
@@ -146,6 +153,7 @@ export const mobiliarioService = {
         }
        
     },
+    
 
     async  getMueblesAndExpositoresActivosByIdTienda( id_tienda: number): Promise<MuebleFrontInterfaz[]> {
         try{
@@ -290,24 +298,6 @@ export const mobiliarioService = {
                                           
 }
 
-// function mapearResultadoParaFrontConProcesado(mueble: any) {
-//     let expositores = [];
-//     if (mueble.pertenencia_expositor_auditoria) {
-//         expositores = mueble.pertenencia_expositor_auditoria.flatMap((pem: any) => pem.expositores);
-        
-//         // for (let i = 0; i < expositores.length; i++) {
-//         //     expositores[i].procesados_imagenes = 
-//         // }
-//     } 
-//     return {
-//         id_mueble: mueble.id_mueble,
-//         nombre_mueble: mueble.nombre_mueble,
-//         expositores: expositores, 
-//         categoria: mueble.categoria,
-//         numero_dispositivos: mueble.numero_dispositivos,
-//     };
-// }
-
 
 
 //tipar adecuadamente
@@ -319,11 +309,9 @@ function mapearResultadoParaFront(mueble: any): MuebleFrontInterfaz {
         expositores = mueble.pertenencia_expositor_mueble.map((pem: any) => pem.expositores);
     }
     
-    
-    
 
     return {
-        id: mueble.id_mueble,
+        id: mueble.id,
         nombre_mueble: mueble.nombre_mueble,
         expositores: expositores, 
         numero_expositores_carteles: mueble.numero_expositores_carteles,
@@ -342,16 +330,6 @@ function mapearResultadoParaDevolverExpositoresActivos(muebles: muebles[]): mueb
         };
     });
 }
- //     let procesados_imagenes = [];
-            //     if (pem.expositores.pertenencia_expositor_auditoria) {
-            //         procesados_imagenes = pem.expositores.pertenencia_expositor_auditoria.map((pea: any) => pea.procesados_imagenes);
-            //     }
-            //     return [{
-            //         ...pem.expositores,
-            //         procesados_imagenes: procesados_imagenes
-            //     }];
-        
-            // });
 
 
 // function getOrderClause( orden_clause:'date_asc' | 'date_desc' | 'result_asc' | 'result_desc' | null) {

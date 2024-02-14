@@ -39,8 +39,13 @@ export class AsignarExpositorComponent implements OnInit {
  
  
   organizarTabla() {
+
     //Organizar la tabla eliminando los elementos ya seleccionados
-      this.all_expositores = this.all_expositores.filter(expositor => !this.already_selected_expositores.includes(expositor));
+    if (this.already_selected_expositores.length > 0) {
+      console.log(this.already_selected_expositores);
+      this.all_expositores = this.all_expositores.filter(expositor => !this.already_selected_expositores.some(selectedExpositor => selectedExpositor.id === expositor.id));
+    }
+    
 
 
     // Organizar la tabla colocando los elementos seleccionados al principio
