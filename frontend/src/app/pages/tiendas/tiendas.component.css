@@ -85,10 +85,14 @@
     align-items: center;
 }
 .anchoAltoDescripcionFotoReferencia {
-    display: grid;
-    grid-template-rows: 50% 50%;
+    display: flex;
     justify-content: center;
     align-items: center;
+}
+.letrasCaracteristicasMueble {
+    display: flex;
+    width: 100%;
+    height: 100%;
 }
 .ajusteImagenesAnchoAlto {
     max-height: 80px; 
@@ -97,4 +101,18 @@
 }
 ::ng-deep .p-picklist-list{
     max-height: 300px;
+}
+
+::ng-deep .p-steps .p-steps-item.p-highlight .p-steps-number {
+    background-color: #f70802a1;
+    color: white;
+}
+
+::ng-deep .p-picklist-buttons .p-button {
+    background: red;
+    border: red;
+}
+::ng-deep .p-orderlist .p-orderlist-controls .p-button {
+    background: red;
+    border: red;
 }
