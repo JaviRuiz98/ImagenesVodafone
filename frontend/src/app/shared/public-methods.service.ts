@@ -41,9 +41,9 @@ export class PublicMethodsService {
         switch (estado) {
             case 'en progreso':
                 return 'warning' as string;
-            case 'aprobada':
+            case 'finalizada':
                 return 'success' as string;
-            case 'rechazada':
+            case 'caducada':
                 return 'danger' as string;
             default:
                 return 'primary';

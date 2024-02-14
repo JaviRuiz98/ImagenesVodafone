@@ -31,6 +31,7 @@ export class GestionDeAuditoriasComponent implements OnInit {
  
   ngOnInit(): void {
     this.initTiendas();
+    this.inicializaAuditorias();
   }
 
   initTiendas() {
@@ -40,17 +41,20 @@ export class GestionDeAuditoriasComponent implements OnInit {
   }
 
   onTiendaSelected(){
-    if(this.tiendaSeleccionada){
-      this.inicializaAuditorias();
-    }
+    this.inicializaAuditorias();
   }
 
   async nuevaAuditoria() {
-    this.auditoriaService.nuevaAuditoria(this.tiendaSeleccionada!.id_tienda).subscribe();
-    this.inicializaAuditorias();
+    this.auditoriaService.nuevaAuditoria(this.tiendaSeleccionada?.id_tienda || 0).subscribe(
+      (data)=>{
+        this.inicializaAuditorias();
+        this.goToAuditoria(data.id_auditoria);
+      }
+    );
   } 
+
   inicializaAuditorias() {
-    this.auditoriaService.getAuditorias(this.tiendaSeleccionada!.id_tienda).subscribe((data)=>{
+    this.auditoriaService.getAuditorias(this.tiendaSeleccionada?.id_tienda || 0).subscribe((data)=>{
       this.auditorias = data;
 
       console.log("auditorias", this.auditorias);

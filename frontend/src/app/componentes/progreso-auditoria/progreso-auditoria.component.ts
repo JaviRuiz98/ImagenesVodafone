@@ -1,14 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { muebles } from 'src/app/interfaces/muebles';
 import { AuditoriaService } from 'src/app/servicios/auditoria/auditoria.service';
 import { auditoria } from 'src/app/interfaces/auditoria';
-
-interface Bar {
-  value: number;
-  color: string;
-  width: number;
-}
+import { ButtonModule } from 'primeng/button';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-progreso-auditoria',
@@ -16,19 +14,26 @@ interface Bar {
   styleUrls: ['./progreso-auditoria.component.css'],
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+    ButtonModule,
+    ConfirmDialogModule,
+    ToastModule
+  ], providers: [
+    ConfirmationService,
+    MessageService
   ]
+
 })
 export class ProgresoAuditoriaComponent {
-  @Input() valores_progresos: number[] = []; // Espera un arreglo de valores numéricos
 
   id_auditoria_seleccionada: number | undefined;
   auditoria_seleccionada: auditoria | undefined;
 
-  bars: Bar[] = [];
-
   constructor(
-    private auditoriaService: AuditoriaService
+    private auditoriaService: AuditoriaService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+    private router: Router
   ) {}  
 
   ngOnInit(): void {
@@ -38,16 +43,26 @@ export class ProgresoAuditoriaComponent {
       console.log(this.auditoria_seleccionada)
     });
 
-  //   if (!this.valores_progresos) return;
+  }
 
-  //   this.bars = this.muebles_auditoria.map(mueble => ({
-  //     const value = mueble.expositores?.[0]?.procesados_imagenes?.[0]?.probabilidades_respuesta_carteles?.id;
-  //     return {
-  //       value: value ?? 0, // Usa el operador nullish coalescing para manejar undefined o null
-  //       color: this.getColorByValue(value),
-  //       width: 100 / this.muebles_auditoria.length
-  //     };
-  //   }));
+  terminarAuditoria() {
+    this.confirmationService.confirm({
+      message: '¿Seguro que quieres terminar esta auditoria?',
+      header: 'Confirmacion',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.auditoriaService.terminarAuditoria(this.auditoriaService.id_auditoria_seleccionada).subscribe(
+          (data) => {
+            this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Auditoria finalizada correctamente' });
+            this.router.navigate(['/gestionAuditorias']);
+          }, (error) => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo terminar la auditoria' });
+          }
+        );        
+      }, reject: () => {
+        this.messageService.add({ severity: 'error', summary: '', detail: 'Acción cancelada' });
+      }
+    })
   }
 
   getColorByValue(value: number): string {

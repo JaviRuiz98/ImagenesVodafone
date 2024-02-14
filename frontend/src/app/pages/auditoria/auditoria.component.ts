@@ -22,6 +22,7 @@ export class AuditoriaComponent implements OnInit{
   muebles_auditoria: muebles[] | undefined;
 
   muebles: muebles[] = [];
+  id_auditoria_seleccionada: number = 0;
 
   imagenAProcesar = new File([""], "");
 
@@ -44,12 +45,11 @@ export class AuditoriaComponent implements OnInit{
 
     ngOnInit(): void {
       this.inicializaImagenesReferencia();
-      console.log('Auditoria seleccionada: ', this.auditoriaService.id_auditoria_seleccionada)
 
     }
 
     async inicializaImagenesReferencia() {
-
+      this.id_auditoria_seleccionada = this.auditoriaService.id_auditoria_seleccionada;
       //const tiendaSelected: number | undefined = this.localStorageService.getItem('tiendas');
       //const mobiliarioSelected: number | undefined= this.localStorageService.getItem('mobiliario');
                                   

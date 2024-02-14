@@ -1,6 +1,6 @@
 <div class="paginaCompleta">
     <p-toast></p-toast>
-    <div class="floatintPanel">
+    <div class="floatintPanel" *ngIf="this.id_auditoria_seleccionada !== 0">
       <app-progreso-auditoria ></app-progreso-auditoria>
     </div>    
     <div *ngFor="let mueble of this.muebles" class="contornoPanel">
@@ -67,5 +67,5 @@
           </div>
       </p-panel>
     </div>
-    <app-ir-arriba></app-ir-arriba>
+    <!-- <app-ir-arriba></app-ir-arriba> -->
   </div>

@@ -1,6 +1,8 @@
+<p-toast></p-toast>
+<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
 
 <div style="display: flex">
-    <div>
+    <div style="margin-right: 5%; text-align: end;">
         Progreso:
         <td>{{ auditoria_seleccionada?.num_expositores_procesados }}/{{ auditoria_seleccionada?.num_expositores }}</td>
     </div>
@@ -13,6 +15,10 @@
         </div>
     </div> -->
     <div>
-        
+        <p-button
+            (click)="terminarAuditoria()"
+            [severity]="'danger'"
+            label="Terminar auditoria"
+        ></p-button>
     </div>
 </div>

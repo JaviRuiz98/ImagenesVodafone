@@ -45,4 +45,11 @@ export class AuditoriaService {
 
     return this.http.get<muebles[]>(`${this.API_URI}/muebles_auditoria/${id_auditoria}`);
   }
+
+  terminarAuditoria(id_auditoria: number): Observable<any> {
+    const putData = {
+      id_auditoria: id_auditoria
+    }
+    return this.http.put<any>(`${this.API_URI}/terminar_auditoria`, putData);
+  }
 }
