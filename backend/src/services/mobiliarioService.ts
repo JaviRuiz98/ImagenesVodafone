@@ -318,6 +318,9 @@ function mapearResultadoParaFront(mueble: any): MuebleFrontInterfaz {
     if (mueble.pertenencia_expositor_mueble) {
         expositores = mueble.pertenencia_expositor_mueble.map((pem: any) => pem.expositores);
     }
+    
+    
+    
 
     return {
         id: mueble.id_mueble,

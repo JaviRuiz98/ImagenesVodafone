@@ -27,6 +27,7 @@ export async function newTienda(req: Request, res: Response) {
 
 export async function updateTienda(req: Request, res: Response) {
     try{     
+        console.log('entro')
         const id_tienda = parseInt(req.params.id_tienda);
         desactivarMueblesTienda(id_tienda);
         const listaIdMuebles = req.body.map((mueble: muebles) => mueble.id);
@@ -52,6 +53,16 @@ export async function asignarPertenenciaMuebleTienda(req: Request, res: Response
 export async function desactivarMueblesTienda(id_tienda: number) {
     try{     
        await tiendaService.deleteMueblesTienda(id_tienda);
+    }catch (error) {
+        console.error('Error al crear tienda:', error);
+    }
+}
+
+export async function activarDesactivarTienda(req: Request, res: Response) {
+    try{     
+        const tienda = await tiendaService.activarDesactivarTienda(req.body);
+
+        res.status(200).json(tienda);
     }catch (error) {
         console.error('Error al crear tienda:', error);
     }
