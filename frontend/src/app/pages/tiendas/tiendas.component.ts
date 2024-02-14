@@ -126,7 +126,6 @@ export class TiendasComponent implements OnInit{
   }
 
   confirmarCambio(tienda: tienda) {
-    console.log(tienda)
     this.ConfirmationService.confirm({
       message: this.mensajeDialog,
       header: this.mensajeActivarDesactivar,
