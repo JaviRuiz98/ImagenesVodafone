@@ -28,6 +28,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { AsignarExpositorComponent } from './components/asignarExpositor/asignarExpositor.component';
 
 
 @NgModule({
@@ -53,7 +54,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
     IrArribaComponent,
     
   ],
-  declarations: [MuebleComponent, FormMuebleComponent, HistorialExpositoresComponent], 
+  declarations: [MuebleComponent, FormMuebleComponent, HistorialExpositoresComponent, AsignarExpositorComponent], 
   providers: [MessageService, DialogService],
 })
 export class MuebleModule { }
