@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { DialogInformacionProcesadoComponent } from '../dialog-informacion-procesado/dialog-informacion-procesado.component';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -20,7 +21,8 @@ import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/p
     ConfirmDialogModule,
     ImageModule,
     PaginatorModule,
-    DialogModule
+    DialogModule,
+    CommonModule
   ],
   providers: [
     ConfirmationService,

@@ -1,6 +1,6 @@
 <div class="gridHistorial">
-    <div *ngFor="let item of getElementosPaginados()" class="imagenProcesada">
-        <div class="anchoAltoImagenDialog">
+    <div *ngFor="let item of getElementosPaginados()" class="imagenProcesadaComentarios">
+        <div class="anchoAltoImagenProcesada">
             <app-dialog-informacion-procesado [procesado]="item" ></app-dialog-informacion-procesado>
             <p-toast></p-toast>
             <p-confirmDialog></p-confirmDialog> 

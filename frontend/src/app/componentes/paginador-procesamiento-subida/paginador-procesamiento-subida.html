@@ -5,7 +5,8 @@
         optionLabel="label"
         optionValue="value"
         [allowEmpty]=false
-        *ngIf="procesados.length>0">
+        *ngIf="procesados.length>0"
+        ngClass="botonSelectorHistorial">
     </p-selectButton>
     <div class="anchoAltoSelector" *ngIf="valueSelected==='new'"> 
         <app-selector-imagenes 
@@ -14,7 +15,7 @@
             [cargando_procesado]="cargando_procesamiento">
         </app-selector-imagenes>
     </div>
-    <div *ngIf="valueSelected==='historial'">
+    <div *ngIf="valueSelected==='historial'" class="anchoAltoGridFotosPaginador">
         <app-visualizacion-procesados
             [procesados]="procesados"
         ></app-visualizacion-procesados>
