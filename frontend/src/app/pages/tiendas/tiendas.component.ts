@@ -123,6 +123,18 @@ export class TiendasComponent implements OnInit{
   filterByNombre(tiendas: tienda[]): tienda[] {
     return tiendas.filter(tiendas => tiendas.sfid.toLowerCase().includes(this.nombreFiltro.toLowerCase()));
   }
+ 
+  filtrarPorActiva() {
+    this.tiendasFiltradas = this.filterByActiva(this.tiendas);
+    this.tiendasMostrar = this.tiendasFiltradas;
+  }
+  
+  filterByActiva(tiendas: tienda[]): tienda[] {
+    return tiendas.filter(tienda => tienda.activa === true);
+  }
+
+
+
 
   confirmarCambio(tienda: tienda) {
     console.log(tienda)

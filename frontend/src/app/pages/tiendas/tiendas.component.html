@@ -3,6 +3,7 @@
         <div class="cabeceraAñadirTienda">
             <p-button class="botonNuevaTienda" label="+ Añadir Tienda" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="iniciarFormularioNuevaTienda()" [style]="{'cursor': 'pointer'}"></p-button>
             <div class="filtro">
+                <p-button (onClick)="filtrarPorActiva()" class="botonNuevaTienda" [label]="'Ver tiendas activas'" [text]="true" [raised]="true" severity="danger" [rounded]="true"  [style]="{'min-width': '130px'}"></p-button>
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
                     <input pInputText type="text" [(ngModel)]="nombreFiltro" (input)="filtrarPorSfid()" placeholder="Filtrar por nombre" /> 
@@ -98,15 +99,13 @@
         <ng-template pTemplate="header">
             <tr>
                 <th style="width:25%">Sfid</th>
-                <th style="width:25%">id Tienda</th>
                 <th style="width:25%">Editar</th>
-                <th style="width:25%">Desactivar</th>
+                <th style="width:25%">Activar/Desactivar</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-tiendas>
             <tr>
                 <td>{{ tiendas.sfid }}</td>
-                <td>{{ tiendas.id_tienda }}</td>
                 <td><p-button class="botonNuevaTienda" label="Editar Tienda" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="editarTienda(tiendas)" [style]="{'min-width': '130px'}" [disabled]="!tiendas.activa"></p-button></td>
                 <td><p-button class="botonNuevaTienda" [label]="tiendas.activa ? 'Desactivar' : 'Activar'"  [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="confirmarCambio(tiendas)" [style]="{'min-width': '130px'}"></p-button></td>
             </tr>
