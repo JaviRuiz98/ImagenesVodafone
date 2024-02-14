@@ -76,3 +76,12 @@ export async function editarEstadoExpositor(req: Request, res: Response){
     }
 }
   
+
+export async function getRegionesDisponibles(__req: Request, res: Response) {
+    try{
+        const regiones = await expositoresService.getRegiones();
+        res.status(200).json(regiones); //
+    }catch(error){
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}

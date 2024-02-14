@@ -1,7 +1,7 @@
 import { expositores,  muebles } from "@prisma/client";
 import db  from "../config/database";
 import { getDestination } from "../config/multer";
-import { imagenes, pertenencia_expositor_auditoria } from "@prisma/client";
+import { imagenes, pertenencia_expositor_auditoria, regiones } from "@prisma/client";
 
 export const expositoresService = {
 
@@ -149,6 +149,14 @@ export const expositoresService = {
           throw error;
         }
 
+      },
+      async getRegiones(): Promise<regiones[]>{
+        try{
+          return await db.regiones.findMany();
+        }catch(error){
+          console.error(`Error al intentar obtener las regiones:`, error);
+          throw error;
+        }
       }
 
 }

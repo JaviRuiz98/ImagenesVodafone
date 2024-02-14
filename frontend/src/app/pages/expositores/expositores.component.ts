@@ -53,13 +53,18 @@ export class ExpositoresComponent implements OnInit {
 
     this.nuevoExpositor = {
       id: 0,
-      nombre: '',
-      activo: true,
-      categoria: "",
+
       imagenes: {
         url:"",
         id_imagen: 0
       },
+      region: {
+        id: 0,
+        nombre: ''
+      },
+      nombre: '',
+      activo: true,
+      categoria: "",
       procesados_imagenes: []
     };
     this.mostrarDialogoNuevoExpositor = true;

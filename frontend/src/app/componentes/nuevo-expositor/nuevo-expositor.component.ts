@@ -11,7 +11,10 @@ import { Message } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
-import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormArray } from '@angular/forms';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormControl, Validators  } from '@angular/forms';
+
+import { regiones } from 'src/app/interfaces/regiones';
 
 @Component({
   selector: 'app-nuevo-expositor',
@@ -28,7 +31,8 @@ import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormArray } f
     ButtonModule,
     ToastModule,
     CommonModule,
-    DropdownModule
+    DropdownModule,
+    InputNumberModule
   ],
 
 })
@@ -40,19 +44,26 @@ export class NuevoExpositorComponent implements OnInit {
 
   @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
   @Output() mostrarDialogoNuevoExpositor = new EventEmitter<boolean>();
-  
 
-  filtro_procesados_form: FormGroup = this.formBuilder.group({
-    nombre: '',
-    zona:'',
-    prompts: [[]],
-    respuestas_carteles: [[]],
-  });;
+  nuevoExpositor_form: FormGroup = this.formBuilder.group({
+    nombre: new FormControl('', [
+      Validators.required,
+      Validators.minLength(5)
+    ]),
+    activo: new FormControl(false),
+    id_region: new FormControl(0, Validators.required),
+    id_imagen: new FormControl(0, Validators.required),
+    categoria: new FormControl('', Validators.required),
+    numero_dispositivos: new FormControl(0),
+  });
 
+
+  formData  = this.nuevoExpositor_form?.value;
 
   submitted: boolean = false;
   mostrar: boolean = true;
   messages: Message[] | undefined;
+  n_dispositivos: number = 0;
   
   nuevoExpositor!: Expositor;
   
@@ -60,20 +71,25 @@ export class NuevoExpositorComponent implements OnInit {
 
   cargando_procesamiento: boolean = false; // ? para el loading
 
-  dropDownZonas: string[] = [];
+  Dropdown_regiones: string[] = [];
+  Dropdown_categorias: string[] = ["Carteles", "Dispositivos"];
 
   constructor(private formBuilder: FormBuilder, private expositoresService: ExpositoresService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
   AbrirnuevoExpositor() {
     this.nuevoExpositor = {
       id: 0,
-      nombre: '',
-      activo: true,
       imagenes: {
         url:"",
         id_imagen: 0
       },
-      categoria: "cartel",
+      region: {
+        id: 0,
+        nombre: ''
+      },
+      nombre: '',
+      activo: true,
+      categoria: "",
       procesados_imagenes: []
     };
     this.submitted = false;
@@ -118,16 +134,17 @@ export class NuevoExpositorComponent implements OnInit {
 
 
   inicializaDropDownZonas(){
-    this.expositoresService.getAllZonas().subscribe((zonas)=>{
-      this.dropDownZonas = zonas
+    this.expositoresService.getAllRegiones().subscribe((regiones)=>{
+      this.Dropdown_regiones = regiones
     })
-
-
   }
+
+ 
 
   ngOnInit(): void {
     this.AbrirnuevoExpositor();
- 
+    this.inicializaDropDownZonas();
   }
 
+  get categoria() { return this.nuevoExpositor_form.get('categoria') }
 }

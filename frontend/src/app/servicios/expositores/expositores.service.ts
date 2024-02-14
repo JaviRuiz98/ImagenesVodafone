@@ -37,9 +37,11 @@ export class ExpositoresService {
   }
 
 
-  getAllZonas(){
-    return this.http.get<string[]>(`${this.API_URI}/zonas`);
+  getAllRegiones(){
+    return this.http.get<string[]>(`${this.API_URI}/regiones`);
   }
+
+ 
   
 
 }
