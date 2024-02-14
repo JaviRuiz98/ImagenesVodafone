@@ -7,7 +7,7 @@
       <p-panel [style]="{'border': '1px solid black', 'margin-bottom': '20px'}">
         <ng-template pTemplate="header">
           <div class="custom-header" >
-            Elemento/mueble {{mueble.nombre_mueble !== undefined ? ' - ' + mueble.nombre_mueble : mueble.id_mueble}}
+            Elemento/mueble {{mueble.nombre_mueble !== undefined ? ' - ' + mueble.nombre_mueble : mueble.id}}
             
              <p-progressSpinner *ngIf="mueble.expositores[0] != undefined? cargas_procesamiento[mueble.expositores[0].id]: false" 
               class="spinner" strokeWidth="6" fill="var(--surface-ground)" animationDuration=".6s"
@@ -42,7 +42,7 @@
                   [procesados]="mueble.expositores[0].procesados_imagenes" 
                   [cargando_procesamiento]="cargas_procesamiento[mueble.expositores[0].id]"
                   [valueSelected]="modos_visualizacion[mueble.expositores[0].id] === 'historial'? 'historial':'new'"
-                  (archivoSeleccionadoChange)="recibirFile($event, mueble.expositores[0].id, mueble.id_mueble)">
+                  (archivoSeleccionadoChange)="recibirFile($event, mueble.expositores[0].id, mueble.id)">
                 </app-paginador-procesamiento-subida>            
               </div>
           

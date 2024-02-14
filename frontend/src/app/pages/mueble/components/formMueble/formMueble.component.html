@@ -40,7 +40,7 @@
                             <p-image class ="imagenSimple" [src]="url_imagenes_referencias + expositor.imagenes.url"  height="100vh"  [alt]="expositor.imagenes.url"  [preview]="true"></p-image>
                           </td>
                           <td>
-                            <p-button  [rounded]="true" severity="danger"  icon="pi pi-trash" ></p-button>
+                            <p-button  [rounded]="true" severity="danger"  icon="pi pi-trash" (onClick)="deleteExpositor('dispositivos',expositor)" ></p-button>
                               
                           </td>
                        
@@ -88,7 +88,7 @@
                           <p-image class ="imagenSimple" [src]="url_imagenes_referencias + expositor.imagenes.url"  height="100vh"  [alt]="expositor.imagenes.url"  [preview]="true"></p-image>
                         </td>
                         <td>
-                          <p-button  [rounded]="true" severity="danger"  icon="pi pi-trash" ></p-button>
+                          <p-button  [rounded]="true" severity="danger"  (onClick)="deleteExpositor('carteles',expositor)" icon="pi pi-trash" ></p-button>
                             
                         </td>
                      
@@ -124,7 +124,7 @@
       <p-progressSpinner></p-progressSpinner>
     </div>
     <div *ngIf ="all_expositores.length > 0 " >
-      <app-asignarExpositor [all_expositores]="all_expositores"  (expositores_selected)="asignar_expositores($event)"></app-asignarExpositor>
+      <app-asignarExpositor [all_expositores]="all_expositores" [already_selected_expositores]="expositores.value" (expositores_selected)="asignar_expositores($event)"></app-asignarExpositor>
      </div>
   </div>
 
@@ -132,6 +132,13 @@
 
   
   </div>
+
+  <div class ="flex align-items-center justify-content-center mt-2" *ngIf="!showing_asignar_expositores && !showing_crear_expositores">
+   
+    <p-button  type="submit"  severity="danger" [icon]="'pi pi-check'" [label]="'Guardar'"  (onClick)="onSubmit()">    </p-button>
+ 
+  </div>
+    
 
 </form>
  

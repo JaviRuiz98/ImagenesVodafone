@@ -3,7 +3,6 @@ import { AbstractControl, FormBuilder, FormGroup, Validator, ValidatorFn, Valida
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { Expositor } from 'src/app/interfaces/expositor';
 import { ExpositoresService } from 'src/app/servicios/expositores/expositores.service';
-import { mueblesVisualizacion } from '../../interfaces/muebleVisualizacion';
 
 
 @Component({
@@ -14,6 +13,7 @@ import { mueblesVisualizacion } from '../../interfaces/muebleVisualizacion';
 
 
 export class FormMuebleComponent implements OnInit {
+
  
   
   constructor( public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private expositoresService: ExpositoresService) { }
@@ -127,6 +127,14 @@ export class FormMuebleComponent implements OnInit {
       }
       
       
+    }
+  }
+
+  deleteExpositor(categoria: 'carteles' | 'dispositivos', expositor: Expositor) {
+    if (categoria === 'carteles') {
+      this.expositores_carteles = this.expositores_carteles.filter((e) => e.id !== expositor.id);
+    }else{
+      this.expositores_dispositivos = this.expositores_dispositivos.filter((e) => e.id !== expositor.id);
     }
   }
   

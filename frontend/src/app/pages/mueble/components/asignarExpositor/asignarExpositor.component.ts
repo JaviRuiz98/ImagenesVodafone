@@ -13,7 +13,7 @@ export class AsignarExpositorComponent implements OnInit {
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
   @Input() all_expositores: Expositor[] = [];
-  //@Input() already_selected_expositores: Expositor[] = []
+  @Input() already_selected_expositores: Expositor[] = []
   @Output () expositores_selected = new  EventEmitter<Expositor | null>();
 
   nombreFiltro: string = '';
@@ -23,8 +23,8 @@ export class AsignarExpositorComponent implements OnInit {
 
   ngOnInit() {
     
-    //this.selected_expositores = this.already_selected_expositores;
-    //this.organizarTabla();
+    
+    this.organizarTabla();
   }
 
   // filtrarPorNombre() {
@@ -38,13 +38,17 @@ export class AsignarExpositorComponent implements OnInit {
 
  
  
-  // organizarTabla() {
-  //   // Organizar la tabla colocando los elementos seleccionados al principio
-  //   const seleccionados = this.selected_expositores.slice(); // Creamos una copia del arreglo de seleccionados
-  //   const noSeleccionados = this.all_expositores_filtrados.filter(expositor => !this.selected_expositores.includes(expositor));
+  organizarTabla() {
+    //Organizar la tabla eliminando los elementos ya seleccionados
+      this.all_expositores = this.all_expositores.filter(expositor => !this.already_selected_expositores.includes(expositor));
 
-  //   this.all_expositores_filtrados = seleccionados.concat(noSeleccionados);
-  // }
+
+    // Organizar la tabla colocando los elementos seleccionados al principio
+    // const seleccionados = this.selected_expositores.slice(); // Creamos una copia del arreglo de seleccionados
+    // const noSeleccionados = this.all_expositores_filtrados.filter(expositor => !this.selected_expositores.includes(expositor));
+
+    // this.all_expositores_filtrados = seleccionados.concat(noSeleccionados);
+  }
 
   
   volver() {
