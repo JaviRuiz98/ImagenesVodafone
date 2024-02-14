@@ -44,7 +44,8 @@ export class VisualizacionProcesadosComponent {
 
   constructor(
     private confirmationService: ConfirmationService,
-    procesamientoService: ProcesamientoService
+    private procesamientoService: ProcesamientoService,
+    private messageService: MessageService
   ) {}
 
   getElementosPaginados(): procesados_imagenes[] | undefined {
@@ -72,7 +73,7 @@ export class VisualizacionProcesadosComponent {
             this.borrarProcesado(procesado);
         },
         reject: () => {
-            this.messageService.add({ severity: 'error', summary: 'Proceso cancelado', detail: '', life: 3000 });
+           this.messageService.add({ severity: 'error', summary: 'Proceso cancelado', detail: '', life: 3000 });
         }
     });
   }
