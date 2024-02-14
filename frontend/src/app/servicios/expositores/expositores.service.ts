@@ -13,8 +13,12 @@ export class ExpositoresService {
   
   constructor(private http: HttpClient) { }
   
-  getExpositores(): Observable<Expositor[]> {
-    return this.http.get<Expositor[]>(`${this.API_URI}/expositores`);
+  getExpositores(categoria?: string): Observable<Expositor[]> {
+    let url = `${this.API_URI}/expositores`
+    if (categoria) {
+      url+=`?categoria=${categoria}`
+    }
+    return this.http.get<Expositor[]>(url);
   }
 
   
