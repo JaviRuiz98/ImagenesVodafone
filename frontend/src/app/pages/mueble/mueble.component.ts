@@ -67,7 +67,7 @@ export class MuebleComponent implements OnInit {
       const expositoresDispositivos = mueble.expositores.filter(expositor => expositor.categoria === 'dispositivos');
 
       return {
-        id_mueble: mueble.id_mueble,
+        id: mueble.id,
         nombre_mueble: mueble.nombre_mueble,
         expositores: mueble.expositores,
         numero_expositores_carteles: expositoresCarteles.length,

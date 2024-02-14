@@ -2,17 +2,12 @@
     <p-toolbar class ="toolClass">
       <div class="p-toolbar-group-start">
         <p-button severity="danger" icon="pi pi-arrow-left" [text]="true" [raised]="true" (onClick)="volver()" label="volver" ></p-button>
-        <p-button severity="danger" [disabled]="selected_expositores.length<=0" icon="pi pi-plus-circle" class="ml-2" (onClick)="volver()"  label="Asignar" ></p-button>
+        <p-button severity="danger" [disabled]="selected_expositor == null" icon="pi pi-plus-circle" class="ml-2" (onClick)="volver()"  label="Asignar" ></p-button>
       </div>
       <div class="p-toolbar-group-center">
         <p class="p-m-0 text-2xl ml-3"> Expositores</p>
       </div>
-      <div class="p-toolbar-group-end">
-        <span class="p-input-icon-left ml-auto">
-          <i class="pi pi-search"></i>
-          <input pInputText type="text" [(ngModel)]="nombreFiltro" (input)="filtrarPorNombre()"    placeholder="Filtrar por nombre" /> 
-        </span>
-      </div>
+      
     </p-toolbar>
 </div>
 
@@ -20,12 +15,16 @@
   <p-table 
   #miTabla
   class="table"
-  [value]="all_expositores_filtrados"
+  [value]="all_expositores"
   [paginator]="true"
   [rows]="10"
   [scrollable]="true"
-  [scrollHeight]="'calc(100vh - 350px )'"
-  [(selection)] = "selected_expositores"
+  [scrollHeight]="'calc(100vh - 380px )'"
+
+  selectionMode="single"
+  [(selection)] = "selected_expositor"
+
+
   paginatorStyleClass="background-color: rgba(232, 232, 232, 0.9);"
   [showCurrentPageReport]="true"
   [tableStyle]="{ 'min-width': '50rem' }"
@@ -36,21 +35,28 @@
 
 <ng-template pTemplate="header">
     <tr>
-      <th style="width: 4rem" class="white-space-nowrap overflow-hidden text-overflow-ellipsis">
+      <!-- <th style="width: 4rem" class="white-space-nowrap overflow-hidden text-overflow-ellipsis">
         {{selected_expositores.length>0?selected_expositores.length + ' seleccionado/s' :""}}
-      </th>
+      </th> -->
       <th  pSortableColumn="nombre">  Expositor  <p-sortIcon field="nombre"></p-sortIcon></th>
       <th> </th>
 
     </tr>
+
+    <tr>
+      <th>
+          <p-columnFilter type="text" field="nombre"></p-columnFilter>
+      </th>
+      <th></th>
+    </tr>
 </ng-template>
 <ng-template pTemplate="body" let-expositor>
     
-    <tr>
+    <tr  [pSelectableRow]="expositor">
       
-      <td>
+      <!-- <td>
         <p-tableCheckbox [value]="expositor"></p-tableCheckbox>
-      </td>
+      </td> -->
 
       <td>{{ expositor.nombre==null? "Sin nombre " : expositor.nombre }}</td>
       <td>
@@ -58,6 +64,7 @@
       </td>
  
     </tr>
+    
 </ng-template>
 
 <ng-template pTemplate="emptymessage">

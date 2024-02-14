@@ -13,44 +13,42 @@ export class AsignarExpositorComponent implements OnInit {
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
   @Input() all_expositores: Expositor[] = [];
-  @Input() already_selected_expositores: Expositor[] = []
-  @Output () expositores_selected = new  EventEmitter<Expositor[]>();
-
-  all_expositores_filtrados: Expositor[] = []
+  //@Input() already_selected_expositores: Expositor[] = []
+  @Output () expositores_selected = new  EventEmitter<Expositor | null>();
 
   nombreFiltro: string = '';
-  selected_expositores: Expositor[] = []
+  selected_expositor: Expositor | null = null;
 
   constructor() { }
 
   ngOnInit() {
-    this.all_expositores_filtrados = this.all_expositores;
-    this.selected_expositores = this.already_selected_expositores;
-    this.organizarTabla();
+    
+    //this.selected_expositores = this.already_selected_expositores;
+    //this.organizarTabla();
   }
 
-  filtrarPorNombre() {
-    this.all_expositores_filtrados = this.all_expositores.filter(expositor => {
-      const nombre = expositor.nombre ? expositor.nombre.toLowerCase() : ""; // Si el nombre es null o undefined, se asigna una cadena vacía
-      return nombre.includes(this.nombreFiltro.toLowerCase());
-    });
-    this.organizarTabla();
-  }
+  // filtrarPorNombre() {
+  //   this.all_expositores_filtrados = this.all_expositores.filter(expositor => {
+  //     const nombre = expositor.nombre ? expositor.nombre.toLowerCase() : ""; // Si el nombre es null o undefined, se asigna una cadena vacía
+  //     return nombre.includes(this.nombreFiltro.toLowerCase());
+  //   });
+  //   //this.organizarTabla();
+  // }
   
 
  
  
-  organizarTabla() {
-    // Organizar la tabla colocando los elementos seleccionados al principio
-    const seleccionados = this.selected_expositores.slice(); // Creamos una copia del arreglo de seleccionados
-    const noSeleccionados = this.all_expositores_filtrados.filter(expositor => !this.selected_expositores.includes(expositor));
+  // organizarTabla() {
+  //   // Organizar la tabla colocando los elementos seleccionados al principio
+  //   const seleccionados = this.selected_expositores.slice(); // Creamos una copia del arreglo de seleccionados
+  //   const noSeleccionados = this.all_expositores_filtrados.filter(expositor => !this.selected_expositores.includes(expositor));
 
-    this.all_expositores_filtrados = seleccionados.concat(noSeleccionados);
-  }
+  //   this.all_expositores_filtrados = seleccionados.concat(noSeleccionados);
+  // }
 
   
   volver() {
-    this.expositores_selected.emit(this.selected_expositores);
+    this.expositores_selected.emit(this.selected_expositor);
   }
 
 

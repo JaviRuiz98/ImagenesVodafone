@@ -267,7 +267,7 @@ export const mobiliarioService = {
                 }, []);
               
                 return {
-                  id_mueble: mueble.id,
+                  id: mueble.id,
                   nombre_mueble: mueble.nombre_mueble,
                   numero_expositores_carteles: mueble.numero_expositores_carteles,
                   numero_expositores_dispostivos:mueble.numero_expositores_dispositivos,

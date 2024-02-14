@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validator, ValidatorFn, Validators } from '@angular/forms';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { Expositor } from 'src/app/interfaces/expositor';
-import { muebles } from 'src/app/interfaces/muebles';
 import { ExpositoresService } from 'src/app/servicios/expositores/expositores.service';
 import { mueblesVisualizacion } from '../../interfaces/muebleVisualizacion';
 
@@ -15,13 +14,16 @@ import { mueblesVisualizacion } from '../../interfaces/muebleVisualizacion';
 
 
 export class FormMuebleComponent implements OnInit {
-
-  
+ 
   
   constructor( public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private expositoresService: ExpositoresService) { }
 
-  showing_expositores: boolean = false;
+  showing_asignar_expositores: boolean = false;
   all_expositores: Expositor[] = [];
+  showing_crear_expositores: boolean = false;
+  new_expositor_for_categoria: 'dispositivos' | 'carteles' = 'dispositivos';
+
+  
 
   objetivo_form: 'crear' | 'editar' = 'crear';
   categorias_opciones = ['cartel', 'dispositivos'];
@@ -34,7 +36,10 @@ export class FormMuebleComponent implements OnInit {
     expositores: [[]]
   })
 
-  mueble?: mueblesVisualizacion;
+  expositores_carteles: Expositor[] = [];
+  expositores_dispositivos: Expositor[] = [];
+
+  
 
   get nombre_mueble() {
     return this.formulario.controls['nombre_mueble'];
@@ -49,25 +54,28 @@ export class FormMuebleComponent implements OnInit {
   get expositores() {
     return this.formulario.controls['expositores'];
   }
-  get expositores_dispositivos() {
-    return this.mueble?.expositores_dispositivos;
+  get expositores_dispositivos_list() {
+    return this.expositores_dispositivos;
   }
 
-  get expositores_carteles() {
-    return this.mueble?.expositores_carteles;
+  get expositores_carteles_list() {
+    return this.expositores_carteles;
   }
   ngOnInit() {
    
     if (this.dialogConfig.data) {
       console.log ("editar");
       this.objetivo_form='editar';
-      this.mueble = this.dialogConfig.data.mueble;
+      const mueble = this.dialogConfig.data.mueble;
+
+      this.expositores_carteles = mueble?.expositores_carteles;
+      this.expositores_dispositivos = mueble?.expositores_dispositivos;
 
       this.formulario.patchValue({
-        nombre_mueble: this.mueble?.nombre_mueble,
-        numero_expositores_carteles: this.mueble?.numero_expositores_carteles,
-        numero_expostores_dispositivos: this.mueble?.numero_expositores_dispositivos,
-        expositores: this.mueble?.expositores
+        nombre_mueble: mueble?.nombre_mueble,
+        numero_expositores_carteles: mueble?.numero_expositores_carteles,
+        numero_expostores_dispositivos: mueble?.numero_expositores_dispositivos,
+        expositores: mueble?.expositores
       })
     }else{
       console.log ("nuevo");
@@ -86,14 +94,42 @@ export class FormMuebleComponent implements OnInit {
     };
   }
 
-  showExpositores() {
-    
-   this.expositoresService.getExpositores().subscribe((data: Expositor[]) => {
-    this.all_expositores = data;
-    this.showing_expositores=true;
-   })
+  createExpositores(categoria:string) {
+    throw new Error('Method not implemented.');
   }
+
+  showExpositores(categoria: 'carteles' | 'dispositivos') {
     
+   
+    this.expositoresService.getExpositores(categoria).subscribe( (expositores:Expositor[]) => {
+      this.all_expositores = expositores;
+      this.new_expositor_for_categoria = categoria;
+      this.showing_asignar_expositores = true;
+
+   });
+     
+  }
+  asignar_expositores(event: Expositor | null) {
+    this.showing_asignar_expositores = false;
+    if (event != null) {
+      // Añadimos el expositor al formulario
+      this.formulario.patchValue({
+        expositores: this.expositores.value.concat(event)
+      });
+  
+      // Añadimos el expositor al array correspondiente para mostrarlos
+      if (this.new_expositor_for_categoria === 'carteles') {
+        
+        this.expositores_carteles = this.expositores_carteles.concat(event);
+      } else {
+        
+        this.expositores_dispositivos = this.expositores_dispositivos.concat(event);
+      }
+      
+      
+    }
+  }
+  
 
   onSubmit() {
   
