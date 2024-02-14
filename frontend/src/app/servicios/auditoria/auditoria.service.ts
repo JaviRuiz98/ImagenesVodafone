@@ -15,6 +15,7 @@ export class AuditoriaService {
   API_URI = 'http://localhost:3000';
 
   id_auditoria_seleccionada: number = 0;
+  auditoria_seleccionada: auditoria = new auditoria(null);
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -51,5 +52,9 @@ export class AuditoriaService {
       id_auditoria: id_auditoria
     }
     return this.http.put<any>(`${this.API_URI}/terminar_auditoria`, putData);
+  }
+
+  createAuditoriaGlobal(): Observable<any> {
+    return this.http.post<any>(`${this.API_URI}/auditoria_global`, {});
   }
 }

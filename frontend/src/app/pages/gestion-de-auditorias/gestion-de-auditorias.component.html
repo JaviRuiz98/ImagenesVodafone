@@ -1,5 +1,5 @@
 <p-toast></p-toast>
-<!-- <app-ir-arriba></app-ir-arriba> -->
+<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
 <div class="paginaCompleta">
 
     <p-toolbar class ="toolClass">
@@ -13,7 +13,7 @@
             class="dropdown">
         </p-dropdown>
         <div class="p-toolbar-group-start">
-            <p-button severity="danger" class="marginRight" label="Auditoría global" icon="pi pi-plus"></p-button>
+            <p-button severity="danger" class="marginRight" label="Auditoría global" icon="pi pi-plus" (onClick)="crearAuditoriaGlobal()"></p-button>
             <p-button severity="danger" class="marginRight" label="Auditoría en esta tienda" icon="pi pi-plus" (onClick)="nuevaAuditoria()" [disabled]="tiendaSeleccionada == undefined"></p-button>
         </div>        
     </p-toolbar>

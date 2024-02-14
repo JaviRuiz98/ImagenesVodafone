@@ -49,6 +49,9 @@ export const auditoriaService = {
             return db.auditorias.findUnique({
                 where: {
                     id_auditoria: id_auditoria
+                }, include: {
+                    estados_auditoria: true,
+                    tiendas: true
                 }
             })
         } catch (error) {

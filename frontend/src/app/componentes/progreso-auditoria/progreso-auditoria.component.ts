@@ -38,11 +38,14 @@ export class ProgresoAuditoriaComponent {
 
   ngOnInit(): void {
     this.id_auditoria_seleccionada = this.auditoriaService.id_auditoria_seleccionada;
-    this.auditoriaService.getAuditoriaById(this.id_auditoria_seleccionada).subscribe(auditoria => {
-      this.auditoria_seleccionada = auditoria;
-      console.log(this.auditoria_seleccionada)
-    });
-
+    this.auditoriaService.getAuditoriaById(this.auditoriaService.id_auditoria_seleccionada).subscribe(
+      auditoria => {
+        this.auditoria_seleccionada = auditoria
+        console.log("auditoria_seleccionada", this.auditoria_seleccionada);
+      }, error => { 
+        console.log(error) 
+      }
+    );
   }
 
   terminarAuditoria() {

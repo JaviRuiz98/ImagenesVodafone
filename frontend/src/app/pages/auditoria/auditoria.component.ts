@@ -22,7 +22,9 @@ export class AuditoriaComponent implements OnInit{
   muebles_auditoria: muebles[] | undefined;
 
   muebles: muebles[] = [];
+
   id_auditoria_seleccionada: number = 0;
+  auditoria_seleccionada: auditoria = new auditoria(null);
 
   imagenAProcesar = new File([""], "");
 
@@ -44,12 +46,19 @@ export class AuditoriaComponent implements OnInit{
     ) {}
 
     ngOnInit(): void {
-      this.inicializaImagenesReferencia();
+      this.id_auditoria_seleccionada = this.auditoriaService.id_auditoria_seleccionada;
 
+      this.auditoriaService.getAuditoriaById(this.auditoriaService.id_auditoria_seleccionada).subscribe(
+        auditoria => {
+          this.auditoria_seleccionada = auditoria
+          console.log("auditoria_seleccionada", this.auditoria_seleccionada);
+
+          this.inicializaImagenesReferencia();
+        }, error => { console.log(error) }
+      );      
     }
 
     async inicializaImagenesReferencia() {
-      this.id_auditoria_seleccionada = this.auditoriaService.id_auditoria_seleccionada;
       //const tiendaSelected: number | undefined = this.localStorageService.getItem('tiendas');
       //const mobiliarioSelected: number | undefined= this.localStorageService.getItem('mobiliario');
                                   

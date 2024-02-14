@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { auditoriaService } from '../services/auditoriaService';
 import { auditoria_extended } from '../interfaces/auditoriaExtended';
 import { auditorias } from '@prisma/client';
+import { tiendaService } from '../services/tiendasServices';
 
 export async function getAuditorias(req: Request, res: Response) {
     try {
@@ -67,6 +68,27 @@ export async function createAuditoria(req: Request, res: Response) {
         const createdAuditoria: auditorias = await auditoriaService.createAuditoria(id_tienda);
         res.status(201).json(createdAuditoria);
         console.log('Auditoria creada');
+    } catch (error) {
+        res.status(500).json({ error: error });
+    }
+}
+
+export async function createAuditoriaGlobal(_req: Request, res: Response) {
+    try {
+        // Obtengo todas las tiendas
+        const tiendas = await tiendaService.getAllById();
+
+        // Creo todas las auditorias de forma secuencial
+        const promises = [];
+        for (let tienda of tiendas) {
+            promises.push(auditoriaService.createAuditoria(tienda.id_tienda));
+        }
+
+        await Promise.all(promises);
+
+        // Envio mensaje de exito
+        res.status(201).json('Auditoria global creada');
+        console.log('Auditoria global creada');
     } catch (error) {
         res.status(500).json({ error: error });
     }

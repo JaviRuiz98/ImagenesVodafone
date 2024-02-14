@@ -1,3 +1,4 @@
+import { estados_auditoria } from './estados_auditoria';
 
 export class auditoria {
     id_auditoria: number ;
@@ -7,6 +8,7 @@ export class auditoria {
     estado: string;
     num_expositores_procesados: number;
     num_expositores: number;
+    estados_auditoria: estados_auditoria;
 
     constructor(valor: null){
         this.fecha = new Date();
@@ -16,5 +18,6 @@ export class auditoria {
         this.id_mobiliario = 0;
         this.num_expositores_procesados = 0;
         this.num_expositores = 0;
+        this.estados_auditoria = new estados_auditoria(null);
     }
 }
