@@ -76,7 +76,7 @@
                     </p-orderList>
                 </div>
             </div>
-            <p-steps [model]="parametrosSteps" [readonly]="false" [activeIndex]="activeIndex" [style]="{'margin-top': '5%'}"></p-steps>
+            <p-steps [model]="parametrosSteps" [readonly]="true" [activeIndex]="activeIndex" [style]="{'margin-top': '5%'}"></p-steps>
             <div class="botonesAtrasSiguiente">
                 <p-button (click)="botonAtras()" class="botonSiguienteAtras" label="Atrás" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px'}" [disabled]="activeIndex === 0"></p-button>
                 <p-button (click)="botonSiguiente()" class="botonSiguienteAtras" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px', 'justify-content': 'center'}"
