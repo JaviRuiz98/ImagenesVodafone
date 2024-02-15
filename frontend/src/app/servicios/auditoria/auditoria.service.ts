@@ -57,4 +57,9 @@ export class AuditoriaService {
   createAuditoriaGlobal(): Observable<any> {
     return this.http.post<any>(`${this.API_URI}/auditoria_global`, {});
   }
+
+  getBarraProgresoAuditoria(id_auditoria_seleccionada: number): Observable<number[]> {
+
+    return this.http.get<number[]>(`${this.API_URI}/barra_progreso_auditoria/${id_auditoria_seleccionada}`);
+  }
 }

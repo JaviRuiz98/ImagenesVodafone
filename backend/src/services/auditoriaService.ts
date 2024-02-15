@@ -143,6 +143,30 @@ export const auditoriaService = {
         }
     },
 
+    async getBarraProgresoAuditoria(id_auditoria: number): Promise<any> {
+        try {
+            return db.pertenencia_expositor_auditoria.findMany({
+                where: {
+                    id_auditoria: id_auditoria
+                },
+                include: {
+                    procesados_imagenes: {
+                        take: 1,
+                        orderBy: {
+                            fecha: 'desc'
+                        }
+                    }, 
+                    expositores: true
+                }
+            })
+        } catch (error) {
+            console.error('No se pudo obtener la barra de progreso:', error);
+            throw error;
+        } finally {
+            db.$disconnect();
+        }
+    },
+
     getNumExpositoresByAuditoria(id_auditoria: number) {
         try {
             return db.pertenencia_expositor_auditoria.count({

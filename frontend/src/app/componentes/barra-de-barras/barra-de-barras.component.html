@@ -1,0 +1,7 @@
+<div class="bar-container" style="display: flex; height: 20px;">
+    <div *ngFor="let bar of bars"
+         [style.background-color]="bar.color"
+         [style.width]="bar.width + '%'"
+         style="height: 100%;"></div>
+  </div>
+  

@@ -7,6 +7,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { Router } from '@angular/router';
+import { BarraDeBarrasComponent } from '../barra-de-barras/barra-de-barras.component';
 
 @Component({
   selector: 'app-progreso-auditoria',
@@ -17,7 +18,8 @@ import { Router } from '@angular/router';
     CommonModule,
     ButtonModule,
     ConfirmDialogModule,
-    ToastModule
+    ToastModule,
+    BarraDeBarrasComponent
   ], providers: [
     ConfirmationService,
     MessageService
@@ -28,6 +30,8 @@ export class ProgresoAuditoriaComponent {
 
   id_auditoria_seleccionada: number | undefined;
   auditoria_seleccionada: auditoria | undefined;
+
+  datos_barra_progreso: number[] = [];
 
   constructor(
     private auditoriaService: AuditoriaService,
@@ -46,6 +50,8 @@ export class ProgresoAuditoriaComponent {
         console.log(error) 
       }
     );
+
+    this.getBarraProgresoAuditoria(this.auditoriaService.id_auditoria_seleccionada);
   }
 
   terminarAuditoria() {
@@ -73,5 +79,14 @@ export class ProgresoAuditoriaComponent {
     else if(value <= 1) return 'green';
     else if(value <= 2) return 'yellow';
     else return 'red';
+  }
+
+  getBarraProgresoAuditoria(id_auditoria_seleccionada: number) {
+    this.auditoriaService.getBarraProgresoAuditoria(id_auditoria_seleccionada).subscribe(
+      (data) => {
+        this.datos_barra_progreso = data;
+        console.log("barra de progreso", this.datos_barra_progreso);
+      }, (error) => { console.log(error) }
+    )
   }
 }

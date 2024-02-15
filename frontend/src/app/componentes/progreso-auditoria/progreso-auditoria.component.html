@@ -6,14 +6,10 @@
         Progreso:
         <td>{{ auditoria_seleccionada?.num_expositores_procesados }}/{{ auditoria_seleccionada?.num_expositores }}</td>
     </div>
-    <!-- <div class="bar-container" style="display: flex; height: 20px;">
+    <div>
         Barra de progreso:
-        <div *ngFor="let bar of bars"
-            [style.background-color]="bar.color"
-            [style.width]="bar.width + '%'"
-            style="height: 100%;">
-        </div>
-    </div> -->
+        <app-barra-de-barras [datos_barras]="[1,1,1,4,0,0,0,1]"></app-barra-de-barras>
+    </div>
     <div>
         <p-button
             *ngIf="this.auditoria_seleccionada?.estados_auditoria?.estado == 'en progreso'"
