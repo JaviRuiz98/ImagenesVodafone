@@ -79,6 +79,7 @@ export class AuditoriaComponent implements OnInit{
 
     async recibirFile(event: {archivo:File}, id_expositor_selected: number, id_mueble_selected: number) {
       this.imagenAProcesar = event.archivo;
+      console.log("imagenAProcesar", this.imagenAProcesar);
       this.cargas_procesamiento[id_expositor_selected]= true;   
       this.messageService.add({ severity: 'info', summary: 'Cargando', detail: 'La imagen se está procesando' });
 

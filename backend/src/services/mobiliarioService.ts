@@ -246,7 +246,7 @@ export const mobiliarioService = {
                     let expositor = acc.find(ex => ex.id_expositor === auditoria.expositores.id);
                     if (!expositor) {
                       expositor = {
-                        id_expositor: auditoria.expositores.id,
+                        id: auditoria.expositores.id,
                         id_imagen: auditoria.expositores.id_imagen,
                         id_region: auditoria.expositores.id_region,
                         nombre: auditoria.expositores.nombre,
@@ -267,7 +267,7 @@ export const mobiliarioService = {
                 }, []);
               
                 return {
-                  id_mueble: mueble.id,
+                  id: mueble.id,
                   nombre_mueble: mueble.nombre_mueble,
                   numero_expositores_carteles: mueble.numero_expositores_carteles,
                   numero_expositores_dispostivos:mueble.numero_expositores_dispositivos,
