@@ -48,9 +48,7 @@ export async function procesarImagenes(req: Request, res: Response) {
     }
 
     //obtengo la imagen de referencia
-    const imagenReferencia = await expositoresService.getImage(existingExpositor.id_imagen);
-       
-
+    const imagenReferencia = await expositoresService.getImage(existingExpositor.id_imagen);      
     
 
     if (!imagenReferencia) {
@@ -58,9 +56,9 @@ export async function procesarImagenes(req: Request, res: Response) {
       return;
     }
    
-    const dispositivos_esperados:number =  existingExpositor.numero_dispositivos || 0;
+    const dispositivos_esperados: number =  existingExpositor.numero_dispositivos || 0;
     const categoria = existingExpositor.categoria || '';
-    const id_prompt_usado: number = categoria == 'carteles'?  id_prompt_carteles : id_prompt_dispositivos;
+    const id_prompt_usado: number = categoria == 'Carteles'?  id_prompt_carteles : id_prompt_dispositivos;
 
     const promptObject: prompts | null = await promptService.getById(id_prompt_usado);
     if (!promptObject) {
@@ -88,7 +86,7 @@ export async function procesarImagenes(req: Request, res: Response) {
 
     const similarityObject = JSON.parse(cleanedResponse);
 
-    const id_probabilidad_cartel: number | null = await procesadoService.getIdProbabilidadCartelDadaProbabilidad(similarityObject.probabilidad_cartel)
+    const id_probabilidad_cartel: number | null = await procesadoService.getIdProbabilidadCartelDadaProbabilidad(similarityObject.probab_estar_contenido)
     if(!id_probabilidad_cartel) {
       throw new Error('Probabilidad cartel no valida')
     }
@@ -109,11 +107,12 @@ export async function procesarImagenes(req: Request, res: Response) {
       );    
     
     const procesado_object = await procesadoService.getById(id_procesado_imagen);
+    console.log(procesado_object);
     return res.status(200).json(procesado_object);
     
   } catch (error) {
     console.error('Error al procesar imágenes:', error);
-    res.status(500).json({ error: 'Error interno del servidor' });
+    res.status(500).json({ error: error });
     throw error;
   }
 }
@@ -184,12 +183,12 @@ function isValidOpenAiResponse  (response: string, tipoProcesado: string): boole
   try {
     const responseObject = JSON.parse(response);
     
-    if (tipoProcesado === 'carteles') {
+    if (tipoProcesado === 'Carteles') {
       console.log(responseObject);
       return true;
       
     
-    } else if (tipoProcesado === 'dispositivos') {
+    } else if (tipoProcesado === 'Dispositivos') {
       console.log(responseObject);
       return true;
     } 
