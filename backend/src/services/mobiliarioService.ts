@@ -243,7 +243,7 @@ export const mobiliarioService = {
               const resultado = muebles.map(mueble => {
                 const expositores: any[] = mueble.pertenencia_expositor_auditoria.reduce((acc: any[], auditoria) => {
                   
-                    let expositor = acc.find(ex => ex.id_expositor === auditoria.expositores.id);
+                    let expositor = acc.find(ex => ex.id === auditoria.expositores.id);
                     if (!expositor) {
                       expositor = {
                         id: auditoria.expositores.id,
