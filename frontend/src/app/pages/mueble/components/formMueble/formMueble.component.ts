@@ -4,6 +4,7 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { Expositor } from 'src/app/interfaces/expositor';
 import { muebles } from 'src/app/interfaces/muebles';
 import { ExpositoresService } from 'src/app/servicios/expositores/expositores.service';
+import { mueblesVisualizacion } from '../../interfaces/muebleVisualizacion';
 
 
 @Component({
@@ -28,28 +29,33 @@ export class FormMuebleComponent implements OnInit {
 
   formulario:FormGroup = this.fb.group({
     nombre_mueble: ['', Validators.required],
-
     numero_expositores_dispositivos: [0, [Validators.required, Validators.min(0)]],
     numero_expositores_carteles: [0, [Validators.required, Validators.min(0)]],
-    expositores: [[],]
+    expositores: [[]]
   })
-  mueble?: muebles;
+
+  mueble?: mueblesVisualizacion;
 
   get nombre_mueble() {
     return this.formulario.controls['nombre_mueble'];
   }
-  get numero_dispositivos() {
-    return this.formulario.controls['numero_dispositivos'];
+  get numero_expositores_dispositivos() {
+    return this.formulario.controls['numero_expositores_dispositivos'];
   } 
-
-  get categoria() {
-    return this.formulario.controls['categoria'];
+  get numero_expositores_carteles() {
+    return this.formulario.controls['numero_expositores_carteles'];
   }
 
   get expositores() {
     return this.formulario.controls['expositores'];
   }
+  get expositores_dispositivos() {
+    return this.mueble?.expositores_dispositivos;
+  }
 
+  get expositores_carteles() {
+    return this.mueble?.expositores_carteles;
+  }
   ngOnInit() {
    
     if (this.dialogConfig.data) {
@@ -59,9 +65,8 @@ export class FormMuebleComponent implements OnInit {
 
       this.formulario.patchValue({
         nombre_mueble: this.mueble?.nombre_mueble,
-       
-        numero_exposirotes_carteles: this.mueble?.numero_expositores_carteles,
-        numero_exposirotes_dispositivos: this.mueble?.numero_expositores_dispositivos,
+        numero_expositores_carteles: this.mueble?.numero_expositores_carteles,
+        numero_expostores_dispositivos: this.mueble?.numero_expositores_dispositivos,
         expositores: this.mueble?.expositores
       })
     }else{

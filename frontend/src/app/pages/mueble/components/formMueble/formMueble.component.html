@@ -19,58 +19,103 @@
   
 
       <div class="flex align-items-center justify-content-center mt-2 fadein animation-duration-1000">
-        <p-card [style]="{'width':'100vh'}" header="Categoría*">
-          <!-- <span class="p-float-label"> -->
-            <p-dropdown formControlName="categoria" [options]="categorias_opciones"  class="w-full" placeholder="Selecciona una categoria"></p-dropdown>
-            <!-- <label >Categoría *</label>
-          </span> -->
+        <p-card [style]="{'width':'100vh'}" header="Vistas para conteo de dispositivos esperados">
+            <div class="grid">
+              <div class="col-12">
+                <p-toolbar>
+                  <div class="p-toolbar-group-start">
+                    <p-button severity="danger" [text]="true" [raised]="true" (onClick)="showExpositores()" label="asignar expositores" ></p-button>
+                    <p-button severity="danger" class="ml-2" [text]="true" [raised]="true" (onClick)="showExpositores()" label="crear expositores" ></p-button>
+  
+                  </div>
+                  <div class="p-toolbar-group-end">
+                    
+                  </div>
+                </p-toolbar>
+              </div>
 
-          <small *ngIf="categoria.invalid && (categoria.dirty || categoria.touched)" class="block p-error">
-            <div *ngIf="categoria.errors?.['required']">La categoría es obligatoria.</div>
-          </small>
-        </p-card>
+              <div class ="col-12 fadein animation-duration-1000" *ngIf ="expositores_dispositivos != null && expositores_dispositivos.length > 0" >
+                <p-table [value]="expositores_dispositivos" [tableStyle]="{ 'min-width': '50rem' }">
+                  <ng-template pTemplate="header">
+                      <tr>
+                          <th>Nombre</th>
+                          <th>Imagen</th>
+                          <th>Opciones</th>
+                   
+                      </tr>
+                  </ng-template>
+                  <ng-template pTemplate="body" let-expositor>
+                      <tr>
+                          <td>{{ expositor.nombre }}</td>
+                          <td>                        
+                            <p-image class ="imagenSimple" [src]="url_imagenes_referencias + expositor.imagenes.url"  height="100vh"  [alt]="expositor.imagenes.url"  [preview]="true"></p-image>
+                          </td>
+                          <td>
+                            <p-button severity="danger" class="mr-2" [raised]="true" [text]="true" [rounded]="true" label="Editar" icon="pi pi-pencil" ></p-button>
+                            <p-button  [raised]="true"  [text]="true" [rounded]="true" severity="danger" label="borrar" icon="pi pi-trash" ></p-button>
+                              
+                          </td>
+                       
+                      </tr>
+                  </ng-template>
+              </p-table>
+              </div>
+            </div>
+
+        </p-card> 
+          
+      </div>
+     
+      <div class="flex align-items-center justify-content-center mt-2 fadein animation-duration-1000">
+        <p-card [style]="{'width':'100vh'}" header="Carteles">
+          <div class="grid">
+            <div class="col-12">
+              <p-toolbar>
+                <div class="p-toolbar-group-start">
+                  <p-button severity="danger" [text]="true" [raised]="true" (onClick)="showExpositores()" label="asignar expositores" ></p-button>
+                  <p-button severity="danger" class="ml-2" [text]="true" [raised]="true" (onClick)="showExpositores()" label="crear expositores" ></p-button>
+
+                </div>
+                <div class="p-toolbar-group-end">
+                  
+                </div>
+              </p-toolbar>
+            </div>
+
+            <div class ="col-12 fadein animation-duration-1000" *ngIf ="expositores_carteles != null && expositores_carteles.length > 0" >
+              <p-table [value]="expositores_carteles" [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Imagen</th>
+                        <th>Opciones</th>
+                 
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-expositor>
+                    <tr>
+                        <td>{{ expositor.nombre }}</td>
+                        <td>                        
+                          <p-image class ="imagenSimple" [src]="url_imagenes_referencias + expositor.imagenes.url"  height="100vh"  [alt]="expositor.imagenes.url"  [preview]="true"></p-image>
+                        </td>
+                        <td>
+                          <p-button severity="danger" class="mr-2" [raised]="true" [text]="true" [rounded]="true" label="Editar" icon="pi pi-pencil" ></p-button>
+                          <p-button  [raised]="true"  [text]="true" [rounded]="true" severity="danger" label="borrar" icon="pi pi-trash" ></p-button>
+                            
+                        </td>
+                     
+                    </tr>
+                </ng-template>
+            </p-table>
+            </div>
+         </div>
+
+      </p-card> 
           
       </div>
 
-      <div class="flex align-items-center justify-content-center mt-2 fadein animation-duration-1000" *ngIf ="categoria.value === 'dispositivos'" >
-        <p-card [style]="{'width':'100vh'}" header="Nº de dispositivos esperados">
-          <!-- <span class="p-float-label"> -->
-            <p-inputNumber 
-              inputId="num_dispositivos"
-              class="block"
-              formControlName="numero_dispositivos"
-              [min]="0"
-              [showButtons]="true"
-              decrementButtonClass="p-button-danger p-button-outlined"
-              incrementButtonClass="p-button-danger p-button-outlined"
-            >
-            </p-inputNumber>
-            <!-- <label htmlFor="num_dispositivos" class = "text-xs  text-600 mb-2  ">Nº dispositivos esperados*</label>
-          </span> -->
-      </p-card>
-
-     </div>
-
-     <div class="flex align-items-center justify-content-center mt-2 fadein animation-duration-1000" >
-      <p-card [style]="{'width':'100vh'}" header="Expositores">
-          <!-- <div class="mt-2">
-          <label class = "text-xs text-600 mb-2  ">Expositores </label>
-          </div> -->
     
-          <div class="inline-flex mt-2">
-            <div *ngFor="let expositor of expositores.value" class="inline mx-2">
-              <p-image class ="imagenSimple" [src]="url_imagenes_referencias + expositor.imagenes.url"  height="100vh"  [alt]="expositor.imagenes.url"  [preview]="true"></p-image>
-            </div>
-          </div>
-          <div class="mt-2 ">
-          <p-button severity="danger" [text]="true" [raised]="true" (onClick)="showExpositores()" [label]=" expositores.value.length > 0 ? 'Cambiar expositores' : 'Añadir expositores'" ></p-button>
-          </div>
-      </p-card>
-     </div>
-     
-     <div class="flex align-items-center justify-content-center mt-2 fadein animation-duration-1000" >
-      <p-button [disabled]="!formulario.valid" severity="danger" type="submit" label="Guardar"></p-button>
-    </div>
+    
 
   </div>
 

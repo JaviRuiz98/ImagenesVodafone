@@ -1,17 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
 import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
-import { ExpositoresService } from 'src/app/servicios/expositores/expositores.service';
 
 import { tienda } from 'src/app/interfaces/tienda';
 import { muebles } from 'src/app/interfaces/muebles';
-import { response } from 'express';
+
 @Component({
   selector: 'app-tiendas',
   templateUrl: './tiendas.component.html',
   styleUrls: ['./tiendas.component.css'],
-  providers: [MessageService]
+  providers: [MessageService, ConfirmationService]
 })
 
 export class TiendasComponent implements OnInit{
@@ -37,8 +36,11 @@ export class TiendasComponent implements OnInit{
   editarTiendaCreada: boolean = false;
   crearEditarTienda: string = 'Crear Tienda';
   nombreFiltro: string = '';
+  mensajeActivarDesactivar: string = 'Desactivar';
+  mensajeDialog: string = '¿Seguro que desea desactivar la tienda?';
 
-  constructor(private TiendasService: TiendasService, private MueblesService: MueblesService, private messageService: MessageService, private ExpositoresService: ExpositoresService){}
+
+  constructor(private TiendasService: TiendasService, private MueblesService: MueblesService, private messageService: MessageService, private ConfirmationService: ConfirmationService){}
   ngOnInit(): void {
     this.TiendasService.getAllTiendas().subscribe((response: tienda[]) => {
       this.tiendas = response;
@@ -92,7 +94,6 @@ export class TiendasComponent implements OnInit{
           })
         } else{
           this.TiendasService.editarTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
-            this.tiendasMostrar = response;
           })
         }
       }
@@ -115,11 +116,39 @@ export class TiendasComponent implements OnInit{
     this.verFormularioNuevaTienda = true;
     this.editarTiendaCreada = true;
   }
+
   filtrarPorSfid() {
     this.tiendasFiltradas = this.filterByNombre(this.tiendas);
     this.tiendasMostrar = this.tiendasFiltradas;
   }
   filterByNombre(tiendas: tienda[]): tienda[] {
     return tiendas.filter(tiendas => tiendas.sfid.toLowerCase().includes(this.nombreFiltro.toLowerCase()));
+  }
+
+  confirmarCambio(tienda: tienda) {
+    this.ConfirmationService.confirm({
+      message: this.mensajeDialog,
+      header: this.mensajeActivarDesactivar,
+      icon: 'pi pi-info-circle', 
+      acceptLabel: 'Sí', 
+      rejectLabel: 'No',
+      accept: () => {
+        this.TiendasService.activarDesactivarTienda(tienda).subscribe((response: tienda) => {
+          const index = this.tiendas.findIndex(t => t.id_tienda === tienda.id_tienda && t.sfid === tienda.sfid);
+          if (index !== -1) {
+            this.tiendas[index].activa = response.activa;
+          }
+        })
+        const mensajeDetalle = tienda.activa ? 'La tienda ha sido desactivada.' : 'La tienda ha sido activada.';
+        this.messageService.add({ severity: 'info', summary: 'Confirmado!', detail: mensajeDetalle });
+      },
+      reject: (type: ConfirmEventType) => {
+        switch (type) {
+          case ConfirmEventType.REJECT:
+            this.messageService.add({ severity: 'error', summary: 'Error!', detail: 'La tienda no ha tenido cambios.' });
+            break;
+        } 
+      },
+    });
   }
 }

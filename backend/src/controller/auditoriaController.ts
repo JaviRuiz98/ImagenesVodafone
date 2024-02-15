@@ -3,6 +3,7 @@ import { auditoriaService } from '../services/auditoriaService';
 import { auditoria_extended } from '../interfaces/auditoriaExtended';
 import { auditorias } from '@prisma/client';
 import { tiendaService } from '../services/tiendasServices';
+import { pea_extended } from '../interfaces/peaExtended';
 
 export async function getAuditorias(req: Request, res: Response) {
     try {
@@ -57,6 +58,35 @@ export async function getAuditoriaById(req: Request, res: Response) {
         }
         
         res.status(200).json(auditoriasExtended);    
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+export async function getBarraProgresoAuditoria(req: Request, res: Response) {
+    try {
+        const id_auditoria = parseInt(req.params.id_auditoria);
+        const expositores_auditoria: pea_extended[] | undefined = await auditoriaService.getBarraProgresoAuditoria(id_auditoria);
+
+        if(!expositores_auditoria) {
+            res.status(400).json('No se encontro la auditoria');
+            return;
+        }
+        // const resultados_expositores: number[] = expositores_auditoria.map(pea => {
+        //     switch (pea.expositores[0].categoria) {
+        //         case 'Carteles':
+        //             return pea.procesados_imagenes[0].id_probabilidad_cartel;
+        //         case 'Dispositivos':
+        //             return Math.abs(pea.procesados_imagenes[0].dispositivos_contados - pea.procesados_imagenes[0].huecos_esperados);
+        //         default:
+        //             res.status(400).json('La categoria del expositor no es valida');
+        //             return
+        //     }
+        //     }
+        //     pea.expositores.categoria == 'Carteles' ? pea.procesados_imagenes.id_probabilidad_cartel : Math.abs(pea.procesados_imagenes.dispositivos_contados - pea.procesados_imagenes.huecos_esperados);
+        // });
+
+        res.status(200).json(expositores_auditoria);
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     }

@@ -91,10 +91,11 @@ export const expositoresService = {
        }
      },
 
-     async getExpositores(): Promise<expositores[]> {
+     async getExpositores(categoria?: string): Promise<expositores[]> {
         try {
+          const whereClause = categoria!= null? { categoria: categoria } : {};
           return await db.expositores.findMany({
-
+            where:whereClause,
             include: {
 
               imagenes: true

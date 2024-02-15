@@ -220,6 +220,7 @@ export const mobiliarioService = {
                       expositores: {
                         include: {
                           imagenes: true,
+                          regiones: true,
                           // No incluyes directamente procesados_imagenes aquí
                         }
                       },
@@ -241,13 +242,18 @@ export const mobiliarioService = {
               
               const resultado = muebles.map(mueble => {
                 const expositores: any[] = mueble.pertenencia_expositor_auditoria.reduce((acc: any[], auditoria) => {
-                    let expositor = acc.find(ex => ex.id_expositor === auditoria.expositores.id);
+                  
+                    let expositor = acc.find(ex => ex.id === auditoria.expositores.id);
                     if (!expositor) {
                       expositor = {
-                        id_expositor: auditoria.expositores.id,
+                        id: auditoria.expositores.id,
                         id_imagen: auditoria.expositores.id_imagen,
+                        id_region: auditoria.expositores.id_region,
                         nombre: auditoria.expositores.nombre,
                         imagenes: auditoria.expositores.imagenes,
+                        regiones: auditoria.expositores.regiones,
+                        categoria: auditoria.expositores.categoria,
+                        numero_dispostivos: auditoria.expositores.numero_dispositivos,
                         procesados_imagenes: [],
                       };
                       acc.push(expositor);
@@ -261,7 +267,7 @@ export const mobiliarioService = {
                 }, []);
               
                 return {
-                  id_mueble: mueble.id,
+                  id: mueble.id,
                   nombre_mueble: mueble.nombre_mueble,
                   numero_expositores_carteles: mueble.numero_expositores_carteles,
                   numero_expositores_dispostivos:mueble.numero_expositores_dispositivos,

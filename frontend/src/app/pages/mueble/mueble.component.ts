@@ -6,8 +6,8 @@ import { muebles } from 'src/app/interfaces/muebles';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { FormMuebleComponent } from './components/formMueble/formMueble.component';
 import { HistorialExpositoresComponent } from './components/historialExpositores/historialExpositores.component';
-
-
+import { mueblesVisualizacion } from './interfaces/muebleVisualizacion';
+import { PrimeNGConfig } from 'primeng/api';
 @Component({
   selector: 'app-mueble',
   templateUrl: './mueble.component.html',
@@ -16,8 +16,8 @@ import { HistorialExpositoresComponent } from './components/historialExpositores
 export class MuebleComponent implements OnInit {
 
 
-  muebles: muebles[] = [];
-  mueblesFiltrados: muebles[] = [];
+  muebles: mueblesVisualizacion[] = [];
+ 
 
 
 
@@ -34,17 +34,49 @@ export class MuebleComponent implements OnInit {
 
   @ViewChild('miTabla') miTabla!: Table;
 
-  constructor( private muebleService: MueblesService, public dialogService: DialogService, public messageService: MessageService) { }
+  constructor( private muebleService: MueblesService, public dialogService: DialogService, public messageService: MessageService, private config: PrimeNGConfig) { }
 
   ngOnInit() {
+    this.config.setTranslation({
+      startsWith: 'Empieza con',
+      contains: 'Contiene',
+      notContains: 'No contiene',
+      endsWith: 'Acaba en',
+      equals: 'Igual',
+      notEquals: 'No igual',
+      noFilter: 'Sin filtro',
+      lt: 'Menor que',
+  });
+
     this.loadMuebles();
   }
   private loadMuebles() {
    this.muebleService.getAllMuebles().subscribe(muebles => {
-     this.muebles = muebles;
-     this.mueblesFiltrados = muebles;
-     console.log(muebles);
+     
+     this.muebles = this.separarExpositoresSegúnCategoria(muebles);
+    
+   
    })
+  }
+
+  separarExpositoresSegúnCategoria(muebles:muebles[]): mueblesVisualizacion[] {
+     return  muebles.map(mueble => {
+
+      const expositoresCarteles = mueble.expositores.filter(expositor => expositor.categoria === 'carteles');
+
+      const expositoresDispositivos = mueble.expositores.filter(expositor => expositor.categoria === 'dispositivos');
+
+      return {
+        id: mueble.id,
+        nombre_mueble: mueble.nombre_mueble,
+        expositores: mueble.expositores,
+        numero_expositores_carteles: expositoresCarteles.length,
+        numero_expositores_dispositivos: expositoresDispositivos.length,
+        expositores_carteles: expositoresCarteles,
+        expositores_dispositivos: expositoresDispositivos
+      };
+    });
+    
   }
 
   resetTabla() {
@@ -54,21 +86,11 @@ export class MuebleComponent implements OnInit {
     this.miTabla.clear();
   }
 
-  filtrarPorNombre() {
-   
-    this.mueblesFiltrados = this.filterByNombre(this.mueblesFiltrados);
-   
-  }
-
-filterByNombre(muebles: any[]): any[] {
-
-  return muebles.filter(mueble => mueble.nombre_mueble.toLowerCase().includes(this.nombreFiltro.toLowerCase()));
-}
 
   editMueble(mueble: muebles) {
 
     this.ref = this.dialogService.open(FormMuebleComponent, {
-      header: 'Editar mueble ' + mueble.id_mueble,
+      header: 'Editar mueble ' + mueble.nombre_mueble ,
       width: '70%',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,
