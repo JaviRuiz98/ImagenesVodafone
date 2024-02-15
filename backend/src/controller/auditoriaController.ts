@@ -72,21 +72,25 @@ export async function getBarraProgresoAuditoria(req: Request, res: Response) {
             res.status(400).json('No se encontro la auditoria');
             return;
         }
-        // const resultados_expositores: number[] = expositores_auditoria.map(pea => {
-        //     switch (pea.expositores[0].categoria) {
-        //         case 'Carteles':
-        //             return pea.procesados_imagenes[0].id_probabilidad_cartel;
-        //         case 'Dispositivos':
-        //             return Math.abs(pea.procesados_imagenes[0].dispositivos_contados - pea.procesados_imagenes[0].huecos_esperados);
-        //         default:
-        //             res.status(400).json('La categoria del expositor no es valida');
-        //             return
-        //     }
-        //     }
-        //     pea.expositores.categoria == 'Carteles' ? pea.procesados_imagenes.id_probabilidad_cartel : Math.abs(pea.procesados_imagenes.dispositivos_contados - pea.procesados_imagenes.huecos_esperados);
-        // });
+        const resultados_expositores: number[] = expositores_auditoria.map(pea => {
+            switch (pea.expositores[0].categoria) {
+                case 'Carteles':
+                    return pea.procesados_imagenes[0].id_probabilidad_cartel || 0;
+                case 'Dispositivos':
+                    const dispositivos_contados = pea.procesados_imagenes[0].dispositivos_contados;
+                    const huecos_esperados = pea.procesados_imagenes[0].huecos_esperados;
+                    if (dispositivos_contados != undefined && huecos_esperados != undefined) {
+                        return Math.abs(dispositivos_contados - huecos_esperados) + 1;             
+                    } else {                 
+                        return 0;                
+                    }
+                    default:
+                    res.status(400).json('La categoria del expositor no es valida');
+                    return 0;
+            }
+        });
 
-        res.status(200).json(expositores_auditoria);
+        res.status(200).json(resultados_expositores);
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     }
