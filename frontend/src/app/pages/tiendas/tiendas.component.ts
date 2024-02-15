@@ -35,7 +35,7 @@ export class TiendasComponent implements OnInit{
   listaMueblesNuevaTienda: muebles[] = [];
   listaMueblesMostrar: muebles[] = [];
   listaMueblesFiltrar: muebles[] = [];
-
+  cabeceraNuevaEditarTienda: string = 'Nueva Tienda';
   editarTiendaCreada: boolean = false;
   crearEditarTienda: string = 'Crear Tienda';
   nombreFiltro: string = '';
@@ -83,6 +83,7 @@ export class TiendasComponent implements OnInit{
     this.crearEditarTienda = 'Crear Tienda';
     this.sfidInput = '';
     this.comunidadInput = '';
+    this.cabeceraNuevaEditarTienda = 'Nueva Tienda';
   }
   botonSiguiente(){
     if(this.sfidInput === '' || this.comunidadInput === ''){
@@ -112,6 +113,7 @@ export class TiendasComponent implements OnInit{
   editarTienda(tienda: tienda){
     this.nuevaTienda = tienda;
     this.crearEditarTienda = 'Editar tienda';
+    this.cabeceraNuevaEditarTienda = 'Editar tienda';
     this.sfidInput = tienda.sfid;
     this.comunidadInput = 'prueba';
     this.MueblesService.getMueblesTiendaByIdTienda(tienda.id_tienda).subscribe((response: muebles[]) => {
