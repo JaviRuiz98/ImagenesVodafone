@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormControl, Validators  } from '@angular/forms';
-
+ 
 import { regiones } from 'src/app/interfaces/regiones';
 
 @Component({
@@ -45,13 +45,14 @@ export class NuevoExpositorComponent implements OnInit {
   @Input() categoriaPredefinida: string = ''; //sin implementar
   @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
   @Output() mostrarDialogoNuevoExpositor = new EventEmitter<boolean>();
+  @Output() nuevoExpositorCreado = new EventEmitter<Expositor>();
 
   nuevoExpositor_form: FormGroup = this.formBuilder.group({
     nombre: new FormControl('', [Validators.required, Validators.minLength(5)]),
     activo: new FormControl(false),
     region: new FormControl(0, [Validators.required, Validators.minLength(1)]),  // interfaz
     imagen: new FormControl(0, [Validators.required, this.fileValidator]), // interfaz ?
-    categoria: new FormControl('', Validators.required),                                            //////// POR AQUI
+    categoria: new FormControl('', Validators.required ),                                            //////// POR AQUI
     numero_dispositivos: new FormControl(0), 
   });
 
@@ -67,7 +68,7 @@ export class NuevoExpositorComponent implements OnInit {
   
   archivoSeleccionado!: File;
  
-
+  bloqueaCategoria: boolean = false;
   regiones: regiones[] = [];
   Dropdown_regiones: string[] = [];
   Dropdown_categorias: string[] = ["Carteles", "Dispositivos"];
@@ -75,6 +76,10 @@ export class NuevoExpositorComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private expositoresService: ExpositoresService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
   AbrirnuevoExpositor() {
+    if(this.categoriaPredefinida != '') {
+      this.nuevoExpositor_form.patchValue({ categoria: this.categoriaPredefinida });
+      this.bloqueaCategoria = true;
+    } 
     this.nuevoExpositor = {
       id: 0,
       imagenes: {
@@ -87,7 +92,7 @@ export class NuevoExpositorComponent implements OnInit {
       },
       nombre: '',
       activo: true,
-      categoria: "",
+      categoria: this.categoriaPredefinida,
       procesados_imagenes: []
     };
     this.submitted = false;
@@ -113,6 +118,7 @@ export class NuevoExpositorComponent implements OnInit {
       this.expositoresService.guardarExpositor(this.nombre?.value, this.nuevoExpositor.activo, this.region?.value, this.imagen?.value, this.categoria?.value, this.numero_dispositivos?.value).subscribe((expositor) => {
         if(expositor.id> 0) {
           this.messageService.add({severity:'success', summary: 'Guardado', detail: 'Expositor guardado correctamente'});
+          this.nuevoExpositorCreado.emit(expositor);
         }else{
           this.messageService.add({severity:'error', summary: 'Error', detail: 'Expositor no guardado'});
         }

@@ -18,8 +18,10 @@
             <form [formGroup]="nuevoExpositor_form" style="width: 50%">
                 <input type="text" pInputText pKeyFilter="int" placeholder="Nombre del expositor" [formControlName]="'nombre'" style="margin-top: 10px;"/>
                 <p-dropdown name="region" (onChange)="onRegionChange($event)" [options]="Dropdown_regiones" value="#region" [placeholder]="'Seleccione región'" [formControlName]="'id_region'" [style]="{marginTop: '10px'}" ></p-dropdown>
-                <p-dropdown name="categoria" [options]="Dropdown_categorias" value="#categoria" [placeholder]="'Seleccione categoria'" [formControlName]="'categoria'" [style]="{marginTop: '10px'}" ></p-dropdown>
-            
+                <p-dropdown *ngIf="!bloqueaCategoria" name="categoria" [options]="Dropdown_categorias" value="#categoria" [placeholder]="'Seleccione categoria'" [formControlName]="'categoria'" [style]="{marginTop: '10px'}" ></p-dropdown>
+                <input *ngIf="bloqueaCategoria" id="disabled-input" type="text" pInputText [disabled]="true" [value]="categoriaPredefinida" />
+
+
                 <div *ngIf="categoria?.value == 'Dispositivos'" style="margin-top: 10px;">
                     <p-inputNumber id="numero_dispositivos" [formControlName]="'numero_dispositivos'" [style.width]="'9rem'" [showButtons]="true" 
                        buttonLayout="horizontal" spinnerMode="horizontal" decrementButtonClass="p-button-secondary" incrementButtonClass="p-button-secondary" 
@@ -29,9 +31,11 @@
                 </div>
 
  
-                <!-- <small class="p-error" *ngIf="submitted && (nombre?.valid || region?.value=='' || categoria?.value=='' || imagen?.valid  || (categoria?.value=='Dispositivos' && numero_dispositivos?.value==0))">Han de rellenarse todos los campos.</small> -->
-                <small class="p-error" *ngIf="submitted && (nombre?.invalid )">Han de rellenarse todos los campos.</small>
-         
+                <small class="p-error" *ngIf="submitted && (nombre?.valid || region?.value=='' || categoria?.value=='' || imagen?.valid  || (categoria?.value=='Dispositivos' && numero_dispositivos?.value==0))"> Debe rellenar todos los campos<br></small>
+                <small class="p-error" *ngIf="submitted && (nombre?.invalid )">* El nombre no puede estar vacio *  <br> </small>
+                <small class="p-error" *ngIf="submitted && (region?.invalid )">* Seleccione una región * <br></small>
+                <small class="p-error" *ngIf="submitted && (imagen?.invalid )">* Seleccione una imagen * <br></small>
+                <small class="p-error" *ngIf="submitted && (categoria?.invalid )">* Seleccione una categoria * <br></small> 
             </form>
             <div style="width: 50%; margin-left: 20px; height: 300px; overflow: hidden;">
                 <app-selector-imagenes 
