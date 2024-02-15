@@ -1,18 +1,21 @@
+<p-toast></p-toast>
+<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
 
 <div style="display: flex">
-    <div>
+    <div style="margin-right: 5%; text-align: end;">
         Progreso:
         <td>{{ auditoria_seleccionada?.num_expositores_procesados }}/{{ auditoria_seleccionada?.num_expositores }}</td>
     </div>
-    <!-- <div class="bar-container" style="display: flex; height: 20px;">
-        Barra de progreso:
-        <div *ngFor="let bar of bars"
-            [style.background-color]="bar.color"
-            [style.width]="bar.width + '%'"
-            style="height: 100%;">
-        </div>
-    </div> -->
     <div>
-        
+        Barra de progreso:
+        <app-barra-de-barras [datos_barras]="[1,1,1,4,0,0,0,1]"></app-barra-de-barras>
+    </div>
+    <div>
+        <p-button
+            *ngIf="this.auditoria_seleccionada?.estados_auditoria?.estado == 'en progreso'"
+            (click)="terminarAuditoria()"
+            [severity]="'danger'"
+            label="Terminar auditoria"
+        ></p-button>
     </div>
 </div>

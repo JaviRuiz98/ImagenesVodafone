@@ -254,7 +254,7 @@ export const mobiliarioService = {
                     let expositor = acc.find(ex => ex.id_expositor === auditoria.expositores.id);
                     if (!expositor) {
                       expositor = {
-                        id_expositor: auditoria.expositores.id,
+                        id: auditoria.expositores.id,
                         id_imagen: auditoria.expositores.id_imagen,
                         id_region: auditoria.expositores.id_region,
                         nombre: auditoria.expositores.nombre,

@@ -1,6 +1,6 @@
 <div class="paginaCompleta">
     <p-toast></p-toast>
-    <div class="floatintPanel">
+    <div class="floatintPanel" *ngIf="this.id_auditoria_seleccionada !== 0">
       <app-progreso-auditoria ></app-progreso-auditoria>
     </div>    
     <div *ngFor="let mueble of this.muebles" class="contornoPanel">
@@ -16,8 +16,8 @@
         </ng-template>
           <div class="panelCompleto " *ngIf="mueble.expositores != undefined">
             <div class="panelIzquierda" >
-              <div *ngIf=" mueble.expositores.length == 1 "  class="anchoAltoFotoReferencia" >
-                <div>
+              <div   class="anchoAltoFotoReferencia" >
+                <div *ngIf=" mueble.expositores.length == 1 ">
                   <p-image [src]="url_imagenes_referencias + mueble.expositores[0].imagenes.url" [alt]="mueble.expositores[0].imagenes.url" class="imagenSimple" [width]="'100%'" [height]="'100%'" [preview]="true"></p-image>
                 </div>
               </div>
@@ -52,14 +52,14 @@
                     [procesados]="mueble.expositores[0].procesados_imagenes" 
                     [cargando_procesamiento]="cargas_procesamiento[mueble.expositores[0].id_expositor]"
                     [valueSelected]="modos_visualizacion[mueble.expositores[0].id_expositor] === 'historial'? 'historial':'new'"
-                    (archivoSeleccionadoChange)="recibirFile($event, mueble.expositores[0].id_expositor, mueble.id_mueble)">
+                    (archivoSeleccionadoChange)="recibirFile($event, mueble.expositores[0].id_expositor, mueble.id)">
                   </app-paginador-procesamiento-subida> 
                   <app-paginador-procesamiento-subida
                     [id_expositor_selected]="mueble.expositores[1].id_expositor"
                     [procesados]="mueble.expositores[1].procesados_imagenes" 
                     [cargando_procesamiento]="cargas_procesamiento[mueble.expositores[1].id_expositor]"
                     [valueSelected]="modos_visualizacion[mueble.expositores[1].id_expositor] === 'historial'? 'historial':'new'"                
-                    (archivoSeleccionadoChange)="recibirFile($event, mueble.expositores[1].id_expositor, mueble.id_mueble)">
+                    (archivoSeleccionadoChange)="recibirFile($event, mueble.expositores[1].id_expositor, mueble.id)">
                   </app-paginador-procesamiento-subida>                    
                 </div> -->
      
@@ -67,5 +67,5 @@
           </div>
       </p-panel>
     </div>
-    <app-ir-arriba></app-ir-arriba>
+    <!-- <app-ir-arriba></app-ir-arriba> -->
   </div>

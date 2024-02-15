@@ -6,11 +6,13 @@ import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { tienda } from 'src/app/interfaces/tienda';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
 import { DatePipe } from '@angular/common';
+import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
 
 @Component({
   selector: 'app-gestion-de-auditorias',
   templateUrl: './gestion-de-auditorias.component.html',
-  styleUrls: ['./gestion-de-auditorias.component.css']
+  styleUrls: ['./gestion-de-auditorias.component.css'],
+  providers: [ConfirmationService, MessageService]
 })
 
 export class GestionDeAuditoriasComponent implements OnInit {
@@ -26,11 +28,14 @@ export class GestionDeAuditoriasComponent implements OnInit {
     private router: Router,
     private tiendasService: TiendasService,
     private publicMethodsService: PublicMethodsService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) { }
  
   ngOnInit(): void {
     this.initTiendas();
+    this.inicializaAuditorias();
   }
 
   initTiendas() {
@@ -40,17 +45,20 @@ export class GestionDeAuditoriasComponent implements OnInit {
   }
 
   onTiendaSelected(){
-    if(this.tiendaSeleccionada){
-      this.inicializaAuditorias();
-    }
+    this.inicializaAuditorias();
   }
 
   async nuevaAuditoria() {
-    this.auditoriaService.nuevaAuditoria(this.tiendaSeleccionada!.id_tienda).subscribe();
-    this.inicializaAuditorias();
+    this.auditoriaService.nuevaAuditoria(this.tiendaSeleccionada?.id_tienda || 0).subscribe(
+      (data)=>{
+        this.inicializaAuditorias();
+        this.goToAuditoria(data.id_auditoria);
+      }
+    );
   } 
+
   inicializaAuditorias() {
-    this.auditoriaService.getAuditorias(this.tiendaSeleccionada!.id_tienda).subscribe((data)=>{
+    this.auditoriaService.getAuditorias(this.tiendaSeleccionada?.id_tienda || 0).subscribe((data)=>{
       this.auditorias = data;
 
       console.log("auditorias", this.auditorias);
@@ -59,6 +67,7 @@ export class GestionDeAuditoriasComponent implements OnInit {
 
   goToAuditoria(id_auditoria: number){
     this.auditoriaService.id_auditoria_seleccionada = id_auditoria;
+
     this.router.navigate(['/auditoria']);
   }
 
@@ -70,5 +79,26 @@ export class GestionDeAuditoriasComponent implements OnInit {
     return this.datePipe.transform(date, 'dd/MM/yyyy HH:mm');
   }
 
-  
+  crearAuditoriaGlobal() {
+    this.confirmationService.confirm({
+      message: '¿Seguro de que quieres crear una auditoría global y marcar como caducadas todas las que estén en progreso?',
+      header: 'Crear auditoria global',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+          this.messageService.add({ severity: 'info', summary: 'Creación en curso', detail: 'Creando auditoria global' });
+          this.auditoriaService.createAuditoriaGlobal().subscribe(
+            (data) => {
+              this.inicializaAuditorias();
+              this.messageService.add({ severity: 'success', summary: 'Creada', detail: 'Auditoria global creada con éxito' });
+            }, (error) => {
+              this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error creando auditoria global' });
+            }
+          )
+      },
+      reject: () => {
+        this.messageService.add({ severity: 'error', summary: 'Rechazado', detail: 'Auditoria global no creada' });
+              
+      }
+  });
+  }
 }

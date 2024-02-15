@@ -39,6 +39,7 @@ export class TiendasComponent implements OnInit{
   mensajeActivarDesactivar: string = 'Desactivar';
   mensajeDialog: string = '¿Seguro que desea desactivar la tienda?';
 
+
   constructor(private TiendasService: TiendasService, private MueblesService: MueblesService, private messageService: MessageService, private ConfirmationService: ConfirmationService){}
   ngOnInit(): void {
     this.TiendasService.getAllTiendas().subscribe((response: tienda[]) => {
@@ -93,7 +94,6 @@ export class TiendasComponent implements OnInit{
           })
         } else{
           this.TiendasService.editarTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
-            this.tiendasMostrar = response;
           })
         }
       }
@@ -116,6 +116,7 @@ export class TiendasComponent implements OnInit{
     this.verFormularioNuevaTienda = true;
     this.editarTiendaCreada = true;
   }
+
   filtrarPorSfid() {
     this.tiendasFiltradas = this.filterByNombre(this.tiendas);
     this.tiendasMostrar = this.tiendasFiltradas;
@@ -123,21 +124,8 @@ export class TiendasComponent implements OnInit{
   filterByNombre(tiendas: tienda[]): tienda[] {
     return tiendas.filter(tiendas => tiendas.sfid.toLowerCase().includes(this.nombreFiltro.toLowerCase()));
   }
- 
-  filtrarPorActiva() {
-    this.tiendasFiltradas = this.filterByActiva(this.tiendas);
-    this.tiendasMostrar = this.tiendasFiltradas;
-  }
-  
-  filterByActiva(tiendas: tienda[]): tienda[] {
-    return tiendas.filter(tienda => tienda.activa === true);
-  }
-
-
-
 
   confirmarCambio(tienda: tienda) {
-    console.log(tienda)
     this.ConfirmationService.confirm({
       message: this.mensajeDialog,
       header: this.mensajeActivarDesactivar,

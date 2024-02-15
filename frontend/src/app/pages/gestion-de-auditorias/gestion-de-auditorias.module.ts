@@ -9,6 +9,8 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 
 @NgModule({
@@ -24,7 +26,12 @@ import { TagModule } from 'primeng/tag';
     ToastModule,
     ToolbarModule,
     TableModule,
-    TagModule
-  ]
+    TagModule,
+    ConfirmDialogModule
+  ], 
+  providers: [
+    ConfirmationService,
+    MessageService
+  ],
 })
 export class GestionDeAuditoriasModule { }

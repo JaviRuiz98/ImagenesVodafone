@@ -17,7 +17,7 @@
 
 .cabeceraAñadirTienda{
     display: grid;
-    grid-template-columns:50% 50% ;
+    grid-template-columns:20% 80% ;
     width: 80%;
     height: 50%;
     justify-content: center;
@@ -26,12 +26,14 @@
     background: #f8f9fa;
 }
 .botonNuevaTienda {
-    width: 50%;
-    height: 50%;
+    width: 100%;
+    height: 100%;
     min-height: 50px;
     max-height: 80px;
-    margin-left: 1%;
+    margin-left: 2%;
     font-size: 100%;
+    display: flex;
+    align-items: center;
 }
 .contenedorHistorialTiendas {
     display: flex;
@@ -83,10 +85,14 @@
     align-items: center;
 }
 .anchoAltoDescripcionFotoReferencia {
-    display: grid;
-    grid-template-rows: 50% 50%;
+    display: flex;
     justify-content: center;
     align-items: center;
+}
+.letrasCaracteristicasMueble {
+    display: flex;
+    width: 100%;
+    height: 100%;
 }
 .ajusteImagenesAnchoAlto {
     max-height: 80px; 
@@ -95,4 +101,18 @@
 }
 ::ng-deep .p-picklist-list{
     max-height: 300px;
+}
+
+::ng-deep .p-steps .p-steps-item.p-highlight .p-steps-number {
+    background-color: #f70802a1;
+    color: white;
+}
+
+::ng-deep .p-picklist-buttons .p-button {
+    background: red;
+    border: red;
+}
+::ng-deep .p-orderlist .p-orderlist-controls .p-button {
+    background: red;
+    border: red;
 }

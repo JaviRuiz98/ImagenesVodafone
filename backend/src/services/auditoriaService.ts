@@ -5,13 +5,32 @@ import { mobiliarioService } from "./mobiliarioService";
 
 export const auditoriaService = {
 
+    async getAllAuditorias(): Promise<auditorias[]| null> {
+        try{
+            return db.auditorias.findMany({
+                include: {
+                    estados_auditoria: true,
+                    tiendas: true
+                }, orderBy: {
+                    id_auditoria: 'desc'
+                }
+            })
+        }catch (error) {
+            console.error('No se pudo obtener el auditoria:', error);
+            throw error;
+        }finally  {
+            await db.$disconnect();
+        }
+    },
+
     async getAuditorias(id_tienda: number): Promise<auditorias[]| null> {
         try{
             return db.auditorias.findMany({
                 where: {
-                    id_tienda: id_tienda
+                    id_tienda: id_tienda,
                 }, include: {
-                    estados_auditoria: true
+                    estados_auditoria: true,
+                    tiendas: true
                 }, orderBy: {
                     id_auditoria: 'desc'
                 }
@@ -30,6 +49,9 @@ export const auditoriaService = {
             return db.auditorias.findUnique({
                 where: {
                     id_auditoria: id_auditoria
+                }, include: {
+                    estados_auditoria: true,
+                    tiendas: true
                 }
             })
         } catch (error) {
@@ -52,6 +74,28 @@ export const auditoriaService = {
 
     async createAuditoria(id_tienda: number): Promise<auditorias> {
         try{
+            // Miro si la ultima auditoria esta todavia en progreso y la marco como caducada
+            const lastAuditoria = await db.auditorias.findFirst({
+                where: {
+                    id_tienda: id_tienda
+                },
+                orderBy: {
+                    id_auditoria: 'desc'
+                }
+            })
+
+            if(lastAuditoria?.id_estado == 1) {
+                await db.auditorias.update({
+                    where: {
+                        id_auditoria: lastAuditoria.id_auditoria
+                    },
+                    data: {
+                        id_estado: 3
+                    }
+                })
+                
+            }
+
             // Creo la auditoria
             const auditoria = await db.auditorias.create({
                 data: {
@@ -78,6 +122,48 @@ export const auditoriaService = {
             throw error;
         }finally  {
             await db.$disconnect();
+        }
+    },
+
+    async terminarAuditoria(id_auditoria: number) {
+        try {
+            return db.auditorias.update({
+                where: {
+                    id_auditoria: id_auditoria
+                },
+                data: {
+                    id_estado: 2
+                }
+            })
+        } catch (error) {
+            console.error('No se pudo terminar la auditoria:', error);
+            throw error;
+        }  finally {
+            db.$disconnect();
+        }
+    },
+
+    async getBarraProgresoAuditoria(id_auditoria: number): Promise<any> {
+        try {
+            return db.pertenencia_expositor_auditoria.findMany({
+                where: {
+                    id_auditoria: id_auditoria
+                },
+                include: {
+                    procesados_imagenes: {
+                        take: 1,
+                        orderBy: {
+                            fecha: 'desc'
+                        }
+                    }, 
+                    expositores: true
+                }
+            })
+        } catch (error) {
+            console.error('No se pudo obtener la barra de progreso:', error);
+            throw error;
+        } finally {
+            db.$disconnect();
         }
     },
 

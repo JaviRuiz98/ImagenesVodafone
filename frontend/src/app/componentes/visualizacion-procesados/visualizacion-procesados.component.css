@@ -1,0 +1,42 @@
+.gridHistorial {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    align-content: center;
+    grid-template-rows: 85% 15%;
+}
+
+.imagenProcesadaComentarios {
+    display: grid;
+    grid-template-rows: 70% 30%;
+    width: 100%;
+    height: 100%;
+}
+
+.anchoAltoImagenProcesada {
+    display: grid;
+    grid-template-columns: 90% 10%;
+    width: 100%;
+    height: 100%;
+}
+
+.contenedorImagen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 250px;
+    width: auto;
+}
+
+::ng-deep .p-image-preview-container>img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+::ng-deep .p-image {
+    height: 90%;
+    width: auto;
+}

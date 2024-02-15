@@ -5,7 +5,6 @@ export const tiendaService = {
     
     async getAllById(idTienda?: number): Promise<tiendas[]> {
         try{
-            // Obtenemos todos los expositores junto con sus imágenes
             const whereClause =  idTienda? {id_tienda:idTienda} : {};
             const tiendas = await db.tiendas.findMany(
                 {

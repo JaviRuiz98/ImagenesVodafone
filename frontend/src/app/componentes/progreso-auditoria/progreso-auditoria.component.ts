@@ -1,14 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { muebles } from 'src/app/interfaces/muebles';
 import { AuditoriaService } from 'src/app/servicios/auditoria/auditoria.service';
 import { auditoria } from 'src/app/interfaces/auditoria';
-
-interface Bar {
-  value: number;
-  color: string;
-  width: number;
-}
+import { ButtonModule } from 'primeng/button';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
+import { Router } from '@angular/router';
+import { BarraDeBarrasComponent } from '../barra-de-barras/barra-de-barras.component';
 
 @Component({
   selector: 'app-progreso-auditoria',
@@ -16,38 +15,63 @@ interface Bar {
   styleUrls: ['./progreso-auditoria.component.css'],
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+    ButtonModule,
+    ConfirmDialogModule,
+    ToastModule,
+    BarraDeBarrasComponent
+  ], providers: [
+    ConfirmationService,
+    MessageService
   ]
+
 })
 export class ProgresoAuditoriaComponent {
-  @Input() valores_progresos: number[] = []; // Espera un arreglo de valores numéricos
 
   id_auditoria_seleccionada: number | undefined;
   auditoria_seleccionada: auditoria | undefined;
 
-  bars: Bar[] = [];
+  datos_barra_progreso: number[] = [];
 
   constructor(
-    private auditoriaService: AuditoriaService
+    private auditoriaService: AuditoriaService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService,
+    private router: Router
   ) {}  
 
   ngOnInit(): void {
     this.id_auditoria_seleccionada = this.auditoriaService.id_auditoria_seleccionada;
-    this.auditoriaService.getAuditoriaById(this.id_auditoria_seleccionada).subscribe(auditoria => {
-      this.auditoria_seleccionada = auditoria;
-      console.log(this.auditoria_seleccionada)
-    });
+    this.auditoriaService.getAuditoriaById(this.auditoriaService.id_auditoria_seleccionada).subscribe(
+      auditoria => {
+        this.auditoria_seleccionada = auditoria
+        console.log("auditoria_seleccionada", this.auditoria_seleccionada);
+      }, error => { 
+        console.log(error) 
+      }
+    );
 
-  //   if (!this.valores_progresos) return;
+    this.getBarraProgresoAuditoria(this.auditoriaService.id_auditoria_seleccionada);
+  }
 
-  //   this.bars = this.muebles_auditoria.map(mueble => ({
-  //     const value = mueble.expositores?.[0]?.procesados_imagenes?.[0]?.probabilidades_respuesta_carteles?.id;
-  //     return {
-  //       value: value ?? 0, // Usa el operador nullish coalescing para manejar undefined o null
-  //       color: this.getColorByValue(value),
-  //       width: 100 / this.muebles_auditoria.length
-  //     };
-  //   }));
+  terminarAuditoria() {
+    this.confirmationService.confirm({
+      message: '¿Seguro que quieres terminar esta auditoria?',
+      header: 'Confirmacion',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.auditoriaService.terminarAuditoria(this.auditoriaService.id_auditoria_seleccionada).subscribe(
+          (data) => {
+            this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Auditoria finalizada correctamente' });
+            this.router.navigate(['/gestionAuditorias']);
+          }, (error) => {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo terminar la auditoria' });
+          }
+        );        
+      }, reject: () => {
+        this.messageService.add({ severity: 'error', summary: '', detail: 'Acción cancelada' });
+      }
+    })
   }
 
   getColorByValue(value: number): string {
@@ -55,5 +79,14 @@ export class ProgresoAuditoriaComponent {
     else if(value <= 1) return 'green';
     else if(value <= 2) return 'yellow';
     else return 'red';
+  }
+
+  getBarraProgresoAuditoria(id_auditoria_seleccionada: number) {
+    this.auditoriaService.getBarraProgresoAuditoria(id_auditoria_seleccionada).subscribe(
+      (data) => {
+        this.datos_barra_progreso = data;
+        console.log("barra de progreso", this.datos_barra_progreso);
+      }, (error) => { console.log(error) }
+    )
   }
 }

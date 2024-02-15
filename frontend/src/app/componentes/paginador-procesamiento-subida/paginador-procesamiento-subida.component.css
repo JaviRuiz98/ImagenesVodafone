@@ -1,15 +1,55 @@
+
 .componente-completo {
     width: 100%;
     height: 550px;
     display: grid;
     align-content: center;
-    grid-template-rows: 10% 90%;
+    grid-template-rows: 15% 85%;
 }
 
 .componente-solo-selector {
     width: 100%;
     height: 100%;
 }
+
+.botonSelectorHistorial{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.anchoAltoSelector {
+    width: 90%;
+    height: 90%;
+    margin-top: 4%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.anchoAltoGridFotosPaginador{
+    width: 100%;
+    height: 100%;
+}
+
+::ng-deep .p-component {
+    height: 80%;
+}
+:host::ng-deep {
+    .p-button.p-highlight.optionColorVodafone {
+       background: red;
+       border: rgb(87, 11, 11);
+    }
+}
+
+::ng-deep .p-toast {
+    height: 10%;
+}
+
+
+
+
+
+/*
+
 .botonNuevoHistorial {
     width: 100%;
     height: 100%;
@@ -33,13 +73,7 @@
     margin-right: 5%;
 }
 
-.gridHistorial {
-    width: 100%;
-    height: 100%;
-    display: grid;
-    align-content: center;
-    grid-template-rows: 85% 15%;
-}
+
 .imagenProcesada {
     position: relative;
     display: grid;
@@ -140,3 +174,4 @@
     margin: auto;
     margin-left: 15%;
 }
+*/

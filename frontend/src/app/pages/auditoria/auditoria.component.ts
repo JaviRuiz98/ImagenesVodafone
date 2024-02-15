@@ -23,6 +23,9 @@ export class AuditoriaComponent implements OnInit{
 
   muebles: muebles[] = [];
 
+  id_auditoria_seleccionada: number = 0;
+  auditoria_seleccionada: auditoria = new auditoria(null);
+
   imagenAProcesar = new File([""], "");
 
   cargas_procesamiento : boolean[] = [];
@@ -43,13 +46,19 @@ export class AuditoriaComponent implements OnInit{
     ) {}
 
     ngOnInit(): void {
-      this.inicializaImagenesReferencia();
-      console.log('Auditoria seleccionada: ', this.auditoriaService.id_auditoria_seleccionada)
+      this.id_auditoria_seleccionada = this.auditoriaService.id_auditoria_seleccionada;
 
+      this.auditoriaService.getAuditoriaById(this.auditoriaService.id_auditoria_seleccionada).subscribe(
+        auditoria => {
+          this.auditoria_seleccionada = auditoria
+          console.log("auditoria_seleccionada", this.auditoria_seleccionada);
+
+          this.inicializaImagenesReferencia();
+        }, error => { console.log(error) }
+      );      
     }
 
     async inicializaImagenesReferencia() {
-
       //const tiendaSelected: number | undefined = this.localStorageService.getItem('tiendas');
       //const mobiliarioSelected: number | undefined= this.localStorageService.getItem('mobiliario');
                                   
@@ -70,6 +79,7 @@ export class AuditoriaComponent implements OnInit{
 
     async recibirFile(event: {archivo:File}, id_expositor_selected: number, id_mueble_selected: number) {
       this.imagenAProcesar = event.archivo;
+      console.log("imagenAProcesar", this.imagenAProcesar);
       this.cargas_procesamiento[id_expositor_selected]= true;   
       this.messageService.add({ severity: 'info', summary: 'Cargando', detail: 'La imagen se está procesando' });
 

@@ -35,17 +35,14 @@ export class DialogInformacionProcesadoComponent {
 
   constructor( private publicMethodsService: PublicMethodsService) { }
 
-
-
-    onMouseOver(event: MouseEvent) {
-      this.visible_info_procesamiento = true;
-      const tagElement = event.target as HTMLElement;
-      tagElement.classList.add('cursor-zoom');
-    
+  onMouseOver(event: MouseEvent) {
+    this.visible_info_procesamiento = true;
+    const tagElement = event.target as HTMLElement;
+    tagElement.classList.add('cursor-zoom');
   }
 
   onMouseOut(event: MouseEvent) {
-      this.visible_info_procesamiento = false;
+    this.visible_info_procesamiento = false;
   }
   
 
