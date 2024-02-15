@@ -3,6 +3,7 @@ import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { Expositor } from '../../interfaces/expositor';
 import { regiones } from 'src/app/interfaces/regiones';
+import { pertenencia_expositor_mueble } from 'src/app/interfaces/pertenencia_expositor_mueble';
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +50,10 @@ export class ExpositoresService {
   getAllRegiones(){
     return this.http.get<regiones[]>(`${this.API_URI}/regiones`);
   }
+
+  getPertenenciaExpositoMueblebyIdMueble(id_mueble: number): Observable<pertenencia_expositor_mueble[]> {
+    return this.http.get<pertenencia_expositor_mueble[]>(`${this.API_URI}/expositores/${id_mueble}`);
+  } 
 
  
   

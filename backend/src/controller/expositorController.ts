@@ -105,6 +105,7 @@ export async function getExpositoresByIdMueble(req: Request, res: Response) {
         res.status(200).json(expositores);
     }catch(error){
         res.status(500).json({ error: 'Error interno del servidor' });
+        
     }
     
 }
