@@ -127,6 +127,9 @@ export class MuebleComponent implements OnInit {
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,
       maximizable: true,
+      data: {
+        id_mueble: mueble.id
+      }
     })
     this.ref.onMaximize.subscribe((value) => {
       this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });

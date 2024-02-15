@@ -51,7 +51,7 @@ export class ExpositoresService {
     return this.http.get<regiones[]>(`${this.API_URI}/regiones`);
   }
 
-  getPertenenciaExpositoMueblebyIdMueble(id_mueble: number): Observable<pertenencia_expositor_mueble[]> {
+  getPertenenciaExpositorMueblebyIdMueble(id_mueble: number): Observable<pertenencia_expositor_mueble[]> {
     return this.http.get<pertenencia_expositor_mueble[]>(`${this.API_URI}/expositores/${id_mueble}`);
   } 
 
