@@ -5,6 +5,7 @@ import { Expositor } from 'src/app/interfaces/expositor';
 import { muebles } from 'src/app/interfaces/muebles';
 import { ExpositoresService } from 'src/app/servicios/expositores/expositores.service';
 import { MuebleCreacion } from '../../interfaces/muebleCreacion';
+import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 
 
 @Component({
@@ -18,7 +19,7 @@ export class FormMuebleComponent implements OnInit {
 
  
   
-  constructor( public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private expositoresService: ExpositoresService) { }
+  constructor( public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private expositoresService: ExpositoresService, private muebleService: MueblesService) { }
 
   showing_asignar_expositores: boolean = false;
   all_expositores: Expositor[] = [];
@@ -160,8 +161,10 @@ export class FormMuebleComponent implements OnInit {
       if (this.objetivo_form === 'crear') {
         
         console.log(InfoMueble);
-        //realizar llamada al servicio
-    
+        this.muebleService.createMueble(InfoMueble).subscribe(
+        
+
+        );    
       }else {
         const muebleEdicion: muebles = {
           id: this.id_mueble_existente!,  //no puede ser nulo si está en edición
@@ -169,6 +172,7 @@ export class FormMuebleComponent implements OnInit {
         }
 
         console.log(muebleEdicion);
+        this.muebleService.updateMueble(muebleEdicion).subscribe();
         //realizar llamada al servicio
       }
      
