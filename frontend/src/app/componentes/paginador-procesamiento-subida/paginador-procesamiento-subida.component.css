@@ -40,6 +40,9 @@
     }
 }
 
+::ng-deep .p-toast {
+    height: 10%;
+}
 
 
 

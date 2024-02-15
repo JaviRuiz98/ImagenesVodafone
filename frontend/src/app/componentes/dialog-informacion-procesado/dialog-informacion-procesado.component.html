@@ -1,4 +1,3 @@
-
 <div (mouseover)="open.toggle($event)" (mouseout)="onMouseOut($event)">
     <p-tag *ngIf="procesado.categoria === 'carteles'" 
         class = "cursor-pointer "
@@ -14,7 +13,6 @@
     ></p-tag>     
 </div>
 <p-overlayPanel #open [showCloseIcon]="false">
-    <!--
     <div *ngIf="procesado.categoria === 'carteles'">
         <span style="font-weight: bold;">· Probabilidad: </span>  
         <p-tag [severity]="getSeverityCartel(procesado.probabilidades_respuesta_carteles.probabilidad)" >
@@ -32,5 +30,4 @@
     <h4>· IA Utilizada: </h4><span >{{this.procesado.IA_utilizada}}</span>
     <h4>· Prompt utilizado: </h4><span >{{this.procesado.prompts.nombre_prompt}}</span>
     <h4>· Fecha: </h4><span >{{ this.procesado.fecha | date:'dd-MM-yyyy | HH:mm' }}</span>
--->
 </p-overlayPanel>
