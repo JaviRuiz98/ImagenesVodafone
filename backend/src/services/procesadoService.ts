@@ -5,25 +5,31 @@ import db  from "../config/database";
 //tipo_procesado
 export const procesadoService = {
     async create (id_expositor: number, id_imagen: number, id_auditoria: number, categoria: string, comentarios: string, valido: boolean, IA_utilizada: string, id_prompt_usado: number, id_probabilidad_cartel?: number, dispositivos_contados?: number, huecos_esperados?: number) {
-
-       
-        const procesado = await db.procesados_imagenes.create({
-            data: {                
-                id_expositor_auditoria: id_expositor,
-                id_imagen: id_imagen,                
-                id_auditoria: id_auditoria,
-                categoria: categoria,
-                comentarios: comentarios,
-                valido: valido,
-                IA_utilizada: IA_utilizada,
-                id_prompt_usado: id_prompt_usado,
-                id_probabilidad_cartel: id_probabilidad_cartel,
-                dispositivos_contados: dispositivos_contados,
-                huecos_esperados: huecos_esperados,
-            }
-        });
+        try {
+            const procesado = await db.procesados_imagenes.create({
+                data: {                
+                    id_expositor_auditoria: id_expositor,
+                    id_imagen: id_imagen,                
+                    id_auditoria: id_auditoria,
+                    categoria: categoria,
+                    comentarios: comentarios,
+                    valido: valido,
+                    IA_utilizada: IA_utilizada,
+                    id_prompt_usado: id_prompt_usado,
+                    id_probabilidad_cartel: id_probabilidad_cartel,
+                    dispositivos_contados: dispositivos_contados,
+                    huecos_esperados: huecos_esperados,
+                }
+            });
+            
+            return procesado.id_procesado_imagen
+        } catch (error) {
+            console.log(error)
+            throw error
+        } finally {
+            db.$disconnect();
+        }       
         
-        return procesado.id_procesado_imagen
   
     }, 
 
@@ -87,10 +93,10 @@ export const procesadoService = {
         return pea[0]?.id_expositor_auditoria;
     },
 
-    async getIdProbabilidadCartelDadaProbabilidad(probabilidad: string) : Promise<number | null> {
-        const probabilidad_object: any = db.probabilidades_respuesta_carteles.findUnique({
+    async getIdProbabilidadCartelDadaProbabilidad(probabilidad_detectada: string) : Promise<number | null> {
+        const probabilidad_object: any = await db.probabilidades_respuesta_carteles.findUnique({
             where: {
-                probabilidad: probabilidad
+                probabilidad: probabilidad_detectada
             }
         })
 
