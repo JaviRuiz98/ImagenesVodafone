@@ -3,6 +3,7 @@ import { Expositor } from 'src/app/interfaces/expositor';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { pertenencia_expositor_mueble } from 'src/app/interfaces/pertenencia_expositor_mueble';
 import { ExpositoresService } from 'src/app/servicios/expositores/expositores.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-historialExpositores',
@@ -21,19 +22,24 @@ export class HistorialExpositoresComponent implements OnInit {
 
 
 
-  constructor(public dialogConfig : DynamicDialogConfig, private expositorService: ExpositoresService) { }
+  constructor(public dialogConfig : DynamicDialogConfig, private expositorService: ExpositoresService,  private datePipe: DatePipe) { }
 
   ngOnInit() {
     if (this.dialogConfig.data) {
       const id_mueble = this.dialogConfig.data.id_mueble;
       this.expositorService.getPertenenciaExpositorMueblebyIdMueble(id_mueble).subscribe(
-        
+        (pertenencias_expositor_mueble: pertenencia_expositor_mueble[]) => {
+          this.pertenencias_expositor_mueble = pertenencias_expositor_mueble;
+        }
       )
     }
   
   }
 
 
+  formatDate(date: Date): string | null {
+    return this.datePipe.transform(date, 'dd/MM/yyyy');
+  }
 
  
  
