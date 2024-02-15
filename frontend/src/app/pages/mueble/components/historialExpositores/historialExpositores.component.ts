@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { muebles } from 'src/app/interfaces/muebles';
+import { Component, Input, OnInit } from '@angular/core';
+import { Expositor } from 'src/app/interfaces/expositor';
 
 @Component({
   selector: 'app-historialExpositores',
@@ -9,11 +8,24 @@ import { muebles } from 'src/app/interfaces/muebles';
 })
 export class HistorialExpositoresComponent implements OnInit {
 
-  mueble:muebles = this.dialogConfig.data.mueble
+  
+  url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
-  constructor(  public dialogConfig : DynamicDialogConfig,) { }
+  @Input() expositores: Expositor[] = [];
+
+
+  nombreFiltro: string = '';
+
+
+  constructor() { }
 
   ngOnInit() {
+    
+  
   }
 
+
+
+ 
+ 
 }
