@@ -47,8 +47,8 @@ export class TiendasComponent implements OnInit{
       this.tiendasMostrar = response;
     })
     this.MueblesService.getAllMuebles().subscribe((response: muebles[]) => {
-      this.listaTodosMuebles = response;
-    })
+      this.listaTodosMuebles = response.sort((a, b) => a.nombre_mueble.localeCompare(b.nombre_mueble));
+    });
     this.parametrosSteps = [
       {
         label: 'Datos Tienda',
