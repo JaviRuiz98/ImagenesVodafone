@@ -173,7 +173,8 @@ export const expositoresService = {
                 include:{
                   imagenes: true
                 } 
-              }
+              },
+              muebles: true
             }
           })
         }catch(error){
