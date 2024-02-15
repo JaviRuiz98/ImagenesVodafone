@@ -3,18 +3,20 @@
     <p-toolbar styleClass="mb-4 gap-2">
         <ng-template pTemplate="left">
             <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="AbrirnuevoExpositor()" ></button>
-            <!-- <button pButton pRipple label="Desactivar" icon="pi pi-eye" class="p-button-danger" [style]="{'margin-left': '20px'}" (click)="activarDesactivarExpositores()" [disabled]="!expositoresSeleccionados|| !expositoresSeleccionados.length"></button> -->
+            <!-- <button pButton pRipple label="Desactivar" icon="pi pi-eye " class="p-button-danger" [style]="{'margin-left': '20px'}" (click)="activarDesactivarExpositores()" [disabled]="!expositoresSeleccionados|| !expositoresSeleccionados.length"></button> -->
             <span class="p-input-icon-left" style="margin-left: 20px">
                 <i class="pi pi-search"></i>
                 <input pInputText type="text" [(ngModel)]="imputSearch" (input)="filterByNombre($event)"    placeholder="Filtrar por nombre" /> 
             </span>
-            <p-dropdown [options]="opcionesMostrar" [(ngModel)]="opcionSeleccionada" optionLabel="estado" [showClear]="true" placeholder="Estado del catalogo" [style] = "{'margin-left': '20px'}" ></p-dropdown>
+
+            <p-selectButton (onChange)="resetTabla()"  [allowEmpty]="false" [options]="tableStateOption" [(ngModel)]="tableSelected" optionLabel="label" optionValue="value"  [style] = "{'margin-left': '20px'}"  ></p-selectButton>
+            <p-dropdown [options]="opcionesMostrar" (onChange)="cambiarOpcionBusqueda($event)" [(ngModel)]="opcionSeleccionada" optionLabel="estado" [showClear]="true" placeholder="Estado del catalogo" [style] = "{'margin-left': '20px'}" ></p-dropdown>
             
         </ng-template>
     </p-toolbar>
     <p-table
         #dt
-        [value]="expositores" 
+        [value]="expositores"  
         [rows]="20"
         [paginator]="true"
         [scrollable]="true"
@@ -34,25 +36,25 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th style="width: 4rem">
-                    <p-tableHeaderCheckbox> </p-tableHeaderCheckbox>
-                </th>
+
                 <th>ID</th>
                 <th>imagen</th>
                 <th>Nombre</th>
-                <th></th>
+                <th>Region</th>
+                <th pSortableColumn="numero_dispositivos" *ngIf="tableSelected === 'dispositivos'">Número de dispositivos <p-sortIcon field="numero_dispositivos"></p-sortIcon></th> 
+                <th></th> 
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-expositor>
             <tr *ngIf=" (this.opcionSeleccionada.estado == 'Todos') || (this.opcionSeleccionada.estado == 'Catalogados' && expositor.activo==1) || (this.opcionSeleccionada.estado == 'Descatalogados' && expositor.activo==0) ">
-                <td>
-                    <p-tableCheckbox [value]="expositor"></p-tableCheckbox>
-                </td>
-                <td>{{ expositor.id_expositor }}</td>
+
+                <td>{{ expositor.id }}</td>
                 <td>
                     <p-image [src]="url_imagenes_referencias + expositor.imagenes.url" [alt]="expositor.imagenes.url" [width]="'auto'" [height]="'100px'" class="shadow-4" [preview]="true"></p-image>
                 </td>
                 <td>{{ expositor.nombre }}</td>
+                <td>{{ expositor.regiones.nombre }}</td>
+                <td *ngIf="tableSelected === 'dispositivos'">{{ expositor.numero_dispositivos }}</td>
                 <td>
                     <p-button *ngIf="expositor.activo == 1" (mouseover)="descatalogar.toggle($event)" (click)="activarDesactivarExpositores(expositor)" icon="pi pi-eye-slash" [rounded]="true" [text]="true" severity="danger "></p-button>
                     <p-button *ngIf="expositor.activo == 0" (mouseover)="catalogar.toggle($event)" (click)="activarDesactivarExpositores(expositor)" icon="pi pi-eye" [rounded]="true" [text]="true" severity="info "></p-button>

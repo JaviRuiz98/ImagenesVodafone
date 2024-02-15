@@ -55,6 +55,11 @@ export async function guardarExpositor(req: Request, res: Response) {
         const nombre = req.body.nombre; 
         const activo = req.body.activo === 'true';
         const imagenExpositor = req.file;//(files['imagenesprocesado'] as Express.Multer.File[]).map(file => file.path)[0];
+        const region = parseInt(req.body.id_region);
+        const categoria = req.body.categoria;
+
+        const numero_dispositivos = parseInt(req.body.numero_dispositivos);
+
 
         if (!imagenExpositor ||!imagenExpositor.path || !imagenExpositor.filename) {
             res.status(500).json({ error: 'La imagen procesada no existe' });
@@ -63,7 +68,7 @@ export async function guardarExpositor(req: Request, res: Response) {
         const [nuevaImagen]  = await Promise.all([
             imagenService.create(imagenExpositor.filename, imagenExpositor.originalname),
         ]);    
-        const row = await expositoresService.guardarExpositor(nombre, activo, nuevaImagen.id_imagen);
+        const row = await expositoresService.guardarExpositor(nombre, activo, nuevaImagen.id_imagen, region, categoria, numero_dispositivos);
         res.status(200).json(row);
     }catch(error){
         res.status(500).json({ error: 'Error interno del servidor' });        
@@ -83,3 +88,23 @@ export async function editarEstadoExpositor(req: Request, res: Response){
     }
 }
   
+
+export async function getRegionesDisponibles(__req: Request, res: Response) {
+    try{
+        const regiones = await expositoresService.getRegiones();
+        res.status(200).json(regiones); //
+    }catch(error){
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}
+
+export async function getExpositoresByIdMueble(req: Request, res: Response) {
+    try{
+        const id_mueble = parseInt(req.params.id_mueble);
+        const expositores = await expositoresService.getExpositoresByIdMueble(id_mueble);
+        res.status(200).json(expositores);
+    }catch(error){
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+    
+}

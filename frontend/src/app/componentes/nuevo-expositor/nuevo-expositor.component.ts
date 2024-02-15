@@ -11,7 +11,10 @@ import { Message } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
-import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormArray } from '@angular/forms';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormControl, Validators  } from '@angular/forms';
+
+import { regiones } from 'src/app/interfaces/regiones';
 
 @Component({
   selector: 'app-nuevo-expositor',
@@ -28,7 +31,8 @@ import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormArray } f
     ButtonModule,
     ToastModule,
     CommonModule,
-    DropdownModule
+    DropdownModule,
+    InputNumberModule
   ],
 
 })
@@ -38,60 +42,75 @@ import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormArray } f
 
 export class NuevoExpositorComponent implements OnInit {
 
+  @Input() categoriaPredefinida: string = ''; //sin implementar
   @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
   @Output() mostrarDialogoNuevoExpositor = new EventEmitter<boolean>();
-  
 
-  filtro_procesados_form: FormGroup = this.formBuilder.group({
-    nombre: '',
-    zona:'',
-    prompts: [[]],
-    respuestas_carteles: [[]],
-  });;
+  nuevoExpositor_form: FormGroup = this.formBuilder.group({
+    nombre: new FormControl('', [Validators.required, Validators.minLength(5)]),
+    activo: new FormControl(false),
+    region: new FormControl(0, [Validators.required, Validators.minLength(1)]),  // interfaz
+    imagen: new FormControl(0, [Validators.required, this.fileValidator]), // interfaz ?
+    categoria: new FormControl('', Validators.required),                                            //////// POR AQUI
+    numero_dispositivos: new FormControl(0), 
+  });
 
+
+  formData  = this.nuevoExpositor_form?.value;
 
   submitted: boolean = false;
   mostrar: boolean = true;
   messages: Message[] | undefined;
+  n_dispositivos: number = 0;
   
   nuevoExpositor!: Expositor;
   
   archivoSeleccionado!: File;
+ 
 
-  cargando_procesamiento: boolean = false; // ? para el loading
-
-  dropDownZonas: string[] = [];
+  regiones: regiones[] = [];
+  Dropdown_regiones: string[] = [];
+  Dropdown_categorias: string[] = ["Carteles", "Dispositivos"];
 
   constructor(private formBuilder: FormBuilder, private expositoresService: ExpositoresService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
   AbrirnuevoExpositor() {
     this.nuevoExpositor = {
       id: 0,
-      nombre: '',
-      activo: true,
       imagenes: {
         url:"",
         id_imagen: 0
       },
-      categoria: "cartel",
+      region: {
+        id: 0,
+        nombre: ''
+      },
+      nombre: '',
+      activo: true,
+      categoria: "",
       procesados_imagenes: []
     };
     this.submitted = false;
   }
   
   recibirFile(event: {archivo:File}) {
-    this.archivoSeleccionado = event.archivo;
+    this.nuevoExpositor_form.patchValue({ imagen: event.archivo });
     const imagenAProcesar = event.archivo;
     this.archivoSeleccionadoChange.emit({ archivo: imagenAProcesar });
-    this.cargando_procesamiento = true;
+  }
+
+  onRegionChange(event: any) {
+    const selectedRegionValue = this.regiones.find((region) => region.nombre === event.value);
+    this.nuevoExpositor_form.patchValue({ region: selectedRegionValue });
   }
 
   nuevoGuardar() {
-    if(this.nuevoExpositor.nombre == '') {
+    console.log(this.nuevoExpositor_form.get('nombre')?.value);
+    if(this.nuevoExpositor_form.get('nombre')?.value == '') {
       this.messageService.add({severity:'error', summary: 'Error', detail: 'Expositor no guardado'});
       this.submitted = true;
     }else{
-      this.expositoresService.guardarExpositor(this.nuevoExpositor.nombre, this.nuevoExpositor.activo, this.archivoSeleccionado).subscribe((expositor) => {
+      this.expositoresService.guardarExpositor(this.nombre?.value, this.nuevoExpositor.activo, this.region?.value, this.imagen?.value, this.categoria?.value, this.numero_dispositivos?.value).subscribe((expositor) => {
         if(expositor.id> 0) {
           this.messageService.add({severity:'success', summary: 'Guardado', detail: 'Expositor guardado correctamente'});
         }else{
@@ -118,16 +137,53 @@ export class NuevoExpositorComponent implements OnInit {
 
 
   inicializaDropDownZonas(){
-    this.expositoresService.getAllZonas().subscribe((zonas)=>{
-      this.dropDownZonas = zonas
+    this.expositoresService.getAllRegiones().subscribe((regiones)=>{
+      this.regiones = regiones;
+      this.Dropdown_regiones = regiones.map((region) => region.nombre);
     })
-
-
   }
+
+ 
 
   ngOnInit(): void {
     this.AbrirnuevoExpositor();
- 
+    this.inicializaDropDownZonas();
   }
+
+
+
+  get categoria() { return this.nuevoExpositor_form.get('categoria')}
+  get nombre() { return this.nuevoExpositor_form.get('nombre') }
+  get region() { return this.nuevoExpositor_form.get('region') }
+  get numero_dispositivos() { return this.nuevoExpositor_form.get('numero_dispositivos') }
+  get imagen() { return this.nuevoExpositor_form.get('imagen') }
+
+
+
+ fileValidator(control: FormControl): { [key: string]: any } | null {
+    const file = control.value;
+    if (file instanceof File) {
+      return null; // Es un tipo File válido
+    } else {
+      return { 'invalidFile': true }; // No es un tipo File válido
+    }
+  }
+
+
+  validateNumeroDispositivos(control: FormControl): {[key: string]: any} | null {
+    if (!control.parent || !control.parent.get('categoria')) {
+      return null; // No hay control 'categoria' padre
+    }
+  
+    const categoriaValor = control.parent.get('categoria')?.value;
+    if (categoriaValor === 'Dispositivos' && control.value <= 0) {
+      return {'invalido': true};
+    }
+  
+    return null;
+  }
+
+ 
+
 
 }

@@ -1,7 +1,8 @@
 import { expositores,  muebles } from "@prisma/client";
 import db  from "../config/database";
 import { getDestination } from "../config/multer";
-import { imagenes, pertenencia_expositor_auditoria } from "@prisma/client";
+import { imagenes, pertenencia_expositor_auditoria, pertenencia_expositor_mueble, regiones } from "@prisma/client";
+
 
 export const expositoresService = {
 
@@ -97,7 +98,7 @@ export const expositoresService = {
           return await db.expositores.findMany({
             where:whereClause,
             include: {
-
+              regiones: true,
               imagenes: true
             }
           });
@@ -114,9 +115,10 @@ export const expositoresService = {
         }
       },
 
-      async guardarExpositor(nombre: string, activo: boolean, id_imagen: number): Promise<expositores> {
+      async guardarExpositor(nombre: string, activo: boolean, id_imagen: number, region: number, categoria: string, n_dispositivos?: number): Promise<expositores> {
         try {
-          return await db.expositores.create({ data: { nombre: nombre, activo: activo, id_imagen: id_imagen } });
+          return await db.expositores.create({ data: { nombre: nombre, activo: activo, id_imagen: id_imagen, id_region: region, categoria: categoria, numero_dispositivos: n_dispositivos } });
+          
         }catch (error) {
           console.log(error)
           throw error;
@@ -150,6 +152,35 @@ export const expositoresService = {
           throw error;
         }
 
+      },
+      async getRegiones(): Promise<regiones[]>{
+        try{
+          return await db.regiones.findMany();
+        }catch(error){
+          console.error(`Error al intentar obtener las regiones:`, error);
+          throw error;
+        }
+      },
+      async getExpositoresByIdMueble(id_mueble: number): Promise<pertenencia_expositor_mueble[] | undefined> {
+        
+        try {
+          return await db.pertenencia_expositor_mueble.findMany({
+            where: {
+              id_mueble: id_mueble
+            },
+            include: {
+              expositores: {
+                include:{
+                  imagenes: true
+                } 
+              },
+              muebles: true
+            }
+          })
+        }catch(error){
+          console.log(error)
+          throw error
+        }
       }
 
 }

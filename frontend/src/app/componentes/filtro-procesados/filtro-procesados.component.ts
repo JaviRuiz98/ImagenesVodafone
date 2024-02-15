@@ -31,7 +31,7 @@ export class FiltroProcesadosComponent implements OnInit {
     categoria: [''],
     prompts: [[]],
     respuestas_carteles: [[]],
-  });;
+  });
 
   formData  = this.filtro_procesados_form?.value;
 

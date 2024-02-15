@@ -5,7 +5,7 @@ import { ExpositoresService } from 'src/app/servicios/expositores/expositores.se
 import { Expositor } from 'src/app/interfaces/expositor';
 import { imagenes } from 'src/app/interfaces/imagenes';
 import { ExpositorModule } from './expositor.module';
-
+import { regiones } from 'src/app/interfaces/regiones';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
@@ -27,7 +27,7 @@ export class ExpositoresComponent implements OnInit {
   imputSearch!: string;
   expositores!: Expositor[];
   expositoresSeleccionados!: Expositor[];
-  expositoresFiltrados!: Expositor[];
+  expositoresTodos!: Expositor[];
   nuevoExpositor!: Expositor;
   archivoSeleccionado!: File;
 
@@ -36,15 +36,33 @@ export class ExpositoresComponent implements OnInit {
   opcionesMostrar!: any[];
   opcionSeleccionada = {estado: 'Todos'};
 
+  regiones!: regiones[];
+ 
 
-  submitted: boolean = false;
+  tableStateOption: any[] = [{label:'Dispositivos', icon: 'pi pi-mobile', value: 'dispositivos',  styleClass: "optionColorVodafone" }, {label:'Carteles' ,icon: 'pi pi-book', value: 'cartel', styleClass: "optionColorVodafone" }];
+  tableSelected:string = 'dispositivos';
+
+
+
   constructor(private router: Router, private expositoresService: ExpositoresService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
   inicializaExpositores() {
     this.expositoresService.getExpositores().subscribe((expositores: Expositor[]) => {
       this.expositores = expositores;
+      this.expositoresTodos = expositores;
       console.log("expositores", expositores);
+      this.resetTabla();
     });
+  }
+
+  resetTabla() {
+    this.expositores = this.expositoresTodos;
+    if(this.tableSelected == "dispositivos"){
+      this.expositores = this.expositores.filter(expositor => expositor.categoria == 'Dispositivos');
+      
+    }else{
+      this.expositores = this.expositores.filter(expositor => expositor.categoria == 'Carteles');
+    }
   }
 
  
@@ -53,17 +71,22 @@ export class ExpositoresComponent implements OnInit {
 
     this.nuevoExpositor = {
       id: 0,
-      nombre: '',
-      activo: true,
-      categoria: "",
+
       imagenes: {
         url:"",
         id_imagen: 0
       },
+      region: {
+        id: 0,
+        nombre: ''
+      },
+      nombre: '',
+      activo: true,
+      categoria: "",
       procesados_imagenes: []
     };
     this.mostrarDialogoNuevoExpositor = true;
-    this.submitted = false;
+ 
   }
 
   recibirFile(event: {archivo:File}) {
@@ -79,34 +102,18 @@ export class ExpositoresComponent implements OnInit {
     this.cargando_procesamiento = true;
   }
 
-  nuevoGuardar() {
-    this.expositoresService.guardarExpositor(this.nuevoExpositor.nombre, this.nuevoExpositor.activo, this.archivoSeleccionado).subscribe((expositor: Expositor) => {
-      this.inicializaExpositores();
-    })
 
-
-
-    //this.mostrarDialogoNuevoExpositor = false;
-  }
-
-  nuevoCanelar() {
-    this.mostrarDialogoNuevoExpositor = false;
-    
-  }
 
   activarDesactivarExpositores(expositor: Expositor) {
     //this.opcionMostrarCambia
 
     this.expositoresService.cambiarActivo(expositor.id, !expositor.activo).subscribe((expositor: Expositor) => {
-      
       this.inicializaExpositores();
       if(!expositor.activo){
         this.messageService.add({ severity: 'success', summary: 'Modificado con exito', detail: 'Expositor descatalogado' });
       }else{
         this.messageService.add({ severity: 'success', summary: 'Modificado con exito', detail: 'Expositor añadido al catalogo' });
       }
-      
-  
     })
   }
 
@@ -123,6 +130,7 @@ export class ExpositoresComponent implements OnInit {
   }
 
   filterByNombre(event: Event) {
+    this.expositores = this.expositoresTodos;
     if(this.imputSearch == ""){
       this.inicializaExpositores();
     }else{
@@ -137,17 +145,29 @@ export class ExpositoresComponent implements OnInit {
 
 
 
-  opcionMostrarCambia(){
+  cambiarOpcionBusqueda($event: any) {
+    if($event.value == "Todos"){
+      this.inicializaExpositores();
+    }else if($event.value == "Catalogados"){
+      this.expositores = this.expositoresTodos.filter(expositor => expositor.activo == true);
+    }else if($event.value == "Descatalogados"){
+      this.expositores = this.expositoresTodos.filter(expositor => expositor.activo == false);
+    }
 
   }
 
  
-
+  
 
 
   ngOnInit(): void {
     this.inicializaExpositores();
-    
+
+    this.expositoresService.getAllRegiones().subscribe((regiones: regiones[]) => {
+      this.regiones = regiones;
+    });
+
+
     this.opcionesMostrar = [
       {estado: 'Todos'}, 
       {estado: 'Catalogados'}, 
