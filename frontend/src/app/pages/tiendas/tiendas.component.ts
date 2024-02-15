@@ -33,9 +33,13 @@ export class TiendasComponent implements OnInit{
   activeIndex: number = 0;
   listaTodosMuebles: muebles[] = [];
   listaMueblesNuevaTienda: muebles[] = [];
+  listaMueblesMostrar: muebles[] = [];
+  listaMueblesFiltrar: muebles[] = [];
+
   editarTiendaCreada: boolean = false;
   crearEditarTienda: string = 'Crear Tienda';
   nombreFiltro: string = '';
+  nombreFiltroListaTodosMuebles: string = '';
   mensajeActivarDesactivar: string = 'Desactivar';
   mensajeDialog: string = '¿Seguro que desea desactivar la tienda?';
 
@@ -48,6 +52,7 @@ export class TiendasComponent implements OnInit{
     })
     this.MueblesService.getAllMuebles().subscribe((response: muebles[]) => {
       this.listaTodosMuebles = response.sort((a, b) => a.nombre_mueble.localeCompare(b.nombre_mueble));
+      this.listaMueblesMostrar = this.listaTodosMuebles;
     });
     this.parametrosSteps = [
       {

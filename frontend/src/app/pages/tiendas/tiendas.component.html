@@ -17,25 +17,10 @@
                 <input type="text" pInputText [(ngModel)]="comunidadInput" [disabled]="editarTiendaCreada"/>
             </div>
             <div class="formulario" *ngIf="activeIndex === 1">
-                <p-pickList [source]="listaTodosMuebles" [target]="listaMueblesNuevaTienda" sourceHeader="Muebles disponibles"  targetHeader="Muebles nueva tienda" [dragdrop]="true" [responsive]="true">
+                <p-pickList [source]="listaMueblesMostrar" [target]="listaMueblesNuevaTienda" sourceHeader="Muebles disponibles"  targetHeader="Muebles nueva tienda" 
+                filterBy="nombre_mueble" sourceFilterPlaceholder="Buscar por nombre" targetFilterPlaceholder="Buscar por nombre" [dragdrop]="true" [responsive]="true">
                     <ng-template let-mueble pTemplate="item">
                         <div class="contenedorMuebleArrastras">
-                            <!--
-                            <div *ngIf="mueble.expositores.length == 1">
-                                <div class="anchoAltoFotoReferencia">
-                                    <img src="{{imagenesRef}}/{{mueble.expositores[0].imagenes.url}}" alt="{{mueble.expositores[0].imagenes.url}}" class="ajusteImagenesAnchoAlto">
-                                </div>
-                            </div>
-                            <div *ngIf="mueble.expositores.length == 2 && mueble.expositores[0] != undefined && mueble.expositores[1] != undefined" class="grid anchoAltoFotoReferencia">
-
-                                <div style="margin-right: 5px;">
-                                    <img src="{{imagenesRef}}/{{mueble.expositores[0].imagenes.url}}" alt="{{mueble.expositores[0].imagenes.url}}" class="ajusteImagenesAnchoAlto">
-                                </div>
-                                <div> 
-                                    <img src="{{imagenesRef}}/{{mueble.expositores[1].imagenes.url}}" alt="{{mueble.expositores[1].imagenes.url}}" class="ajusteImagenesAnchoAlto">
-                                </div>
-                            </div> 
-                        -->
                             <div class="anchoAltoDescripcionFotoReferencia">
                                 <span class="letrasCaracteristicasMueble"><strong>{{ mueble.nombre_mueble }}</strong></span>
                             </div>
@@ -53,21 +38,6 @@
                     <p-orderList [value]="listaMueblesNuevaTienda" [listStyle]="{ height: '20rem' }" header="Muebles Seleccionados">
                         <ng-template let-mueble pTemplate="item">
                             <div class="contenedorMuebleArrastras">
-                                <!--
-                                <div *ngIf="mueble.expositores.length == 1">
-                                    <div class="anchoAltoFotoReferencia">
-                                        <img src="{{imagenesRef}}/{{mueble.expositores[0].imagenes.url}}" alt="{{mueble.expositores[0].imagenes.url}}" class="ajusteImagenesAnchoAlto">
-                                    </div>
-                                </div>
-                                <div *ngIf="mueble.expositores.length == 2 && mueble.expositores[0] != undefined && mueble.expositores[1] != undefined" class="grid anchoAltoFotoReferencia">
-                                    <div style="margin-right: 5px;">
-                                        <img src="{{imagenesRef}}/{{mueble.expositores[0].imagenes.url}}" alt="{{mueble.expositores[0].imagenes.url}}" class="ajusteImagenesAnchoAlto">
-                                    </div>
-                                    <div> 
-                                        <img src="{{imagenesRef}}/{{mueble.expositores[1].imagenes.url}}" alt="{{mueble.expositores[1].imagenes.url}}" class="ajusteImagenesAnchoAlto">
-                                    </div>
-                                </div> 
-                            -->
                                 <div class="anchoAltoDescripcionFotoReferencia">
                                     <span class="letrasCaracteristicasMueble"><strong>{{ mueble.nombre_mueble }}</strong></span>
                                 </div>
