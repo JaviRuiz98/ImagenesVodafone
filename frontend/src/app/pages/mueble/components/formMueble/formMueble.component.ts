@@ -23,12 +23,11 @@ export class FormMuebleComponent implements OnInit {
   showing_asignar_expositores: boolean = false;
   all_expositores: Expositor[] = [];
   showing_crear_expositores: boolean = false;
-  new_expositor_for_categoria: 'dispositivos' | 'carteles' = 'dispositivos';
+  new_expositor_for_categoria: 'Dispositivos' | 'Carteles' = 'Dispositivos';
 
   
 
   objetivo_form: 'crear' | 'editar' = 'crear';
-  categorias_opciones = ['cartel', 'dispositivos'];
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
   formulario:FormGroup = this.fb.group({
@@ -98,11 +97,12 @@ export class FormMuebleComponent implements OnInit {
     };
   }
 
-  createExpositores(categoria:string) {
-    throw new Error('Method not implemented.');
+  createExpositores(categoria: 'Carteles' | 'Dispositivos') {
+   this.new_expositor_for_categoria = categoria;
+   this.showing_crear_expositores = true;
   }
 
-  showExpositores(categoria: 'carteles' | 'dispositivos') {
+  showExpositores(categoria: 'Carteles' | 'Dispositivos') {
     
    
     this.expositoresService.getExpositores(categoria).subscribe( (expositores:Expositor[]) => {
@@ -122,7 +122,7 @@ export class FormMuebleComponent implements OnInit {
       });
   
       // Añadimos el expositor al array correspondiente para mostrarlos
-      if (this.new_expositor_for_categoria === 'carteles') {
+      if (this.new_expositor_for_categoria === 'Carteles') {
         
         this.expositores_carteles = this.expositores_carteles.concat(event);
       } else {

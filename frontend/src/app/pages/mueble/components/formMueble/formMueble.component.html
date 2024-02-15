@@ -52,8 +52,8 @@
               <div class="col-12">
             
                 <div class="p-toolbar-group-start">
-                  <p-button severity="danger" [text]="true" [raised]="true" (onClick)="showExpositores('dispositivos')" label="asignar expositor" ></p-button>
-                  <p-button severity="danger" class="ml-2" [text]="true" [raised]="true" (onClick)="createExpositores('dispositivos')" label="crear expositor" ></p-button>
+                  <p-button severity="danger" [text]="true" [raised]="true" (onClick)="showExpositores('Dispositivos')" label="asignar expositor" ></p-button>
+                  <p-button severity="danger" class="ml-2" [text]="true" [raised]="true" (onClick)="createExpositores('Dispositivos')" label="crear expositor" ></p-button>
 
                 </div>
                 <div class="p-toolbar-group-end">
@@ -99,8 +99,8 @@
             <div class="col-12">
           
               <div class="p-toolbar-group-start">
-                <p-button severity="danger" [text]="true" [raised]="true" (onClick)="showExpositores('carteles')" label="asignar expositor" ></p-button>
-                <p-button severity="danger" class="ml-2" [text]="true" [raised]="true" (onClick)="createExpositores('carteles')" label="crear expositor" ></p-button>
+                <p-button severity="danger" [text]="true" [raised]="true" (onClick)="showExpositores('Carteles')" label="asignar expositor" ></p-button>
+                <p-button severity="danger" class="ml-2" [text]="true" [raised]="true" (onClick)="createExpositores('Carteles')" label="crear expositor" ></p-button>
 
               </div>
               <div class="p-toolbar-group-end">
@@ -117,6 +117,11 @@
     
     
 
+  </div>
+
+  <div *ngIf="!showing_asignar_expositores && showing_crear_expositores ">
+    <p-button severity="danger" [text]="true" [raised]="true" (onClick)="showing_crear_expositores = false" label="volver" ></p-button>
+    <app-nuevo-expositor [categoriaPredefinida]="new_expositor_for_categoria " ></app-nuevo-expositor>
   </div>
 
   <div *ngIf="showing_asignar_expositores && !showing_crear_expositores ">

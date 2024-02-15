@@ -229,10 +229,10 @@ export const mobiliarioService = {
                         include: {
                           imagenes: true,
                           regiones: true,
-                          // No incluyes directamente procesados_imagenes aquí
+                        
                         }
                       },
-                      procesados_imagenes: { // Suponiendo que esto es posible según tu esquema 
+                      procesados_imagenes: { 
                         where: {
                             id_auditoria: id_auditoria
                         }, include: {
