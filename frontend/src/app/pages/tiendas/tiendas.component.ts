@@ -51,6 +51,7 @@ export class TiendasComponent implements OnInit{
       this.tiendasMostrar = response;
     })
     this.MueblesService.getAllMuebles().subscribe((response: muebles[]) => {
+      console.log(response)
       this.listaTodosMuebles = this.ordenarListaAlfabeticamente(response, 'nombre_mueble');
       this.listaMueblesMostrar = this.listaTodosMuebles;
     });
@@ -163,7 +164,8 @@ export class TiendasComponent implements OnInit{
   }
 
   ordenarListaAlfabeticamente(lista: any[], campo: string) {
-    const listaOrdenada = lista.sort((a, b) => a.campo.localeCompare(b.campo));
+    console.log(lista, campo)
+    const listaOrdenada = lista.sort((a, b) => a[campo].localeCompare(b[campo]));
     return listaOrdenada;
   }
 }
