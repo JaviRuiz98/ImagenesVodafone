@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
 import { AuditoriaService } from 'src/app/servicios/auditoria/auditoria.service';
@@ -8,6 +8,7 @@ import { filtro_procesados } from 'src/app/interfaces/filtro_procesados';
 import { muebles } from 'src/app/interfaces/muebles';
 import { auditoria } from 'src/app/interfaces/auditoria';
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
+import { ProgresoAuditoriaComponent } from 'src/app/componentes/progreso-auditoria/progreso-auditoria.component';
 
 @Component({
   selector: 'auditoria',
@@ -16,6 +17,8 @@ import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 })
 
 export class AuditoriaComponent implements OnInit{
+
+  @ViewChild('progresoRef') progresoAuditoria!: ProgresoAuditoriaComponent;
 
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
@@ -27,6 +30,7 @@ export class AuditoriaComponent implements OnInit{
   auditoria_seleccionada: auditoria = new auditoria(null);
 
   imagenAProcesar = new File([""], "");
+  evento_nuevo_procesado: Event | undefined;
 
   cargas_procesamiento : boolean[] = [];
   modos_visualizacion : string[] = [];  
@@ -90,6 +94,7 @@ export class AuditoriaComponent implements OnInit{
           this.modos_visualizacion[id_expositor_selected] = 'historial';        
           this.actualizarProcesamientoEnMueble(id_expositor_selected, response);
           this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Imagen procesada correctamente' });
+          this.progresoAuditoria.actualizarProgresoAuditoria(this.auditoriaService.id_auditoria_seleccionada);
         }, ( error: any ) => {
           console.log("error", error);
           this.cargas_procesamiento[id_expositor_selected] = false;

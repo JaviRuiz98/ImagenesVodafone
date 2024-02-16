@@ -1,7 +1,7 @@
 <div class="paginaCompleta">
     <p-toast></p-toast>
     <div class="floatintPanel" *ngIf="this.id_auditoria_seleccionada !== 0">
-      <app-progreso-auditoria ></app-progreso-auditoria>
+      <app-progreso-auditoria #progresoRef></app-progreso-auditoria>
     </div>    
     <div *ngFor="let mueble of this.muebles" class="contornoPanel">
       <p-panel [style]="{'border': '1px solid black', 'margin-bottom': '20px'}">
