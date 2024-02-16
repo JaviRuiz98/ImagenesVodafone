@@ -31,8 +31,10 @@
             </div>
             <div class="panelDerecha">
               <div *ngIf="mueble.expositores.length == 1 && mueble.expositores[0] != undefined " class="anchoAltoSubirFoto">     
-         
-                <app-paginador-procesamiento-subida 
+                <app-visualizacion-procesados *ngIf="auditoria_seleccionada.estados_auditoria.estado !== 'en progreso'"
+                  [procesados]="mueble.expositores[0].procesados_imagenes" 
+                ></app-visualizacion-procesados>
+                <app-paginador-procesamiento-subida *ngIf="auditoria_seleccionada.estados_auditoria.estado === 'en progreso'"
                   class="anchoAltoPaginador"
                   [id_expositor_selected]="mueble.expositores[0].id"
                   [procesados]="mueble.expositores[0].procesados_imagenes" 
