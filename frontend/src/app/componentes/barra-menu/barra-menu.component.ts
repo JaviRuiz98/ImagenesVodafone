@@ -48,30 +48,12 @@ export class BarraMenuComponent implements OnInit {
         this.contenidoBotonVolverAtras();
       }
     })
-    // const routeChanges = this.router.events.pipe(
-    //   filter((event: any) => event instanceof NavigationEnd),
-    //   map(() => this.activatedRoute)
-    //   );
-    //   routeChanges.subscribe((route) => {
-    //   while (route.firstChild) {
-    //     route = route.firstChild;
-    //   }
-    //   if (route.snapshot.data['stateBarra']) {
-    //     this.setStateBarra(route.snapshot.data['stateBarra']);
-    //   } else {
-    //     console.warn(`La ruta "${route.pathFromRoot.map((r) => r).join('/')}" no ha definido "stateBarra"`);
-    //   }
-    // });
   }
 
   initTiendas() {
     this.tiendasService.getTiendas().subscribe((data: tienda[]) => {
       this.tiendas = data;
     })
-  }
-
-  setStateBarra(newState: 'home' | 'auditoria' | 'admin' | 'empty'): void {
-    this.currentState = newState;
   }
 
   getTiendaTitle(): string {
@@ -97,12 +79,7 @@ export class BarraMenuComponent implements OnInit {
     return `${day}-${month}-${year}`;
   }
   contenidoBotonVolverAtras() {
-    let rutaActual = this.router.url;
-    this.currentState = rutaActual;
-    if(rutaActual === '/gestionAuditorias' || rutaActual === '/tienda' || rutaActual === '/muebles'){
-      rutaActual = '/volverHome';
-    }
-    console.log('rutaActual', rutaActual);
+    let rutaActual = this.obtenerRuta();
     switch (rutaActual) {
       case '/home':
         this.contenidoBotonVolver = '';
@@ -120,18 +97,27 @@ export class BarraMenuComponent implements OnInit {
   }
 
   volverAtras(){
-    const rutaActual = this.router.url;
+    let rutaActual = this.obtenerRuta();
     switch (rutaActual) {
       case '/home':
         this.contenidoBotonVolver = '';
         this.iconoBotonVolver = '';    
       break;
-      case '/gestionAuditorias':
+      case '/volverHome':
         this.router.navigate(['/home']);  
       break;
       case '/auditoria':
         this.router.navigate(['/gestionAuditorias']);
       break;
     }
+  }
+
+  obtenerRuta(){
+    let rutaActual = this.router.url;
+    this.currentState = rutaActual;
+    if(rutaActual === '/gestionAuditorias' || rutaActual === '/tiendas' || rutaActual === '/muebles'){
+      rutaActual = '/volverHome';
+    }
+    return rutaActual;
   }
 }
