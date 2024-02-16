@@ -51,41 +51,29 @@ export class AuditoriaComponent implements OnInit{
       this.auditoriaService.getAuditoriaById(this.auditoriaService.id_auditoria_seleccionada).subscribe(
         auditoria => {
           this.auditoria_seleccionada = auditoria
-          console.log("auditoria_seleccionada", this.auditoria_seleccionada);
-
           this.inicializaImagenesReferencia();
         }, error => { console.log(error) }
       );      
     }
 
     async inicializaImagenesReferencia() {
-      //const tiendaSelected: number | undefined = this.localStorageService.getItem('tiendas');
-      //const mobiliarioSelected: number | undefined= this.localStorageService.getItem('mobiliario');
-                                  
       this.auditoriaService.getMueblesAndExpositoresWithProcesadosByIdAuditoria(this.auditoriaService.id_auditoria_seleccionada).subscribe(
         (data: muebles[]) => {
           this.muebles = data;
-          console.log('muebles', this.muebles);
         }, (error: Error) => { console.log(error) }
       );
-
-  
     }
 
     enviarFiltroProcesados(filtros:filtro_procesados) {
-      console.log("filtros", filtros);
       this.inicializaImagenesReferencia();  
     }
 
     async recibirFile(event: {archivo:File}, id_expositor_selected: number, id_mueble_selected: number) {
       this.imagenAProcesar = event.archivo;
-      console.log("imagenAProcesar", this.imagenAProcesar);
       this.cargas_procesamiento[id_expositor_selected]= true;   
       this.messageService.add({ severity: 'info', summary: 'Cargando', detail: 'La imagen se está procesando' });
-
       this.procesamientoService.postProcesamientoImagenes(id_expositor_selected, id_mueble_selected, this.auditoriaService.id_auditoria_seleccionada, this.imagenAProcesar).subscribe( 
         ( response: procesados_imagenes ) => {
-          console.log("response", response);
           this.cargas_procesamiento[id_expositor_selected] = false;
           this.modos_visualizacion[id_expositor_selected] = 'historial';        
           this.actualizarProcesamientoEnMueble(id_expositor_selected, response);

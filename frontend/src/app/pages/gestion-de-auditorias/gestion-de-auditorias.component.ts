@@ -64,15 +64,12 @@ export class GestionDeAuditoriasComponent implements OnInit {
   inicializaAuditorias() {
     this.auditoriaService.getAuditorias(this.tiendaSeleccionada?.id_tienda || 0).subscribe((data)=>{
       this.auditorias = data;
-
-      console.log("auditorias", this.auditorias);
       this.cargando_auditorias = false;
     })
   }
 
   goToAuditoria(id_auditoria: number){
     this.auditoriaService.id_auditoria_seleccionada = id_auditoria;
-
     this.router.navigate(['/auditoria']);
   }
 
