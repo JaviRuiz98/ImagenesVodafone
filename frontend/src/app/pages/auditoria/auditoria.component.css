@@ -131,7 +131,7 @@
     position: fixed;
     right: 50px;
     bottom: 50px;
-    width: auto; /* Ajusta según necesites */
+    width: 20%; /* Ajusta según necesites */
     height: auto; /* Ajusta según necesites */
     background-color: white;
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
