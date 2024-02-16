@@ -2,12 +2,8 @@
 <p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
 
 <div style="display: flex">
-    <div style="margin-right: 5%; text-align: end;">
-        Progreso:
-        <td>{{ auditoria_seleccionada?.num_expositores_procesados }}/{{ auditoria_seleccionada?.num_expositores }}</td>
-    </div>
-    <div>
-        Barra de progreso:
+    <div style="margin-right: 5%">
+        Progreso: {{ auditoria_seleccionada?.num_expositores_procesados }}/{{ auditoria_seleccionada?.num_expositores }}
         <app-barra-de-barras [datos_barras]="this.datos_barra_progreso"></app-barra-de-barras>
     </div>
     <div>
