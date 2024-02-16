@@ -7,27 +7,12 @@ import { Router } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit{
+export class HomeComponent {
 
   constructor(private router: Router ) { }
 
-  ngOnInit() {
-  }
-
-  goToAdmin() {
-    this.router.navigate(['/validator']);
-  }
-  goToGestionAuditorias() {
-    this.router.navigate(['/gestionAuditorias']);
-  }
-
-  goToExpositor() {
-    this.router.navigate(['/expositor']);
-  }
-  goToMueble() {
-    this.router.navigate(['/muebles']);
-  }
-  goToTienda() {
-    this.router.navigate(['/tiendas']);
+  goTo(pagina: string) {
+    const url = `/${pagina}`;
+    this.router.navigate([url]);
   }
 }
