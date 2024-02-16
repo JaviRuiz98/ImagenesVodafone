@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { AuditoriaService } from 'src/app/servicios/auditoria/auditoria.service';
 import { auditoria } from 'src/app/interfaces/auditoria';
 import { ButtonModule } from 'primeng/button';
@@ -26,7 +26,7 @@ import { BarraDeBarrasComponent } from '../barra-de-barras/barra-de-barras.compo
   ]
 
 })
-export class ProgresoAuditoriaComponent {
+export class ProgresoAuditoriaComponent implements OnInit {
 
   id_auditoria_seleccionada: number | undefined;
   auditoria_seleccionada: auditoria | undefined;
@@ -46,12 +46,13 @@ export class ProgresoAuditoriaComponent {
       auditoria => {
         this.auditoria_seleccionada = auditoria
         console.log("auditoria_seleccionada", this.auditoria_seleccionada);
+        this.getBarraProgresoAuditoria(this.auditoriaService.id_auditoria_seleccionada);
+
       }, error => { 
         console.log(error) 
       }
     );
 
-    this.getBarraProgresoAuditoria(this.auditoriaService.id_auditoria_seleccionada);
   }
 
   terminarAuditoria() {

@@ -32,7 +32,16 @@
         [rowsPerPageOptions]="[10, 25, 50]"
     >
         <ng-template pTemplate="caption" >
-             <h2> Auditorias</h2>
+            <div style="display: flex; justify-content: space-between">
+                <h2> Auditorias</h2>
+                <p-progressSpinner 
+                    *ngIf="this.cargando_auditorias"
+                    styleClass="w-4rem h-4rem" 
+                    strokeWidth="5" 
+                    fill="var(--surface-ground)" 
+                    animationDuration=".5s"
+                ></p-progressSpinner>
+            </div>            
         </ng-template>
         <ng-template pTemplate="header">
             <tr>             
@@ -41,6 +50,7 @@
                 <th>Fecha inicio</th>
                 <th>Estado</th> 
                 <th>Progreso</th>
+                <th>Prog. visual</th>
                 <th>Opciones</th>
             </tr>
         </ng-template>
@@ -53,6 +63,9 @@
                     <p-tag [severity]="getSeverityEstadoAuditoria(auditoria.estados_auditoria.estado)">{{ auditoria.estados_auditoria.estado }}</p-tag>                    
                 </td>               
                 <td>{{ auditoria.num_expositores_procesados }}/{{ auditoria.num_expositores }}</td>
+                <td>
+                    <app-barra-de-barras [datos_barras]="auditoria.datos_barra_progreso"></app-barra-de-barras>
+                </td>
                 <td class="opciones">         
                     <p-button class ="smallMarginRight" severity="danger" [raised]="true" [text]="true" [rounded]="true" label="Ir auditoría" icon="pi pi-pencil"  (click)="goToAuditoria(auditoria.id_auditoria)"></p-button>                    
                 </td>
