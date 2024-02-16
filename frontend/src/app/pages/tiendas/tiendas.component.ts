@@ -164,7 +164,6 @@ export class TiendasComponent implements OnInit{
   }
 
   ordenarListaAlfabeticamente(lista: any[], campo: string) {
-    console.log(lista, campo)
     const listaOrdenada = lista.sort((a, b) => a[campo].localeCompare(b[campo]));
     return listaOrdenada;
   }
