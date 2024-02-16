@@ -24,8 +24,8 @@
       <app-sidebar></app-sidebar>
     </div> -->
   </div>
-  <div>
-    <p-button [label]="contenidoBotonVolver" [icon]="iconoBotonVolver" [text]="true" severity="danger" [style]="{'padding': '0', 'margin-left': '1%'}"></p-button>
+  <div *ngIf="currentState != '/home'">
+    <p-button [label]="contenidoBotonVolver" [icon]="iconoBotonVolver" (click)="volverAtras()" [text]="true" severity="danger" [style]="{'padding': '0', 'margin-left': '1%'}"></p-button>
   </div>
 </div>
 

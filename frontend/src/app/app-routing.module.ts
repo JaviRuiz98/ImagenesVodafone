@@ -16,6 +16,10 @@ const routes: Routes = [
     data: { stateBarra: 'home' },
   },
   { 
+    path: "gestionAuditorias", component: GestionDeAuditoriasComponent, 
+    data: { stateBarra: 'gestionAuditorias' },
+  },
+  { 
     path: "auditoria", component: AuditoriaComponent, 
     data: { stateBarra: 'auditorias' },
   },
