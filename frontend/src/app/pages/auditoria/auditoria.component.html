@@ -16,27 +16,24 @@
         </ng-template>
           <div class="panelCompleto " *ngIf="mueble.expositores != undefined">
             <div class="panelIzquierda" >
-              <div   class="anchoAltoFotoReferencia" >
+              <div class="anchoAltoFotoReferencia" >
                 <div *ngIf=" mueble.expositores.length == 1 ">
                   <p-image [src]="url_imagenes_referencias + mueble.expositores[0].imagenes.url" [alt]="mueble.expositores[0].imagenes.url" class="imagenSimple" [width]="'100%'" [height]="'100%'" [preview]="true"></p-image>
                 </div>
               </div>
-  
               <div *ngIf="mueble.expositores.length == 2 && mueble.expositores[0] != undefined && mueble.expositores[1] != undefined" class="grid anchoAltoFotoReferencia">
-             
                   <div style="margin-right: 5px;">
                     <img [src]="url_imagenes_referencias + mueble.expositores[0].imagenes.url" [alt]="mueble.expositores[0].imagenes.url" class="imagenDoble">
                   </div>
-  
                   <div> 
                     <img [src]="url_imagenes_referencias + mueble.expositores[1].imagenes.url" [alt]="mueble.expositores[1].imagenes.url" class="imagenDoble">
                   </div>
-              
               </div> 
             </div>
             <div class="panelDerecha">
-              <div *ngIf="mueble.expositores.length == 1 && mueble.expositores[0] != undefined" class="anchoAltoSubirFoto">              
-                <app-paginador-procesamiento-subida  
+              <div *ngIf="mueble.expositores.length == 1 && mueble.expositores[0] != undefined " class="anchoAltoSubirFoto">     
+         
+                <app-paginador-procesamiento-subida 
                   class="anchoAltoPaginador"
                   [id_expositor_selected]="mueble.expositores[0].id"
                   [procesados]="mueble.expositores[0].procesados_imagenes" 
