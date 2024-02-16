@@ -51,7 +51,7 @@ export class TiendasComponent implements OnInit{
       this.tiendasMostrar = response;
     })
     this.MueblesService.getAllMuebles().subscribe((response: muebles[]) => {
-      this.listaTodosMuebles = response.sort((a, b) => a.nombre_mueble.localeCompare(b.nombre_mueble));
+      this.listaTodosMuebles = this.ordenarListaAlfabeticamente(response, 'nombre_mueble');
       this.listaMueblesMostrar = this.listaTodosMuebles;
     });
     this.parametrosSteps = [
@@ -95,6 +95,9 @@ export class TiendasComponent implements OnInit{
         this.nuevaTienda.sfid = this.sfidInput;
         this.verFormularioNuevaTienda = false;
         if(this.crearEditarTienda == 'Crear Tienda'){
+          if(this.listaMueblesNuevaTienda.length > 1){
+            this.listaMueblesNuevaTienda = this.ordenarListaAlfabeticamente(this.listaMueblesNuevaTienda, 'nombre_mueble');
+          }
           this.TiendasService.newTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
             this.tiendasMostrar = response;
           })
@@ -157,5 +160,10 @@ export class TiendasComponent implements OnInit{
         } 
       },
     });
+  }
+
+  ordenarListaAlfabeticamente(lista: any[], campo: string) {
+    const listaOrdenada = lista.sort((a, b) => a.campo.localeCompare(b.campo));
+    return listaOrdenada;
   }
 }
