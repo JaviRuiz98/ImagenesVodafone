@@ -6,7 +6,8 @@ import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { tienda } from 'src/app/interfaces/tienda';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
 import { DatePipe } from '@angular/common';
-import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+
 
 @Component({
   selector: 'app-gestion-de-auditorias',
@@ -23,6 +24,8 @@ export class GestionDeAuditoriasComponent implements OnInit {
   tiendaSeleccionada: tienda | undefined;
   auditorias: auditoria[] = [];
 
+  cargando_auditorias: boolean = false;
+
   constructor(
     private auditoriaService: AuditoriaService , 
     private router: Router,
@@ -34,6 +37,7 @@ export class GestionDeAuditoriasComponent implements OnInit {
   ) { }
  
   ngOnInit(): void {
+    this.cargando_auditorias = true;
     this.initTiendas();
     this.inicializaAuditorias();
   }
@@ -62,6 +66,7 @@ export class GestionDeAuditoriasComponent implements OnInit {
       this.auditorias = data;
 
       console.log("auditorias", this.auditorias);
+      this.cargando_auditorias = false;
     })
   }
 

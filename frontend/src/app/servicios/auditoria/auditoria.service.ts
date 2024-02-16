@@ -43,7 +43,6 @@ export class AuditoriaService {
   }
 
   getMueblesAndExpositoresWithProcesadosByIdAuditoria(id_auditoria: number): Observable<muebles[]> {
-
     return this.http.get<muebles[]>(`${this.API_URI}/muebles_auditoria/${id_auditoria}`);
   }
 
@@ -59,7 +58,6 @@ export class AuditoriaService {
   }
 
   getBarraProgresoAuditoria(id_auditoria_seleccionada: number): Observable<number[]> {
-
     return this.http.get<number[]>(`${this.API_URI}/barra_progreso_auditoria/${id_auditoria_seleccionada}`);
   }
 }
