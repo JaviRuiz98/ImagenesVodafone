@@ -87,11 +87,6 @@ async function getNumberArrayProgresoAuditoria(id_auditoria: number): Promise<nu
             return [];
         }
 
-        console.log('expositores_auditoria: ', expositores_auditoria.length);
-
-        console.log(expositores_auditoria)
-
-
         const categoriasInvalidas: boolean = expositores_auditoria.some(pea => {
             const categoria = pea.expositores.categoria;
             return categoria !== 'Carteles' && categoria !== 'Dispositivos';
