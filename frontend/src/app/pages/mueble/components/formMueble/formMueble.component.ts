@@ -4,7 +4,7 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { Expositor } from 'src/app/interfaces/expositor';
 import { muebles } from 'src/app/interfaces/muebles';
 import { ExpositoresService } from 'src/app/servicios/expositores/expositores.service';
-import { mueblesVisualizacion } from '../../interfaces/muebleVisualizacion';
+import { MuebleCreacion } from '../../interfaces/muebleCreacion';
 
 
 @Component({
@@ -16,58 +16,69 @@ import { mueblesVisualizacion } from '../../interfaces/muebleVisualizacion';
 
 export class FormMuebleComponent implements OnInit {
 
-  
+ 
   
   constructor( public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private expositoresService: ExpositoresService) { }
 
-  showing_expositores: boolean = false;
+  showing_asignar_expositores: boolean = false;
   all_expositores: Expositor[] = [];
+  showing_crear_expositores: boolean = false;
+  new_expositor_for_categoria: 'Dispositivos' | 'Carteles' = 'Dispositivos';
+
+  
 
   objetivo_form: 'crear' | 'editar' = 'crear';
-  categorias_opciones = ['cartel', 'dispositivos'];
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
   formulario:FormGroup = this.fb.group({
     nombre_mueble: ['', Validators.required],
-    numero_expositores_dispositivos: [0, [Validators.required, Validators.min(0)]],
-    numero_expositores_carteles: [0, [Validators.required, Validators.min(0)]],
     expositores: [[]]
+    // numero_expositores_dispositivos: [0, [Validators.required, Validators.min(0)]],
+    // numero_expositores_carteles: [0, [Validators.required, Validators.min(0)]],
   })
 
-  mueble?: mueblesVisualizacion;
+  expositores_carteles: Expositor[] = [];
+  expositores_dispositivos: Expositor[] = [];
+  id_mueble_existente?:number;
+  
 
   get nombre_mueble() {
     return this.formulario.controls['nombre_mueble'];
   }
-  get numero_expositores_dispositivos() {
-    return this.formulario.controls['numero_expositores_dispositivos'];
-  } 
-  get numero_expositores_carteles() {
-    return this.formulario.controls['numero_expositores_carteles'];
-  }
-
   get expositores() {
     return this.formulario.controls['expositores'];
   }
-  get expositores_dispositivos() {
-    return this.mueble?.expositores_dispositivos;
+  get expositores_dispositivos_list() {
+    return this.expositores_dispositivos;
   }
 
-  get expositores_carteles() {
-    return this.mueble?.expositores_carteles;
+  get expositores_carteles_list() {
+    return this.expositores_carteles;
   }
+  // get numero_expositores_dispositivos() {
+  //   return this.formulario.controls['numero_expositores_dispositivos'];
+  // } 
+  // get numero_expositores_carteles() {
+  //   return this.formulario.controls['numero_expositores_carteles'];
+  // }
+
   ngOnInit() {
    
     if (this.dialogConfig.data) {
       console.log ("editar");
       this.objetivo_form='editar';
-      this.mueble = this.dialogConfig.data.mueble;
+
+      const mueble = this.dialogConfig.data.mueble;
+      this.id_mueble_existente = mueble?.id;
+
+      this.expositores_carteles = mueble?.expositores_carteles;
+      this.expositores_dispositivos = mueble?.expositores_dispositivos;
 
       this.formulario.patchValue({
-        nombre_mueble: this.mueble?.nombre_mueble,
-        numero_expositores_carteles: this.mueble?.numero_expositores_carteles,
-        numero_expostores_dispositivos: this.mueble?.numero_expositores_dispositivos,
-        expositores: this.mueble?.expositores
+        nombre_mueble: mueble?.nombre_mueble,
+        expositores: mueble?.expositores
+        // numero_expositores_carteles: mueble?.numero_expositores_carteles,
+        // numero_expostores_dispositivos: mueble?.numero_expositores_dispositivos,
       })
     }else{
       console.log ("nuevo");
@@ -86,23 +97,84 @@ export class FormMuebleComponent implements OnInit {
     };
   }
 
-  showExpositores() {
-    
-   this.expositoresService.getExpositores().subscribe((data: Expositor[]) => {
-    this.all_expositores = data;
-    this.showing_expositores=true;
-   })
+  createExpositores(categoria: 'Carteles' | 'Dispositivos') {
+   this.new_expositor_for_categoria = categoria;
+   this.showing_crear_expositores = true;
   }
+
+  showExpositores(categoria: 'Carteles' | 'Dispositivos') {
     
+   
+    this.expositoresService.getExpositores(categoria).subscribe( (expositores:Expositor[]) => {
+      this.all_expositores = expositores;
+      this.new_expositor_for_categoria = categoria;
+      this.showing_asignar_expositores = true;
+
+   });
+     
+  }
+  asignar_expositores(event: Expositor | null) {
+    this.showing_asignar_expositores = false;
+    if (event != null) {
+      // Añadimos el expositor al formulario
+      this.formulario.patchValue({
+        expositores: this.expositores.value.concat(event)
+      });
+  
+      // Añadimos el expositor al array correspondiente para mostrarlos
+      if (this.new_expositor_for_categoria === 'Carteles') {
+        
+        this.expositores_carteles = this.expositores_carteles.concat(event);
+      } else {
+        
+        this.expositores_dispositivos = this.expositores_dispositivos.concat(event);
+      }
+      
+      
+    }
+  }
+
+  deleteExpositor(categoria: 'carteles' | 'dispositivos', expositor: Expositor) {
+    if (categoria === 'carteles') {
+      this.expositores_carteles = this.expositores_carteles.filter((e) => e.id !== expositor.id);
+    }else{
+      this.expositores_dispositivos = this.expositores_dispositivos.filter((e) => e.id !== expositor.id);
+    }
+  }
+  
 
   onSubmit() {
   
     if (this.formulario.invalid) {
       return;
     
+    }else{
+     
+      
+      const InfoMueble: MuebleCreacion = {
+        nombre_mueble: this.formulario.value.nombre_mueble,
+        numero_expositores_carteles: this.expositores_carteles_list.length ,
+        numero_expositores_dispositivos: this.expositores_dispositivos_list.length,
+        expositores: this.expositores.value
+      }
+      if (this.objetivo_form === 'crear') {
+        
+        console.log(InfoMueble);
+        //realizar llamada al servicio
+    
+      }else {
+        const muebleEdicion: muebles = {
+          id: this.id_mueble_existente!,  //no puede ser nulo si está en edición
+          ...InfoMueble
+        }
+
+        console.log(muebleEdicion);
+        //realizar llamada al servicio
+      }
+     
+      
     }
-   
-    console.log(this.formulario.value);
+  
   }
   
 

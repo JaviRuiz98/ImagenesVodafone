@@ -1,6 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
-/*@import "primeng/resources/themes/lara-light-blue/theme.css";*/
-@import "primeng/resources/themes/luna-amber/theme.css";
+/*@import "primeng/resources/themes/luna-amber/theme.css";*/
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.min.css";
 @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 @import '~primeflex/primeflex.css';
+
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+    background-color: #fc6262; /* Color de fondo rojo para la página activa */
+    color: white; /* Color de texto blanco */
+  }
+  
+  .p-datatable .p-datatable-tbody > tr.p-highlight {
+    background-color: #ffecec; /* Color de fondo rojo para la página activa */
+    color: red; /* Color de texto blanco */
+  }

@@ -1,33 +1,37 @@
- 
-<p-dialog 
-[(visible)]="mostrar"
-[style]="{height: '55%', width: '45%'  }" 
-header="Crear un nuevo expositor" 
-[modal]="true" 
-[closable]="true" 
-[draggable]="false" 
-[resizable]="false" 
-styleClass="p-fluid"
-[closeOnEscape] = "false"
-(onHide)="onDialogHidden()"
-> 
- 
-    <ng-template pTemplate="content" style=" width: 10000px; height: 10000px">
-        <p-toast position="top-center" key="tc"></p-toast>
-        <app-selector-imagenes 
-            (archivoSeleccionadoChange)="recibirFile($event)"
-            [cargando_procesado]="cargando_procesamiento">
-        </app-selector-imagenes>
 
-        <div style="margin-top: 20px;">
-            <input pInputText pKeyFilter="int" [style]="{'width': '30%'}" placeholder="Nombre del expositor" [(ngModel)]="nuevoExpositor.nombre" />
-<<<<<<< Updated upstream
-            <!-- <small class="p-error" *ngIf="submitted && !nuevoExpositor.nombre">Se requiere un nombre para el expositor.</small> -->
-            <!-- <p-checkbox label=" Desactivar sel expositor" [(ngModel)]="nuevoExpositor.activo" [style]="{'margin-left': '10px'}"></p-checkbox> -->
-=======
-            <small class="p-error" *ngIf="submitted && nuevoExpositor.nombre==''">Se requiere un nombre para el expositor.</small>
->>>>>>> Stashed changes
+    <ng-template pTemplate="content" style="display:flex; flex-direction: column; width: 10000px; height: 4000px">
+        <p-toast position="top-center" key="tc"></p-toast>
+        <div style="display: flex; flex-direction: row; width: 100%" height="100%">
+            <form [formGroup]="nuevoExpositor_form" style="width: 50%">
+                <input type="text" pInputText pKeyFilter="int" placeholder="Nombre del expositor" [formControlName]="'nombre'" style="margin-top: 10px;"/>
+                <p-dropdown name="region" (onChange)="onRegionChange($event)" [options]="Dropdown_regiones" value="#region" [placeholder]="'Seleccione región'" [formControlName]="'id_region'" [style]="{marginTop: '10px'}" ></p-dropdown>
+                <p-dropdown *ngIf="!bloqueaCategoria" name="categoria" [options]="Dropdown_categorias" value="#categoria" [placeholder]="'Seleccione categoria'" [formControlName]="'categoria'" [style]="{marginTop: '10px'}" ></p-dropdown>
+                <input *ngIf="bloqueaCategoria" id="disabled-input" type="text" pInputText [disabled]="true" [value]="categoriaPredefinida" />
+
+
+                <div *ngIf="categoria?.value == 'Dispositivos'" style="margin-top: 10px;">
+                    <p-inputNumber id="numero_dispositivos" [formControlName]="'numero_dispositivos'" [style.width]="'9rem'" [showButtons]="true" 
+                       buttonLayout="horizontal" spinnerMode="horizontal" decrementButtonClass="p-button-secondary" incrementButtonClass="p-button-secondary" 
+                       incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" >
+                    </p-inputNumber>
+                    <label for="numero_dispositivos" style="margin-left: 10px;">Número de dispositivos</label>
+                </div>
+
+ 
+                <small class="p-error" *ngIf="submitted && (nombre?.valid || region?.value=='' || categoria?.value=='' || imagen?.valid  || (categoria?.value=='Dispositivos' && numero_dispositivos?.value==0))"> Debe rellenar todos los campos<br></small>
+                <small class="p-error" *ngIf="submitted && (nombre?.invalid )">* El nombre no puede estar vacio *  <br> </small>
+                <small class="p-error" *ngIf="submitted && (region?.invalid )">* Seleccione una región * <br></small>
+                <small class="p-error" *ngIf="submitted && (imagen?.invalid )">* Seleccione una imagen * <br></small>
+                <small class="p-error" *ngIf="submitted && (categoria?.invalid )">* Seleccione una categoria * <br></small> 
+            </form>
+            <div style="width: 50%; margin-left: 20px; height: 300px; overflow: hidden;">
+                <app-selector-imagenes 
+                    (archivoSeleccionadoChange)="recibirFile($event)"
+                    [cargando_procesado]="true">
+                </app-selector-imagenes>
+            </div>
         </div>
+
     </ng-template>
 
     <ng-template pTemplate="footer">
@@ -35,4 +39,3 @@ styleClass="p-fluid"
         <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="nuevoGuardar()"></button>
     </ng-template>
 
-</p-dialog>

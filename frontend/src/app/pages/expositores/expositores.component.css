@@ -25,3 +25,10 @@
     justify-content: center;
     min-width: 750px;
   }
+
+  :host::ng-deep {
+    .p-button.p-highlight.optionColorVodafone {
+       background: red;
+       border: rgb(87, 11, 11);
+    }
+}

@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { Expositor } from '../../interfaces/expositor';
-
+import { regiones } from 'src/app/interfaces/regiones';
+import { pertenencia_expositor_mueble } from 'src/app/interfaces/pertenencia_expositor_mueble';
 
 @Injectable({
   providedIn: 'root'
@@ -22,12 +23,17 @@ export class ExpositoresService {
   }
 
   
-  guardarExpositor(nombre: string, activo: boolean, imageFile: File  ): Observable<Expositor> {
+  guardarExpositor(nombre: string, activo: boolean, region: regiones, imageFile: File, categoria: string,  n_dispositivos?: number ): Observable<Expositor> {
     const formData = new FormData();
 
     formData.append('imagenesReferencia', imageFile);
     formData.append('nombre', nombre);
     formData.append('activo', 'true');
+    formData.append('id_region', region.id.toString());
+    formData.append('categoria', categoria);
+    if(n_dispositivos!=undefined){
+      formData.append('numero_dispositivos', n_dispositivos.toString());
+    }
 
     return this.http.post<Expositor>(`${this.API_URI}/expositor`, formData);
   }
@@ -41,9 +47,15 @@ export class ExpositoresService {
   }
 
 
-  getAllZonas(){
-    return this.http.get<string[]>(`${this.API_URI}/zonas`);
+  getAllRegiones(){
+    return this.http.get<regiones[]>(`${this.API_URI}/regiones`);
   }
+
+  getPertenenciaExpositorMueblebyIdMueble(id_mueble: number): Observable<pertenencia_expositor_mueble[]> {
+    return this.http.get<pertenencia_expositor_mueble[]>(`${this.API_URI}/expositores/${id_mueble}`);
+  } 
+
+ 
   
 
 }

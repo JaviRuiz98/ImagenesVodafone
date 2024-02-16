@@ -18,21 +18,15 @@ export class MuebleComponent implements OnInit {
 
   muebles: mueblesVisualizacion[] = [];
  
-
-
-
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
 
   nombreFiltro: string = '';
 
-
-
   muebleFormVisibility: boolean = false;
 
   ref: DynamicDialogRef | undefined;
 
-  @ViewChild('miTabla') miTabla!: Table;
 
   constructor( private muebleService: MueblesService, public dialogService: DialogService, public messageService: MessageService, private config: PrimeNGConfig) { }
 
@@ -54,6 +48,7 @@ export class MuebleComponent implements OnInit {
    this.muebleService.getAllMuebles().subscribe(muebles => {
      
      this.muebles = this.separarExpositoresSegúnCategoria(muebles);
+     console.log(this.muebles);
     
    
    })
@@ -62,9 +57,9 @@ export class MuebleComponent implements OnInit {
   separarExpositoresSegúnCategoria(muebles:muebles[]): mueblesVisualizacion[] {
      return  muebles.map(mueble => {
 
-      const expositoresCarteles = mueble.expositores.filter(expositor => expositor.categoria === 'carteles');
+      const expositoresCarteles = mueble.expositores.filter(expositor => expositor.categoria === 'Carteles');
 
-      const expositoresDispositivos = mueble.expositores.filter(expositor => expositor.categoria === 'dispositivos');
+      const expositoresDispositivos = mueble.expositores.filter(expositor => expositor.categoria === 'Dispositivos');
 
       return {
         id: mueble.id,
@@ -79,12 +74,10 @@ export class MuebleComponent implements OnInit {
     
   }
 
-  resetTabla() {
-    this.miTabla.reset();
-  }
-  clearTabla()  {
-    this.miTabla.clear();
-  }
+  // resetTabla() {
+  //   this.miTabla.reset();
+  // }
+
 
 
   editMueble(mueble: muebles) {
@@ -134,6 +127,9 @@ export class MuebleComponent implements OnInit {
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,
       maximizable: true,
+      data: {
+        id_mueble: mueble.id
+      }
     })
     this.ref.onMaximize.subscribe((value) => {
       this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });

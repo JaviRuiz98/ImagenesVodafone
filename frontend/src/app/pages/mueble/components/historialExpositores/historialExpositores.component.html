@@ -1,0 +1,59 @@
+
+
+  <p-table 
+  #miTabla
+  class="table"
+  [value]="pertenencias_expositor_mueble"
+  [paginator]="true"
+  [rows]="10"
+  [scrollable]="true"
+  [scrollHeight]="'calc(100vh - 380px )'"
+  paginatorStyleClass="background-color: rgba(232, 232, 232, 0.9);"
+  [showCurrentPageReport]="true"
+  [tableStyle]="{ 'min-width': '50rem' }"
+  currentPageReportTemplate="Enseñando {first} de {last} de en total {totalRecords} muebles"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  [globalFilterFields]="['expositores.nombre' , 'fecha']" 
+  >
+
+<ng-template pTemplate="header">
+    <tr>
+  
+      <th  pSortableColumn="nombre">  Expositor  <p-sortIcon field="expositores.nombre"></p-sortIcon></th>
+      <th> </th>
+      <th pSortableColumn="fecha">Fecha de asignación <p-sortIcon field="fecha"></p-sortIcon></th>
+
+    </tr>
+
+    <tr>
+      <th>
+          <p-columnFilter type="text" field="nombre"></p-columnFilter>
+      </th>
+      <th></th>
+      <th></th>
+    </tr>
+</ng-template>
+<ng-template pTemplate="body" let-pem>
+    
+    <tr >
+
+
+      <td>{{ pem.expositores.nombre==null? "Sin nombre " : pem.expositores.nombre }}</td>
+      <td>
+        <p-image class ="imagenSimple" [src]="url_imagenes_referencias + pem.expositores.imagenes.url"  height="100vh"  [alt]="pem.expositores.imagenes.url"  [preview]="true"></p-image>
+      </td>
+      <td>
+        {{formatDate(pem.fecha)}}
+      </td>
+ 
+    </tr>
+    
+</ng-template>
+
+<ng-template pTemplate="emptymessage">
+    <tr>
+        <td colspan="3">No hay Expositores</td>
+    </tr>
+</ng-template>
+
+</p-table>

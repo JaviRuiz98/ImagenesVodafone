@@ -2,9 +2,9 @@
 
   <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
 
-    <div class="flex flex-column" *ngIf="!showing_expositores">
+    <div class="flex flex-column" *ngIf="!showing_asignar_expositores && !showing_crear_expositores ">
      
-        <div class="flex align-items-center justify-content-center mt-2 fadein animation-duration-1000">
+        <div class="flex align-items-center justify-content-center mt-2">
           <p-card [style]="{'width':'100vh'}" header="Nombre*">
             <!-- <span class="p-float-label"> -->
               <input type="text" formControlName="nombre_mueble" pInputText class="w-full">
@@ -18,23 +18,12 @@
         </div>
   
 
-      <div class="flex align-items-center justify-content-center mt-2 fadein animation-duration-1000">
+      <div class="flex align-items-center justify-content-center mt-2">
         <p-card [style]="{'width':'100vh'}" header="Vistas para conteo de dispositivos esperados">
             <div class="grid">
-              <div class="col-12">
-                <p-toolbar>
-                  <div class="p-toolbar-group-start">
-                    <p-button severity="danger" [text]="true" [raised]="true" (onClick)="showExpositores()" label="asignar expositores" ></p-button>
-                    <p-button severity="danger" class="ml-2" [text]="true" [raised]="true" (onClick)="showExpositores()" label="crear expositores" ></p-button>
-  
-                  </div>
-                  <div class="p-toolbar-group-end">
-                    
-                  </div>
-                </p-toolbar>
-              </div>
+              
 
-              <div class ="col-12 fadein animation-duration-1000" *ngIf ="expositores_dispositivos != null && expositores_dispositivos.length > 0" >
+              <div class ="col-12" *ngIf ="expositores_dispositivos != null && expositores_dispositivos.length > 0" >
                 <p-table [value]="expositores_dispositivos" [tableStyle]="{ 'min-width': '50rem' }">
                   <ng-template pTemplate="header">
                       <tr>
@@ -51,8 +40,7 @@
                             <p-image class ="imagenSimple" [src]="url_imagenes_referencias + expositor.imagenes.url"  height="100vh"  [alt]="expositor.imagenes.url"  [preview]="true"></p-image>
                           </td>
                           <td>
-                            <p-button severity="danger" class="mr-2" [raised]="true" [text]="true" [rounded]="true" label="Editar" icon="pi pi-pencil" ></p-button>
-                            <p-button  [raised]="true"  [text]="true" [rounded]="true" severity="danger" label="borrar" icon="pi pi-trash" ></p-button>
+                            <p-button  [rounded]="true" severity="danger"  icon="pi pi-trash" (onClick)="deleteExpositor('dispositivos',expositor)" ></p-button>
                               
                           </td>
                        
@@ -60,29 +48,30 @@
                   </ng-template>
               </p-table>
               </div>
+
+              <div class="col-12">
+            
+                <div class="p-toolbar-group-start">
+                  <p-button severity="danger" [text]="true" [raised]="true" (onClick)="showExpositores('Dispositivos')" label="asignar expositor" ></p-button>
+                  <p-button severity="danger" class="ml-2" [text]="true" [raised]="true" (onClick)="createExpositores('Dispositivos')" label="crear expositor" ></p-button>
+
+                </div>
+                <div class="p-toolbar-group-end">
+                  
+                </div>
+        
+            </div>
             </div>
 
         </p-card> 
           
       </div>
      
-      <div class="flex align-items-center justify-content-center mt-2 fadein animation-duration-1000">
+      <div class="flex align-items-center justify-content-center mt-2">
         <p-card [style]="{'width':'100vh'}" header="Carteles">
           <div class="grid">
-            <div class="col-12">
-              <p-toolbar>
-                <div class="p-toolbar-group-start">
-                  <p-button severity="danger" [text]="true" [raised]="true" (onClick)="showExpositores()" label="asignar expositores" ></p-button>
-                  <p-button severity="danger" class="ml-2" [text]="true" [raised]="true" (onClick)="showExpositores()" label="crear expositores" ></p-button>
 
-                </div>
-                <div class="p-toolbar-group-end">
-                  
-                </div>
-              </p-toolbar>
-            </div>
-
-            <div class ="col-12 fadein animation-duration-1000" *ngIf ="expositores_carteles != null && expositores_carteles.length > 0" >
+            <div class ="col-12" *ngIf ="expositores_carteles != null && expositores_carteles.length > 0" >
               <p-table [value]="expositores_carteles" [tableStyle]="{ 'min-width': '50rem' }">
                 <ng-template pTemplate="header">
                     <tr>
@@ -99,8 +88,7 @@
                           <p-image class ="imagenSimple" [src]="url_imagenes_referencias + expositor.imagenes.url"  height="100vh"  [alt]="expositor.imagenes.url"  [preview]="true"></p-image>
                         </td>
                         <td>
-                          <p-button severity="danger" class="mr-2" [raised]="true" [text]="true" [rounded]="true" label="Editar" icon="pi pi-pencil" ></p-button>
-                          <p-button  [raised]="true"  [text]="true" [rounded]="true" severity="danger" label="borrar" icon="pi pi-trash" ></p-button>
+                          <p-button  [rounded]="true" severity="danger"  (onClick)="deleteExpositor('carteles',expositor)" icon="pi pi-trash" ></p-button>
                             
                         </td>
                      
@@ -108,6 +96,18 @@
                 </ng-template>
             </p-table>
             </div>
+            <div class="col-12">
+          
+              <div class="p-toolbar-group-start">
+                <p-button severity="danger" [text]="true" [raised]="true" (onClick)="showExpositores('Carteles')" label="asignar expositor" ></p-button>
+                <p-button severity="danger" class="ml-2" [text]="true" [raised]="true" (onClick)="createExpositores('Carteles')" label="crear expositor" ></p-button>
+
+              </div>
+              <div class="p-toolbar-group-end">
+                
+              </div>
+    
+          </div>
          </div>
 
       </p-card> 
@@ -119,11 +119,31 @@
 
   </div>
 
-  <div *ngIf="showing_expositores">
+  <div *ngIf="!showing_asignar_expositores && showing_crear_expositores ">
+    <p-button severity="danger" [text]="true" [raised]="true" (onClick)="showing_crear_expositores = false" label="volver" ></p-button>
+    <app-nuevo-expositor [categoriaPredefinida]="new_expositor_for_categoria " ></app-nuevo-expositor>
+  </div>
+
+  <div *ngIf="showing_asignar_expositores && !showing_crear_expositores ">
     <div *ngIf ="all_expositores.length==0">
       <p-progressSpinner></p-progressSpinner>
     </div>
+    <div *ngIf ="all_expositores.length > 0 " >
+      <app-asignarExpositor [all_expositores]="all_expositores" [already_selected_expositores]="expositores.value" (expositores_selected)="asignar_expositores($event)"></app-asignarExpositor>
+     </div>
   </div>
+
+  <div *ngIf="!showing_asignar_expositores && showing_crear_expositores ">
+
+  
+  </div>
+
+  <div class ="flex align-items-center justify-content-center mt-2" *ngIf="!showing_asignar_expositores && !showing_crear_expositores">
+   
+    <p-button  type="submit"  severity="danger" [icon]="'pi pi-check'" [label]="'Guardar'"  (onClick)="onSubmit()">    </p-button>
+ 
+  </div>
+    
 
 </form>
  

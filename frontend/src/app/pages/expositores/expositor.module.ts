@@ -24,6 +24,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { DropdownModule } from 'primeng/dropdown';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 // componentes nuestros
 import { BarraMenuComponent } from './../../componentes/barra-menu/barra-menu.component';
@@ -60,7 +61,8 @@ import { NuevoExpositorComponent } from 'src/app/componentes/nuevo-expositor/nue
     InputTextModule,
     NuevoExpositorComponent,
     OverlayPanelModule,
-    DropdownModule
+    DropdownModule,
+    SelectButtonModule
 ]
 })
 

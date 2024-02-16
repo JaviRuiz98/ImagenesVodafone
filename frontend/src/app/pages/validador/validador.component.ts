@@ -53,7 +53,6 @@ export class ValidadorComponent implements OnInit{
                                 
     this.mueblesService.getMueblesFiltered(filtros).subscribe( (data: muebles[]) => {
       this.muebles = data;
-      console.log("muebles", this.muebles);
     }), (error: Error) => { console.log(error) }
 
   }
@@ -61,8 +60,6 @@ export class ValidadorComponent implements OnInit{
 
   ngOnInit(): void {
    this.inicializaImagenesReferencia();    
-   console.log("muebles", this.muebles);
-
   }
 
   // async recibirFile(event: {archivo:File}, id_expositor_selected: number, id_mueble_selected: number) {
@@ -95,7 +92,6 @@ export class ValidadorComponent implements OnInit{
   // }
 
   enviarFiltroProcesados(filtros:filtro_procesados) {
-    console.log("filtros", filtros);
     this.inicializaImagenesReferencia( filtros);  
   }
   
