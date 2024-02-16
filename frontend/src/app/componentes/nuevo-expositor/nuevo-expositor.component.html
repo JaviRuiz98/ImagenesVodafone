@@ -1,5 +1,5 @@
  
-<p-dialog 
+<!-- <p-dialog 
     [(visible)]="mostrar"
     [style]="{height: '45%', width: '40%'  }" 
     header="Crear un nuevo expositor" 
@@ -10,9 +10,9 @@
     styleClass="p-fluid"
     [closeOnEscape] = "false"
     (onHide)="onDialogHidden()"
-    > 
+    >  -->
     
-    <ng-template pTemplate="content" style="display:flex; flex-direction: column; width: 10000px; height: 4000px">
+    <div >
         <p-toast position="top-center" key="tc"></p-toast>
         <div style="display: flex; flex-direction: row; width: 100%" height="100%">
             <form [formGroup]="nuevoExpositor_form" style="width: 50%">
@@ -45,11 +45,11 @@
             </div>
         </div>
 
-    </ng-template>
+    </div>
+    
+    <div style="display: flex; flex-direction: row; justify-content: right; width: 100%; margin-top: 20px;">
+        <button pButton  label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="nuevoCancelar()" style="width: 20%;"></button>
+        <button pButton  label="Guardar" icon="pi pi-check" class="p-button-text" (click)="nuevoGuardar()"style="width: 20%;"></button>
+    </div>
 
-    <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="nuevoCancelar()"></button>
-        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="nuevoGuardar()"></button>
-    </ng-template>
-
-</p-dialog>
+<!-- </p-dialog> -->

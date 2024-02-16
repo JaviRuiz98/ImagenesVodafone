@@ -48,9 +48,9 @@ export class NuevoExpositorComponent implements OnInit {
   @Output() nuevoExpositorCreado = new EventEmitter<Expositor>();
 
   nuevoExpositor_form: FormGroup = this.formBuilder.group({
-    nombre: new FormControl('', [Validators.required, Validators.minLength(5)]),
+    nombre: new FormControl('', [Validators.required, Validators.minLength(2)]),
     activo: new FormControl(false),
-    region: new FormControl(0, [Validators.required, Validators.minLength(1)]),  // interfaz
+    region: new FormControl('', [Validators.required, Validators.minLength(2)]),  // interfaz
     imagen: new FormControl(0, [Validators.required, this.fileValidator]), // interfaz ?
     categoria: new FormControl('', Validators.required ),                                            //////// POR AQUI
     numero_dispositivos: new FormControl(0), 

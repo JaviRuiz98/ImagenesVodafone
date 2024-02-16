@@ -69,5 +69,9 @@
         </ng-template> 
 
     </p-table>
-    <app-nuevo-expositor *ngIf="mostrarDialogoNuevoExpositor == true" (mostrarDialogoNuevoExpositor)="cerrarDialog($event)" ></app-nuevo-expositor>
+     
+    <p-dialog [(visible)]="mostrarDialogoNuevoExpositor" [style]="{height: '45%', width: '40%'  }" header="Crear un nuevo expositor" [modal]="true" [closable]="true" [draggable]="false"[resizable]="false" styleClass="p-fluid"
+    [closeOnEscape] = "false" (onHide)="onDialogHidden()"> 
+        <app-nuevo-expositor *ngIf="mostrarDialogoNuevoExpositor == true" (mostrarDialogoNuevoExpositor)="cerrarDialog($event)" ></app-nuevo-expositor>
+    </p-dialog>
 </p-panel>

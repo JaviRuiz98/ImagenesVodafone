@@ -37,7 +37,7 @@ export class ExpositoresComponent implements OnInit {
   opcionSeleccionada = {estado: 'Todos'};
 
   regiones!: regiones[];
- 
+  mostrar: boolean = false;
 
   tableStateOption: any[] = [{label:'Dispositivos', icon: 'pi pi-mobile', value: 'dispositivos',  styleClass: "optionColorVodafone" }, {label:'Carteles' ,icon: 'pi pi-book', value: 'cartel', styleClass: "optionColorVodafone" }];
   tableSelected:string = 'dispositivos';
@@ -143,6 +143,9 @@ export class ExpositoresComponent implements OnInit {
 
   }
 
+  onDialogHidden() {
+    this.mostrar = false; 
+  }
 
 
   cambiarOpcionBusqueda($event: any) {
