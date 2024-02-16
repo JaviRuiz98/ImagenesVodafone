@@ -1,4 +1,4 @@
-.barraCompletaBotonInicio {
+.barraCompletaBotonVolver {
   display: grid;
   grid-template-rows: 100% 20%;
 }
