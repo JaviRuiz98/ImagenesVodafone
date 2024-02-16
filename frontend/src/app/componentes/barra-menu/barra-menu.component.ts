@@ -28,6 +28,11 @@ export class BarraMenuComponent implements OnInit {
   tiendas: tienda[] = [] ;
   tiendaSeleccionada: tienda | undefined;
   currentState: 'home' | 'auditoria' | 'admin' | 'empty' = 'home';
+  contenidoBotonVolver: string = '';
+  iconoBotonVolver: string = '';
+  volverHome: string = 'Volver a inicio';
+  volverHomeIcono: string = 'pi pi-house';
+
 
   constructor(
     private localStorageService: LocalStorageService,
@@ -61,7 +66,6 @@ export class BarraMenuComponent implements OnInit {
   }
 
   setStateBarra(newState: 'home' | 'auditoria' | 'admin' | 'empty'): void {
-    console.log(`Estado actualizado a ${newState}`);
     this.currentState = newState;
   }
 
@@ -87,7 +91,19 @@ export class BarraMenuComponent implements OnInit {
     const year = String(date.getFullYear());
     return `${day}-${month}-${year}`;
   }
-  volverInicio() {
-    this.router.navigate(['/home']);
+  contenidoBotonVolverAtras() {
+    const rutaActual = this.router.url;
+    console.log('rutaActual', rutaActual);
+    switch (rutaActual) {
+      case '/home':
+        this.contenidoBotonVolver = '';
+        this.iconoBotonVolver = '';    
+      break;
+      case '/auditoria':
+        this.contenidoBotonVolver = this.volverHome;
+        this.iconoBotonVolver = this.volverHomeIcono;    
+        this.router.navigate(['/home']);
+      break;
+      }
   }
 }
