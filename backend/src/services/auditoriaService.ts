@@ -1,5 +1,5 @@
 import db  from "../config/database";
-import { auditorias, expositores } from '@prisma/client';
+import { auditorias, elementos } from '@prisma/client';
 import { MuebleFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
 import { mobiliarioService } from "./mobiliarioService";
 
@@ -12,7 +12,7 @@ export const auditoriaService = {
                     estados_auditoria: true,
                     tiendas: true
                 }, orderBy: {
-                    id_auditoria: 'desc'
+                    id: 'desc'
                 }
             })
         }catch (error) {
@@ -32,7 +32,7 @@ export const auditoriaService = {
                     estados_auditoria: true,
                     tiendas: true
                 }, orderBy: {
-                    id_auditoria: 'desc'
+                    id: 'desc'
                 }
             })
 
@@ -48,7 +48,7 @@ export const auditoriaService = {
         try{
             return db.auditorias.findUnique({
                 where: {
-                    id_auditoria: id_auditoria
+                    id: id_auditoria
                 }, include: {
                     estados_auditoria: true,
                     tiendas: true
@@ -62,12 +62,12 @@ export const auditoriaService = {
         }
     },
 
-    async createPertenenciaExpositorAuditoria(id_auditoria: number, mueble: MuebleFrontInterfaz, expositor: expositores) {
-        await db.pertenencia_expositor_auditoria.create({
+    async createPertenenciaExpositorAuditoria(id_auditoria: number, mueble: MuebleFrontInterfaz, elemento: elementos) {
+        await db.pertenencia_elementos_auditoria.create({
             data: {
                 id_auditoria: id_auditoria,
                 id_mueble: mueble.id,
-                id_expositor: expositor.id
+                id_elemento: elemento.id
             }
         });
     },
@@ -80,14 +80,14 @@ export const auditoriaService = {
                     id_tienda: id_tienda
                 },
                 orderBy: {
-                    id_auditoria: 'desc'
+                    id: 'desc'
                 }
             })
 
             if(lastAuditoria?.id_estado == 1) {
                 await db.auditorias.update({
                     where: {
-                        id_auditoria: lastAuditoria.id_auditoria
+                        id: lastAuditoria.id
                     },
                     data: {
                         id_estado: 3
@@ -109,8 +109,8 @@ export const auditoriaService = {
             const promises = [];
 
             for (const mueble of muebles) {
-                for (const expositor of mueble.expositores) {
-                    promises.push(auditoriaService.createPertenenciaExpositorAuditoria(auditoria.id_auditoria, mueble, expositor));
+                for (const elemento of mueble.elementos) {
+                    promises.push(auditoriaService.createPertenenciaExpositorAuditoria(auditoria.id, mueble, elemento));
                 }
             }
 
@@ -129,7 +129,7 @@ export const auditoriaService = {
         try {
             return db.auditorias.update({
                 where: {
-                    id_auditoria: id_auditoria
+                    id: id_auditoria
                 },
                 data: {
                     id_estado: 2
@@ -145,9 +145,9 @@ export const auditoriaService = {
 
     async getBarraProgresoAuditoria(id_auditoria: number): Promise<any> {
         try {
-            return db.pertenencia_expositor_auditoria.findMany({
+            return db.pertenencia_elementos_auditoria.findMany({
                 where: {
-                    id_auditoria: id_auditoria
+                    id: id_auditoria
                 },
                 include: {
                     procesados_imagenes: {
@@ -156,7 +156,7 @@ export const auditoriaService = {
                             fecha: 'desc'
                         }
                     }, 
-                    expositores: true
+                    elementos: true
                 }
             })
         } catch (error) {
@@ -169,9 +169,9 @@ export const auditoriaService = {
 
     getNumExpositoresByAuditoria(id_auditoria: number) {
         try {
-            return db.pertenencia_expositor_auditoria.count({
+            return db.pertenencia_elementos_auditoria.count({
                 where: {
-                    id_auditoria: id_auditoria
+                    id: id_auditoria
                 }
             })
         } catch (error) {
@@ -184,9 +184,9 @@ export const auditoriaService = {
     
     getNumExpositoresProcesadosByAuditoria(id_auditoria: number) {
         try {
-            return db.pertenencia_expositor_auditoria.count({
+            return db.pertenencia_elementos_auditoria.count({
                 where: {
-                    id_auditoria: id_auditoria,
+                    id: id_auditoria,
                     procesados_imagenes: {
                         some: {  }
                     }

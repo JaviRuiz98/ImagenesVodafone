@@ -8,7 +8,7 @@ export const promptService = {
             return await db.prompts.findMany(
                 {
                     orderBy: {
-                        id_prompt: 'desc'
+                        id: 'desc'
                     }
                 }
             );
@@ -25,7 +25,7 @@ export const promptService = {
         try{
             return db.prompts.findUnique({
                 where: {
-                    id_prompt: id_prompt
+                    id: id_prompt
                 }
             })
         }
@@ -44,7 +44,7 @@ export const promptService = {
             },
             where: {
                 prompts:{
-                    id_prompt: id_prompt
+                    id: id_prompt
                 }
             }
         })

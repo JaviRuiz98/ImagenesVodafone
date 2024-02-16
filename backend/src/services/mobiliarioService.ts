@@ -32,43 +32,19 @@ export const mobiliarioService = {
                 },
                 include: {
                                     
-                    pertenencia_expositor_mueble: {
+                    pertenencia_imagen_mueble: {
                         //obtener el expositor mas reciente
+                     
+                        include: {
+                            imagenes: true 
+                        },
+                        
                         orderBy: {
                             fecha: 'desc',
                         },
-
-                        take:1,
-                    
-                        include: {
-                        expositores:{
-                            include:{
-                                imagenes: true,
-                                /*procesados_imagenes: {
-                                    include: {
-                                        imagenes: true,
-                                        prompts: true
-                                        
-                                    },
-                                    orderBy: {
-                                        fecha: 'desc',
-                                    },
-            
-                                    where: {
-                                        prompts:{
-                                            id_prompt:{
-                                                in: prompts_clause? prompts_clause : undefined
-                                            }
-                                        },
-            
-                                        IA_utilizada: ia_clause ? ia_clause : undefined,                                                                        
-                                        }  
-                                }*/    
-                            }
-                        } 
-                                                            
-                        }
+                        take:1,                                    
                     }
+                    
                 }
         });
 
@@ -121,14 +97,9 @@ export const mobiliarioService = {
         try{
             const muebles =  await db.muebles.findMany( {
                 include: {
-                    pertenencia_expositor_mueble:{
+                    pertenencia_imagen_mueble:{
                         include: {
-                            expositores: {
-                                include: {
-                                    imagenes: true, 
-                                   
-                                }
-                            }
+                           imagenes: true 
                         }
                     }
                 }
@@ -166,20 +137,25 @@ export const mobiliarioService = {
                 include: {
                     muebles: {
                         include: {
-                            pertenencia_expositor_mueble:{
+                            pertenencia_imagen_mueble:{
                                 include: {
-                                    expositores: {
-                                        include: {
-                                            imagenes: true,
-                                            
-                                        },
-                                        
-                                    },
+                                    
+                                    imagenes: true,
+                                          
                                     
                                 }, orderBy: {
                                     fecha: 'desc'
                                 }, 
                                 
+                            }, 
+                            huecos: {
+                                include: {
+                                    pertenencia_elementos_huecos:{
+                                        include: {
+                                            elementos: true
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -216,22 +192,34 @@ export const mobiliarioService = {
 
             const muebles = await db.muebles.findMany({
                 where: {
-                  pertenencia_expositor_auditoria: {
+                 
+                    pertenencia_elementos_auditoria: {
                     some: {
                       id_auditoria: id_auditoria
                     }
                   }
                 },
                 include: {
-                  pertenencia_expositor_auditoria: {
+                    huecos: {
+                        include: {
+                            pertenencia_elementos_huecos:{
+                                include: {
+                                    elementos: true
+                                }
+                            }
+                        }
+                    },
+                    pertenencia_elementos_auditoria: {
+
                     include: {
-                      expositores: {
+                      elementos: {
                         include: {
                           imagenes: true,
                           regiones: true,
                         
                         }
                       },
+                      
                       procesados_imagenes: { 
                         where: {
                             id_auditoria: id_auditoria
@@ -247,43 +235,45 @@ export const mobiliarioService = {
                   }
                 }
               });
+
+              return muebles;
               
-              const resultado = muebles.map(mueble => {
-                const expositores: any[] = mueble.pertenencia_expositor_auditoria.reduce((acc: any[], auditoria) => {
+            //   const resultado = muebles.map(mueble => {
+            //     const expositores: any[] = mueble.pertenencia_expositor_auditoria.reduce((acc: any[], auditoria) => {
                   
-                    let expositor = acc.find(ex => ex.id === auditoria.expositores.id);
-                    if (!expositor) {
-                      expositor = {
-                        id: auditoria.expositores.id,
-                        id_imagen: auditoria.expositores.id_imagen,
-                        id_region: auditoria.expositores.id_region,
-                        nombre: auditoria.expositores.nombre,
-                        imagenes: auditoria.expositores.imagenes,
-                        regiones: auditoria.expositores.regiones,
-                        categoria: auditoria.expositores.categoria,
-                        numero_dispostivos: auditoria.expositores.numero_dispositivos,
-                        procesados_imagenes: [],
-                      };
-                      acc.push(expositor);
-                    }
+            //         let expositor = acc.find(ex => ex.id === auditoria.expositores.id);
+            //         if (!expositor) {
+            //           expositor = {
+            //             id: auditoria.expositores.id,
+            //             id_imagen: auditoria.expositores.id_imagen,
+            //             id_region: auditoria.expositores.id_region,
+            //             nombre: auditoria.expositores.nombre,
+            //             imagenes: auditoria.expositores.imagenes,
+            //             regiones: auditoria.expositores.regiones,
+            //             categoria: auditoria.expositores.categoria,
+            //             numero_dispostivos: auditoria.expositores.numero_dispositivos,
+            //             procesados_imagenes: [],
+            //           };
+            //           acc.push(expositor);
+            //         }
                 
               
-                  // Agregar procesados_imagenes a este expositor
-                  expositor.procesados_imagenes.push(...auditoria.procesados_imagenes);
+            //       // Agregar procesados_imagenes a este expositor
+            //       expositor.procesados_imagenes.push(...auditoria.procesados_imagenes);
               
-                  return acc;
-                }, []);
+            //       return acc;
+            //     }, []);
               
-                return {
-                  id: mueble.id,
-                  nombre_mueble: mueble.nombre_mueble,
-                  numero_expositores_carteles: mueble.numero_expositores_carteles,
-                  numero_expositores_dispostivos:mueble.numero_expositores_dispositivos,
-                  expositores
-                };
-              });
+            //     return {
+            //       id: mueble.id,
+            //       nombre_mueble: mueble.nombre_mueble,
+            //       numero_expositores_carteles: mueble.numero_expositores_carteles,
+            //       numero_expositores_dispostivos:mueble.numero_expositores_dispositivos,
+            //       expositores
+            //     };
+            //   });
               
-              return resultado;
+            //   return resultado;
               
           
 
@@ -300,25 +290,26 @@ export const mobiliarioService = {
 
 
 
-//tipar adecuadamente
+//NO FUNCIONA
 function mapearResultadoParaFront(mueble: any): MuebleFrontInterfaz {
 
-    let expositores = [];
+    let elementos = [];
 
-    if (mueble.pertenencia_expositor_mueble) {
-        expositores = mueble.pertenencia_expositor_mueble.map((pem: any) => pem.expositores);
+    if (mueble.pertenencia_elemento_mueble) {
+        elementos = mueble.pertenencia_expositor_mueble.map((pem: any) => pem.elementos);
     }
     
 
     return {
         id: mueble.id,
         nombre_mueble: mueble.nombre_mueble,
-        expositores: expositores, 
+        elementos: elementos, 
         numero_expositores_carteles: mueble.numero_expositores_carteles,
         numero_expositores_dispositivos: mueble.numero_expositores_dispositivos,
     };
 }
 
+//NO FUNCIONA
 function mapearResultadoParaDevolverExpositoresActivos(muebles: muebles[]): muebles[] {
     return muebles.map((mueble: any) => {
         const num_expositores: number = mueble.numero_expositores ;

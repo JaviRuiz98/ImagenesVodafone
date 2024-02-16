@@ -1,5 +1,5 @@
 
-import { expositoresConProcesados } from "./expositoresProcesados";
+import { elementosConProcesados } from "./expositoresProcesados";
 
 
 export interface MuebleFrontInterfaz {
@@ -7,6 +7,6 @@ export interface MuebleFrontInterfaz {
     nombre_mueble: string;
     numero_expositores_dispositivos: number;
     numero_expositores_carteles: number;
-    expositores: expositoresConProcesados[];
+    elementos: elementosConProcesados[];
     
 }
