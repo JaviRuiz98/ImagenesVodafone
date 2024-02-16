@@ -8,6 +8,7 @@ export class auditoria {
     estado: string;
     num_expositores_procesados: number;
     num_expositores: number;
+    datos_barra_progreso: number[];
     estados_auditoria: estados_auditoria;
 
     constructor(valor: null){
@@ -18,6 +19,7 @@ export class auditoria {
         this.id_mobiliario = 0;
         this.num_expositores_procesados = 0;
         this.num_expositores = 0;
+        this.datos_barra_progreso = [];
         this.estados_auditoria = new estados_auditoria(null);
     }
 }

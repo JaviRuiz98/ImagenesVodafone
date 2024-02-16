@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { Barra } from '../barra-de-barras/barra';
 import { CommonModule } from '@angular/common';
 
@@ -11,24 +11,27 @@ import { CommonModule } from '@angular/common';
     CommonModule
   ],
 })
-export class BarraDeBarrasComponent implements OnInit {
+export class BarraDeBarrasComponent implements OnChanges {
   @Input() datos_barras: number[] = []; // Espera un arreglo de valores numéricos
 
   bars: Barra[] = [];
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.bars = this.datos_barras.map(value => ({
       value,
       color: this.getColorByValue(value),
       width: 100 / this.datos_barras.length // Asume que todas las barras deben tener el mismo ancho
     }));
+
+    console.log(this.bars);
   }
 
   getColorByValue(value: number): string {
-    if(value == 0) return 'rgba(0, 0, 0, 0)';
-    else if(value <= 1) return 'rgba(0, 128, 0, 0.5)';
-    else if(value <= 2) return 'rgba(255, 165, 0, 0.5)';
-    else if(value <= 3) return 'rgba(255, 0, 0, 0.5)';
-    else return 'rgba(0, 0, 255, 0.5)';
+    if(value == 0) return 'rgba(0, 0, 0, 0)'; // Transparente
+    else if(value == 1) return 'rgba(152, 251, 152, 0.5)'; // Verde claro
+    else if(value == 2) return 'rgba(255, 255, 224, 0.5)'; // Amarillo claro
+    else if(value == 3) return 'rgba(255, 165, 0, 0.5)'; // Naranja claro
+    else return 'rgba(255, 99, 71, 0.6)'; // Rojo claro
+
   }
 }

@@ -1,5 +1,5 @@
 <div (mouseover)="open.toggle($event)" (mouseout)="onMouseOut($event)">
-    <p-tag *ngIf="procesado.categoria === 'carteles'" 
+    <p-tag *ngIf="procesado.categoria.toLowerCase() === 'carteles'" 
         class = "cursor-pointer "
         icon="pi pi-info-circle" 
         value="{{procesado.probabilidades_respuesta_carteles.probabilidad}}"

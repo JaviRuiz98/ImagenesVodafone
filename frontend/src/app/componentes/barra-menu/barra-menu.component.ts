@@ -27,7 +27,12 @@ export class BarraMenuComponent implements OnInit {
 
   tiendas: tienda[] = [] ;
   tiendaSeleccionada: tienda | undefined;
-  currentState: 'home' | 'auditoria' | 'admin' | 'empty' = 'home';
+  currentState: string = 'home';
+  contenidoBotonVolver: string = '';
+  iconoBotonVolver: string = '';
+  volverHome: string = 'Volver a inicio';
+  volverHomeIcono: string = 'pi pi-home';
+
 
   constructor(
     private localStorageService: LocalStorageService,
@@ -38,20 +43,25 @@ export class BarraMenuComponent implements OnInit {
 
   ngOnInit(): void {
     this.initTiendas();
-    const routeChanges = this.router.events.pipe(
-      filter((event: any) => event instanceof NavigationEnd),
-      map(() => this.activatedRoute)
-    );
-    routeChanges.subscribe((route) => {
-      while (route.firstChild) {
-        route = route.firstChild;
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.contenidoBotonVolverAtras();
       }
-      if (route.snapshot.data['stateBarra']) {
-        this.setStateBarra(route.snapshot.data['stateBarra']);
-      } else {
-        console.warn(`La ruta "${route.pathFromRoot.map((r) => r).join('/')}" no ha definido "stateBarra"`);
-      }
-    });
+    })
+    // const routeChanges = this.router.events.pipe(
+    //   filter((event: any) => event instanceof NavigationEnd),
+    //   map(() => this.activatedRoute)
+    //   );
+    //   routeChanges.subscribe((route) => {
+    //   while (route.firstChild) {
+    //     route = route.firstChild;
+    //   }
+    //   if (route.snapshot.data['stateBarra']) {
+    //     this.setStateBarra(route.snapshot.data['stateBarra']);
+    //   } else {
+    //     console.warn(`La ruta "${route.pathFromRoot.map((r) => r).join('/')}" no ha definido "stateBarra"`);
+    //   }
+    // });
   }
 
   initTiendas() {
@@ -61,7 +71,6 @@ export class BarraMenuComponent implements OnInit {
   }
 
   setStateBarra(newState: 'home' | 'auditoria' | 'admin' | 'empty'): void {
-    console.log(`Estado actualizado a ${newState}`);
     this.currentState = newState;
   }
 
@@ -87,7 +96,42 @@ export class BarraMenuComponent implements OnInit {
     const year = String(date.getFullYear());
     return `${day}-${month}-${year}`;
   }
-  volverInicio() {
-    this.router.navigate(['/home']);
+  contenidoBotonVolverAtras() {
+    let rutaActual = this.router.url;
+    this.currentState = rutaActual;
+    if(rutaActual === '/gestionAuditorias' || rutaActual === '/tienda' || rutaActual === '/muebles'){
+      rutaActual = '/volverHome';
+    }
+    console.log('rutaActual', rutaActual);
+    switch (rutaActual) {
+      case '/home':
+        this.contenidoBotonVolver = '';
+        this.iconoBotonVolver = '';    
+      break;
+      case '/volverHome':
+        this.contenidoBotonVolver = this.volverHome;
+        this.iconoBotonVolver = this.volverHomeIcono;    
+      break;
+      case '/auditoria':
+        this.contenidoBotonVolver = 'Volver a gestion de auditorias';
+        this.iconoBotonVolver = this.volverHomeIcono;    
+      break;
+    }
+  }
+
+  volverAtras(){
+    const rutaActual = this.router.url;
+    switch (rutaActual) {
+      case '/home':
+        this.contenidoBotonVolver = '';
+        this.iconoBotonVolver = '';    
+      break;
+      case '/gestionAuditorias':
+        this.router.navigate(['/home']);  
+      break;
+      case '/auditoria':
+        this.router.navigate(['/gestionAuditorias']);
+      break;
+    }
   }
 }

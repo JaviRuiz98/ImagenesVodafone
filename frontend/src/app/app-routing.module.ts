@@ -12,16 +12,8 @@ import { TiendasComponent } from './pages/tiendas/tiendas.component';
 const routes: Routes = [
 
   { 
-    path: "expositor", component: ExpositoresComponent ,
-    data: { stateBarra: 'expositores' },
-  },
-  { 
     path: "home", component: HomeComponent ,
     data: { stateBarra: 'home' },
-  },
-  { 
-    path : "validator", component: ValidadorComponent, 
-    data: { stateBarra: 'admin' },
   },
   { 
     path: "gestionAuditorias", component: GestionDeAuditoriasComponent, 
@@ -30,6 +22,18 @@ const routes: Routes = [
   { 
     path: "auditoria", component: AuditoriaComponent, 
     data: { stateBarra: 'auditorias' },
+  },
+  { 
+    path: "expositor", component: ExpositoresComponent ,
+    data: { stateBarra: 'expositores' },
+  },
+  { 
+    path : "validator", component: ValidadorComponent, 
+    data: { stateBarra: 'admin' },
+  },
+  { 
+    path: "gestionAuditorias", component: GestionDeAuditoriasComponent, 
+    data: { stateBarra: 'gestionAuditorias' },
   },
    { path: 'muebles', component: MuebleComponent , 
     data: { stateBarra: 'empty' },

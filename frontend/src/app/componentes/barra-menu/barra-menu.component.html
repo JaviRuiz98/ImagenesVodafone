@@ -1,4 +1,4 @@
-<div class="barraCompletaBotonInicio">
+<div class="barraCompletaBotonVolver">
   <div class="barraCompleta">
     <div class="image-container">
       <img src="../../../assets/images/icono.png" alt="icono">
@@ -20,12 +20,12 @@
         class="centrar">
       </p-dropdown>
     </div>
-    <div *ngIf="currentState === 'admin'" class ="elementosValidator" >        
+    <!-- <div *ngIf="currentState === 'admin'" class ="elementosValidator" >        
       <app-sidebar></app-sidebar>
-    </div>
+    </div> -->
   </div>
-  <div *ngIf="currentState !== 'home'">
-    <p-button label="Volver al inicio" icon="pi pi-home" (click)="volverInicio()" [text]="true" severity="danger" [style]="{'padding': '0', 'margin-left': '1%'}"></p-button>
+  <div *ngIf="currentState != '/home'">
+    <p-button [label]="contenidoBotonVolver" [icon]="iconoBotonVolver" (click)="volverAtras()" [text]="true" severity="danger" [style]="{'padding': '0', 'margin-left': '1%'}"></p-button>
   </div>
 </div>
 
