@@ -51,7 +51,6 @@ export class TiendasComponent implements OnInit{
       this.tiendasMostrar = response;
     })
     this.MueblesService.getAllMuebles().subscribe((response: muebles[]) => {
-      console.log(response)
       this.listaTodosMuebles = this.ordenarListaAlfabeticamente(response, 'nombre_mueble');
       this.listaMueblesMostrar = this.listaTodosMuebles;
     });
