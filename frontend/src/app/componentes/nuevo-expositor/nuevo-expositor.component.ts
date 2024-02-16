@@ -1,7 +1,7 @@
  
 import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
-import { Expositor } from 'src/app/interfaces/expositor';
+import { elementos } from 'src/app/interfaces/elementos';
 import { ExpositoresService } from 'src/app/servicios/expositores/expositores.service';
 import { SelectorImagenesComponent } from './../../componentes/selector-imagenes/selector-imagenes.component';
 import { InputTextModule } from 'primeng/inputtext';
@@ -42,10 +42,10 @@ import { regiones } from 'src/app/interfaces/regiones';
 
 export class NuevoExpositorComponent implements OnInit {
 
-  @Input() categoriaPredefinida: string = ''; //sin implementar
+  @Input() categoriaPredefinida: number = 0; //sin implementar
   @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
   @Output() mostrarDialogoNuevoExpositor = new EventEmitter<boolean>();
-  @Output() nuevoExpositorCreado = new EventEmitter<Expositor>();
+  @Output() nuevoExpositorCreado = new EventEmitter<elementos>();
 
   nuevoExpositor_form: FormGroup = this.formBuilder.group({
     nombre: new FormControl('', [Validators.required, Validators.minLength(5)]),
@@ -64,7 +64,7 @@ export class NuevoExpositorComponent implements OnInit {
   messages: Message[] | undefined;
   n_dispositivos: number = 0;
   
-  nuevoExpositor!: Expositor;
+  nuevoExpositor!: elementos;
   
   archivoSeleccionado!: File;
  
@@ -76,7 +76,7 @@ export class NuevoExpositorComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private expositoresService: ExpositoresService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
   AbrirnuevoExpositor() {
-    if(this.categoriaPredefinida != '') {
+    if(this.categoriaPredefinida != 0) {
       this.nuevoExpositor_form.patchValue({ categoria: this.categoriaPredefinida });
       this.bloqueaCategoria = true;
     } 
@@ -115,7 +115,7 @@ export class NuevoExpositorComponent implements OnInit {
       this.messageService.add({severity:'error', summary: 'Error', detail: 'Expositor no guardado'});
       this.submitted = true;
     }else{
-      this.expositoresService.guardarExpositor(this.nombre?.value, this.nuevoExpositor.activo, this.region?.value, this.imagen?.value, this.categoria?.value, this.numero_dispositivos?.value).subscribe((expositor) => {
+      this.expositoresService.guardarExpositor(this.nombre?.value, this.nuevoExpositor.activo, this.region?.value, this.imagen?.value, this.categoria?.value).subscribe((expositor) => {
         if(expositor.id> 0) {
           this.messageService.add({severity:'success', summary: 'Guardado', detail: 'Expositor guardado correctamente'});
           this.nuevoExpositorCreado.emit(expositor);

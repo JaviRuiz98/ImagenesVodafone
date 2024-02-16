@@ -6,7 +6,6 @@ import { muebles } from 'src/app/interfaces/muebles';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { FormMuebleComponent } from './components/formMueble/formMueble.component';
 import { HistorialExpositoresComponent } from './components/historialExpositores/historialExpositores.component';
-import { mueblesVisualizacion } from './interfaces/muebleVisualizacion';
 import { PrimeNGConfig } from 'primeng/api';
 @Component({
   selector: 'app-mueble',
@@ -16,7 +15,7 @@ import { PrimeNGConfig } from 'primeng/api';
 export class MuebleComponent implements OnInit {
 
 
-  muebles: mueblesVisualizacion[] = [];
+  muebles: muebles[] = [];
  
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
@@ -47,32 +46,32 @@ export class MuebleComponent implements OnInit {
   private loadMuebles() {
    this.muebleService.getAllMuebles().subscribe(muebles => {
      
-     this.muebles = this.separarExpositoresSegúnCategoria(muebles);
+     this.muebles = muebles; //this.separarExpositoresSegúnCategoria(muebles);
      console.log(this.muebles);
     
    
    })
   }
 
-  separarExpositoresSegúnCategoria(muebles:muebles[]): mueblesVisualizacion[] {
-     return  muebles.map(mueble => {
+  // separarExpositoresSegúnCategoria(muebles:muebles[]): mueblesVisualizacion[] {
+  //    return  muebles.map(mueble => {
 
-      const expositoresCarteles = mueble.expositores.filter(expositor => expositor.categoria === 'Carteles');
+  //     const expositoresCarteles = mueble.expositores.filter(expositor => expositor.categoria === 'Carteles');
 
-      const expositoresDispositivos = mueble.expositores.filter(expositor => expositor.categoria === 'Dispositivos');
+  //     const expositoresDispositivos = mueble.expositores.filter(expositor => expositor.categoria === 'Dispositivos');
 
-      return {
-        id: mueble.id,
-        nombre_mueble: mueble.nombre_mueble,
-        expositores: mueble.expositores,
-        numero_expositores_carteles: expositoresCarteles.length,
-        numero_expositores_dispositivos: expositoresDispositivos.length,
-        expositores_carteles: expositoresCarteles,
-        expositores_dispositivos: expositoresDispositivos
-      };
-    });
+  //     return {
+  //       id: mueble.id,
+  //       nombre_mueble: mueble.nombre_mueble,
+  //       expositores: mueble.expositores,
+  //       numero_expositores_carteles: expositoresCarteles.length,
+  //       numero_expositores_dispositivos: expositoresDispositivos.length,
+  //       expositores_carteles: expositoresCarteles,
+  //       expositores_dispositivos: expositoresDispositivos
+  //     };
+  //   });
     
-  }
+  // }
 
   // resetTabla() {
   //   this.miTabla.reset();

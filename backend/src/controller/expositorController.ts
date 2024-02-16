@@ -1,27 +1,27 @@
 import { Request, Response } from 'express';
 import { elementosService } from '../services/expositorService';
 import { imagenService } from '../services/imagenService'; // 
-export async function createExpositor(req: Request, res: Response) {
+export async function createElementos(req: Request, res: Response) {
     const {nombre} = req.body; //tipar en un futuro
     //hacer valdiator 
     const mobiliario = await elementosService.create(nombre);
     res.status(200).json(mobiliario);
 }
 
-export async function updateExpositor(req: Request, res: Response) {
+export async function updateElementos(req: Request, res: Response) {
     const data = req.body; //tipar
-    const id_expositor = req.params.id_expositor ? parseInt(req.params.id_expositor as string) : undefined;
+    const id_elemento = req.params.id_elemento ? parseInt(req.params.id_elemento as string) : undefined;
     //hacer validator
-    if (!id_expositor) {
-        res.status(400).json({ error: 'id_expositor es necesario' });
+    if (!id_elemento) {
+        res.status(400).json({ error: 'id_elemento es necesario' });
         return;
     }
-    const mobiliario = await elementosService.update(id_expositor, data);
+    const mobiliario = await elementosService.update(id_elemento, data);
     res.status(200).json(mobiliario);
 }
 
 
-export async function getExpositores(req: Request, res: Response) {
+export async function getElementos(req: Request, res: Response) {
     try{
         const categoria: number | undefined = parseInt(req.query.categoria as string) || undefined; ; 
         if (categoria && isNaN(categoria)){
@@ -29,8 +29,8 @@ export async function getExpositores(req: Request, res: Response) {
             return;
             
         }
-        const expositores = await elementosService.getAll(categoria);
-        res.status(200).json(expositores);
+        const elementos = await elementosService.getAll(categoria);
+        res.status(200).json(elementos);
     } catch(error){
         res.status(500).json({ error: 'Error interno del servidor' });
         throw error;
@@ -39,7 +39,7 @@ export async function getExpositores(req: Request, res: Response) {
 }
 
 
-export async function deleteExpositor(req: Request, res: Response) {
+export async function deleteElemento(req: Request, res: Response) {
     try{
         const id_expositor = req.params.id_expositor ? parseInt(req.params.id_expositor as string) : undefined;
         //hacer validator
@@ -54,7 +54,7 @@ export async function deleteExpositor(req: Request, res: Response) {
     }
 }
 
-export async function guardarExpositor(req: Request, res: Response) {
+export async function guardarElemento(req: Request, res: Response) {
     try{
         const nombre = req.body.nombre; 
         const activo = req.body.activo === 'true';
