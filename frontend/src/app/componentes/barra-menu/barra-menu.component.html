@@ -9,7 +9,7 @@
         {{tiendaSeleccionada?  getTiendaTitle() : ''}}
       </h1>
     </div>
-    <div *ngIf="currentState === 'home'" class ="elements" >
+    <div *ngIf="currentState === '/home'" class ="seleccionarTienda" >
       <p-dropdown 
         [options]="tiendas" 
         [(ngModel)]="tiendaSeleccionada"
@@ -25,7 +25,7 @@
     </div> -->
   </div>
   <div *ngIf="currentState != '/home'">
-    <p-button [label]="contenidoBotonVolver" [icon]="iconoBotonVolver" (click)="volverAtras()" [text]="true" severity="danger" [style]="{'padding': '0', 'margin-left': '1%'}"></p-button>
+    <p-button [label]="contenidoBotonVolver" [icon]="iconoBotonVolver" (click)="volverAtras()" [text]="true" severity="danger"></p-button>
   </div>
 </div>
 

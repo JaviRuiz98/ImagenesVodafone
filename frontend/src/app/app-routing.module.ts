@@ -23,6 +23,10 @@ const routes: Routes = [
     path: "auditoria", component: AuditoriaComponent, 
     data: { stateBarra: 'auditorias' },
   },
+  {
+    path: "tiendas", component: TiendasComponent,
+    data: { stateBarra: 'tiendas' },
+  },
   { 
     path: "expositor", component: ExpositoresComponent ,
     data: { stateBarra: 'expositores' },
@@ -39,10 +43,6 @@ const routes: Routes = [
     data: { stateBarra: 'empty' },
    },
 
-  {
-    path: "tiendas", component: TiendasComponent,
-    data: { stateBarra: 'tiendas' },
-  },
 
   // { path:"expositores",}
   {
