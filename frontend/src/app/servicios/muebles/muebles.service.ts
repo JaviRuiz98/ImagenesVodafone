@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { muebles } from '../../interfaces/muebles';
 import { filtro_procesados } from 'src/app/interfaces/filtro_procesados';
 import { MuebleCreacion } from 'src/app/pages/mueble/interfaces/muebleCreacion';
+import { muebles_auditoria } from 'src/app/interfaces/muebles_auditoria';
 
 @Injectable({
   providedIn: 'root'
@@ -36,8 +37,8 @@ export class MueblesService {
     return this.http.post<muebles[]>(this.API_URI, body, this.options);
   }
 
-  getMueblesAuditoria(id_auditoria:number): Observable<muebles[]> {
-    return this.http.get<muebles[]>(this.API_URI + 'muebles_auditoria/' + id_auditoria);
+  getMueblesAuditoria(id_auditoria:number): Observable<muebles_auditoria[]> {
+    return this.http.get<muebles_auditoria[]>(this.API_URI + 'muebles_auditoria/' + id_auditoria);
   }
 
   getAllMuebles(): Observable<muebles[]> {

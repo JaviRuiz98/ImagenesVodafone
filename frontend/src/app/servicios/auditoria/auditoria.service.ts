@@ -43,8 +43,8 @@ export class AuditoriaService {
     return this.http.get<auditoria[]>(`${this.API_URI}/auditorias/${id_tienda}`);
   }
 
-  getMueblesAndExpositoresWithProcesadosByIdAuditoria(id_auditoria: number): Observable<muebles[]> {
-    return this.http.get<muebles[]>(`${this.API_URI}/muebles_auditoria/${id_auditoria}`);
+  getMueblesAndExpositoresWithProcesadosByIdAuditoria(id_auditoria: number): Observable<muebles_auditoria[]> {
+    return this.http.get<muebles_auditoria[]>(`${this.API_URI}/muebles_auditoria/${id_auditoria}`);
   }
 
   terminarAuditoria(id_auditoria: number): Observable<any> {
