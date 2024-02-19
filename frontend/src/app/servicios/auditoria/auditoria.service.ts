@@ -5,6 +5,7 @@ import { auditoria } from '../../interfaces/auditoria';
 import { procesados_imagenes } from '../../interfaces/procesados_imagenes';
 import { BaseRouteReuseStrategy } from '@angular/router';
 import { muebles } from 'src/app/interfaces/muebles';
+import { muebles_auditoria } from 'src/app/interfaces/muebles_auditoria';
 
 @Injectable({
   providedIn: 'root'

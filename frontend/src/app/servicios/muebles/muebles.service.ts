@@ -3,6 +3,7 @@ import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { muebles } from '../../interfaces/muebles';
 import { filtro_procesados } from 'src/app/interfaces/filtro_procesados';
+import { MuebleCreacion } from 'src/app/pages/mueble/interfaces/muebleCreacion';
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +46,14 @@ export class MueblesService {
 
   getMueblesTiendaByIdTienda(id_tienda: number): Observable<muebles[]> {
     return this.http.get<muebles[]>(this.API_URI+id_tienda);
+  }
+
+  createMueble(mueble: MuebleCreacion): Observable<muebles> {
+    return this.http.post<muebles>(this.API_URI, mueble, this.options);
+  }
+
+  updateMueble(mueble: muebles): Observable<muebles> {
+    return this.http.put<muebles>(this.API_URI + mueble.id, mueble, this.options);
   }
 }
 

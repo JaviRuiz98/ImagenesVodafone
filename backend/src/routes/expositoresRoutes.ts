@@ -1,19 +1,20 @@
 import express, { Router } from 'express';
 import {  uploadImagenRepresentativa } from '../config/multer';
-import { getExpositores, deleteExpositor,guardarExpositor,editarEstadoExpositor,getRegionesDisponibles,getExpositoresByIdMueble } from '../controller/expositorController';
+import {  deleteElemento, guardarElemento,editarEstadoElemento,getRegionesDisponibles } from '../controller/expositorController';
 import { uploadFileToFtp } from '../config/ftpUpload'; 
+import { getElementos } from '../controller/expositorController';
 
 const router: Router = express.Router();
 
-router.get('/expositores', getExpositores);
-router.delete('/expositor/:id_expositor', deleteExpositor);
+router.get('/elementos', getElementos);
+router.delete('/elementos/:id_elementos', deleteElemento);
 
-router.post('/expositor', uploadImagenRepresentativa, uploadFileToFtp('imagenesReferencia'), guardarExpositor);
+router.post('/elementos', uploadImagenRepresentativa, uploadFileToFtp('imagenesReferencia'), guardarElemento);
 
-router.post('/expositorActivaDesactiva', editarEstadoExpositor);
+router.post('/elementosActivaDesactiva', editarEstadoElemento);
 
 router.get('/regiones', getRegionesDisponibles);
 
-router.get('/expositores/:id_mueble', getExpositoresByIdMueble);
+// router.get('/elementoses/:id_mueble', getelementosesByIdMueble);
 
 export default router;

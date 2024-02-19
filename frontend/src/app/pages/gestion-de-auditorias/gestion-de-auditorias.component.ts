@@ -43,7 +43,7 @@ export class GestionDeAuditoriasComponent implements OnInit {
   }
 
   initTiendas() {
-    this.tiendasService.getTiendas().subscribe((data: tienda[]) => {
+    this.tiendasService.getAllTiendas().subscribe((data: tienda[]) => {
       this.tiendas = data;
     })
   }

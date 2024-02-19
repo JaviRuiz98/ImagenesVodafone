@@ -5,11 +5,11 @@ export const tiendaService = {
     
     async getAllById(idTienda?: number): Promise<tiendas[]> {
         try{
-            const whereClause =  idTienda? {id_tienda:idTienda} : {};
+            const whereClause =  idTienda? {id:idTienda} : {};
             const tiendas = await db.tiendas.findMany(
                 {
                     orderBy: {
-                        id_tienda: 'asc'
+                        id: 'asc'
                     },
                     where : whereClause,
                     include:{
@@ -121,7 +121,7 @@ export const tiendaService = {
         try {
             return await db.tiendas.update({
                 where: {
-                    id_tienda: tienda.id_tienda,
+                    id: tienda.id,
                 },
                 data: {
                     activa: !tienda.activa

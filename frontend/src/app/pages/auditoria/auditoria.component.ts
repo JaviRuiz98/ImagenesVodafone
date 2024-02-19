@@ -5,7 +5,7 @@ import { AuditoriaService } from 'src/app/servicios/auditoria/auditoria.service'
 
 import { MessageService } from 'primeng/api';
 import { filtro_procesados } from 'src/app/interfaces/filtro_procesados';
-import { muebles } from 'src/app/interfaces/muebles';
+import { muebles_auditoria } from 'src/app/interfaces/muebles_auditoria';
 import { auditoria } from 'src/app/interfaces/auditoria';
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 import { ProgresoAuditoriaComponent } from 'src/app/componentes/progreso-auditoria/progreso-auditoria.component';
@@ -22,9 +22,8 @@ export class AuditoriaComponent implements OnInit{
 
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
-  muebles_auditoria: muebles[] | undefined;
 
-  muebles: muebles[] = [];
+  muebles: muebles_auditoria[] = [];
 
   id_auditoria_seleccionada: number = 0;
   auditoria_seleccionada: auditoria = new auditoria(null);
@@ -62,7 +61,7 @@ export class AuditoriaComponent implements OnInit{
 
     async inicializaImagenesReferencia() {
       this.auditoriaService.getMueblesAndExpositoresWithProcesadosByIdAuditoria(this.auditoriaService.id_auditoria_seleccionada).subscribe(
-        (data: muebles[]) => {
+        (data: muebles_auditoria[]) => {
           this.muebles = data;
         }, (error: Error) => { console.log(error) }
       );
@@ -92,9 +91,9 @@ export class AuditoriaComponent implements OnInit{
 
     actualizarProcesamientoEnMueble(id_expositor_selected: number, response: procesados_imagenes) {
       for (const mueble of this.muebles) {
-        const expositorIndex = mueble.expositores.findIndex((expositor) => expositor.id === id_expositor_selected);
+        const expositorIndex = mueble.elementos.findIndex((elementos) => elementos.id === id_expositor_selected);
         if (expositorIndex !== -1) {
-          mueble.expositores[expositorIndex].procesados_imagenes.unshift(response);
+          mueble.elementos[expositorIndex].procesados_imagenes.unshift(response);
           break; 
         }
       }

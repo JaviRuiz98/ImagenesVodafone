@@ -1,9 +1,9 @@
-import { expositores, procesados_imagenes } from "@prisma/client";
+import { elementos, procesados_imagenes } from "@prisma/client";
 
 
-export interface expositoresConIdExpositorAuditoria extends expositores {
+export interface elementosConIdExpositorAuditoria extends elementos {
     id_expositor_auditoria: number
 }
-export interface expositoresConProcesados extends expositores {
+export interface elementosConProcesados extends elementos {
     procesados_imagenes: procesados_imagenes[]
 }

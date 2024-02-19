@@ -1,7 +1,6 @@
 import { imagenes } from "./imagenes";
+import { probabilidad_respuesta_carteles } from "./probabilidad_respuesta_carteles";
 import { Prompt } from "./prompts";
-import { respuesta_carteles } from "./respuesta_carteles";
-import { respuesta_dispositivos } from "./respuesta_dispositivos";
 
 
 export interface procesados_imagenes {
@@ -14,6 +13,7 @@ export interface procesados_imagenes {
     prompts: Prompt;
     feedback_humano: boolean | null;  //  null (sin datos), 0 para dislike y 1 para like
     imagenes: imagenes;
-    respuestas_carteles: respuesta_carteles[];
-    respuestas_dispositivos: respuesta_dispositivos[];
+    probabilidad_respuesta_carteles: probabilidad_respuesta_carteles;
+    dispositivos_contados: number;
+    huecos_esperados:number;
 }

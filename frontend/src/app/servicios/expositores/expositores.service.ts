@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from "rxjs";
-import { Expositor } from '../../interfaces/expositor';
+import { elementos } from '../../interfaces/elementos';
 import { regiones } from 'src/app/interfaces/regiones';
-import { pertenencia_expositor_mueble } from 'src/app/interfaces/pertenencia_expositor_mueble';
 
 @Injectable({
   providedIn: 'root'
@@ -14,28 +13,25 @@ export class ExpositoresService {
   
   constructor(private http: HttpClient) { }
   
-  getExpositores(categoria?: string): Observable<Expositor[]> {
-    let url = `${this.API_URI}/expositores`
+  getExpositores(categoria?: number): Observable<elementos[]> {
+    let url = `${this.API_URI}/elementos`;
     if (categoria) {
       url+=`?categoria=${categoria}`
     }
-    return this.http.get<Expositor[]>(url);
+    return this.http.get<elementos[]>(url);
   }
 
   
-  guardarExpositor(nombre: string, activo: boolean, region: regiones, imageFile: File, categoria: string,  n_dispositivos?: number ): Observable<Expositor> {
+  guardarExpositor(nombre: string, activo: boolean, region: regiones, imageFile: File, categoria: number, ): Observable<elementos> {
     const formData = new FormData();
 
     formData.append('imagenesReferencia', imageFile);
     formData.append('nombre', nombre);
     formData.append('activo', 'true');
     formData.append('id_region', region.id.toString());
-    formData.append('categoria', categoria);
-    if(n_dispositivos!=undefined){
-      formData.append('numero_dispositivos', n_dispositivos.toString());
-    }
+    formData.append('categoria', categoria.toString());
 
-    return this.http.post<Expositor>(`${this.API_URI}/expositor`, formData);
+    return this.http.post<elementos>(`${this.API_URI}/expositor`, formData);
   }
 
   cambiarActivo(id_expositor: number, activo: boolean){
@@ -43,7 +39,7 @@ export class ExpositoresService {
       id_expositor,
       activo
     };
-    return this.http.post<Expositor>(`${this.API_URI}/expositorActivaDesactiva`, body);
+    return this.http.post<elementos>(`${this.API_URI}/expositorActivaDesactiva`, body);
   }
 
 
@@ -51,11 +47,7 @@ export class ExpositoresService {
     return this.http.get<regiones[]>(`${this.API_URI}/regiones`);
   }
 
-  getPertenenciaExpositorMueblebyIdMueble(id_mueble: number): Observable<pertenencia_expositor_mueble[]> {
-    return this.http.get<pertenencia_expositor_mueble[]>(`${this.API_URI}/expositores/${id_mueble}`);
-  } 
 
- 
   
 
 }

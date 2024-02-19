@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { ChatMessage } from '../interfaces/procesadoInterfaces';
 import * as fs from 'fs';
 import openai from '../config/openAi';
-import { expositoresService } from '../services/expositorService';
+import { elementosService } from '../services/expositorService';
 import { procesadoService } from '../services/procesadoService';
 import { parseBool } from '../utils/funcionesCompartidasController';
 import { imagenService } from '../services/imagenService';
@@ -22,7 +22,7 @@ const id_prompt_dispositivos: number = 5; //prompt usado actualmente para dispos
 export async function procesarImagenes(req: Request, res: Response) {
   try {
     const file = req.file //as { [fieldname: string]: Express.Multer.File[] };
-    const id_expositor: number = parseInt(req.body.id_expositor); //ojo refactor
+    const id_elemento: number = parseInt(req.body.id_elemento); //ojo refactor
     const id_auditoria: number = parseInt(req.body.id_auditoria);
     console.log('id_auditoria: ',id_auditoria)
     
@@ -36,19 +36,23 @@ export async function procesarImagenes(req: Request, res: Response) {
     }
     
     //creo la imagen nueva y compruebo que existe el expositor (falta tipar)
-    const [nuevaImagen, existingExpositor, id_expositor_auditoria]  = await Promise.all([
+    const [nuevaImagen, existingElemento, id_expositor_auditoria]  = await Promise.all([
       imagenService.create(imagenProcesada.filename, imagenProcesada.originalname),
-      expositoresService.getById(id_expositor),
-      procesadoService.getIdExpositorAuditoria(id_expositor, id_auditoria)
+      elementosService.getById(id_elemento),
+      procesadoService.getIdExpositorAuditoria(id_elemento, id_auditoria)
     ]);    
 
-    if (!existingExpositor || !id_expositor_auditoria) {
+    if (!existingElemento || !id_expositor_auditoria) {
         res.status(404).json({ error: 'Expositor no encontrado' });
         return;
     }
+    
 
     //obtengo la imagen de referencia
-    const imagenReferencia = await expositoresService.getImage(existingExpositor.id_imagen);      
+    if (!existingElemento.id_imagen) {
+      res.status(500).json({ error: 'La imagen de referencia no existe' }); //es un dispositivo, no se puede procesar
+    }
+    const imagenReferencia = await elementosService.getImage(existingElemento.id_imagen!);       
     
 
     if (!imagenReferencia) {
@@ -56,9 +60,10 @@ export async function procesarImagenes(req: Request, res: Response) {
       return;
     }
    
-    const dispositivos_esperados: number =  existingExpositor.numero_dispositivos || 0;
-    const categoria = existingExpositor.categoria || '';
-    const id_prompt_usado: number = categoria == 'Carteles'?  id_prompt_carteles : id_prompt_dispositivos;
+    //CORREGIR 
+    const dispositivos_esperados: number = 0 //existingExpositor.numero_dispositivos || 0;
+    const categoria = existingElemento.id_categoria || 1; //Corregir
+    const id_prompt_usado: number = categoria == 1?  id_prompt_carteles : id_prompt_dispositivos;
 
     const promptObject: prompts | null = await promptService.getById(id_prompt_usado);
     if (!promptObject) {
@@ -77,7 +82,7 @@ export async function procesarImagenes(req: Request, res: Response) {
     }
     //Comprobación de la válidez de la respuesta (falta por implementar)
     const cleanedResponse = openAiResult.replace(/[\n\r]/g, '');
-    if (!isValidOpenAiResponse(cleanedResponse, promptObject.categoria!)) {
+    if (!isValidOpenAiResponse(cleanedResponse, promptObject.id_categoria!)) {
       res.status(500).json({ error: 'Respuesta inválida' });
       return;
     }
@@ -94,13 +99,13 @@ export async function procesarImagenes(req: Request, res: Response) {
     //Guardar en la base de datos (falta por implementar)
     const id_procesado_imagen = await procesadoService.create( //devuelve el id del procesado de imagen para usarlo en el almacenamiento de la respuesta
       id_expositor_auditoria, 
-      nuevaImagen.id_imagen,       
+      nuevaImagen.id,       
       id_auditoria,
       categoria,
       similarityObject.comentarios, 
       parseBool(similarityObject.valido), 
       IA_utilizada, 
-      promptObject.id_prompt,
+      promptObject.id,
       id_probabilidad_cartel,
       parseInt(similarityObject.dispositivos_contados),
       dispositivos_esperados
@@ -179,16 +184,16 @@ async function encodeImage(filePath: string) {
   return fs.promises.readFile(filePath, 'base64');
 }
 
-function isValidOpenAiResponse  (response: string, tipoProcesado: string): boolean {
+function isValidOpenAiResponse  (response: string, tipoProcesado: number): boolean {
   try {
     const responseObject = JSON.parse(response);
     
-    if (tipoProcesado === 'Carteles') {
+    if (tipoProcesado === 1) {
       console.log(responseObject);
       return true;
       
     
-    } else if (tipoProcesado === 'Dispositivos') {
+    } else if (tipoProcesado === 2) {
       console.log(responseObject);
       return true;
     } 

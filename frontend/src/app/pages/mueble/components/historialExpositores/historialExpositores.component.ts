@@ -1,7 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Expositor } from 'src/app/interfaces/expositor';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { pertenencia_expositor_mueble } from 'src/app/interfaces/pertenencia_expositor_mueble';
 import { ExpositoresService } from 'src/app/servicios/expositores/expositores.service';
 import { DatePipe } from '@angular/common';
 
@@ -15,7 +13,6 @@ export class HistorialExpositoresComponent implements OnInit {
   
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
-  pertenencias_expositor_mueble: pertenencia_expositor_mueble[] = [];
 
 
   nombreFiltro: string = '';
@@ -25,14 +22,14 @@ export class HistorialExpositoresComponent implements OnInit {
   constructor(public dialogConfig : DynamicDialogConfig, private expositorService: ExpositoresService,  private datePipe: DatePipe) { }
 
   ngOnInit() {
-    if (this.dialogConfig.data) {
-      const id_mueble = this.dialogConfig.data.id_mueble;
-      this.expositorService.getPertenenciaExpositorMueblebyIdMueble(id_mueble).subscribe(
-        (pertenencias_expositor_mueble: pertenencia_expositor_mueble[]) => {
-          this.pertenencias_expositor_mueble = pertenencias_expositor_mueble;
-        }
-      )
-    }
+    // if (this.dialogConfig.data) {
+    //   const id_mueble = this.dialogConfig.data.id_mueble;
+    //   this.expositorService.getPertenenciaExpositorMueblebyIdMueble(id_mueble).subscribe(
+    //     (pertenencias_expositor_mueble: pertenencia_expositor_mueble[]) => {
+    //       this.pertenencias_expositor_mueble = pertenencias_expositor_mueble;
+    //     }
+    //   )
+    // }
   
   }
 
