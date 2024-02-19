@@ -24,7 +24,7 @@
 }
 
 
-.expositores-container {
+.elementos-container {
     display: flex;
     flex-direction: row;
 }

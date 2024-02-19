@@ -41,8 +41,8 @@ export class MueblesService {
     return this.http.get<muebles_auditoria[]>(this.API_URI + 'muebles_auditoria/' + id_auditoria);
   }
 
-  getAllMuebles(): Observable<muebles[]> {
-    return this.http.get<muebles[]>(this.API_URI);
+  getAllMuebles(): Observable<muebles_auditoria[]> {
+    return this.http.get<muebles_auditoria[]>(this.API_URI);
   }
 
   getMueblesTiendaByIdTienda(id_tienda: number): Observable<muebles[]> {
