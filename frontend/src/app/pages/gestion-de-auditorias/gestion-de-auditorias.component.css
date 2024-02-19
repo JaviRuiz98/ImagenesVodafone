@@ -35,6 +35,13 @@
   flex-direction: row;
 }
 
+.botonInforme {
+  margin-top: 5%;
+  width: 20%;
+  height: 50%;
+  min-height: 50px;
+  max-height: 80px;
+}
 /* h2{
   text-align: center;
 } */

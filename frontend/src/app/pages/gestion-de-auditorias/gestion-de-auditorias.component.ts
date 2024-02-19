@@ -101,6 +101,11 @@ export class GestionDeAuditoriasComponent implements OnInit {
         this.messageService.add({ severity: 'error', summary: 'Rechazado', detail: 'Auditoria global no creada' });
               
       }
-  });
+    });
+  }
+  enviarInforme(id_auditoria: number) {
+    this.auditoriaService.enviarInforme(id_auditoria).subscribe((response)=>{
+        
+    });
   }
 }

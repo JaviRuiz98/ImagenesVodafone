@@ -45,13 +45,14 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>             
-                <th>Id.</th>
+                <th>Id</th>
                 <th>SFID</th>
                 <th>Fecha inicio</th>
                 <th>Estado</th> 
                 <th>Progreso</th>
                 <th>Prog. visual</th>
                 <th>Opciones</th>
+                <th>Enviar informe</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-auditoria>            
@@ -69,17 +70,15 @@
                 <td class="opciones">         
                     <p-button class ="smallMarginRight" severity="danger" [raised]="true" [text]="true" [rounded]="true" label="Ir auditoría" icon="pi pi-pencil"  (click)="goToAuditoria(auditoria.id_auditoria)"></p-button>                    
                 </td>
+                <td>
+                    <p-button (click)="enviarInforme(auditoria.id_auditoria)" class="botonInforme" label="Atrás" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px'}" [disabled]="auditoria.estado !== 'finalizado'"></p-button>
+                </td>
             </tr>
         </ng-template>
-
         <ng-template pTemplate="emptymessage">
             <tr>
                 <td colspan="3">Todavía no hay auditorías en esta tienda</td>
             </tr>
         </ng-template>
-        
     </p-table>
-
-
-
 </div>
