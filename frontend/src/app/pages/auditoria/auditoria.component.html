@@ -36,11 +36,15 @@
               <div *ngIf="mueble.expositores.length == 1 && mueble.expositores[0] != undefined" class="anchoAltoSubirFoto">              
                 <app-paginador-procesamiento-subida  
                   class="anchoAltoPaginador"
-                  [id_expositor_selected]="mueble.expositores[0].elementos[0].id"
-                  [procesados]="mueble.expositores[0].elementos[0].procesados_imagenes" 
-                  [cargando_procesamiento]="cargas_procesamiento[mueble.expositores[0].elementos[0].id]"
-                  [valueSelected]="modos_visualizacion[mueble.expositores[0].elementos[0].id] === 'historial'? 'historial':'new'"
-                  (archivoSeleccionadoChange)="recibirFile($event, mueble.expositores[0].elementos[0].id, mueble.id)">
+                 >
+
+                 <!-- PASARLE LAS VARIABLES AL PAGINADOR, ESTA COMENTADO PARA QUE COMPILE
+                  
+                  [id_expositor_selected]="mueble.elementos[0].id"
+                 [procesados]="mueble.elementos[0].procesados_imagenes" 
+                 [cargando_procesamiento]="cargas_procesamiento[mueble.elementos[0].id]"
+                 [valueSelected]="modos_visualizacion[mueble.elementos[0].id] === 'historial'? 'historial':'new'"
+                 (archivoSeleccionadoChange)="recibirFile($event, mueble.elementos[0].id, mueble.id)" -->
                 </app-paginador-procesamiento-subida>            
               </div>
                 <!-- <div *ngIf="mueble.expositores.length == 2 && mueble.expositores[0] != undefined && mueble.expositores[1] != undefined" class="gridDoble" >

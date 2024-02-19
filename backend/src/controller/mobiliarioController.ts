@@ -66,7 +66,7 @@ export async function getMueblesAndExpositoresActivosByIdTienda(req: Request, re
 
 export async function getMueblesAndExpositoresWithProcesadosByIdAuditoria(req: Request, res: Response) {
     const id_auditoria = parseInt(req.params.id_auditoria);
-    const muebles: muebles[] = await mobiliarioService.getExpositoresAndElementosByIdAuditoria(id_auditoria);
+    const muebles: muebles[] = await mobiliarioService.getExpositoresAndElementosAndProcesadosByIdAuditoria(id_auditoria);
     if (!muebles) {
         res.status(204).send();;
     }

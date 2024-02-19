@@ -1,7 +1,7 @@
 import { muebles } from "@prisma/client";
 import db from "../config/database";
 
-import { ExpositorFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
+// import { ExpositorFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
 // import {expositoresConProcesados} from "../interfaces/expositoresProcesados"
 
 export const mobiliarioService = {
@@ -34,8 +34,7 @@ export const mobiliarioService = {
     //tipar
     async createMueble(mueble: any): Promise<any> {
         try {
-            const muebleCreated = await db.muebles.create({ data: mueble });
-            return mapearExpositoresParaFront(muebleCreated);
+           return await db.muebles.create({ data: mueble });
         } catch (error) {
             throw error;
         } finally {
@@ -56,6 +55,7 @@ export const mobiliarioService = {
     },
     async getAllMuebles(): Promise<muebles[]> {
         try {
+            
             const muebles = await db.muebles.findMany({
                 include: {
                     expositores: {
@@ -69,7 +69,6 @@ export const mobiliarioService = {
                                                     imagenes: true,
                                                 },
                                             },
-                                            //cojo el elemento activo
                                         },
                                         orderBy: {
                                             fecha: "desc",
@@ -83,20 +82,24 @@ export const mobiliarioService = {
                 },
             });
 
-            const mueblesFront = muebles.map((mueble) => {
-                let expositores: ExpositorFrontInterfaz[] = [];
-                expositores = mueble.expositores.map((expositor) =>
-                    mapearExpositoresParaFront(expositor)
-                );
+            const mueblesMapeados = muebles.map((mueble) => {
+                const expositores = mueble.expositores.map((expositor) => {
+                    const atributos = expositor.atributos_expositores.map((atributo) => {
+                        const elemento = atributo.pertenencia_elementos_atributos.map((pertenencia) => pertenencia.elementos)[0]; //quiero devolver el elemento activo
+                        return { ...atributo, elemento }; 
+                    });
+                    return { ...expositor, atributos_expositores: atributos }; 
+                });
 
-                return {
-                    id: mueble.id,
-                    nombre: mueble.nombre,
-                    expositores: expositores,
-                };
+
+        
+                return { ...mueble, expositores };
             });
+        
+            
+            
+            return mueblesMapeados;
 
-            return mueblesFront;
         } catch (error) {
             throw error;
         } finally {
@@ -206,55 +209,61 @@ export const mobiliarioService = {
         }
     },
 
-    async getExpositoresAndElementosByIdAuditoria(
+    async getExpositoresAndElementosAndProcesadosByIdAuditoria(
         id_auditoria: number
     ): Promise<any> {
         try {
-            throw new Error(
-                `No se implementado el getExpositoresAndElementosByIdAuditoria ${id_auditoria}`
-            );
+           
+            return  await db.muebles.findMany({
+                where: {
+                    expositores: {
+                        some:{
+                            pertenencia_elementos_auditoria: {
+                                some: {
+                                    id_auditoria: id_auditoria
+                                }
+                            }
+                        }
 
-            //     const muebles = await db.muebles.findMany({
-            //         where: {
-            //             expositores: {
-            //                 some:{
-            //                     pertenencia_elementos_auditoria: {
-            //                         some: {
-            //                             id_auditoria: id_auditoria
-            //                         }
-            //                     }
-            //                 }
+                    }
 
-            //             }
+                },
+                include: {
+                    expositores: {
+                       
+                        include: {
+                            atributos_expositores: {
+                                include: {
+                                    pertenencia_elementos_atributos:{
+                                        include: {
+                                            elementos:{
+                                                include: {
+                                                    imagenes: true
+                                                }
+                                            }
+                                               
+                                        }
+                                    }
+                                }
+                            }, 
+                            pertenencia_elementos_auditoria: {
+                                include: {
+                                    procesados_imagenes: {
+                                        include: {
+                                            imagenes: true,
+                                            prompts: true,
+                                            probabilidades_respuesta_carteles: true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
 
-            //         },
-            //         include: {
-            //            expositores: {
-            //                select: {
-            //                    id: true,
-            //                },
-            //                include: {
-            //                    atributos_expositores: {
-            //                        include: {
-            //                            pertenencia_elementos_atributos:{
-            //                             include: {
-            //                                 elementos:{
-            //                                     select:{
-            //                                         id: true,
-            //                                     }
-            //                                 }
-            //                             }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
+                }
 
-            //         }
+            });
 
-            //     });
-
-            //   return muebles
         } catch (error) {
             throw error;
         } finally {
@@ -262,23 +271,6 @@ export const mobiliarioService = {
         }
     },
 };
-
-function mapearExpositoresParaFront(expositor: any): ExpositorFrontInterfaz {
-    let elementos = [];
-
-    if (expositor.atributos_mueble) {
-        //siempre el primero, porque está ordenado por fecha mas reciente
-        elementos = expositor.atributos_mueble.map(
-            (atributos: any) => atributos.pertenencia_elementos_atributos[0].elementos
-        );
-    }
-
-    return {
-        id: expositor.id,
-        nombre: expositor.nombre ? expositor.nombre : undefined,
-        elementos: elementos,
-    };
-}
 
 // //NO FUNCIONA
 // function mapearResultadoParaFront(mueble: any): MuebleFrontInterfaz {

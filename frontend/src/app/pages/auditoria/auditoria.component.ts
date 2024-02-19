@@ -104,13 +104,14 @@ export class AuditoriaComponent implements OnInit{
     }
 
     getImagenModelo(expositor: expositores): string | undefined {
-      const elementoModelo: elementos | undefined = expositor.elementos.find((elemento) => elemento.id_categoria === 3);
+      // const elementoModelo: elementos | undefined = expositor.elementos.find((elemento) => elemento.id_categoria === 3);
       
-      if (elementoModelo) {
-        return elementoModelo.imagenes.url;
-      } else {
-        return undefined;
-      }
+      // if (elementoModelo) {
+      //   return elementoModelo.imagenes.url;
+      // } else {
+      //   return undefined;
+      // }
+      return "completar"
 
     }
     
