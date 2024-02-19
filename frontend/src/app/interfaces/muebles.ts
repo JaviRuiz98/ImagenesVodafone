@@ -1,8 +1,9 @@
-import { atributos_mueble_mueble } from "./atributos_mueble";
+import { expositores } from "./expositores";
+
 
 
 export interface muebles {
     id: number;
-    nombre_mueble: string;
-    relacion_elementos_mueble: atributos_mueble_mueble[];  
+    nombre: string;
+    expositores: expositores[];
 }

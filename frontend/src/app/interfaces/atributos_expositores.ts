@@ -1,6 +1,6 @@
 import { muebles } from "./muebles"
 
-export interface atributos_mueble_mueble {
+export interface atributos_expositores {
     id?: number; //null para crear
     mueble : muebles;
     x_min? : number;
