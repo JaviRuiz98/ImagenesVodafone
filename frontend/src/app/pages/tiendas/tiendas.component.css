@@ -1,7 +1,7 @@
 .paginaTiendaCompleta {
     display: grid;
     grid-template-rows: 20% 80%;
-    height: 88vh; 
+    height: 80vh; 
     width: 100vw;
 }
 .contenedorBotonNuevaTienda{

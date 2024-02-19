@@ -151,7 +151,7 @@ export class TiendasComponent implements OnInit{
           }
         })
         const mensajeDetalle = tienda.activa ? 'La tienda ha sido desactivada.' : 'La tienda ha sido activada.';
-        this.messageService.add({ severity: 'info', summary: 'Confirmado!', detail: mensajeDetalle });
+        this.messageService.add({ severity: 'success', summary: 'Confirmado!', detail: mensajeDetalle });
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
