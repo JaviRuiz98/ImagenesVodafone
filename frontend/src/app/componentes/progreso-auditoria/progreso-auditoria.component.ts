@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { AuditoriaService } from 'src/app/servicios/auditoria/auditoria.service';
 import { auditoria } from 'src/app/interfaces/auditoria';
 import { ButtonModule } from 'primeng/button';
@@ -26,7 +26,8 @@ import { BarraDeBarrasComponent } from '../barra-de-barras/barra-de-barras.compo
   ]
 
 })
-export class ProgresoAuditoriaComponent {
+export class ProgresoAuditoriaComponent implements OnInit {
+
 
   id_auditoria_seleccionada: number | undefined;
   auditoria_seleccionada: auditoria | undefined;
@@ -42,16 +43,31 @@ export class ProgresoAuditoriaComponent {
 
   ngOnInit(): void {
     this.id_auditoria_seleccionada = this.auditoriaService.id_auditoria_seleccionada;
+
+    this.actualizarProgresoAuditoria(this.auditoriaService.id_auditoria_seleccionada);
+
+  }
+
+  public actualizarProgresoAuditoria(id_auditoria: number) {
     this.auditoriaService.getAuditoriaById(this.auditoriaService.id_auditoria_seleccionada).subscribe(
       auditoria => {
         this.auditoria_seleccionada = auditoria
         console.log("auditoria_seleccionada", this.auditoria_seleccionada);
+        this.getBarraProgresoAuditoria(this.auditoriaService.id_auditoria_seleccionada);
+
       }, error => { 
         console.log(error) 
       }
     );
+  }
 
-    this.getBarraProgresoAuditoria(this.auditoriaService.id_auditoria_seleccionada);
+  getBarraProgresoAuditoria(id_auditoria_seleccionada: number) {
+    this.auditoriaService.getBarraProgresoAuditoria(id_auditoria_seleccionada).subscribe(
+      (data) => {
+        this.datos_barra_progreso = data;
+        console.log("barra de progreso", this.datos_barra_progreso);
+      }, (error) => { console.log(error) }
+    )
   }
 
   terminarAuditoria() {
@@ -81,12 +97,5 @@ export class ProgresoAuditoriaComponent {
     else return 'red';
   }
 
-  getBarraProgresoAuditoria(id_auditoria_seleccionada: number) {
-    this.auditoriaService.getBarraProgresoAuditoria(id_auditoria_seleccionada).subscribe(
-      (data) => {
-        this.datos_barra_progreso = data;
-        console.log("barra de progreso", this.datos_barra_progreso);
-      }, (error) => { console.log(error) }
-    )
-  }
+  
 }

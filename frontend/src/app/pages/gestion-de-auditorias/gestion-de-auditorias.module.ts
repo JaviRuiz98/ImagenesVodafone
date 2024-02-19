@@ -11,7 +11,8 @@ import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
-
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { BarraDeBarrasComponent } from 'src/app/componentes/barra-de-barras/barra-de-barras.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,9 @@ import { ConfirmationService, MessageService } from 'primeng/api';
     ToolbarModule,
     TableModule,
     TagModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    ProgressSpinnerModule,
+    BarraDeBarrasComponent
   ], 
   providers: [
     ConfirmationService,

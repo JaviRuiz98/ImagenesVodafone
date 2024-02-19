@@ -4,25 +4,25 @@ import db  from "../config/database";
 
 //tipo_procesado
 export const procesadoService = {
-    async create (id_expositor: number, id_imagen: number, id_auditoria: number, categoria: string, comentarios: string, valido: boolean, IA_utilizada: string, id_prompt_usado: number, id_probabilidad_cartel?: number, dispositivos_contados?: number, huecos_esperados?: number) {
+    async create (id_expositor: number, id_imagen: number, id_auditoria: number, categoria: number, comentarios: string, valido: boolean, IA_utilizada: string, id_prompt_usado: number, id_probabilidad_cartel?: number, dispositivos_contados?: number, huecos_esperados?: number) {
         try {
             const procesado = await db.procesados_imagenes.create({
                 data: {                
-                    id_expositor_auditoria: id_expositor,
+                    id: id_expositor,
                     id_imagen: id_imagen,                
                     id_auditoria: id_auditoria,
-                    categoria: categoria,
+                    id_categoria: categoria,
                     comentarios: comentarios,
                     valido: valido,
                     IA_utilizada: IA_utilizada,
-                    id_prompt_usado: id_prompt_usado,
+                    id_prompt: id_prompt_usado,
                     id_probabilidad_cartel: id_probabilidad_cartel,
                     dispositivos_contados: dispositivos_contados,
                     huecos_esperados: huecos_esperados,
                 }
             });
             
-            return procesado.id_procesado_imagen
+            return procesado.id;
         } catch (error) {
             console.log(error)
             throw error
@@ -36,7 +36,7 @@ export const procesadoService = {
     getById(id_procesado_imagen: number): Promise<procesados_imagenes | null> {
         return db.procesados_imagenes.findUnique({
             where: {
-                id_procesado_imagen: id_procesado_imagen
+                id: id_procesado_imagen
             },
             include: {
                 imagenes: true,
@@ -48,7 +48,7 @@ export const procesadoService = {
     borrarProcesado(id_procesado_imagen: number) {
         return db.procesados_imagenes.delete({
             where: {
-                id_procesado_imagen: id_procesado_imagen
+                id: id_procesado_imagen
             }
         })
     },
@@ -57,7 +57,7 @@ export const procesadoService = {
         
         return await db.procesados_imagenes.update({
             where: {
-                id_procesado_imagen: id_procesado_imagen
+                id: id_procesado_imagen
             },
             data: {
                 feedback_humano: feedback_Humano
@@ -65,10 +65,10 @@ export const procesadoService = {
         });
     },
 
-    async getProcesadosByIdExpositor(id_expositor_auditoria: number) {
+    async getProcesadosByIdExpositor(id_elementos_auditoria: number) {
         return await db.procesados_imagenes.findMany({
             where: {
-                id_expositor_auditoria: id_expositor_auditoria
+                id_elementos_auditoria: id_elementos_auditoria
             }
         })
     },
@@ -81,16 +81,16 @@ export const procesadoService = {
         })
     },
 
-    async getIdExpositorAuditoria(id_expositor: number,  id_auditoria: number): Promise<number | undefined> {
-        const pea = await db.pertenencia_expositor_auditoria.findMany({
+    async getIdExpositorAuditoria(id_elemento: number,  id_auditoria: number): Promise<number | undefined> {
+        const pea = await db.pertenencia_elementos_auditoria.findMany({
             where: {
-                id_expositor: id_expositor,
+                id_elemento: id_elemento,
                 id_auditoria: id_auditoria,
             
             }
         })
 
-        return pea[0]?.id_expositor_auditoria;
+        return pea[0]?.id;
     },
 
     async getIdProbabilidadCartelDadaProbabilidad(probabilidad_detectada: string) : Promise<number | null> {

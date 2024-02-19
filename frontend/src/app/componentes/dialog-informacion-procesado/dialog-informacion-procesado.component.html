@@ -1,5 +1,5 @@
 <div (mouseover)="open.toggle($event)" (mouseout)="onMouseOut($event)">
-    <p-tag *ngIf="procesado.categoria === 'carteles'" 
+    <p-tag *ngIf="procesado.categoria.toLowerCase() === 'carteles'" 
         class = "cursor-pointer "
         icon="pi pi-info-circle" 
         value="{{procesado.probabilidades_respuesta_carteles.probabilidad}}"
@@ -12,7 +12,7 @@
         [severity]="getSeverityDispositivos(procesado.dispositivos_contados, procesado.huecos_esperados)" 
     ></p-tag>     
 </div>
-<p-overlayPanel #open [showCloseIcon]="false">
+<p-overlayPanel #open [showCloseIcon]="false" [style]="{'width': '500px', 'max-height': '500px'}">
     <div *ngIf="procesado.categoria === 'carteles'">
         <span style="font-weight: bold;">· Probabilidad: </span>  
         <p-tag [severity]="getSeverityCartel(procesado.probabilidades_respuesta_carteles.probabilidad)" >

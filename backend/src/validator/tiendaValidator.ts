@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { expositoresService } from '../services/expositorService';
+import { elementosService } from '../services/expositorService';
 
 
 
@@ -47,7 +47,7 @@ export async function validateGetProcesadosByIdExpositor(req:Request, res:Respon
         return;
     }
 
-    const expositor = await expositoresService.getById(idExpositor);
+    const expositor = await elementosService.getById(idExpositor);
     if (!expositor) {
         res.status(404).json({ error: 'Expositor no encontrado' });
         return;

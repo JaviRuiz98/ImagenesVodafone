@@ -5,29 +5,50 @@
     align-content: center;
     grid-template-rows: 85% 15%;
 }
-
 .imagenProcesadaComentarios {
     display: grid;
     grid-template-rows: 70% 30%;
     width: 100%;
     height: 100%;
 }
-
 .anchoAltoImagenProcesada {
-    display: grid;
-    grid-template-columns: 90% 10%;
+    display: flex;
+    justify-content: center;
+    position: relative;
     width: 100%;
     height: 100%;
 }
-
 .contenedorImagen {
     display: flex;
     justify-content: center;
     align-items: center;
-    max-height: 250px;
+    height: 100%;
     width: auto;
 }
-
+.posicionDialog{
+    position: absolute;
+    right: 0;
+    margin-right: 5%;
+}
+.respuestaProcesado{
+    display: grid;
+    grid-template-rows: 70% 30%;
+    margin-left: 2%;
+}
+.comentariosRespuesta{
+    width: 100%;
+    height: 100%;
+}
+.promptBotones{
+    display: grid;
+    grid-template-columns: 60% 40%;
+    width: 100%;
+    height: 100%;
+}
+.valoracionBorrar{
+    display: flex;
+    justify-content: center;
+}
 ::ng-deep .p-image-preview-container>img {
     display: flex;
     justify-content: center;
@@ -35,7 +56,6 @@
     height: 100%;
     width: 100%;
 }
-
 ::ng-deep .p-image {
     height: 90%;
     width: auto;

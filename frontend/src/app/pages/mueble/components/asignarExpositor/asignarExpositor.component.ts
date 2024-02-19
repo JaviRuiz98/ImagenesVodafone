@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
-import { Expositor } from 'src/app/interfaces/expositor';
+import { elementos } from 'src/app/interfaces/elementos';
 import { EventEmitter } from '@angular/core';
 
 
@@ -12,12 +12,12 @@ export class AsignarExpositorComponent implements OnInit {
 
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
-  @Input() all_expositores: Expositor[] = [];
-  @Input() already_selected_expositores: Expositor[] = []
-  @Output () expositores_selected = new  EventEmitter<Expositor | null>();
+  @Input() all_expositores: elementos[] = [];
+  @Input() already_selected_expositores: elementos[] = []
+  @Output () expositores_selected = new  EventEmitter<elementos | null>();
 
   nombreFiltro: string = '';
-  selected_expositor: Expositor | null = null;
+  selected_expositor: elementos | null = null;
 
   constructor() { }
 

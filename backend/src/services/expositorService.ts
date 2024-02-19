@@ -1,21 +1,21 @@
-import { expositores,  muebles } from "@prisma/client";
+import { elementos,  muebles } from "@prisma/client";
 import db  from "../config/database";
 import { getDestination } from "../config/multer";
-import { imagenes, pertenencia_expositor_auditoria, pertenencia_expositor_mueble, regiones } from "@prisma/client";
+import { imagenes, regiones, pertenencia_elementos_auditoria } from "@prisma/client";
 
 
-export const expositoresService = {
+export const elementosService = {
 
-    async getById(id_expositor: number): Promise<expositores | null> {
+    async getById(id_elemento: number): Promise<elementos | null> {
         try{
-            return db.expositores.findUnique({
+            return db.elementos.findUnique({
                 where: {
-                  id: id_expositor
+                  id: id_elemento
                 }
             })
         }
         catch (error) {
-            console.error('No se pudo obtener el expositorio:', error);
+            console.error('No se pudo obtener el elementoio:', error);
             return null;
         } finally  {
             await db.$disconnect();
@@ -24,16 +24,16 @@ export const expositoresService = {
     },
 
 // repasar
-    async  getImage(id_image: number): Promise<imagenes> {
+    async  getImage(id_imagen: number): Promise<imagenes> {
         try {
           const image = await db.imagenes.findUnique({
             where: {
-              id_imagen: id_image
+              id: id_imagen
             }
           });
       
           if (!image) {
-            throw new Error(`No se encontró ninguna imagen con ID ${id_image}`);
+            throw new Error(`No se encontró ninguna imagen con ID ${id_imagen}`);
           }
       
           image.url = `${getDestination('imagenesReferencia')}/${image.url}`;
@@ -47,21 +47,10 @@ export const expositoresService = {
       },
       
 
-      async  getMueble(idExpositor: number): Promise<muebles | null> {
+      async  getMuebleById(id_elemento: number): Promise<muebles | null> {
         try {
-          const mueble = await db.muebles.findFirst({
-            where: {
-             pertenencia_expositor_mueble: {
-               some: {
-                 id_expositor: idExpositor,
-                 
-               },
-               
-             }
-            },
-        
-          });
-          return mueble
+         
+          throw new Error(`Método no implelemntado  ${id_elemento}`);
     
         } catch (error) {
          
@@ -72,18 +61,18 @@ export const expositoresService = {
       },
 
       //falta tipar
-     async createExpositor(expositor: any): Promise<expositores> {
+     async create(elemento: any): Promise<elementos> {
        try {
-         return await db.expositores.create({ data: expositor });
+         return await db.elementos.create({ data: elemento });
        } catch (error) {
          throw error;
        } finally {
          await db.$disconnect();
        }
      }, 
-     async updateExpositor(id_expositor: number, expositor: any): Promise<expositores | null> {
+     async update(id_elemento: number, elemento: any): Promise<elementos | null> {
        try {
-         return await db.expositores.update({ where: { id: id_expositor }, data: expositor });
+         return await db.elementos.update({ where: { id: id_elemento }, data: elemento });
         
        } catch (error) {
          throw error;
@@ -92,10 +81,10 @@ export const expositoresService = {
        }
      },
 
-     async getExpositores(categoria?: string): Promise<expositores[]> {
+     async getAll(categoria?: number): Promise<elementos[]> {
         try {
-          const whereClause = categoria!= null? { categoria: categoria } : {};
-          return await db.expositores.findMany({
+          const whereClause = categoria!= null? { id_categoria: categoria } : {};
+          return await db.elementos.findMany({
             where:whereClause,
             include: {
               regiones: true,
@@ -107,17 +96,17 @@ export const expositoresService = {
         }
       },
 
-      async deleteExpositor(id_expositor: number): Promise<expositores | null> {
+      async deleteElemento(id_elemento: number): Promise<elementos | null> {
         try {
-          return await db.expositores.delete({ where: { id: id_expositor } });
+          return await db.elementos.delete({ where: { id: id_elemento } });
         }catch (error) {
           throw error;
         }
       },
 
-      async guardarExpositor(nombre: string, activo: boolean, id_imagen: number, region: number, categoria: string, n_dispositivos?: number): Promise<expositores> {
+      async guardarElemento(nombre: string, activo: boolean, id_imagen: number, region: number, categoria: number): Promise<elementos> {
         try {
-          return await db.expositores.create({ data: { nombre: nombre, activo: activo, id_imagen: id_imagen, id_region: region, categoria: categoria, numero_dispositivos: n_dispositivos } });
+          return await db.elementos.create({ data: { nombre: nombre, activo: activo, id_imagen: id_imagen, id_region: region, id_categoria: categoria } });
           
         }catch (error) {
           console.log(error)
@@ -125,13 +114,13 @@ export const expositoresService = {
         }
       },
 
-      //ide auditoria -> objeto pertenencia_expositor_auditoria
+      //ide auditoria -> objeto pertenencia_elemento_auditoria
 
-      async peaByIdAuditoria(id_expositor_auditoria: number): Promise<pertenencia_expositor_auditoria | null>{
+      async peaByIdAuditoria(id_elemento_auditoria: number): Promise<pertenencia_elementos_auditoria | null>{
         try{
-          return await db.pertenencia_expositor_auditoria.findUnique({
+          return await db.pertenencia_elementos_auditoria.findUnique({
           where: {
-            id_expositor_auditoria: id_expositor_auditoria
+            id: id_elemento_auditoria
           }
           });
 
@@ -141,14 +130,14 @@ export const expositoresService = {
         }
       },
 
-      async editarEstadoExpositor(idExpositor: number, valActivo: boolean){
+      async editarEstadoelemento(idelemento: number, valActivo: boolean){
         try{
-          return await db.expositores.update({
-            where: {id: idExpositor },
+          return await db.elementos.update({
+            where: {id: idelemento },
             data: { activo: valActivo },
           });
         }catch(error){
-          console.error(`Error al intentar actualizar el estado del expositor ${idExpositor}:`, error);
+          console.error(`Error al intentar actualizar el estado del elemento ${idelemento}:`, error);
           throw error;
         }
 
@@ -161,27 +150,7 @@ export const expositoresService = {
           throw error;
         }
       },
-      async getExpositoresByIdMueble(id_mueble: number): Promise<pertenencia_expositor_mueble[] | undefined> {
-        
-        try {
-          return await db.pertenencia_expositor_mueble.findMany({
-            where: {
-              id_mueble: id_mueble
-            },
-            include: {
-              expositores: {
-                include:{
-                  imagenes: true
-                } 
-              },
-              muebles: true
-            }
-          })
-        }catch(error){
-          console.log(error)
-          throw error
-        }
-      }
+     
 
 }
 

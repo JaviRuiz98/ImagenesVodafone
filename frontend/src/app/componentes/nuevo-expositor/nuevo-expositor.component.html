@@ -1,18 +1,5 @@
- 
-<!-- <p-dialog 
-    [(visible)]="mostrar"
-    [style]="{height: '45%', width: '40%'  }" 
-    header="Crear un nuevo expositor" 
-    [modal]="true" 
-    [closable]="true" 
-    [draggable]="false" 
-    [resizable]="false" 
-    styleClass="p-fluid"
-    [closeOnEscape] = "false"
-    (onHide)="onDialogHidden()"
-    >  -->
-    
-    <div >
+
+    <ng-template pTemplate="content" style="display:flex; flex-direction: column; width: 10000px; height: 4000px">
         <p-toast position="top-center" key="tc"></p-toast>
         <div style="display: flex; flex-direction: row; width: 100%" height="100%">
             <form [formGroup]="nuevoExpositor_form" style="width: 50%">
@@ -52,4 +39,3 @@
         <button pButton  label="Guardar" icon="pi pi-check" class="p-button-text" (click)="nuevoGuardar()"style="width: 20%;"></button>
     </div>
 
-<!-- </p-dialog> -->
