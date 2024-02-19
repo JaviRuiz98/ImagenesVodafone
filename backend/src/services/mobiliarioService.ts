@@ -1,7 +1,7 @@
 import { muebles } from "@prisma/client";
 import db from "../config/database";
 
-import { ExpositorFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
+// import { ExpositorFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
 // import {expositoresConProcesados} from "../interfaces/expositoresProcesados"
 
 export const mobiliarioService = {
@@ -34,8 +34,7 @@ export const mobiliarioService = {
     //tipar
     async createMueble(mueble: any): Promise<any> {
         try {
-            const muebleCreated = await db.muebles.create({ data: mueble });
-            return mapearExpositoresParaFront(muebleCreated);
+           return await db.muebles.create({ data: mueble });
         } catch (error) {
             throw error;
         } finally {
@@ -56,6 +55,7 @@ export const mobiliarioService = {
     },
     async getAllMuebles(): Promise<muebles[]> {
         try {
+            
             const muebles = await db.muebles.findMany({
                 include: {
                     expositores: {
@@ -69,7 +69,6 @@ export const mobiliarioService = {
                                                     imagenes: true,
                                                 },
                                             },
-                                            //cojo el elemento activo
                                         },
                                         orderBy: {
                                             fecha: "desc",
@@ -83,20 +82,11 @@ export const mobiliarioService = {
                 },
             });
 
-            const mueblesFront = muebles.map((mueble) => {
-                let expositores: ExpositorFrontInterfaz[] = [];
-                expositores = mueble.expositores.map((expositor) =>
-                    mapearExpositoresParaFront(expositor)
-                );
+            
+            
+            
+            return muebles;
 
-                return {
-                    id: mueble.id,
-                    nombre: mueble.nombre,
-                    expositores: expositores,
-                };
-            });
-
-            return mueblesFront;
         } catch (error) {
             throw error;
         } finally {
@@ -262,23 +252,6 @@ export const mobiliarioService = {
         }
     },
 };
-
-function mapearExpositoresParaFront(expositor: any): ExpositorFrontInterfaz {
-    let elementos = [];
-
-    if (expositor.atributos_mueble) {
-        //siempre el primero, porque está ordenado por fecha mas reciente
-        elementos = expositor.atributos_mueble.map(
-            (atributos: any) => atributos.pertenencia_elementos_atributos[0].elementos
-        );
-    }
-
-    return {
-        id: expositor.id,
-        nombre: expositor.nombre ? expositor.nombre : undefined,
-        elementos: elementos,
-    };
-}
 
 // //NO FUNCIONA
 // function mapearResultadoParaFront(mueble: any): MuebleFrontInterfaz {

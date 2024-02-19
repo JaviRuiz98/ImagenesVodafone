@@ -7,6 +7,8 @@ import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { FormMuebleComponent } from './components/formMueble/formMueble.component';
 import { HistorialExpositoresComponent } from './components/historialExpositores/historialExpositores.component';
 import { PrimeNGConfig } from 'primeng/api';
+import { expositores } from 'src/app/interfaces/expositores';
+import { elementos } from 'src/app/interfaces/elementos';
 @Component({
   selector: 'app-mueble',
   templateUrl: './mueble.component.html',
@@ -133,6 +135,17 @@ export class MuebleComponent implements OnInit {
     this.ref.onMaximize.subscribe((value) => {
       this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
   });
+  }
+
+  getImagenModelo(expositor: expositores): string | undefined {
+    // const elementoModelo: elementos | undefined = expositor.elementos.find((elemento) => elemento.id_categoria === 3);
+    
+    // if (elementoModelo) {
+    //   return elementoModelo.imagenes.url;
+    // } else {
+    //   return undefined;
+    // }
+  return "hola jeje"
   }
 
 

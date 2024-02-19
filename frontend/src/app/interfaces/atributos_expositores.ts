@@ -1,3 +1,4 @@
+import { elementos } from "./elementos";
 import { muebles } from "./muebles"
 
 export interface atributos_expositores {
@@ -8,5 +9,6 @@ export interface atributos_expositores {
     y_min? : number;
     y_max? : number;
     id_categoria:number;
+    elemento: elementos;
 
 }
