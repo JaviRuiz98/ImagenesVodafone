@@ -19,17 +19,12 @@ export async function getAuditorias(req: Request, res: Response) {
         let auditoriasExtended: auditoria_extended[] = [];
 
         if(auditorias) {
-            //añado el num_expositores_auditoria
-            for (let i = 0; i < auditorias.length; i++) {
-                const num_expositores = await auditoriaService.getNumExpositoresByAuditoria(auditorias[i].id);
-                const num_expositores_procesados = await auditoriaService.getNumExpositoresProcesadosByAuditoria(auditorias[i].id);
-
-                auditoriasExtended[i] = {
-                        ...auditorias[i],
-                        num_expositores_procesados: num_expositores_procesados,
-                        num_expositores: num_expositores                    
-                }
-            }
+            const auditoriasExtendedPromesas = auditorias.map(auditoria => 
+                getAuditoriaExtendedDadoIdAuditoria(auditoria)
+            );
+              
+            auditoriasExtended = await Promise.all(auditoriasExtendedPromesas);
+              
             
         }
         
@@ -45,19 +40,11 @@ export async function getAuditoriaById(req: Request, res: Response) {
         const auditoria: auditorias | null = await auditoriaService.getAuditoriaById(id_auditoria);
         let auditoria_extended: auditoria_extended | null;
 
-        if(auditoria) {
-            //añado el num_expositores_auditoria
-            const num_expositores = await auditoriaService.getNumExpositoresByAuditoria(auditoria.id);
-            const num_expositores_procesados = await auditoriaService.getNumExpositoresProcesadosByAuditoria(auditoria.id);
-
-            auditoriasExtended = {
-                    ...auditoria,
-                    num_expositores_procesados: num_expositores_procesados,
-                    num_expositores: num_expositores                    
-            }            
-        }
-        
-        res.status(200).json(auditoriasExtended);    
+        if(auditoria) {           
+            auditoria_extended = await getAuditoriaExtendedDadoIdAuditoria(auditoria);         
+            res.status(200).json(auditoria_extended || null); 
+        }       
+           
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     }
@@ -66,9 +53,9 @@ export async function getAuditoriaById(req: Request, res: Response) {
 async function getAuditoriaExtendedDadoIdAuditoria(auditoria: auditorias): Promise<auditoria_extended> {
     try {
         const [num_expositores, num_expositores_procesados, datos_barra_progreso] = await Promise.all([
-          auditoriaService.getNumExpositoresByAuditoria(auditoria.id_auditoria),
-          auditoriaService.getNumExpositoresProcesadosByAuditoria(auditoria.id_auditoria),
-          getNumberArrayProgresoAuditoria(auditoria.id_auditoria)
+          auditoriaService.getNumExpositoresByAuditoria(auditoria.id),
+          auditoriaService.getNumExpositoresProcesadosByAuditoria(auditoria.id),
+          getNumberArrayProgresoAuditoria(auditoria.id)
         ]);
       
         const auditoria_extended: auditoria_extended = {
