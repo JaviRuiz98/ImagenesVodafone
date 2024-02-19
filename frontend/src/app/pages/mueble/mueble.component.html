@@ -29,7 +29,9 @@
         <ng-template pTemplate="header">
             <tr>
                 <th pSortableColumn="nombre">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
-                <th> Expositor </th>
+                <th> Expositor 
+
+                </th>
                 <th>Opciones</th>
             </tr>
             <tr>
@@ -49,11 +51,16 @@
       
 
                 <td [ngClass]=" mueble.expositores.length > 1 ?  'expositores-container':''">
+
+
                     <div *ngFor="let expositor of mueble.expositores" class="expositores-item">
-                        <p-image class ="imagenSimple" [src]="url_imagenes_referencias + getImagenModelo(expositor)"  height="100vh"  [alt]=" getImagenModelo(expositor)? getImagenModelo(expositor):'No disponible'"  [preview]="true"></p-image>
+                        
+                        <p-image *ngIf="tieneModelo(expositor.atributos_expositores)" class ="imagenSimple" [src]="url_imagenes_referencias + getImagenModelo(expositor)"  height="100vh"  [alt]=" getImagenModelo(expositor)? getImagenModelo(expositor):'No disponible'"  [preview]="true"></p-image>
+                        <div *ngIf="!tieneModelo(expositor.atributos_expositores)" class="flex align-items-center justify-content-center">-</div>
+
 
                     </div>
-                    <div *ngIf="mueble.expositores.length < 1" class="flex align-items-center justify-content-center">-</div>
+                  
                 </td>
 
 

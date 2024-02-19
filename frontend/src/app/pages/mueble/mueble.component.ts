@@ -9,12 +9,14 @@ import { HistorialExpositoresComponent } from './components/historialExpositores
 import { PrimeNGConfig } from 'primeng/api';
 import { expositores } from 'src/app/interfaces/expositores';
 import { elementos } from 'src/app/interfaces/elementos';
+import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
 @Component({
   selector: 'app-mueble',
   templateUrl: './mueble.component.html',
   styleUrls: ['./mueble.component.css']
 })
 export class MuebleComponent implements OnInit {
+
 
 
   muebles: muebles[] = [];
@@ -138,15 +140,22 @@ export class MuebleComponent implements OnInit {
   }
 
   getImagenModelo(expositor: expositores): string | undefined {
-    // const elementoModelo: elementos | undefined = expositor.elementos.find((elemento) => elemento.id_categoria === 3);
+    const atributoModelo: atributos_expositores | undefined = expositor.atributos_expositores.find((atributo) => atributo.id_categoria === 3);
+
     
-    // if (elementoModelo) {
-    //   return elementoModelo.imagenes.url;
-    // } else {
-    //   return undefined;
-    // }
-  return "hola jeje"
+    if (atributoModelo && atributoModelo.elemento) {
+      return atributoModelo.elemento.imagenes.url;
+    } else {
+      console.log("Hola");
+      return undefined;
+    }
+
   }
+  tieneModelo(atributos_expositores: atributos_expositores[]): boolean {
+    const atributoModelo: atributos_expositores | undefined = atributos_expositores.find((atributo) => atributo.id_categoria === 3);
+    return atributoModelo !== undefined;
+  }
+ 
 
 
 

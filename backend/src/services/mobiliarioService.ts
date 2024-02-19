@@ -82,10 +82,23 @@ export const mobiliarioService = {
                 },
             });
 
+            const mueblesMapeados = muebles.map((mueble) => {
+                const expositores = mueble.expositores.map((expositor) => {
+                    const atributos = expositor.atributos_expositores.map((atributo) => {
+                        const elemento = atributo.pertenencia_elementos_atributos.map((pertenencia) => pertenencia.elementos)[0]; //quiero devolver el elemento activo
+                        return { ...atributo, elemento }; 
+                    });
+                    return { ...expositor, atributos_expositores: atributos }; 
+                });
+
+
+        
+                return { ...mueble, expositores };
+            });
+        
             
             
-            
-            return muebles;
+            return mueblesMapeados;
 
         } catch (error) {
             throw error;
@@ -196,55 +209,61 @@ export const mobiliarioService = {
         }
     },
 
-    async getExpositoresAndElementosByIdAuditoria(
+    async getExpositoresAndElementosAndProcesadosByIdAuditoria(
         id_auditoria: number
     ): Promise<any> {
         try {
-            throw new Error(
-                `No se implementado el getExpositoresAndElementosByIdAuditoria ${id_auditoria}`
-            );
+           
+            return  await db.muebles.findMany({
+                where: {
+                    expositores: {
+                        some:{
+                            pertenencia_elementos_auditoria: {
+                                some: {
+                                    id_auditoria: id_auditoria
+                                }
+                            }
+                        }
 
-            //     const muebles = await db.muebles.findMany({
-            //         where: {
-            //             expositores: {
-            //                 some:{
-            //                     pertenencia_elementos_auditoria: {
-            //                         some: {
-            //                             id_auditoria: id_auditoria
-            //                         }
-            //                     }
-            //                 }
+                    }
 
-            //             }
+                },
+                include: {
+                    expositores: {
+                       
+                        include: {
+                            atributos_expositores: {
+                                include: {
+                                    pertenencia_elementos_atributos:{
+                                        include: {
+                                            elementos:{
+                                                include: {
+                                                    imagenes: true
+                                                }
+                                            }
+                                               
+                                        }
+                                    }
+                                }
+                            }, 
+                            pertenencia_elementos_auditoria: {
+                                include: {
+                                    procesados_imagenes: {
+                                        include: {
+                                            imagenes: true,
+                                            prompts: true,
+                                            probabilidades_respuesta_carteles: true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
 
-            //         },
-            //         include: {
-            //            expositores: {
-            //                select: {
-            //                    id: true,
-            //                },
-            //                include: {
-            //                    atributos_expositores: {
-            //                        include: {
-            //                            pertenencia_elementos_atributos:{
-            //                             include: {
-            //                                 elementos:{
-            //                                     select:{
-            //                                         id: true,
-            //                                     }
-            //                                 }
-            //                             }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
+                }
 
-            //         }
+            });
 
-            //     });
-
-            //   return muebles
         } catch (error) {
             throw error;
         } finally {
