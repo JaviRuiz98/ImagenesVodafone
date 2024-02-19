@@ -2,8 +2,8 @@
 import { elementosConProcesados } from "./expositoresProcesados";
 
 
-export interface MuebleFrontInterfaz {
+export interface ExpositorFrontInterfaz {
     id: number;
-    nombre_mueble?: string;
+    nombre?: string;
     elementos: elementosConProcesados[];
 }

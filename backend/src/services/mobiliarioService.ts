@@ -63,23 +63,29 @@ export const mobiliarioService = {
             const muebles = await db.muebles.findMany(
             {
                 include: {
-                    atributos_mueble: {
-                        include: {
-                            pertenencia_elementos_atributos:{
+                    expositores:{
+                        include:{
+                            atributos_expositores: {
                                 include: {
-                                    elementos: {
+                                    pertenencia_elementos_atributos:{
                                         include: {
-                                            imagenes: true,
-                                        }
+                                            elementos: {
+                                                include: {
+                                                    imagenes: true,
+                                                }
+                                            }
+                                        //cojo el elemento activo
+                                        }, orderBy: {
+                                            fecha: 'desc'
+                                        }, take: 1
+        
                                     }
-                                //cojo el elemento activo
-                                }, orderBy: {
-                                    fecha: 'desc'
-                                }, take: 1
-
+                                }
                             }
-                        }
-                    }
+                        },
+                        
+                    },
+                   
                 }
             }
             );
@@ -96,6 +102,7 @@ export const mobiliarioService = {
        
     },
     
+    async getExpositoresAndElementosByIdTienda(id_tienda:number){},
 
     async  getMueblesAndExpositoresActivosByIdTienda( id_tienda: number): Promise<MuebleFrontInterfaz[]> {
         if (!id_tienda) return this.getAllMuebles();
@@ -112,22 +119,27 @@ export const mobiliarioService = {
                    }
                },
                include: {
-                atributos_mueble: {
-                    include: {
-                        pertenencia_elementos_atributos:{
+                expositores:{
+                    include:{
+                        atributos_expositores: {
                             include: {
-                                elementos: {
+                                pertenencia_elementos_atributos:{
                                     include: {
-                                        imagenes: true,
-                                    }
+                                        elementos: {
+                                            include: {
+                                                imagenes: true,
+                                            }
+                                        }
+                                    }, orderBy: {
+                                        fecha: 'desc'
+                                    }, take: 1
+        
                                 }
-                            }, orderBy: {
-                                fecha: 'desc'
-                            }, take: 1
-
+                            }
                         }
                     }
                 }
+                
             }
            });
 
@@ -142,36 +154,48 @@ export const mobiliarioService = {
         }
     },
 
-    async getMueblesAndExpositoresWithProcesadosByIdAuditoria( id_auditoria: number): Promise<any> {
+    async getxpositoresWithProcesadosByIdAuditoria( id_auditoria: number): Promise<any> {
         try{
 
             const muebles = await db.muebles.findMany({
                 where: {
-                    pertenencia_elementos_auditoria: {
-                        some: {
-                            id_auditoria: id_auditoria
-                        }
-                    }
-                }, 
-                include: {
-                  pertenencia_elementos_auditoria:{
-                        include: {
-                            elementos: {
-                                include: {
-                                    imagenes: true,
-                                    regiones: true,
-                                    
-                                }
-                            },
-                            procesados_imagenes: {
-                                include: {
-                                    imagenes: true,
-                                    probabilidades_respuesta_carteles: true,
-                                    prompts: true
+                    expositores: {
+                        some:{
+                            pertenencia_elementos_auditoria: {
+                                some: {
+                                    id_auditoria: id_auditoria
                                 }
                             }
                         }
+                        
                     }
+                    
+                }, 
+                include: {
+                    expositores:{
+                        include:{
+              
+                        pertenencia_elementos_auditoria:{
+                            include: {
+                                elementos: {
+                                    include: {
+                                        imagenes: true,
+                                        regiones: true,
+                                        
+                                    }
+                                },
+                                procesados_imagenes: {
+                                    include: {
+                                        imagenes: true,
+                                        probabilidades_respuesta_carteles: true,
+                                        prompts: true
+                                    }
+                                }
+                            }
+                        }
+                        }
+                    }
+                  
                 }
                 
                 
