@@ -46,14 +46,34 @@ export class TiendasComponent implements OnInit{
 
   constructor(private TiendasService: TiendasService, private MueblesService: MueblesService, private messageService: MessageService, private ConfirmationService: ConfirmationService){}
   ngOnInit(): void {
+    this.getAllTiendas();
+    this.getAllMuebles();
+    this.inicializarSteps();
+  }
+  iniciarFormularioNuevaTienda(){
+    this.verFormularioNuevaTienda = true;
+    this.activeIndex = 0;
+    this.listaMueblesNuevaTienda = [];
+    this.editarTiendaCreada = false;
+    this.crearEditarTienda = 'Crear Tienda';
+    this.sfidInput = '';
+    this.comunidadInput = '';
+    this.cabeceraNuevaEditarTienda = 'Nueva Tienda';
+  }
+  getAllTiendas(){
     this.TiendasService.getAllTiendas().subscribe((response: tienda[]) => {
       this.tiendas = response;
       this.tiendasMostrar = response;
     })
+  }
+  getAllMuebles(){
     this.MueblesService.getAllMuebles().subscribe((response: muebles[]) => {
-      this.listaTodosMuebles = this.ordenarListaAlfabeticamente(response, 'nombre_mueble');
+      console.log(response);
+      this.listaTodosMuebles = this.ordenarListaAlfabeticamente(response, 'nombre');
       this.listaMueblesMostrar = this.listaTodosMuebles;
     });
+  }
+  inicializarSteps(){
     this.parametrosSteps = [
       {
         label: 'Datos Tienda',
@@ -75,16 +95,7 @@ export class TiendasComponent implements OnInit{
       }
     ];
   }
-  iniciarFormularioNuevaTienda(){
-    this.verFormularioNuevaTienda = true;
-    this.activeIndex = 0;
-    this.listaMueblesNuevaTienda = [];
-    this.editarTiendaCreada = false;
-    this.crearEditarTienda = 'Crear Tienda';
-    this.sfidInput = '';
-    this.comunidadInput = '';
-    this.cabeceraNuevaEditarTienda = 'Nueva Tienda';
-  }
+
   botonSiguiente(){
     if(this.sfidInput === '' || this.comunidadInput === ''){
       this.messageService.add({severity:'error', summary:'Error!', detail:'Los campos necesarios no estan completos.'});
