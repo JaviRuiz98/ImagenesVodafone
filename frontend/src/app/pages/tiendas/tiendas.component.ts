@@ -5,7 +5,6 @@ import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 
 import { tienda } from 'src/app/interfaces/tienda';
 import { muebles } from 'src/app/interfaces/muebles';
-import { muebles_auditoria } from 'src/app/interfaces/muebles_auditoria';
 
 @Component({
   selector: 'app-tiendas',
@@ -51,7 +50,7 @@ export class TiendasComponent implements OnInit{
       this.tiendas = response;
       this.tiendasMostrar = response;
     })
-    this.MueblesService.getAllMuebles().subscribe((response: muebles_auditoria[]) => {
+    this.MueblesService.getAllMuebles().subscribe((response: muebles[]) => {
       this.listaTodosMuebles = this.ordenarListaAlfabeticamente(response, 'nombre_mueble');
       this.listaMueblesMostrar = this.listaTodosMuebles;
     });
