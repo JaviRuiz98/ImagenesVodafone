@@ -87,26 +87,16 @@ async function getNumberArrayProgresoAuditoria(id_auditoria: number): Promise<nu
             return [];
         }
 
-        const categoriasInvalidas: boolean = expositores_auditoria.some(pea => {
-            const categoria = pea.expositores.categoria;
-            return categoria !== 'Carteles' && categoria !== 'Dispositivos';
-          });
 
-        if (categoriasInvalidas) {
-            return []; 
-          }
-
-
-          
-          // Si todas las categorías son válidas, procedemos con la transformación.
+          // procedemos con la transformación.
           const resultados_expositores: number[] = expositores_auditoria.map(pea => {
             if(pea.procesados_imagenes.length == 0) {
                 return 0;
             }
-            switch (pea.expositores.categoria) {
-              case 'Carteles':
+            switch (pea.elementos.id_categoria) {
+              case 1:
                 return pea.procesados_imagenes[0].id_probabilidad_cartel || 0;
-              case 'Dispositivos':
+              case 2:
                 const dispositivos_contados = pea.procesados_imagenes[0].dispositivos_contados;
                 const huecos_esperados = pea.procesados_imagenes[0].huecos_esperados;
                 if (dispositivos_contados != undefined && huecos_esperados != undefined) {

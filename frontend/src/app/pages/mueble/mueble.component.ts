@@ -7,7 +7,6 @@ import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { FormMuebleComponent } from './components/formMueble/formMueble.component';
 import { HistorialExpositoresComponent } from './components/historialExpositores/historialExpositores.component';
 import { PrimeNGConfig } from 'primeng/api';
-import { muebles_auditoria } from 'src/app/interfaces/muebles_auditoria';
 @Component({
   selector: 'app-mueble',
   templateUrl: './mueble.component.html',
@@ -16,7 +15,7 @@ import { muebles_auditoria } from 'src/app/interfaces/muebles_auditoria';
 export class MuebleComponent implements OnInit {
 
 
-  muebles: muebles_auditoria[] = [];
+  muebles: muebles[] = [];
  
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
@@ -83,7 +82,7 @@ export class MuebleComponent implements OnInit {
   editMueble(mueble: muebles) {
 
     this.ref = this.dialogService.open(FormMuebleComponent, {
-      header: 'Editar mueble ' + mueble.nombre_mueble ,
+      header: 'Editar mueble ' + mueble.nombre ,
       width: '70%',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,
@@ -122,7 +121,7 @@ export class MuebleComponent implements OnInit {
 
   showHistorial(mueble: muebles) {
     this.ref = this.dialogService.open(HistorialExpositoresComponent, {
-      header: 'Historial de expositores de ' + mueble.nombre_mueble,
+      header: 'Historial de expositores de ' + mueble.nombre,
       width: '70%',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,

@@ -58,10 +58,10 @@ export class ExpositoresComponent implements OnInit {
   resetTabla() {
     this.expositores = this.expositoresTodos;
     if(this.tableSelected == "dispositivos"){
-      this.expositores = this.expositores.filter(elementos => elementos.categoria == 2);
+      this.expositores = this.expositores.filter(elementos => elementos.id_categoria == 2);
       
     }else{
-      this.expositores = this.expositores.filter(elementos => elementos.categoria == 1);
+      this.expositores = this.expositores.filter(elementos => elementos.id_categoria == 1);
     }
   }
 
@@ -82,7 +82,7 @@ export class ExpositoresComponent implements OnInit {
       },
       nombre: '',
       activo: true,
-      categoria: 0,
+      id_categoria:1,
       procesados_imagenes: []
     };
     this.mostrarDialogoNuevoExpositor = true;

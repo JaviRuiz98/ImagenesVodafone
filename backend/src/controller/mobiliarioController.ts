@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { mobiliarioService } from '../services/mobiliarioService';
-import { MuebleFrontInterfaz } from '../interfaces/muebleFrontendInterfaces';
+import { muebles } from '@prisma/client';
+
 
 export async function getFilteredMuebles(req: Request, res: Response) {
     const id_tienda = req.body.id_tienda ? parseInt(req.body.id_tienda as string) : undefined;
@@ -18,7 +19,7 @@ export async function getFilteredMuebles(req: Request, res: Response) {
 
     */
 
-    const mobiliario: MuebleFrontInterfaz[] = await mobiliarioService.getFilteredMuebles(id_tienda, orden_clause, prompts_clause, ia_clause);
+    const mobiliario: muebles[] = await mobiliarioService.getFilteredMuebles(id_tienda, orden_clause, prompts_clause, ia_clause);
     res.status(200).json(mobiliario);
 
 }
@@ -56,7 +57,7 @@ export async function getAllMuebles(_req: Request, res: Response) {
 
 export async function getMueblesAndExpositoresActivosByIdTienda(req: Request, res: Response) {
     const id_tienda = parseInt(req.params.id_tienda);
-    const muebles: MuebleFrontInterfaz[] = await mobiliarioService.getMueblesAndExpositoresActivosByIdTienda(id_tienda);
+    const muebles: muebles[] = await mobiliarioService.getMueblesAndExpositoresActivosByIdTienda(id_tienda);
     if (!muebles) {
         res.status(204).send();;
     }
@@ -65,7 +66,7 @@ export async function getMueblesAndExpositoresActivosByIdTienda(req: Request, re
 
 export async function getMueblesAndExpositoresWithProcesadosByIdAuditoria(req: Request, res: Response) {
     const id_auditoria = parseInt(req.params.id_auditoria);
-    const muebles: MuebleFrontInterfaz[] = await mobiliarioService.getMueblesAndExpositoresWithProcesadosByIdAuditoria(id_auditoria);
+    const muebles: muebles[] = await mobiliarioService.getExpositoresAndElementosByIdAuditoria(id_auditoria);
     if (!muebles) {
         res.status(204).send();;
     }
