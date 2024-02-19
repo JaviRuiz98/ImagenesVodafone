@@ -24,7 +24,7 @@
 }
 
 
-.elementos-container {
+.expositores-container {
     display: flex;
     flex-direction: row;
 }
@@ -33,7 +33,7 @@
     text-align: center;
 } */
 
-.expositor-item {
+.expositores-item {
     margin-right: 2%; 
 }
 /* 

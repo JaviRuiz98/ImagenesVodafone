@@ -1,6 +1,7 @@
+import { elementos } from "./elementos";
 import { muebles } from "./muebles"
 
-export interface atributos_mueble_mueble {
+export interface atributos_expositores {
     id?: number; //null para crear
     mueble : muebles;
     x_min? : number;
@@ -8,5 +9,6 @@ export interface atributos_mueble_mueble {
     y_min? : number;
     y_max? : number;
     id_categoria:number;
+    elemento: elementos;
 
 }

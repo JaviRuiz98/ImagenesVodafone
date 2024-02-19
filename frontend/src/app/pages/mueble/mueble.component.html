@@ -3,7 +3,7 @@
 <!-- <app-ir-arriba></app-ir-arriba> -->
 <div class="paginaCompleta">
 
-        <p-table 
+        <p-table
             #miTabla
             class="table"
             [value]="muebles"
@@ -17,24 +17,24 @@
             [tableStyle]="{ 'min-width': '50rem' }"
             currentPageReportTemplate="Enseñando {first} de {last} de en total {totalRecords} muebles"
             [rowsPerPageOptions]="[10, 25, 50]"
-            [globalFilterFields]="['nombre_mueble' ]"
+            [globalFilterFields]="['nombre' ]"
     >
         <ng-template pTemplate="caption" >
             <div class="flex align-items-center justify-content-between">
                 <p class="p-m-0 text-2xl"> Muebles</p>
                 <p-button severity="danger"  label="Nuevo" icon="pi pi-plus" (onClick)="nuevoMueble()"></p-button>
-            </div>       
-            <p-progressSpinner *ngIf="(muebles.length == 0 )"   fill="var(--surface-ground)" [style]="{'width': '5%', 'height': '5%'}" animationDuration=".6s"  class="fadein animation-duration-1000 "></p-progressSpinner>    
+            </div>
+            <p-progressSpinner *ngIf="(muebles.length == 0 )"   fill="var(--surface-ground)" [style]="{'width': '5%', 'height': '5%'}" animationDuration=".6s"  class="fadein animation-duration-1000 "></p-progressSpinner>
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th pSortableColumn="nombre_mueble">Nombre <p-sortIcon field="nombre_mueble"></p-sortIcon></th>
-                <th> Modelo</th> 
+                <th pSortableColumn="nombre">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
+                <th> Expositor </th>
                 <th>Opciones</th>
             </tr>
             <tr>
                 <th>
-                    <p-columnFilter type="text" field="nombre_mueble"></p-columnFilter>
+                    <p-columnFilter type="text" field="nombre"></p-columnFilter>
                 </th>
                 <th></th>
                 <th></th>
@@ -42,24 +42,25 @@
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-mueble>
-            
+
             <tr>
-              
-                <td>{{ mueble.nombre_mueble }}</td>
-                
-                <td [ngClass]=" mueble.elementos.length > 1 ?  'elementos-container':''">
-                    <div *ngFor="let elemento of mueble.elementos" class="elementos-item">
-                        <p-image class ="imagenSimple" [src]="url_imagenes_referencias + elemento.imagenes.url"  height="100vh"  [alt]="elemento.imagenes.url"  [preview]="true"></p-image>
-                        
+
+                <td>{{ mueble.nombre }}</td>
+      
+
+                <td [ngClass]=" mueble.expositores.length > 1 ?  'expositores-container':''">
+                    <div *ngFor="let expositor of mueble.expositores" class="expositores-item">
+                        <p-image class ="imagenSimple" [src]="url_imagenes_referencias + getImagenModelo(expositor)"  height="100vh"  [alt]=" getImagenModelo(expositor)? getImagenModelo(expositor):'No disponible'"  [preview]="true"></p-image>
+
                     </div>
-                    <div *ngIf="mueble.elementos.length < 1" class="flex align-items-center justify-content-center">-</div>
+                    <div *ngIf="mueble.expositores.length < 1" class="flex align-items-center justify-content-center">-</div>
                 </td>
 
-                
-                <td class="opciones">         
+
+                <td class="opciones">
                     <p-button severity="danger" class="mr-2" [raised]="true" [text]="true" [rounded]="true" label="Editar" icon="pi pi-pencil"  (click)="editMueble(mueble)"></p-button>
-                    <p-button  [raised]="true"  [text]="true" [rounded]="true" severity="danger" label="Historial de elementos" icon="pi pi-history" [disabled]="mueble.elementos.length < 1" (click) ="showHistorial(mueble)"></p-button>
-                    
+                    <p-button  [raised]="true"  [text]="true" [rounded]="true" severity="danger" label="Historial de elementos" icon="pi pi-history" [disabled]="mueble.expositores.length < 1" (click) ="showHistorial(mueble)"></p-button>
+
                 </td>
             </tr>
         </ng-template>
@@ -69,7 +70,7 @@
                 <td colspan="3">No hay muebles</td>
             </tr>
         </ng-template>
-        
+
     </p-table>
 
 
