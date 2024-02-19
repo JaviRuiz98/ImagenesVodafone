@@ -5,30 +5,13 @@ import { mobiliarioService } from "./mobiliarioService";
 
 export const auditoriaService = {
 
-    async getAllAuditorias(): Promise<auditorias[]| null> {
-        try{
-            return db.auditorias.findMany({
-                include: {
-                    estados_auditoria: true,
-                    tiendas: true
-                }, orderBy: {
-                    id: 'desc'
-                }
-            })
-        }catch (error) {
-            console.error('No se pudo obtener el auditoria:', error);
-            throw error;
-        }finally  {
-            await db.$disconnect();
-        }
-    },
-
     async getAuditorias(id_tienda: number): Promise<auditorias[]| null> {
         try{
+
+            const whereClause = id_tienda != 0? { id_tienda: id_tienda } : { };
             return db.auditorias.findMany({
-                where: {
-                    id_tienda: id_tienda,
-                }, include: {
+                where: whereClause, 
+                include: {
                     estados_auditoria: true,
                     tiendas: true
                 }, orderBy: {
@@ -116,22 +99,6 @@ export const auditoriaService = {
                     }
                 }
             }
-            /*
-            const expositores: ({
-                id: number;
-                atributos_expositores: ({
-                    pertenencia_elementos_atributos: ({
-                        elementos: {
-                            id: number;
-                        };
-                    } & {
-                        id: number;
-                        id_atributos_mueble: number;
-                        id_elementos: number;
-                        fecha: Date;
-                    })[];
-                } 
-                */
 
             await Promise.all(promises);
 
@@ -166,7 +133,7 @@ export const auditoriaService = {
         try {
             return db.pertenencia_elementos_auditoria.findMany({
                 where: {
-                    id: id_auditoria
+                    id_auditoria: id_auditoria
                 },
                 include: {
                     procesados_imagenes: {
@@ -190,7 +157,7 @@ export const auditoriaService = {
         try {
             return db.pertenencia_elementos_auditoria.count({
                 where: {
-                    id: id_auditoria
+                    id_auditoria: id_auditoria
                 }
             })
         } catch (error) {
@@ -205,7 +172,7 @@ export const auditoriaService = {
         try {
             return db.pertenencia_elementos_auditoria.count({
                 where: {
-                    id: id_auditoria,
+                    id_auditoria: id_auditoria,
                     procesados_imagenes: {
                         some: {  }
                     }

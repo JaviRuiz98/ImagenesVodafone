@@ -120,19 +120,12 @@ export const mobiliarioService = {
                 },
                 include: {
                     expositores: {
-                        select: {
-                            id: true,
-                        },
                         include: {
                             atributos_expositores: {
                                 include: {
                                     pertenencia_elementos_atributos: {
                                         include: {
-                                            elementos: {
-                                                select: {
-                                                    id: true,
-                                                },
-                                            },
+                                            elementos: true,
                                         },
                                         orderBy: {
                                             fecha: "desc",

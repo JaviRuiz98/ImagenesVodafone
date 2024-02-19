@@ -9,12 +9,9 @@ export async function getAuditorias(req: Request, res: Response) {
     try {
         const id_tienda = parseInt(req.params.id_tienda as string);
 
-        let auditorias: auditorias[]|null;
-        if(id_tienda == 0) {
-            auditorias = await auditoriaService.getAllAuditorias();
-        } else {
-            auditorias = await auditoriaService.getAuditorias(id_tienda);
-        }
+        
+        const auditorias = await auditoriaService.getAuditorias(id_tienda);
+        
         
         let auditoriasExtended: auditoria_extended[] = [];
 
@@ -52,11 +49,15 @@ export async function getAuditoriaById(req: Request, res: Response) {
 
 async function getAuditoriaExtendedDadoIdAuditoria(auditoria: auditorias): Promise<auditoria_extended> {
     try {
+        console.log(auditoria)
+
         const [num_expositores, num_expositores_procesados, datos_barra_progreso] = await Promise.all([
           auditoriaService.getNumExpositoresByAuditoria(auditoria.id),
           auditoriaService.getNumExpositoresProcesadosByAuditoria(auditoria.id),
           getNumberArrayProgresoAuditoria(auditoria.id)
         ]);
+
+        console.log(num_expositores, num_expositores_procesados, datos_barra_progreso);
       
         const auditoria_extended: auditoria_extended = {
             ...auditoria,

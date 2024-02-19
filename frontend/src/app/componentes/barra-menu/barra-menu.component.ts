@@ -66,7 +66,7 @@ export class BarraMenuComponent implements OnInit {
 
   onTiendaSelected(){
     if (this.tiendaSeleccionada){
-      this.localStorageService.setItem('tiendas', this.tiendaSeleccionada.id_tienda );
+      this.localStorageService.setItem('tiendas', this.tiendaSeleccionada.id );
     }else{
       this.localStorageService.removeItem('tiendas');
     }
