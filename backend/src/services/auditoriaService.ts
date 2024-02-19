@@ -105,14 +105,33 @@ export const auditoriaService = {
             })
 
             // Almaceno todos los expositores que posee la auditoria en la tabla de auditoria_expositores
-            const expositores = await mobiliarioService.getExpositoresAndElementosByIdTienda(id_tienda);
+            const expositores: any[] = await mobiliarioService.getExpositoresAndElementosByIdTienda(id_tienda);
             const promises = [];
 
             for (const expositor of expositores) {
-                for (const elemento of expositor.elementos) {
-                    promises.push(auditoriaService.createPertenenciaExpositorAuditoria(auditoria.id, expositor, elemento));
+                for (const atributos_expositores of expositor.atributos_expositores) {
+                    for (const elemento of atributos_expositores.pertenencia_elementos_atributos) {
+                        
+                        promises.push(auditoriaService.createPertenenciaExpositorAuditoria(auditoria.id, expositor, elemento));
+                    }
                 }
             }
+            /*
+            const expositores: ({
+                id: number;
+                atributos_expositores: ({
+                    pertenencia_elementos_atributos: ({
+                        elementos: {
+                            id: number;
+                        };
+                    } & {
+                        id: number;
+                        id_atributos_mueble: number;
+                        id_elementos: number;
+                        fecha: Date;
+                    })[];
+                } 
+                */
 
             await Promise.all(promises);
 
