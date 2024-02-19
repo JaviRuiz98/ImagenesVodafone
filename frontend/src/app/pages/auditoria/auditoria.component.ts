@@ -9,6 +9,8 @@ import { auditoria } from 'src/app/interfaces/auditoria';
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 import { ProgresoAuditoriaComponent } from 'src/app/componentes/progreso-auditoria/progreso-auditoria.component';
 import { muebles } from 'src/app/interfaces/muebles';
+import { expositores } from 'src/app/interfaces/expositores';
+import { elementos } from 'src/app/interfaces/elementos';
 
 @Component({
   selector: 'auditoria',
@@ -100,4 +102,17 @@ export class AuditoriaComponent implements OnInit{
       //   }
       // }
     }
+
+    getImagenModelo(expositor: expositores): string | undefined {
+      const elementoModelo: elementos | undefined = expositor.elementos.find((elemento) => elemento.id_categoria === 3);
+      
+      if (elementoModelo) {
+        return elementoModelo.imagenes.url;
+      } else {
+        return undefined;
+      }
+
+    }
+    
+      
 }
