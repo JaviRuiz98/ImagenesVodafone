@@ -7,6 +7,7 @@ import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { FormMuebleComponent } from './components/formMueble/formMueble.component';
 import { HistorialExpositoresComponent } from './components/historialExpositores/historialExpositores.component';
 import { PrimeNGConfig } from 'primeng/api';
+import { muebles_auditoria } from 'src/app/interfaces/muebles_auditoria';
 @Component({
   selector: 'app-mueble',
   templateUrl: './mueble.component.html',
@@ -15,7 +16,7 @@ import { PrimeNGConfig } from 'primeng/api';
 export class MuebleComponent implements OnInit {
 
 
-  muebles: muebles[] = [];
+  muebles: muebles_auditoria[] = [];
  
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
@@ -46,7 +47,7 @@ export class MuebleComponent implements OnInit {
   private loadMuebles() {
    this.muebleService.getAllMuebles().subscribe(muebles => {
      
-     this.muebles = muebles; //this.separarExpositoresSegúnCategoria(muebles);
+     this.muebles = muebles; 
      console.log(this.muebles);
     
    
