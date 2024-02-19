@@ -21,10 +21,10 @@ export async function estadisticasPrompts(_req: Request, res: Response) {
         let estadisticas_prompts: estadisticaPrompts[] = [];
 
         for(let i=0; i<prompts_existentes.length; i++){
-            const feedbacks = await promptService.estadisticasPrompts( prompts_existentes[i].id_prompt );
+            const feedbacks = await promptService.estadisticasPrompts( prompts_existentes[i].id );
             if((feedbacks.length > 0)){
                 const estadistica: estadisticaPrompts = {
-                    id_prompt: prompts_existentes[i].id_prompt,
+                    id_prompt: prompts_existentes[i].id,
                     nombre_prompt: prompts_existentes[i].nombre_prompt,
                     likes: feedbacks.filter((feedback) => feedback.feedback_humano === true).length,
                     dislikes: feedbacks.filter((feedback) => feedback.feedback_humano === false).length,

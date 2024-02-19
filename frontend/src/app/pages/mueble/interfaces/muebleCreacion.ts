@@ -1,9 +1,8 @@
-import { Expositor } from "src/app/interfaces/expositor";
+import { atributos_mueble_mueble } from "src/app/interfaces/atributos_mueble";
+
 
 export interface MuebleCreacion  {
     id?: number;
     nombre_mueble: string;
-    numero_expositores_carteles: number;
-    numero_expositores_dispositivos: number;
-    expositores: Expositor[];  
+    relacion_elementos_muebles?: atributos_mueble_mueble[];
   }

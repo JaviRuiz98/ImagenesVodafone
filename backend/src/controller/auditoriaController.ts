@@ -53,9 +53,9 @@ export async function getAuditoriaById(req: Request, res: Response) {
 async function getAuditoriaExtendedDadoIdAuditoria(auditoria: auditorias): Promise<auditoria_extended> {
     try {
         const [num_expositores, num_expositores_procesados, datos_barra_progreso] = await Promise.all([
-          auditoriaService.getNumExpositoresByAuditoria(auditoria.id_auditoria),
-          auditoriaService.getNumExpositoresProcesadosByAuditoria(auditoria.id_auditoria),
-          getNumberArrayProgresoAuditoria(auditoria.id_auditoria)
+          auditoriaService.getNumExpositoresByAuditoria(auditoria.id),
+          auditoriaService.getNumExpositoresProcesadosByAuditoria(auditoria.id),
+          getNumberArrayProgresoAuditoria(auditoria.id)
         ]);
       
         const auditoria_extended: auditoria_extended = {
@@ -146,7 +146,7 @@ export async function createAuditoriaGlobal(_req: Request, res: Response) {
         // Creo todas las auditorias de forma secuencial
         const promises = [];
         for (let tienda of tiendas) {
-            promises.push(auditoriaService.createAuditoria(tienda.id_tienda));
+            promises.push(auditoriaService.createAuditoria(tienda.id));
         }
 
         await Promise.all(promises);

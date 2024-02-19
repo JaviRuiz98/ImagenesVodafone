@@ -2,7 +2,7 @@
 import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ExpositoresService } from 'src/app/servicios/expositores/expositores.service';
-import { Expositor } from 'src/app/interfaces/expositor';
+import { elementos } from 'src/app/interfaces/elementos';
 import { imagenes } from 'src/app/interfaces/imagenes';
 import { ExpositorModule } from './expositor.module';
 import { regiones } from 'src/app/interfaces/regiones';
@@ -25,10 +25,10 @@ export class ExpositoresComponent implements OnInit {
 
   cargando_procesamiento: boolean = false;
   imputSearch!: string;
-  expositores!: Expositor[];
-  expositoresSeleccionados!: Expositor[];
-  expositoresTodos!: Expositor[];
-  nuevoExpositor!: Expositor;
+  expositores!: elementos[];
+  expositoresSeleccionados!: elementos[];
+  expositoresTodos!: elementos[];
+  nuevoExpositor!: elementos;
   archivoSeleccionado!: File;
 
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
@@ -47,7 +47,7 @@ export class ExpositoresComponent implements OnInit {
   constructor(private router: Router, private expositoresService: ExpositoresService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
   inicializaExpositores() {
-    this.expositoresService.getExpositores().subscribe((expositores: Expositor[]) => {
+    this.expositoresService.getExpositores().subscribe((expositores: elementos[]) => {
       this.expositores = expositores;
       this.expositoresTodos = expositores;
       console.log("expositores", expositores);
@@ -58,10 +58,10 @@ export class ExpositoresComponent implements OnInit {
   resetTabla() {
     this.expositores = this.expositoresTodos;
     if(this.tableSelected == "dispositivos"){
-      this.expositores = this.expositores.filter(expositor => expositor.categoria == 'Dispositivos');
+      this.expositores = this.expositores.filter(elementos => elementos.categoria == 2);
       
     }else{
-      this.expositores = this.expositores.filter(expositor => expositor.categoria == 'Carteles');
+      this.expositores = this.expositores.filter(elementos => elementos.categoria == 1);
     }
   }
 
@@ -82,7 +82,7 @@ export class ExpositoresComponent implements OnInit {
       },
       nombre: '',
       activo: true,
-      categoria: "",
+      categoria: 0,
       procesados_imagenes: []
     };
     this.mostrarDialogoNuevoExpositor = true;
@@ -104,10 +104,10 @@ export class ExpositoresComponent implements OnInit {
 
 
 
-  activarDesactivarExpositores(expositor: Expositor) {
+  activarDesactivarExpositores(expositor: elementos) {
     //this.opcionMostrarCambia
 
-    this.expositoresService.cambiarActivo(expositor.id, !expositor.activo).subscribe((expositor: Expositor) => {
+    this.expositoresService.cambiarActivo(expositor.id, !expositor.activo).subscribe((expositor: elementos) => {
       this.inicializaExpositores();
       if(!expositor.activo){
         this.messageService.add({ severity: 'success', summary: 'Modificado con exito', detail: 'Expositor descatalogado' });
