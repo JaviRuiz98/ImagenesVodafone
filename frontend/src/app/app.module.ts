@@ -25,7 +25,7 @@ import { BarraDeBarrasComponent } from './componentes/barra-de-barras/barra-de-b
   ],
   imports: [
     BarraMenuComponent,
-  //  MuebleModule,
+    MuebleModule,
     ValidadorModule,
     AppRoutingModule,
     HomeModule,
