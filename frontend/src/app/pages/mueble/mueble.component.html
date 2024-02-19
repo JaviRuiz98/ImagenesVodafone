@@ -57,6 +57,10 @@
                         
                         <p-image *ngIf="tieneModelo(expositor.atributos_expositores)" class ="imagenSimple" [src]="url_imagenes_referencias + getImagenModelo(expositor)"  height="100vh"  [alt]=" getImagenModelo(expositor)? getImagenModelo(expositor):'No disponible'"  [preview]="true"></p-image>
                         <div *ngIf="!tieneModelo(expositor.atributos_expositores)" class="flex align-items-center justify-content-center">-</div>
+                        <div> 
+                            <p-button  [raised]="true"  [text]="true" [rounded]="true" severity="danger" label="Asignar elementos" icon="pi pi-plus-circle" [disabled]="!tieneModelo(expositor.atributos_expositores)" ></p-button>
+
+                        </div>
 
 
                     </div>
