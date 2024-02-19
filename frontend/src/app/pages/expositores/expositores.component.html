@@ -53,7 +53,7 @@
                     <p-image [src]="url_imagenes_referencias + expositor.imagenes.url" [alt]="expositor.imagenes.url" [width]="'auto'" [height]="'100px'" class="shadow-4" [preview]="true"></p-image>
                 </td>
                 <td>{{ expositor.nombre }}</td>
-                <td>{{ expositor.regiones.nombre }}</td>
+                <td>{{ expositor.region }}</td>
                 <td *ngIf="tableSelected === 'dispositivos'">{{ expositor.numero_dispositivos }}</td>
                 <td>
                     <p-button *ngIf="expositor.activo == 1" (mouseover)="descatalogar.toggle($event)" (click)="activarDesactivarExpositores(expositor)" icon="pi pi-eye-slash" [rounded]="true" [text]="true" severity="danger "></p-button>
