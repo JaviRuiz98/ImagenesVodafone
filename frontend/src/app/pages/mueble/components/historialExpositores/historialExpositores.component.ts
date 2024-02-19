@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { ExpositoresService } from 'src/app/servicios/expositores/expositores.service';
+import { ExpositoresService } from 'src/app/servicios/elementos/expositores.service';
 import { DatePipe } from '@angular/common';
 
 @Component({

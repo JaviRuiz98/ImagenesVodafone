@@ -3,7 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validator, ValidatorFn, Valida
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { elementos } from 'src/app/interfaces/elementos';
 import { muebles } from 'src/app/interfaces/muebles';
-import { ExpositoresService } from 'src/app/servicios/expositores/expositores.service';
+import { ExpositoresService } from 'src/app/servicios/elementos/expositores.service';
 import { MuebleCreacion } from '../../interfaces/muebleCreacion';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 
