@@ -5,7 +5,7 @@ import { auditoria } from '../../interfaces/auditoria';
 import { procesados_imagenes } from '../../interfaces/procesados_imagenes';
 import { BaseRouteReuseStrategy } from '@angular/router';
 import { muebles } from 'src/app/interfaces/muebles';
-import { muebles_auditoria } from 'src/app/interfaces/muebles_auditoria';
+
 
 @Injectable({
   providedIn: 'root'
@@ -43,9 +43,10 @@ export class AuditoriaService {
     return this.http.get<auditoria[]>(`${this.API_URI}/auditorias/${id_tienda}`);
   }
 
-  getMueblesAndExpositoresWithProcesadosByIdAuditoria(id_auditoria: number): Observable<muebles_auditoria[]> {
+  //No funciona esta ahora, tengo que cambiar el back
+  getMueblesAndExpositoresWithProcesadosByIdAuditoria(id_auditoria: number): Observable<muebles[]> {
 
-    return this.http.get<muebles_auditoria[]>(`${this.API_URI}/muebles_auditoria/${id_auditoria}`);
+    return this.http.get<muebles[]>(`${this.API_URI}/muebles_auditoria/${id_auditoria}`);
   }
 
   terminarAuditoria(id_auditoria: number): Observable<any> {

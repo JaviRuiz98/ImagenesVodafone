@@ -46,7 +46,7 @@ export class MuebleComponent implements OnInit {
   private loadMuebles() {
    this.muebleService.getAllMuebles().subscribe(muebles => {
      
-     this.muebles = muebles; //this.separarExpositoresSegúnCategoria(muebles);
+     this.muebles = muebles; 
      console.log(this.muebles);
     
    
@@ -82,7 +82,7 @@ export class MuebleComponent implements OnInit {
   editMueble(mueble: muebles) {
 
     this.ref = this.dialogService.open(FormMuebleComponent, {
-      header: 'Editar mueble ' + mueble.nombre_mueble ,
+      header: 'Editar mueble ' + mueble.nombre ,
       width: '70%',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,
@@ -121,7 +121,7 @@ export class MuebleComponent implements OnInit {
 
   showHistorial(mueble: muebles) {
     this.ref = this.dialogService.open(HistorialExpositoresComponent, {
-      header: 'Historial de expositores de ' + mueble.nombre_mueble,
+      header: 'Historial de expositores de ' + mueble.nombre,
       width: '70%',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,

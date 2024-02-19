@@ -1,6 +1,6 @@
 import db  from "../config/database";
 import { auditorias, elementos } from '@prisma/client';
-import { MuebleFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
+import { ExpositorFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
 import { mobiliarioService } from "./mobiliarioService";
 
 export const auditoriaService = {
@@ -62,11 +62,11 @@ export const auditoriaService = {
         }
     },
 
-    async createPertenenciaExpositorAuditoria(id_auditoria: number, mueble: MuebleFrontInterfaz, elemento: elementos) {
+    async createPertenenciaExpositorAuditoria(id_auditoria: number, expositor: ExpositorFrontInterfaz, elemento: elementos) {
         await db.pertenencia_elementos_auditoria.create({
             data: {
                 id_auditoria: id_auditoria,
-                id_mueble: mueble.id,
+                id_expositor: expositor.id,
                 id_elemento: elemento.id
             }
         });
@@ -105,14 +105,33 @@ export const auditoriaService = {
             })
 
             // Almaceno todos los expositores que posee la auditoria en la tabla de auditoria_expositores
-            const muebles: MuebleFrontInterfaz[] = await mobiliarioService.getMueblesAndExpositoresActivosByIdTienda(id_tienda);
+            const expositores: any[] = await mobiliarioService.getExpositoresAndElementosByIdTienda(id_tienda);
             const promises = [];
 
-            for (const mueble of muebles) {
-                for (const elemento of mueble.elementos) {
-                    promises.push(auditoriaService.createPertenenciaExpositorAuditoria(auditoria.id, mueble, elemento));
+            for (const expositor of expositores) {
+                for (const atributos_expositores of expositor.atributos_expositores) {
+                    for (const elemento of atributos_expositores.pertenencia_elementos_atributos) {
+                        
+                        promises.push(auditoriaService.createPertenenciaExpositorAuditoria(auditoria.id, expositor, elemento));
+                    }
                 }
             }
+            /*
+            const expositores: ({
+                id: number;
+                atributos_expositores: ({
+                    pertenencia_elementos_atributos: ({
+                        elementos: {
+                            id: number;
+                        };
+                    } & {
+                        id: number;
+                        id_atributos_mueble: number;
+                        id_elementos: number;
+                        fecha: Date;
+                    })[];
+                } 
+                */
 
             await Promise.all(promises);
 

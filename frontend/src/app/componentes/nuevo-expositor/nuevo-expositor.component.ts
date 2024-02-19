@@ -92,7 +92,7 @@ export class NuevoExpositorComponent implements OnInit {
       },
       nombre: '',
       activo: true,
-      categoria: this.categoriaPredefinida,
+      id_categoria: this.categoriaPredefinida,
       procesados_imagenes: []
     };
     this.submitted = false;

@@ -9,6 +9,6 @@ export interface elementos {
     region: regiones;
     nombre: string;
     activo: boolean;
-    categoria:number;
+    id_categoria:number;
     procesados_imagenes: procesados_imagenes[];
 }

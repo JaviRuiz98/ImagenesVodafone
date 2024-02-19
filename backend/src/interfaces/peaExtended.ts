@@ -1,6 +1,6 @@
-import { pertenencia_expositor_auditoria, expositores, procesados_imagenes } from "@prisma/client";
+import {  procesados_imagenes, elementos, pertenencia_elementos_auditoria } from "@prisma/client";
 
-export interface pea_extended extends pertenencia_expositor_auditoria {
-    expositores: expositores,
+export interface pea_extended extends pertenencia_elementos_auditoria {
+    elementos: elementos,
     procesados_imagenes: procesados_imagenes[]
 }

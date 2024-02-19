@@ -29,8 +29,7 @@
         <ng-template pTemplate="header">
             <tr>
                 <th pSortableColumn="nombre_mueble">Nombre <p-sortIcon field="nombre_mueble"></p-sortIcon></th>
-                <th> Expositores con dispositivos</th> 
-                <th> Expositores con carteles </th>
+                <th> Modelo</th> 
                 <th>Opciones</th>
             </tr>
             <tr>
@@ -48,23 +47,18 @@
               
                 <td>{{ mueble.nombre_mueble }}</td>
                 
-                <td [ngClass]=" mueble.expositores_dispositivos.length > 1 ?  'expositores-container':''">
-                    <div *ngFor="let expositor of mueble.expositores_dispositivos" class="expositor-item">
-                        <p-image class ="imagenSimple" [src]="url_imagenes_referencias + expositor.imagenes.url"  height="100vh"  [alt]="expositor.imagenes.url"  [preview]="true"></p-image>
+                <td [ngClass]=" mueble.elementos.length > 1 ?  'elementos-container':''">
+                    <div *ngFor="let elemento of mueble.elementos" class="elementos-item">
+                        <p-image class ="imagenSimple" [src]="url_imagenes_referencias + elemento.imagenes.url"  height="100vh"  [alt]="elemento.imagenes.url"  [preview]="true"></p-image>
+                        
                     </div>
-                    <div *ngIf="mueble.expositores_dispositivos.length < 1" class="flex align-items-center justify-content-center">-</div>
+                    <div *ngIf="mueble.elementos.length < 1" class="flex align-items-center justify-content-center">-</div>
                 </td>
 
-                <td [ngClass]=" mueble.expositores_carteles.length > 1 ?  'expositores-container':''">
-                    <div *ngFor="let expositor of mueble.expositores_carteles" class="expositor-item">
-                        <p-image class ="imagenSimple" [src]="url_imagenes_referencias + expositor.imagenes.url"  height="100vh"  [alt]="expositor.imagenes.url"  [preview]="true"></p-image>
-                    </div>
-                    <div *ngIf="mueble.expositores_carteles.length < 1" class="flex align-items-center justify-content-center">-</div>
-                </td>
-             
+                
                 <td class="opciones">         
                     <p-button severity="danger" class="mr-2" [raised]="true" [text]="true" [rounded]="true" label="Editar" icon="pi pi-pencil"  (click)="editMueble(mueble)"></p-button>
-                    <p-button  [raised]="true"  [text]="true" [rounded]="true" severity="danger" label="Historial de expositores" icon="pi pi-history" [disabled]="mueble.expositores.length < 1" (click) ="showHistorial(mueble)"></p-button>
+                    <p-button  [raised]="true"  [text]="true" [rounded]="true" severity="danger" label="Historial de elementos" icon="pi pi-history" [disabled]="mueble.elementos.length < 1" (click) ="showHistorial(mueble)"></p-button>
                     
                 </td>
             </tr>
