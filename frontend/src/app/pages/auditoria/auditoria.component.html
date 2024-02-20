@@ -3,37 +3,36 @@
     <div class="floatintPanel" *ngIf="this.id_auditoria_seleccionada !== 0">
       <app-progreso-auditoria #progresoRef></app-progreso-auditoria>
     </div>    
-    <div *ngFor="let mueble of this.muebles" class="contornoPanel">
-      <p-panel [style]="{'border': '1px solid black', 'margin-bottom': '20px'}">
+    <div *ngFor="let mueble of this.muebles" class="divPanelCompleto">
+      <p-panel class="contornoPanel">
         <ng-template pTemplate="header">
-          <div class="custom-header" >
+          <div class="cabeceraTabla" >
             Mueble {{mueble.nombre !== undefined ? ' - ' + mueble.nombre : mueble.id}}
-            
             <p-progressSpinner *ngIf="mueble.elementos[0] != undefined? cargas_procesamiento[mueble.elementos[0].id]: false" 
-              class="spinner" strokeWidth="6" fill="var(--surface-ground)" animationDuration=".6s"
-              [style]="{'width': '30px', 'height': '30px'}"></p-progressSpinner> 
+            class="spinner" strokeWidth="6" fill="var(--surface-ground)" animationDuration=".6s"
+            [style]="{'width': '30px', 'height': '30px'}"></p-progressSpinner> 
           </div>
         </ng-template>
-          <div class="panelCompleto " *ngIf="mueble.elementos != undefined">
-            <div class="panelIzquierda" >
-              <div   class="anchoAltoFotoReferencia" >
-                <div *ngFor=" let elemento of mueble.elementos ">
-                  <p-image [src]="url_imagenes_referencias + elemento.imagenes.url" [alt]="elemento.imagenes.url" [preview]="true"></p-image>
-                </div>
-              </div>
-            </div>
-            <div class="panelDerecha">
-              <div *ngFor=" let elemento of mueble.elementos ">              
-                <app-paginador-procesamiento-subida class="anchoAltoPaginador">                  
-                  [id_expositor_selected]="elemento.id"
-                  [procesados]="elemento.procesados_imagenes" 
-                  [cargando_procesamiento]="cargas_procesamiento[elemento.id]"
-                  [valueSelected]="modos_visualizacion[elemento.id] === 'historial'? 'historial':'new'"
-                  (archivoSeleccionadoChange)="recibirFile($event, elemento.id, mueble.id)"
-                </app-paginador-procesamiento-subida>            
+        <div class="panelDerechaIzquierda" *ngIf="mueble.elementos != undefined">
+          <div class="panelIzquierda" >
+            <div class="anchoAltoFotoReferencia">
+              <div *ngFor=" let elemento of mueble.elementos ">
+                <p-image [src]="url_imagenes_referencias + elemento.imagenes.url" [alt]="elemento.imagenes.url" [preview]="true"></p-image>
               </div>
             </div>
           </div>
+          <div class="panelDerecha">
+            <div *ngFor=" let elemento of mueble.elementos" [style]="{'width': '100%', 'height':'100%'}">              
+              <app-paginador-procesamiento-subida class="anchoAltoPaginador">                  
+                [id_expositor_selected]="elemento.id"
+                [procesados]="elemento.procesados_imagenes" 
+                [cargando_procesamiento]="cargas_procesamiento[elemento.id]"
+                [valueSelected]="modos_visualizacion[elemento.id] === 'historial'? 'historial':'new'"
+                (archivoSeleccionadoChange)="recibirFile($event, elemento.id, mueble.id)"
+              </app-paginador-procesamiento-subida>            
+            </div>
+          </div>
+        </div>
       </p-panel>
     </div>
     <!-- <app-ir-arriba></app-ir-arriba> -->
