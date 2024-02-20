@@ -18,7 +18,8 @@
             </div>
             <div class="formulario" *ngIf="activeIndex === 1">
                 <p-pickList [source]="listaMueblesMostrar" [target]="listaMueblesNuevaTienda" sourceHeader="Muebles disponibles"  targetHeader="Muebles nueva tienda" 
-                filterBy="nombre" sourceFilterPlaceholder="Buscar por nombre" targetFilterPlaceholder="Buscar por nombre" [dragdrop]="true" [responsive]="true">
+                filterBy="nombre" sourceFilterPlaceholder="Buscar por nombre" targetFilterPlaceholder="Buscar por nombre" [dragdrop]="true" [responsive]="true"
+                [showSourceControls] = "false" [showTargetControls] = "false">
                     <ng-template let-mueble pTemplate="item">
                         <div class="contenedorMuebleArrastras">
                             <div class="anchoAltoDescripcionFotoReferencia">
