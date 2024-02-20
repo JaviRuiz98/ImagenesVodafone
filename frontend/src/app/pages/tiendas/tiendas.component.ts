@@ -130,7 +130,7 @@ export class TiendasComponent implements OnInit{
     this.sfidInput = tienda.sfid;
     this.comunidadInput = 'prueba';
     this.MueblesService.getMueblesTiendaByIdTienda(tienda.id_tienda).subscribe((response: muebles[]) => {
-      this.listaMueblesNuevaTienda = response;
+      this.listaMueblesNuevaTienda = this.ordenarListaAlfabeticamente(response, 'nombre');
     })
     this.activeIndex = 1;
     this.verFormularioNuevaTienda = true;
