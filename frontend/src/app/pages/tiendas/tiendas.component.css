@@ -114,7 +114,9 @@
     background-color: #f70802a1;
     color: white;
 }
-
+::ng-deep .pi{
+    cursor: pointer;
+}
 
 ::ng-deep .p-orderlist .p-orderlist-controls .p-button {
     background: red;
