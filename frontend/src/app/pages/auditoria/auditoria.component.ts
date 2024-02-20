@@ -113,7 +113,7 @@ export class AuditoriaComponent implements OnInit{
       //   return undefined;
       // }
       // return "completar"
-      return
+      return '';
     }
     
       
