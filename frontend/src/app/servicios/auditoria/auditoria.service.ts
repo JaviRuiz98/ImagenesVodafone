@@ -46,7 +46,7 @@ export class AuditoriaService {
   //No funciona esta ahora, tengo que cambiar el back
   getMueblesAndExpositoresWithProcesadosByIdAuditoria(id_auditoria: number): Observable<muebles[]> {
 
-    return this.http.get<muebles[]>(`${this.API_URI}/muebles_auditoria/${id_auditoria}`);
+    return this.http.get<muebles[]>(`${this.API_URI}/auditoria_elementos_procesados/${id_auditoria}`);
   }
 
   terminarAuditoria(id_auditoria: number, enviar_informe: boolean): Observable<any> {

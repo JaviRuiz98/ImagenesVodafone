@@ -162,8 +162,12 @@ export const auditoriaService = {
                     id_auditoria: id_auditoria
                 }, include: {
                     muebles: true,
-                    elementos: true,
-                    procesados_imagenes: true
+                    elementos: {
+                        include: {
+                            imagenes: true
+                        }
+                    },
+                    procesados_imagenes: true,                
                 }
             })
         } catch (error) {

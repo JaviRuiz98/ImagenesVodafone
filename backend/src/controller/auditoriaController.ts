@@ -1,10 +1,9 @@
 import { Request, Response } from 'express';
 import { auditoriaService } from '../services/auditoriaService';
 import { auditoria_extended } from '../interfaces/auditoriaExtended';
-import { auditorias, pertenencia_elementos_auditoria } from '@prisma/client';
+import { auditorias } from '@prisma/client';
 import { tiendaService } from '../services/tiendasServices';
 import { pea_extended } from '../interfaces/peaExtended';
-import { agruparDadoMismoId } from '../utils/funcionesCompartidasController';
 
 export async function getAuditorias(req: Request, res: Response) {
     try {
@@ -71,19 +70,76 @@ async function getAuditoriaExtendedDadoIdAuditoria(auditoria: auditorias): Promi
     }      
 }
 
+interface Imagen {
+    id: number;
+    url: string;
+    nombre_archivo: null | string;
+}
+
+interface Elemento {
+    id: number;
+    id_imagen: number;
+    id_region: number;
+    nombre: string;
+    activo: boolean;
+    id_categoria: number;
+    imagenes: Imagen;
+    procesados_imagenes: any[]; // Ajusta el tipo de acuerdo a tus datos
+}
+
+interface Mueble {
+    id: number;
+    nombre: string;
+}
+
+interface DataItem {
+    id: number;
+    id_auditoria: number;
+    id_mueble: number;
+    id_elemento: number;
+    muebles: Mueble;
+    elementos: Elemento;
+    procesados_imagenes: any[]; // Ajusta el tipo de acuerdo a tus datos
+}
+
+interface MuebleConElementos extends Mueble {
+    elementos: Elemento[];
+}
+
+
 export async function getElementosProcesadosAuditoria(req: Request, res: Response) {
     try {
         const id_auditoria = parseInt(req.params.id_auditoria);
 
-        const per_ele_aud_brutos: pertenencia_elementos_auditoria[] | undefined = await auditoriaService.getPertenenciasElementosAuditoria(id_auditoria);
-
-        const per_ele_aud_netos = agruparDadoMismoId(per_ele_aud_brutos, 'id_mueble');
+        const per_ele_aud_brutos: any[] | undefined = await auditoriaService.getPertenenciasElementosAuditoria(id_auditoria);
+        
+        const per_ele_aud_netos = agruparElementosMueblesAuditorias(per_ele_aud_brutos);
         res.status(200).json(per_ele_aud_netos);
-        console.log(per_ele_aud_netos)
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     } 
 
+}
+
+function agruparElementosMueblesAuditorias(per_ele_aud_brutos: DataItem[]) {
+
+    const resultado: MuebleConElementos[] = per_ele_aud_brutos.reduce((acc: MuebleConElementos[], item: DataItem) => {
+        let mueble = acc.find((m: MuebleConElementos) => m.id === item.muebles.id);
+        if (!mueble) {
+            mueble = {
+                ...item.muebles,
+                elementos: []
+            };
+            acc.push(mueble);
+        }
+        mueble.elementos.push({
+            ...item.elementos,
+            procesados_imagenes: item.procesados_imagenes
+        });
+        return acc;
+    }, []);
+
+    return resultado;
 }
 
 export async function getBarraProgresoAuditoria(req: Request, res: Response) {
