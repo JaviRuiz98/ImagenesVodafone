@@ -99,7 +99,9 @@ export class ProgresoAuditoriaComponent implements OnInit {
       },
       reject: () => {
         this.messageService.add({ severity: 'error', summary: '', detail: 'Acción cancelada' });
-      }
+      },
+      acceptButtonStyleClass: 'p-button-danger',
+      rejectButtonStyleClass: 'p-button-danger'
     });
   }
   enviarInforme(){

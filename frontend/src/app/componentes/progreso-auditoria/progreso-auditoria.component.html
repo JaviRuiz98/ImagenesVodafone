@@ -12,12 +12,14 @@
             [severity]="'danger'"
             label="Terminar auditoria"
         ></p-button>
-        <p-dialog header="Informe" [(visible)]="verDialogInforme" [draggable]="false" [style]="{width: '50vw'}">
-            <p>
+        <p-dialog header="Informe" [(visible)]="verDialogInforme" [draggable]="false" [style]="{width: '50vw'}" class="informe">
+            <div class="p-dialog-title">
                 Seleccione en qué formato desea el informe.
-            </p>
-            <p-button (click)="enviarInforme()" label="Enviar" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px'}" ></p-button>
-            <p-button (click)="descargarInforme()" label="Descargar" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px'}" ></p-button>
+            </div>
+            <div class="p-dialog-footer" style="padding: 0;">
+                <p-button (click)="enviarInforme()" [severity]="'danger'" label="Enviar por correo" icon="pi pi-envelope" [style]="{'cursor': 'pointer'}"></p-button>
+                <p-button (click)="descargarInforme()" [severity]="'danger'" label="Descargar" icon="pi pi-download" [style]="{'cursor': 'pointer'}"></p-button>
+            </div>
         </p-dialog>
     </div>
     <div class="irArriba">
