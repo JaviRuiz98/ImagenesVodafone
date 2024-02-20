@@ -6,11 +6,11 @@ import { HomeComponent } from './pages/home/home.component';
 import { GestionDeAuditoriasComponent } from './pages/gestion-de-auditorias/gestion-de-auditorias.component';
 import { AuditoriaComponent } from './pages/auditoria/auditoria.component';
 import { MuebleComponent } from './pages/mueble/mueble.component';
-import { ExpositoresComponent } from './pages/expositores/expositores.component';
-import { TiendasComponent } from './pages/tiendas/tiendas.component';
+ import { TiendasComponent } from './pages/tiendas/tiendas.component';
+import { ElementosComponent } from './pages/elementos/elementos.component';
+
 
 const routes: Routes = [
-
   { 
     path: "home", component: HomeComponent ,
     data: { stateBarra: 'home' },
@@ -28,8 +28,8 @@ const routes: Routes = [
     data: { stateBarra: 'tiendas' },
   },
   { 
-    path: "expositor", component: ExpositoresComponent ,
-    data: { stateBarra: 'expositores' },
+    path: "elementos", component: ElementosComponent ,
+    data: { stateBarra: 'elementos' },
   },
   { 
     path : "validator", component: ValidadorComponent, 
