@@ -60,6 +60,18 @@
   min-width: 380px;
   background-color: rgba(232, 232, 232, 0.9);
 }
+.anchoAltoFotoReferencia {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  height: auto;
+  width: 100%;
+}
+ 
+
+
+
 
   .gridVolverFiltro {
     display: grid;
@@ -102,15 +114,7 @@
 
 
   
-  .anchoAltoFotoReferencia {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
-    height: 100%;
-    width: 100%;
-  }
-   
+
   .imagenSimple{
     height: 90%;
     width: 90%;

@@ -18,18 +18,14 @@ import { ProgressBarModule } from 'primeng/progressbar';
     CommonModule,
     ProgressBarModule
   ],
-
 })
  
-
 export class SidebarComponent implements OnInit {
-
 
   sidebarVisible: boolean = false;
   estadisticaPrompts: estadisticaPrompts[] = [];
 
   constructor(private promptsService: PromptsService) { }
-
 
   inicializarEstadisticasPrompts() {
     this.promptsService.getEstadisticasPrompts().subscribe({
@@ -40,16 +36,10 @@ export class SidebarComponent implements OnInit {
           ...estadistica,
           porcentaje_exito: parseFloat(estadistica.porcentaje_exito.toFixed(2))
         }))
-
-        console.log("estadisticas", this.estadisticaPrompts);
       }
     })
   }
-
-
-
   ngOnInit(): void {
     this.inicializarEstadisticasPrompts();
   }
-
 }
