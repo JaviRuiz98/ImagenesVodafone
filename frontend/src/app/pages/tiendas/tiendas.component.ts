@@ -176,4 +176,10 @@ export class TiendasComponent implements OnInit{
     const listaOrdenada = lista.sort((a, b) => a[campo].localeCompare(b[campo]));
     return listaOrdenada;
   }
+
+  informe(){
+    this.TiendasService.informe().subscribe((response: any) => {
+      
+    })
+  }
 }
