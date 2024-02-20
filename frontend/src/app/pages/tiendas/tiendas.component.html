@@ -9,7 +9,7 @@
                 </span> 
             </div>
         </div>
-        <p-dialog [header]="cabeceraNuevaEditarTienda" [(visible)]="verFormularioNuevaTienda" [style]="{'width': '80vw', 'max-height': '100vh'}">
+        <p-dialog [header]="cabeceraNuevaEditarTienda" [(visible)]="verFormularioNuevaTienda" [style]="{'width': '80vw', 'max-height': '100vh'}" [draggable]="false">
             <div class="formulario" *ngIf="activeIndex === 0">
                 <p><strong>Nuevo sfid:</strong></p>
                 <input type="text" pInputText [(ngModel)]="sfidInput" [disabled]="editarTiendaCreada"/>
