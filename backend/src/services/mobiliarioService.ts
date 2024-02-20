@@ -189,62 +189,10 @@ export const mobiliarioService = {
         }
     },
 
-    async getExpositoresAndElementosByIdAuditoria(
-        id_auditoria: number
-    ): Promise<any> {
-        try {
-            throw new Error(
-                `No se implementado el getExpositoresAndElementosByIdAuditoria ${id_auditoria}`
-            );
-
-            //     const muebles = await db.muebles.findMany({
-            //         where: {
-            //             expositores: {
-            //                 some:{
-            //                     pertenencia_elementos_auditoria: {
-            //                         some: {
-            //                             id_auditoria: id_auditoria
-            //                         }
-            //                     }
-            //                 }
-
-            //             }
-
-            //         },
-            //         include: {
-            //            expositores: {
-            //                select: {
-            //                    id: true,
-            //                },
-            //                include: {
-            //                    atributos_expositores: {
-            //                        include: {
-            //                            pertenencia_elementos_atributos:{
-            //                             include: {
-            //                                 elementos:{
-            //                                     select:{
-            //                                         id: true,
-            //                                     }
-            //                                 }
-            //                             }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //         }
-            //     });
-
-            //   return muebles
-        } catch (error) {
-            throw error;
-        } finally {
-            await db.$disconnect();
-        }
-    },
+    
 };
 
-// //NO FUNCIONA
+// //NO FUNCIONA UTIL POR SI QUEREMOS HACER FILTROS
 // function mapearResultadoParaFront(mueble: any): MuebleFrontInterfaz {
 
 //     let elementos = [];
