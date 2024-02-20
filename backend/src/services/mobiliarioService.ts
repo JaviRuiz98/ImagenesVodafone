@@ -5,6 +5,36 @@ import db from "../config/database";
 // import {expositoresConProcesados} from "../interfaces/expositoresProcesados"
 
 export const mobiliarioService = {
+    async getHuecosDisponibles (id_mueble: number)  {
+        try {
+           return await db.muebles.count(
+                { 
+                    where: { 
+                        id: id_mueble,
+                        expositores: {
+                            some: {
+                                atributos_expositores: {
+                                    some: {
+                                        pertenencia_elementos_atributos: {
+                                            some: {
+                                                elementos: {
+                                                    id_categoria: 3,
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }, 
+                   
+                });
+        } catch (error) {
+            throw error;
+        } finally {
+            await db.$disconnect();
+        }
+    },
     getFilteredMuebles: async (
         id?: number,
         _orden_clause:
