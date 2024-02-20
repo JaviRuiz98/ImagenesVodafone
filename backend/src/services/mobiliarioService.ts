@@ -248,7 +248,7 @@ export const mobiliarioService = {
             //         }
             //     });
 
-            });
+            // });
 
         } catch (error) {
             throw error;
