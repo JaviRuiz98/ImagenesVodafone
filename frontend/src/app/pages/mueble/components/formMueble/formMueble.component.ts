@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validator, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validator, ValidatorFn, Validators } from '@angular/forms';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { elementos } from 'src/app/interfaces/elementos';
 import { muebles } from 'src/app/interfaces/muebles';
 import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
 import { MuebleCreacion } from '../../interfaces/muebleCreacion';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
+import { categorias_elementos } from 'src/app/interfaces/categoria';
+import { expositores } from 'src/app/interfaces/expositores';
+import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
 
 
 @Component({
@@ -18,7 +21,6 @@ import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 export class FormMuebleComponent implements OnInit {
 
 
-  filterNameValue: string ="";
 
   constructor( public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private elementosService: ElementosService, private muebleService: MueblesService) { }
 
@@ -28,13 +30,19 @@ export class FormMuebleComponent implements OnInit {
   dragged_elemento?: elementos;
 
   
+  opcionesCategoria: string[] = [];
+  categorias_elementos: categorias_elementos[];
+
 
   objetivo_form: 'crear' | 'editar' = 'crear';
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
   formulario:FormGroup = this.fb.group({
     nombre: ['', Validators.required],
-    elementos: [[], ]
+    expositores: [[],],
+    categoriaSeleccionada: new FormControl<categorias_elementos | null>(null),
+    filterNameValue: new FormControl<string | null>(null),
+
   })
 
 
@@ -48,9 +56,10 @@ export class FormMuebleComponent implements OnInit {
     return this.formulario.controls['elementos'];
   }
 
-  get filterNameText() {
-    return this.filterNameValue;
+  get filterNameValue() {
+    return this.formulario.controls['filterNameValue'];
   }
+
 
   ngOnInit() {
    
@@ -62,7 +71,7 @@ export class FormMuebleComponent implements OnInit {
       this.mueble_existente = mueble;
 
       this.formulario.patchValue({
-        nombre_mueble: mueble?.nombre,
+        nombre: mueble?.nombre,
         expositores: mueble?.expositores
 
       })
@@ -71,15 +80,28 @@ export class FormMuebleComponent implements OnInit {
       this.objetivo_form='crear';
     }
 
-      this.elementosService.getElementos().subscribe( (elementos:elementos[]) => {
-        this.all_elementos = elementos.filter((elemento) => elemento.categorias_elementos.id !== 3);
-        this.filtered_elementos=this.all_elementos;
-      });
+      
+      this.inicializarElementos();
+
+      this.inicializaCategorias_elementos();
+
+  }
+
+  inicializarElementos(){
+    this.elementosService.getElementos().subscribe( (elementos:elementos[]) => {
+      this.all_elementos = elementos.filter((elemento) => elemento.categorias_elementos.id !== 3);
+      this.filtered_elementos=this.all_elementos;
+    });
+  }
+
+  inicializaCategorias_elementos(){
+    this.elementosService.getCategorias_elementos().subscribe((categorias: categorias_elementos[]) => {
+      this.categorias_elementos = categorias; 
+      this.opcionesCategoria = categorias.map((elemento) => elemento.nombre);
+    })
   }
 
   filterByNombre(value: string) {
-    this.filterNameValue = value;
-  
     if (value === "" || value === null) {
       this.filtered_elementos = this.all_elementos;
     } else {
@@ -88,6 +110,24 @@ export class FormMuebleComponent implements OnInit {
       );
     }
   }
+
+  getImagenModelo(expositor: expositores): string | undefined {
+    const atributoModelo: atributos_expositores | undefined = expositor.atributos_expositores.find((atributo) => atributo.id_categoria === 3);
+
+    
+    if (atributoModelo && atributoModelo.elemento) {
+      return atributoModelo.elemento.imagenes.url;
+    } else {
+      console.log("Hola");
+      return undefined;
+    }
+
+  }
+  tieneModelo(atributos_expositores: atributos_expositores[]): boolean {
+    const atributoModelo: atributos_expositores | undefined = atributos_expositores.find((atributo) => atributo.id_categoria === 3);
+    return atributoModelo !== undefined;
+  }
+ 
   
 
   onDragStart( $event: DragEvent, elemento: elementos) {
