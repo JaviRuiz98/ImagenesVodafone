@@ -125,14 +125,15 @@ export class TiendasComponent implements OnInit{
     }
   }
   editarTienda(tienda: tienda){
-    this
+    const listaMueblesDisponibles = this.eliminarMueblesSeleccionados(this.listaTodosMuebles, this.listaMueblesNuevaTienda)
     this.nuevaTienda = tienda;
     this.crearEditarTienda = 'Editar tienda';
     this.cabeceraNuevaEditarTienda = 'Editar tienda';
     this.sfidInput = tienda.sfid;
     this.comunidadInput = 'prueba';
     this.MueblesService.getMueblesTiendaByIdTienda(tienda.id).subscribe((response: muebles[]) => {
-      this.listaMueblesNuevaTienda = response;
+      this.listaMueblesNuevaTienda = this.ordenarListaAlfabeticamente(response, 'nombre');
+      this.listaMueblesMostrar = this.eliminarMueblesSeleccionados(this.listaTodosMuebles, response);
     })
     this.activeIndex = 1;
     this.verFormularioNuevaTienda = true;
@@ -148,6 +149,7 @@ export class TiendasComponent implements OnInit{
   }
 
   confirmarCambio(tienda: tienda) {
+    console.log('entro')
     this.ConfirmationService.confirm({
       message: this.mensajeDialog,
       header: this.mensajeActivarDesactivar,
@@ -196,5 +198,6 @@ export class TiendasComponent implements OnInit{
   eliminarMueblesSeleccionados(listaCompleta: muebles[], listaMueblesSeleccionados: muebles[]){
     const idsLista2 = new Set(listaMueblesSeleccionados.map(mueble => mueble.id));
     const listaFiltrada = listaCompleta.filter((mueble) => !idsLista2.has(mueble.id));
+    return listaFiltrada;
   }
 }
