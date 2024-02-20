@@ -20,9 +20,9 @@
         class="centrar">
       </p-dropdown>
     </div>
-    <!-- <div *ngIf="currentState === 'admin'" class ="elementosValidator" >        
+    <div *ngIf="currentState === '/gestionAuditorias'" class ="elementosValidator" >        
       <app-sidebar></app-sidebar>
-    </div> -->
+    </div> 
   </div>
   <div *ngIf="currentState != '/home'">
     <p-button [label]="contenidoBotonVolver" [icon]="iconoBotonVolver" (click)="volverAtras()" [text]="true" severity="danger"></p-button>

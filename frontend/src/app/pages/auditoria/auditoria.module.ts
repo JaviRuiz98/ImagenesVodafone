@@ -21,7 +21,7 @@ import { SelectorImagenesComponent } from './../../componentes/selector-imagenes
 import { PaginadorProcesamientoSubidaComponent } from './../../componentes/paginador-procesamiento-subida/paginador-procesamiento-subida.component'; 
 import { IrArribaComponent } from 'src/app/componentes/ir-arriba/ir-arriba.component';import { FiltroProcesadosComponent } from 'src/app/componentes/filtro-procesados/filtro-procesados.component';
 import { ProgresoAuditoriaComponent } from 'src/app/componentes/progreso-auditoria/progreso-auditoria.component';
-
+import { VisualizacionProcesadosComponent } from 'src/app/componentes/visualizacion-procesados/visualizacion-procesados.component';
 @NgModule({
   declarations: [
     AuditoriaComponent
@@ -36,6 +36,7 @@ import { ProgresoAuditoriaComponent } from 'src/app/componentes/progreso-auditor
     IrArribaComponent,
     FiltroProcesadosComponent,
     ProgresoAuditoriaComponent,
+    VisualizacionProcesadosComponent,
 
     BrowserAnimationsModule,    
     CardModule,

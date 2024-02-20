@@ -49,9 +49,10 @@ export class AuditoriaService {
     return this.http.get<muebles[]>(`${this.API_URI}/muebles_auditoria/${id_auditoria}`);
   }
 
-  terminarAuditoria(id_auditoria: number): Observable<any> {
+  terminarAuditoria(id_auditoria: number, enviar_informe: boolean): Observable<any> {
     const putData = {
-      id_auditoria: id_auditoria
+      id_auditoria: id_auditoria,
+      enviar_informe: enviar_informe
     }
     return this.http.put<any>(`${this.API_URI}/terminar_auditoria`, putData);
   }
@@ -62,5 +63,9 @@ export class AuditoriaService {
 
   getBarraProgresoAuditoria(id_auditoria_seleccionada: number): Observable<number[]> {
     return this.http.get<number[]>(`${this.API_URI}/barra_progreso_auditoria/${id_auditoria_seleccionada}`);
+  }
+
+  enviarInforme(id_auditoria: number): Observable<auditoria> { //puede cambiar el tipo de response
+    return this.http.post<auditoria>(`${this.API_URI}/enviar_informe`, id_auditoria);
   }
 }
