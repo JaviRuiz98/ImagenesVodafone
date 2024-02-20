@@ -30,9 +30,7 @@
     height: 100%;
 }
 
-::ng-deep .p-component {
-    height: 80%;
-}
+
 :host::ng-deep {
     .p-button.p-highlight.optionColorVodafone {
        background: red;
