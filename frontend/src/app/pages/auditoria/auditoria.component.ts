@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
 import { AuditoriaService } from 'src/app/servicios/auditoria/auditoria.service';
 
@@ -8,9 +7,6 @@ import { filtro_procesados } from 'src/app/interfaces/filtro_procesados';
 import { auditoria } from 'src/app/interfaces/auditoria';
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 import { ProgresoAuditoriaComponent } from 'src/app/componentes/progreso-auditoria/progreso-auditoria.component';
-import { muebles } from 'src/app/interfaces/muebles';
-import { expositores } from 'src/app/interfaces/expositores';
-import { elementos } from 'src/app/interfaces/elementos';
 
 @Component({
   selector: 'auditoria',
