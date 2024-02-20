@@ -99,6 +99,13 @@
     max-width: 50px; 
     min-height: 50px;
 }
+
+.activarDesactivar{
+    display: grid;
+    grid-template-columns: 20% 80%;
+    align-items: center;
+    justify-content: center;
+}
 ::ng-deep .p-picklist-list{
     max-height: 300px;
 }
@@ -108,10 +115,7 @@
     color: white;
 }
 
-::ng-deep .p-picklist-buttons .p-button {
-    background: red;
-    border: red;
-}
+
 ::ng-deep .p-orderlist .p-orderlist-controls .p-button {
     background: red;
     border: red;
