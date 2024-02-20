@@ -37,12 +37,16 @@ export class SelectorImagenesComponent {
   }
  
   listenChange(event: Event) {
-    const input = this.inputFileRef.nativeElement as HTMLInputElement;
-    if (input && input.files) {
-      this.archivoSeleccionado = input.files[0];
-      this.archivoSeleccionadoChange.emit({ archivo: this.archivoSeleccionado });
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+        setTimeout(() => {
+            this.archivoSeleccionado = input.files[0];
+            this.archivoSeleccionadoChange.emit({ archivo: this.archivoSeleccionado });
+        }, 0);
     }
-  }
+}
+
+
  
   getImageSrc() {
     return this.archivoSeleccionado ? URL.createObjectURL(this.archivoSeleccionado) : '';
@@ -81,4 +85,5 @@ onDragLeave(event: DragEvent) {
           this.archivoSeleccionadoChange.emit({ archivo:file});
       }
   }
+  
 }

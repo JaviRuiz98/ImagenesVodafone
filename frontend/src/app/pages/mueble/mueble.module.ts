@@ -30,8 +30,9 @@ import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { AsignarExpositorComponent } from './components/asignarExpositor/asignarExpositor.component';
-
-
+import { DragDropModule } from 'primeng/dragdrop';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { DividerModule } from 'primeng/divider';
 @NgModule({
   imports: [
     CommonModule,
@@ -48,12 +49,16 @@ import { AsignarExpositorComponent } from './components/asignarExpositor/asignar
     InputNumberModule,
     CardModule,
     DropdownModule,
+    DragDropModule,
+    ScrollPanelModule,
+    DividerModule,
 
     ReactiveFormsModule,
     FormsModule,
 
     IrArribaComponent,
-    SelectorImagenesComponent
+    SelectorImagenesComponent, 
+    
     
   ],
   declarations: [MuebleComponent, FormMuebleComponent, HistorialExpositoresComponent, AsignarExpositorComponent], 

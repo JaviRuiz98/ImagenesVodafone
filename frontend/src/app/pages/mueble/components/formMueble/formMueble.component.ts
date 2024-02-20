@@ -16,21 +16,16 @@ import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 
 
 export class FormMuebleComponent implements OnInit {
-filtered_elementos: any;
-dragEnd() {
-throw new Error('Method not implemented.');
-}
-dragStart(_t34: any) {
-throw new Error('Method not implemented.');
-}
 
- 
-  
+
+  filterNameValue: string ="";
+
   constructor( public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private elementosService: ElementosService, private muebleService: MueblesService) { }
 
   showing_asignar_expositores: boolean = false;
-  all_expositores: elementos[] = [];
-  //showing_crear_expositores: boolean = false;
+  all_elementos: elementos[] = [];
+  filtered_elementos: elementos[] = [];
+  dragged_elemento?: elementos;
 
   
 
@@ -38,31 +33,24 @@ throw new Error('Method not implemented.');
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
   formulario:FormGroup = this.fb.group({
-    nombre_mueble: ['', Validators.required],
-    elementos: [[]]
-    // numero_expositores_dispositivos: [0, [Validators.required, Validators.min(0)]],
-    // numero_expositores_carteles: [0, [Validators.required, Validators.min(0)]],
+    nombre: ['', Validators.required],
+    elementos: [[], ]
   })
 
 
-  id_mueble_existente?:number;
+  mueble_existente?: muebles;
   
 
-  get nombre_mueble() {
-    return this.formulario.controls['nombre_mueble'];
+  get nombre() {
+    return this.formulario.controls['nombre'];
   }
-  get expositores() {
-    return this.formulario.controls['expositores'];
+  get elementos() {
+    return this.formulario.controls['elementos'];
   }
 
-
-
-  // get numero_expositores_dispositivos() {
-  //   return this.formulario.controls['numero_expositores_dispositivos'];
-  // } 
-  // get numero_expositores_carteles() {
-  //   return this.formulario.controls['numero_expositores_carteles'];
-  // }
+  get filterNameText() {
+    return this.filterNameValue;
+  }
 
   ngOnInit() {
    
@@ -71,9 +59,7 @@ throw new Error('Method not implemented.');
       this.objetivo_form='editar';
 
       const mueble = this.dialogConfig.data.mueble;
-      this.id_mueble_existente = mueble?.id;
-
-  
+      this.mueble_existente = mueble;
 
       this.formulario.patchValue({
         nombre_mueble: mueble?.nombre,
@@ -84,101 +70,41 @@ throw new Error('Method not implemented.');
       console.log ("nuevo");
       this.objetivo_form='crear';
     }
+
+      this.elementosService.getElementos().subscribe( (elementos:elementos[]) => {
+        this.all_elementos = elementos.filter((elemento) => elemento.categorias_elementos.id !== 3);
+        this.filtered_elementos=this.all_elementos;
+      });
   }
 
-
-   categoriaValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      const categoria = control.value;
-      if (categoria !== 'cartel' && categoria !== 'dispositivos') {
-        return { 'categoriaInvalida': { value: categoria } };
-      }
-      return null;
-    };
-  }
-
-  // createExpositores(categoria: number) {
-  //  this.new_expositor_for_categoria = categoria;
-  //  this.showing_crear_expositores = true;
-  // }
-
-  // showExpositores(categoria: number) {
-    
-   
-  //   this.elementosService.getElementos(categoria).subscribe( (expositores:elementos[]) => {
-  //     this.all_expositores = expositores;
-  //     this.new_expositor_for_categoria = categoria;
-  //     this.showing_asignar_expositores = true;
-
-  //  });
-     
-  // }
-  asignar_expositores(event: elementos | null) {
-    // this.showing_asignar_expositores = false;
-    // if (event != null) {
-    //   // Añadimos el expositor al formulario
-    //   this.formulario.patchValue({
-    //     expositores: this.expositores.value.concat(event)
-    //   });
+  filterByNombre(value: string) {
+    this.filterNameValue = value;
   
-    //   // Añadimos el expositor al array correspondiente para mostrarlos
-    //   if (this.new_expositor_for_categoria === 'Carteles') {
-        
-    //     this.expositores_carteles = this.expositores_carteles.concat(event);
-    //   } else {
-        
-    //     this.expositores_dispositivos = this.expositores_dispositivos.concat(event);
-    //   }
-      
-      
-    // }
-  }
-
-  deleteExpositor(categoria: 'carteles' | 'dispositivos', expositor: elementos) {
-    // if (categoria === 'carteles') {
-    //   this.expositores_carteles = this.expositores_carteles.filter((e) => e.id !== expositor.id);
-    // }else{
-    //   this.expositores_dispositivos = this.expositores_dispositivos.filter((e) => e.id !== expositor.id);
-    // }
+    if (value === "" || value === null) {
+      this.filtered_elementos = this.all_elementos;
+    } else {
+       this.filtered_elementos = this.all_elementos.filter(elemento => 
+        elemento.nombre && elemento.nombre.toLowerCase().includes(value.toLowerCase())
+      );
+    }
   }
   
+
+  onDragStart( $event: DragEvent, elemento: elementos) {
+    this.dragged_elemento = elemento;
+  }
+
+  onDragEnd($event: DragEvent) {
+    console.log("terminar");
+  }
 
   onSubmit() {
-  
-    // if (this.formulario.invalid) {
-    //   return;
-    
-    // }else{
-     
-      
-    //   const InfoMueble: MuebleCreacion = {
-    //     nombre_mueble: this.formulario.value.nombre_mueble,
-    //     numero_expositores_carteles: this.expositores_carteles_list.length ,
-    //     numero_expositores_dispositivos: this.expositores_dispositivos_list.length,
-    //     expositores: this.expositores.value
-    //   }
-    //   if (this.objetivo_form === 'crear') {
-        
-    //     console.log(InfoMueble);
-    //     this.muebleService.createMueble(InfoMueble).subscribe(
-        
-
-    //     );    
-    //   }else {
-    //     const muebleEdicion: muebles = {
-    //       id: this.id_mueble_existente!,  //no puede ser nulo si está en edición
-    //       ...InfoMueble
-    //     }
-
-    //     console.log(muebleEdicion);
-    //     this.muebleService.updateMueble(muebleEdicion).subscribe();
-    //     //realizar llamada al servicio
-    //   }
-     
-      
-    // }
-  
+    throw new Error('Method not implemented.');
   }
+
+ 
+    
+    
   
 
 }
