@@ -1,5 +1,4 @@
 
-<ng-template pTemplate="content" style="display:flex; flex-direction: column; width: 10000px; height: 4000px">
     <p-toast position="top-center" key="tc"></p-toast>
     <div style="display: flex; flex-direction: row; width: 100%" height="100%">
         <form [formGroup]="nuevoElemento_form" style="width: 50%">
@@ -31,9 +30,7 @@
             </app-selector-imagenes>
         </div>
     </div>
-
-</ng-template>
-
+    
 <div style="display: flex; flex-direction: row; justify-content: right; width: 100%; margin-top: 20px;">
     <button pButton  label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="nuevoCancelar()" style="width: 20%;"></button>
     <button pButton  label="Guardar" icon="pi pi-check" class="p-button-text" (click)="nuevoGuardar()"style="width: 20%;"></button>

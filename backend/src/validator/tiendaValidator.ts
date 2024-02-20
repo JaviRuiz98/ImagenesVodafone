@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { elementosService } from '../services/expositorService';
+import { elementosService } from '../services/elementoService';
 
 
 

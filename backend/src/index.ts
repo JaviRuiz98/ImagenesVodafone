@@ -8,7 +8,7 @@ import procesamientoRoutes from './routes/procesadoRoutes';
 import promptsRoutes from './routes/promptsRoutes';
 import  mobiliarioRouter from './routes/mobiliarioRoutes';
 import auditoriaRouter from './routes/auditoriaRoutes';
-import expositoresRoutes from './routes/expositoresRoutes';
+import expositoresRoutes from './routes/elementoRoutes';
 
 const app = express();
 app.use(bodyParser.json({ limit: '10mb' }));

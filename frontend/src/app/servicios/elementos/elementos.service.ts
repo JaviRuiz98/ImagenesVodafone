@@ -47,7 +47,9 @@ export class ElementosService {
     return this.http.get<regiones[]>(`${this.API_URI}/regiones`);
   }
 
-
+  getCategorias_elementos(){
+    return this.http.get<regiones[]>(`${this.API_URI}/categorias_elementos`);
+  }
   
 
 }
