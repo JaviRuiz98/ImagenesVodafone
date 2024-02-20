@@ -28,7 +28,7 @@ export class TiendasService {
   }
 
   editarTienda(tienda: tienda, listaNuevosMuebles: muebles[]): Observable<boolean> {
-    return this.http.post<boolean>(`${this.API_URI}/tiendas/`+tienda.id_tienda, listaNuevosMuebles);
+    return this.http.post<boolean>(`${this.API_URI}/tiendas/` + tienda.id, listaNuevosMuebles);
   }
 
   activarDesactivarTienda(tienda: tienda): Observable<tienda> {
