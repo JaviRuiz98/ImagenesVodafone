@@ -17,54 +17,21 @@
           <div class="panelCompleto " *ngIf="mueble.elementos != undefined">
             <div class="panelIzquierda" >
               <div   class="anchoAltoFotoReferencia" >
-                <div *ngIf=" mueble.elementos.length == 1 ">
-                  <p-image [src]="url_imagenes_referencias + mueble.elementos[0].imagenes.url" [alt]="getImagenModelo(mueble.elementos[0])" class="imagenSimple" [width]="'100%'" [height]="'100%'" [preview]="true"></p-image>
+                <div *ngFor=" let elemento of mueble.elementos ">
+                  <p-image [src]="url_imagenes_referencias + elemento.imagenes.url" [alt]="elemento.imagenes.url" [preview]="true"></p-image>
                 </div>
               </div>
-  
-              <div *ngIf="mueble.elementos.length == 2 && mueble.elementos[0] != undefined && mueble.elementos[1] != undefined" class="grid anchoAltoFotoReferencia">
-             
-                  <div style="margin-right: 5px;">
-                    <img [src]="url_imagenes_referencias +  getImagenModelo(mueble.elementos[0])" [alt]=" getImagenModelo(mueble.elementos[0])" class="imagenDoble">
-                  </div>
-                  <div> 
-                    <img [src]="url_imagenes_referencias +  getImagenModelo(mueble.elementos[1])" [alt]=" getImagenModelo(mueble.elementos[1])" class="imagenDoble">
-                  </div>
-              </div> 
             </div>
             <div class="panelDerecha">
-              <div *ngIf="mueble.elementos.length == 1 && mueble.elementos[0] != undefined" class="anchoAltoSubirFoto">              
-                <app-paginador-procesamiento-subida  
-                  class="anchoAltoPaginador"
-                 >
-
-                 <!-- PASARLE LAS VARIABLES AL PAGINADOR, ESTA COMENTADO PARA QUE COMPILE
-                  
-                  [id_expositor_selected]="mueble.elementos[0].id"
-                 [procesados]="mueble.elementos[0].procesados_imagenes" 
-                 [cargando_procesamiento]="cargas_procesamiento[mueble.elementos[0].id]"
-                 [valueSelected]="modos_visualizacion[mueble.elementos[0].id] === 'historial'? 'historial':'new'"
-                 (archivoSeleccionadoChange)="recibirFile($event, mueble.elementos[0].id, mueble.id)" -->
+              <div *ngFor=" let elemento of mueble.elementos ">              
+                <app-paginador-procesamiento-subida class="anchoAltoPaginador">                  
+                  [id_expositor_selected]="elemento.id"
+                  [procesados]="elemento.procesados_imagenes" 
+                  [cargando_procesamiento]="cargas_procesamiento[elemento.id]"
+                  [valueSelected]="modos_visualizacion[elemento.id] === 'historial'? 'historial':'new'"
+                  (archivoSeleccionadoChange)="recibirFile($event, elemento.id, mueble.id)"
                 </app-paginador-procesamiento-subida>            
               </div>
-          
-                <!-- <div *ngIf="mueble.elementos.length == 2 && mueble.elementos[0] != undefined && mueble.elementos[1] != undefined" class="gridDoble" >
-                  <app-paginador-procesamiento-subida 
-                    [id_expositor_selected]="mueble.elementos[0].id_expositor"
-                    [procesados]="mueble.elementos[0].procesados_imagenes" 
-                    [cargando_procesamiento]="cargas_procesamiento[mueble.elementos[0].id_expositor]"
-                    [valueSelected]="modos_visualizacion[mueble.elementos[0].id_expositor] === 'historial'? 'historial':'new'"
-                    (archivoSeleccionadoChange)="recibirFile($event, mueble.elementos[0].id_expositor, mueble.id)">
-                  </app-paginador-procesamiento-subida> 
-                  <app-paginador-procesamiento-subida
-                    [id_expositor_selected]="mueble.elementos[1].id_expositor"
-                    [procesados]="mueble.elementos[1].procesados_imagenes" 
-                    [cargando_procesamiento]="cargas_procesamiento[mueble.elementos[1].id_expositor]"
-                    [valueSelected]="modos_visualizacion[mueble.elementos[1].id_expositor] === 'historial'? 'historial':'new'"                
-                    (archivoSeleccionadoChange)="recibirFile($event, mueble.elementos[1].id_expositor, mueble.id)">
-                  </app-paginador-procesamiento-subida>                    
-                </div> -->
-     
             </div>
           </div>
       </p-panel>

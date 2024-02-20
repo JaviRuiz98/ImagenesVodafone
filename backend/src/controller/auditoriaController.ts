@@ -4,6 +4,8 @@ import { auditoria_extended } from '../interfaces/auditoriaExtended';
 import { auditorias } from '@prisma/client';
 import { tiendaService } from '../services/tiendasServices';
 import { pea_extended } from '../interfaces/peaExtended';
+import { muebleConElementos} from '../interfaces/muebleConElementos';
+import { per_ele_aud_extended } from '../interfaces/perEleAudExtended';
 
 export async function getAuditorias(req: Request, res: Response) {
     try {
@@ -70,48 +72,12 @@ async function getAuditoriaExtendedDadoIdAuditoria(auditoria: auditorias): Promi
     }      
 }
 
-interface Imagen {
-    id: number;
-    url: string;
-    nombre_archivo: null | string;
-}
-
-interface Elemento {
-    id: number;
-    id_imagen: number;
-    id_region: number;
-    nombre: string;
-    activo: boolean;
-    id_categoria: number;
-    imagenes: Imagen;
-    procesados_imagenes: any[]; // Ajusta el tipo de acuerdo a tus datos
-}
-
-interface Mueble {
-    id: number;
-    nombre: string;
-}
-
-interface DataItem {
-    id: number;
-    id_auditoria: number;
-    id_mueble: number;
-    id_elemento: number;
-    muebles: Mueble;
-    elementos: Elemento;
-    procesados_imagenes: any[]; // Ajusta el tipo de acuerdo a tus datos
-}
-
-interface MuebleConElementos extends Mueble {
-    elementos: Elemento[];
-}
-
 
 export async function getElementosProcesadosAuditoria(req: Request, res: Response) {
     try {
         const id_auditoria = parseInt(req.params.id_auditoria);
 
-        const per_ele_aud_brutos: any[] | undefined = await auditoriaService.getPertenenciasElementosAuditoria(id_auditoria);
+        const per_ele_aud_brutos: any[] = await auditoriaService.getPertenenciasElementosAuditoria(id_auditoria);
         
         const per_ele_aud_netos = agruparElementosMueblesAuditorias(per_ele_aud_brutos);
         res.status(200).json(per_ele_aud_netos);
@@ -121,10 +87,10 @@ export async function getElementosProcesadosAuditoria(req: Request, res: Respons
 
 }
 
-function agruparElementosMueblesAuditorias(per_ele_aud_brutos: DataItem[]) {
+function agruparElementosMueblesAuditorias(per_ele_aud_brutos: per_ele_aud_extended[]) {
 
-    const resultado: MuebleConElementos[] = per_ele_aud_brutos.reduce((acc: MuebleConElementos[], item: DataItem) => {
-        let mueble = acc.find((m: MuebleConElementos) => m.id === item.muebles.id);
+    const resultado: muebleConElementos[] = per_ele_aud_brutos.reduce((acc: muebleConElementos[], item: per_ele_aud_extended) => {
+        let mueble = acc.find((m: muebleConElementos) => m.id === item.muebles.id);
         if (!mueble) {
             mueble = {
                 ...item.muebles,

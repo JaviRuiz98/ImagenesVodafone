@@ -30,7 +30,6 @@ import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { AsignarExpositorComponent } from './components/asignarExpositor/asignarExpositor.component';
-import { NuevoExpositorComponent } from 'src/app/componentes/nuevo-expositor/nuevo-expositor.component';
 
 
 @NgModule({
@@ -54,7 +53,6 @@ import { NuevoExpositorComponent } from 'src/app/componentes/nuevo-expositor/nue
     FormsModule,
 
     IrArribaComponent,
-    NuevoExpositorComponent,
     SelectorImagenesComponent
     
   ],

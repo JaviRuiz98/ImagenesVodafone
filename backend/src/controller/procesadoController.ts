@@ -9,6 +9,7 @@ import { imagenService } from '../services/imagenService';
 import { prompts } from '@prisma/client';
 import { promptService } from '../services/promptService';
 import { procesados_imagenes } from '@prisma/client';
+import { mobiliarioService } from '../services/mobiliarioService';
 
 
 
@@ -24,6 +25,8 @@ export async function procesarImagenes(req: Request, res: Response) {
     const file = req.file //as { [fieldname: string]: Express.Multer.File[] };
     const id_elemento: number = parseInt(req.body.id_elemento); //ojo refactor
     const id_auditoria: number = parseInt(req.body.id_auditoria);
+    const id_mueble: number = parseInt(req.body.id_mueble);
+
     console.log('id_auditoria: ',id_auditoria)
     
     //obtengo la imagen a procesar
@@ -34,36 +37,61 @@ export async function procesarImagenes(req: Request, res: Response) {
        res.status(500).json({ error: 'La imagen procesada no existe' });
        return;
     }
-    
-    //creo la imagen nueva y compruebo que existe el expositor (falta tipar)
-    const [nuevaImagen, existingElemento, id_expositor_auditoria]  = await Promise.all([
+
+    //Creo la imagen, y obtengo el elemento
+    const [nuevaImagen, existingElemento, id_elemento_auditoria]  = await Promise.all([
       imagenService.create(imagenProcesada.filename, imagenProcesada.originalname),
       elementosService.getById(id_elemento),
       procesadoService.getIdExpositorAuditoria(id_elemento, id_auditoria)
     ]);    
 
-    if (!existingElemento || !id_expositor_auditoria) {
+
+    if (!existingElemento || !id_elemento_auditoria) {
         res.status(404).json({ error: 'Expositor no encontrado' });
         return;
     }
     
 
-    //obtengo la imagen de referencia
+    //la imagen de referencia no puese nula (hace falta para el procesado)
     if (!existingElemento.id_imagen) {
       res.status(500).json({ error: 'La imagen de referencia no existe' }); //es un dispositivo, no se puede procesar
+      return;
     }
-    const imagenReferencia = await elementosService.getImage(existingElemento.id_imagen!);       
-    
 
+    //la imagen de referencia  es necesaria para el procesado
+    const [imagenReferencia, huecosEsperados] = await Promise.all([
+      elementosService.getImage(existingElemento.id_imagen!),
+      mobiliarioService.getHuecosDisponibles(id_mueble)
+        
+    ]);
+    
+    
     if (!imagenReferencia) {
       res.status(500).json({ error: 'La imagen referencia no existe' });
       return;
     }
    
-    //CORREGIR 
-    const dispositivos_esperados: number = 0 //existingExpositor.numero_dispositivos || 0;
-    const categoria = existingElemento.id_categoria || 1; //Corregir
-    const id_prompt_usado: number = categoria == 1?  id_prompt_carteles : id_prompt_dispositivos;
+ 
+    const categoria = existingElemento.id_categoria;
+    let  id_prompt_usado: number = 0;
+
+    switch (categoria) {
+      case 1: //carteles
+        id_prompt_usado = id_prompt_carteles;
+        break;
+      case 3: //modelos
+        id_prompt_usado = id_prompt_dispositivos;
+        break;
+      default:
+        id_prompt_usado = 0;
+        break;
+    }
+
+    if (id_prompt_usado === 0) {
+      res.status(500).json({ error: 'Categoría no disponible para procesar' });
+      return;
+    }
+    
 
     const promptObject: prompts | null = await promptService.getById(id_prompt_usado);
     if (!promptObject) {
@@ -71,7 +99,6 @@ export async function procesarImagenes(req: Request, res: Response) {
       return;
     }
 
-    //añadir num dispositivos al prompt (por añadir)
 
     //llamada a OpenAI
     const filePaths = [imagenReferencia.url, imagenProcesada.path];
@@ -91,14 +118,14 @@ export async function procesarImagenes(req: Request, res: Response) {
 
     const similarityObject = JSON.parse(cleanedResponse);
 
-    const id_probabilidad_cartel: number | null = await procesadoService.getIdProbabilidadCartelDadaProbabilidad(similarityObject.probab_estar_contenido)
-    if(!id_probabilidad_cartel) {
-      throw new Error('Probabilidad cartel no valida')
-    }
+      const id_probabilidad_cartel: number | undefined = await procesadoService.getIdProbabilidadCartelDadaProbabilidad(similarityObject.probab_estar_contenido)
 
+      //Si id_probabilidad_cartel es null, se ha procesado por dispositivo
+     
+   
     //Guardar en la base de datos (falta por implementar)
     const id_procesado_imagen = await procesadoService.create( //devuelve el id del procesado de imagen para usarlo en el almacenamiento de la respuesta
-      id_expositor_auditoria, 
+      id_elemento_auditoria, 
       nuevaImagen.id,       
       id_auditoria,
       categoria,
@@ -108,7 +135,7 @@ export async function procesarImagenes(req: Request, res: Response) {
       promptObject.id,
       id_probabilidad_cartel,
       parseInt(similarityObject.dispositivos_contados),
-      dispositivos_esperados
+      huecosEsperados,
       );    
     
     const procesado_object = await procesadoService.getById(id_procesado_imagen);

@@ -1,15 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ExpositoresComponent } from './expositores.component';
-
-import { SidebarComponent } from '../../componentes/sidebar/sidebar.component';
  
 
 
 
 // modulos primeng:
-import { CardModule } from 'primeng/card';
-import { DividerModule } from 'primeng/divider';
 import { PanelModule } from 'primeng/panel';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TagModule } from 'primeng/tag';
@@ -28,17 +23,17 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 
 // componentes nuestros
 import { BarraMenuComponent } from './../../componentes/barra-menu/barra-menu.component';
-import { MarcoElementoComponent } from './../../componentes/marco-elemento/marco-elemento.component';
 import { SelectorImagenesComponent } from './../../componentes/selector-imagenes/selector-imagenes.component';
 import { PaginadorProcesamientoSubidaComponent } from './../../componentes/paginador-procesamiento-subida/paginador-procesamiento-subida.component'; 
 import { FileUploadModule } from 'primeng/fileupload';
 import { FormsModule } from '@angular/forms'; // Add this import 
-import { NuevoExpositorComponent } from 'src/app/componentes/nuevo-expositor/nuevo-expositor.component';
+import { NuevoElementoComponent } from 'src/app/componentes/nuevo-elemento/nuevo-elemento.component';
+import { ElementosComponent } from './elementos.component';
 
 
 @NgModule({
   declarations: [
-    ExpositoresComponent
+    ElementosComponent
   ],
   imports: [
     CommonModule,
@@ -59,7 +54,7 @@ import { NuevoExpositorComponent } from 'src/app/componentes/nuevo-expositor/nue
     TableModule,
     CheckboxModule,
     InputTextModule,
-    NuevoExpositorComponent,
+    NuevoElementoComponent,
     OverlayPanelModule,
     DropdownModule,
     SelectButtonModule
@@ -67,4 +62,4 @@ import { NuevoExpositorComponent } from 'src/app/componentes/nuevo-expositor/nue
 })
 
 
-export class ExpositorModule { }
+export class ElementosModule { }

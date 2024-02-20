@@ -64,11 +64,3 @@ export async function getMueblesAndExpositoresActivosByIdTienda(req: Request, re
     res.status(200).json(muebles);
 }
 
-export async function getMueblesAndExpositoresWithProcesadosByIdAuditoria(req: Request, res: Response) {
-    const id_auditoria = parseInt(req.params.id_auditoria);
-    const muebles: muebles[] = await mobiliarioService.getExpositoresAndElementosAndProcesadosByIdAuditoria(id_auditoria);
-    if (!muebles) {
-        res.status(204).send();;
-    }
-    res.status(200).json(muebles);
-}

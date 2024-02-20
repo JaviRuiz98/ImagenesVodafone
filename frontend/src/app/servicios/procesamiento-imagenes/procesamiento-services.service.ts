@@ -3,8 +3,6 @@ import { HttpClient,HttpParams } from '@angular/common/http';
 import { Observable } from "rxjs";
 
 import { procesados_imagenes } from '../../interfaces/procesados_imagenes';
-import { muebles } from 'src/app/interfaces/muebles';
-import { PublicMethodsService } from 'src/app/shared/public-methods.service';
 
  
 @Injectable({

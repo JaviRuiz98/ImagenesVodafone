@@ -4,14 +4,26 @@ import db  from "../config/database";
 
 //tipo_procesado
 export const procesadoService = {
-    async create (id_expositor: number, id_imagen: number, id_auditoria: number, categoria: number, comentarios: string, valido: boolean, IA_utilizada: string, id_prompt_usado: number, id_probabilidad_cartel?: number, dispositivos_contados?: number, huecos_esperados?: number) {
+    async create (
+        id_elemento_auditoria: number, 
+        id_imagen: number,
+        id_auditoria: number,
+        id_categoria: number,
+        comentarios: string,
+        valido: boolean,
+        IA_utilizada: string,
+        id_prompt_usado: number,
+        id_probabilidad_cartel?: number,
+        dispositivos_contados?: number,
+        huecos_esperados?: number
+        ) {
         try {
             const procesado = await db.procesados_imagenes.create({
                 data: {                
-                    id: id_expositor,
+                    id_elementos_auditoria: id_elemento_auditoria,
                     id_imagen: id_imagen,                
                     id_auditoria: id_auditoria,
-                    id_categoria: categoria,
+                    id_categoria: id_categoria,
                     comentarios: comentarios,
                     valido: valido,
                     IA_utilizada: IA_utilizada,
@@ -93,7 +105,7 @@ export const procesadoService = {
         return pea[0]?.id;
     },
 
-    async getIdProbabilidadCartelDadaProbabilidad(probabilidad_detectada: string) : Promise<number | null> {
+    async getIdProbabilidadCartelDadaProbabilidad(probabilidad_detectada: string) : Promise<number | undefined> {
         const probabilidad_object: any = await db.probabilidades_respuesta_carteles.findUnique({
             where: {
                 probabilidad: probabilidad_detectada
