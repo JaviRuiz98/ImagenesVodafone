@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
 import { auditoriaService } from '../services/auditoriaService';
 import { auditoria_extended } from '../interfaces/auditoriaExtended';
-import { auditorias } from '@prisma/client';
+import { auditorias, pertenencia_elementos_auditoria } from '@prisma/client';
 import { tiendaService } from '../services/tiendasServices';
 import { pea_extended } from '../interfaces/peaExtended';
+import { agruparDadoMismoId } from '../utils/funcionesCompartidasController';
 
 export async function getAuditorias(req: Request, res: Response) {
     try {
@@ -49,15 +50,11 @@ export async function getAuditoriaById(req: Request, res: Response) {
 
 async function getAuditoriaExtendedDadoIdAuditoria(auditoria: auditorias): Promise<auditoria_extended> {
     try {
-        console.log(auditoria)
-
         const [num_expositores, num_expositores_procesados, datos_barra_progreso] = await Promise.all([
           auditoriaService.getNumExpositoresByAuditoria(auditoria.id),
           auditoriaService.getNumExpositoresProcesadosByAuditoria(auditoria.id),
           getNumberArrayProgresoAuditoria(auditoria.id)
         ]);
-
-        console.log(num_expositores, num_expositores_procesados, datos_barra_progreso);
       
         const auditoria_extended: auditoria_extended = {
             ...auditoria,
@@ -72,6 +69,21 @@ async function getAuditoriaExtendedDadoIdAuditoria(auditoria: auditorias): Promi
         console.error("Error al realizar las llamadas concurrentes: ", error);
         throw error;
     }      
+}
+
+export async function getElementosProcesadosAuditoria(req: Request, res: Response) {
+    try {
+        const id_auditoria = parseInt(req.params.id_auditoria);
+
+        const per_ele_aud_brutos: pertenencia_elementos_auditoria[] | undefined = await auditoriaService.getPertenenciasElementosAuditoria(id_auditoria);
+
+        const per_ele_aud_netos = agruparDadoMismoId(per_ele_aud_brutos, 'id_mueble');
+        res.status(200).json(per_ele_aud_netos);
+        console.log(per_ele_aud_netos)
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    } 
+
 }
 
 export async function getBarraProgresoAuditoria(req: Request, res: Response) {

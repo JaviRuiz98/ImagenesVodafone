@@ -94,7 +94,7 @@ export const mobiliarioService = {
         }
     },
 
-    async getExpositoresAndElementosByIdTienda(
+    async getMueblesAndElementosByIdTienda(
         id_tienda: number
     ) {
         try {
@@ -129,9 +129,9 @@ export const mobiliarioService = {
                 },
             });
 
-            const expositores = muebles.flatMap((m) => m.expositores); //revisar
+            //const expositores = muebles.flatMap((m) => m.expositores); //revisar
 
-            return expositores;
+            return muebles;
         } catch (error) {
             throw error;
         } finally {
@@ -232,9 +232,7 @@ export const mobiliarioService = {
             //                    }
             //                }
             //            }
-
             //         }
-
             //     });
 
             //   return muebles
