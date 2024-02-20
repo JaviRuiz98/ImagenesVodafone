@@ -16,6 +16,13 @@ import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 
 
 export class FormMuebleComponent implements OnInit {
+filtered_elementos: any;
+dragEnd() {
+throw new Error('Method not implemented.');
+}
+dragStart(_t34: any) {
+throw new Error('Method not implemented.');
+}
 
  
   
