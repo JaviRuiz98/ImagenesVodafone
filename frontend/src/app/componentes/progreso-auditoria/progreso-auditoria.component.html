@@ -1,7 +1,6 @@
 <p-toast></p-toast>
 <p-confirmDialog [style]="{width: '50vw', height: 'auto'}"></p-confirmDialog>
-
-<div style="display: flex">
+<div class="terminarAuditoria">
     <div style="margin-right: 5%">
         Progreso: {{ auditoria_seleccionada?.num_expositores_procesados }}/{{ auditoria_seleccionada?.num_expositores }}
         <app-barra-de-barras [datos_barras]="this.datos_barra_progreso"></app-barra-de-barras>
@@ -20,5 +19,8 @@
             <p-button (click)="enviarInforme()" label="Enviar" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px'}" ></p-button>
             <p-button (click)="descargarInforme()" label="Descargar" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px'}" ></p-button>
         </p-dialog>
+    </div>
+    <div class="irArriba">
+        <app-ir-arriba></app-ir-arriba>
     </div>
 </div>

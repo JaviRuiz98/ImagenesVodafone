@@ -9,7 +9,7 @@ import { ToastModule } from 'primeng/toast';
 import { Router } from '@angular/router';
 import { BarraDeBarrasComponent } from '../barra-de-barras/barra-de-barras.component';
 import { DialogModule } from 'primeng/dialog';
-
+import { IrArribaComponent } from '../ir-arriba/ir-arriba.component';
 @Component({
   selector: 'app-progreso-auditoria',
   templateUrl: './progreso-auditoria.component.html',
@@ -21,7 +21,8 @@ import { DialogModule } from 'primeng/dialog';
     ConfirmDialogModule,
     ToastModule,
     BarraDeBarrasComponent,
-    DialogModule
+    DialogModule,
+    IrArribaComponent
   ], providers: [
     ConfirmationService,
     MessageService

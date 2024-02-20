@@ -1,5 +1,10 @@
-.bar-container {
-    border: 1px solid #ccc; /* Añade un borde, si es necesario */
-    border-radius: 4px; /* Bordes redondeados */
-  }
+.terminarAuditoria{
+  display: grid;
+  grid-template-columns: 40% 40% 20%;
+}
+.irArriba{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
   
