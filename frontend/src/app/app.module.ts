@@ -19,6 +19,8 @@ import { DatePipe } from '@angular/common';
 import { ProgresoAuditoriaComponent } from './componentes/progreso-auditoria/progreso-auditoria.component';
 import { BarraDeBarrasComponent } from './componentes/barra-de-barras/barra-de-barras.component';
 
+import { ElementosModule } from './pages/elementos/elementos.modules';
+
 @NgModule({
   declarations: [
     AppComponent, 
@@ -34,6 +36,7 @@ import { BarraDeBarrasComponent } from './componentes/barra-de-barras/barra-de-b
     HttpClientModule,
     GestionDeAuditoriasModule,
     AuditoriaModule,    
+    ElementosModule
   ],
   providers: [   
     PrimeIcons,

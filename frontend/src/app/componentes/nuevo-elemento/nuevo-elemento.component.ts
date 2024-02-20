@@ -51,7 +51,7 @@ export class NuevoElementoComponent implements OnInit {
     region: new FormControl('', [Validators.required, Validators.minLength(2)]), 
     imagen: new FormControl(0, [Validators.required, this.fileValidator]), 
     categoria: new FormControl('', Validators.required ),                                        
-    numero_dispositivos: new FormControl(0), 
+  
   });
 
 

@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
-import { elementosService } from '../services/expositorService';
+import { elementosService } from '../services/elementoService';
 import { imagenService } from '../services/imagenService'; // 
+
+
 export async function createElementos(req: Request, res: Response) {
     const {nombre} = req.body; //tipar en un futuro
     //hacer valdiator 
@@ -103,14 +105,15 @@ export async function getRegionesDisponibles(__req: Request, res: Response) {
     }
 }
 
-// export async function getExpositoresByIdMueble(req: Request, res: Response) {
-//     try{
-//         const id_mueble = parseInt(req.params.id_mueble);
-//         const expositores = await elementosService.getElm(id_mueble);
-//         res.status(200).json(expositores);
-//     }catch(error){
-//         res.status(500).json({ error: 'Error interno del servidor' });
-        
-//     }
-    
-// }
+
+export async function getCategorias_elementos(__req: Request, res: Response) {
+    try{
+        const categorias = await elementosService.getCategorias();
+        res.status(200).json(categorias);
+    }catch(error){
+       console.log(error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}
+
+

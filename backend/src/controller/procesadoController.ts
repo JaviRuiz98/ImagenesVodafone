@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { ChatMessage } from '../interfaces/procesadoInterfaces';
 import * as fs from 'fs';
 import openai from '../config/openAi';
-import { elementosService } from '../services/expositorService';
+import { elementosService } from '../services/elementoService';
 import { procesadoService } from '../services/procesadoService';
 import { parseBool } from '../utils/funcionesCompartidasController';
 import { imagenService } from '../services/imagenService';

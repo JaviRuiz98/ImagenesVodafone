@@ -5,13 +5,13 @@ import { ElementosService } from 'src/app/servicios/elementos/elementos.service'
 import { elementos } from 'src/app/interfaces/elementos';
 import { regiones } from 'src/app/interfaces/regiones';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ElementosModule } from './elementos.modules';
+import { categorias_elementos } from 'src/app/interfaces/categoria';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-elementos',
   templateUrl: './elementos.component.html',
-  styleUrls: ['./elementos.component.css'],
-  providers: [ MessageService, ConfirmationService],  
+  styleUrls: ['./elementos.component.css']
 })
 
 
@@ -33,9 +33,18 @@ export class ElementosComponent implements OnInit{
   archivoSeleccionado!: File;
 
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
+ 
+  opcionesCategoria: string[] = [];
+  categoriaSeleccionada = 'Carteles';
+  categorias_elementos !: categorias_elementos[];
 
-  opcionesCategoria!: any[];
-  categoriaSeleccionada = {tipo: 'Todos'};
+      
+  // opcionesCategoria: FormGroup | undefined;
+
+
+
+
+
   opcionesCatalogo!: any[];
   opcionCatalogoSeleccionado = {estado: 'Todos'};
 
@@ -47,7 +56,7 @@ export class ElementosComponent implements OnInit{
 
 
 
-  constructor(private router: Router, private elementosService: ElementosService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
+  constructor( private elementosService: ElementosService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
   inicializaElementos() {
     this.elementosService.getElementos().subscribe((elementos: elementos[]) => {
@@ -103,7 +112,7 @@ export class ElementosComponent implements OnInit{
   }
 
 
-  cerrarDialog(value: boolean) {
+  cerrarDialog(event: Event ) {
     this.mostrarDialogoNuevoElemento = false;
     this.cargando_procesamiento = true;
   }
@@ -155,25 +164,47 @@ export class ElementosComponent implements OnInit{
 
 
   cambiarOpcionBusqueda($event: any) {
+     
+    this.elementos = this.elementosTodos;
+    if(this.opcionesCatalogo.find((elemento) => elemento.estado === $event.value.estado)){
+  //    this.opcionCatalogoSeleccionado.estado = $event.value.nombre; da bugazo
+    }else{
+      this.categoriaSeleccionada = $event.value.nombre;
+    }
 
-    if($event.value == "Todos"){
-      this.inicializaElementos();
-    }else if($event.value == "Catalogados"){
+    if(this.opcionCatalogoSeleccionado.estado == "Todos"){
+   //   this.inicializaElementos();
+      this.elementos = this.elementosTodos;
+    }else if(this.opcionCatalogoSeleccionado.estado  == "Catalogados"){
       this.elementos = this.elementosTodos.filter(elemento => elemento.activo == true);
-    }else if($event.value == "Descatalogados"){
+    }else if(this.opcionCatalogoSeleccionado.estado == "Descatalogados"){
       this.elementos = this.elementosTodos.filter(elemento => elemento.activo == false);
     }
 
-    
-
+    if(this.categoriaSeleccionada  == "Carteles"){ 
+      this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == "Carteles");
+    }else if(this.categoriaSeleccionada == "Dispositivos"){
+      this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == "Dispositivos");
+    }else if(this.categoriaSeleccionada  == "Otros"){
+      this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == "Otros");
+    }
   }
 
+  // this.regiones = regiones;
+  // this.Dropdown_regiones = regiones.map((region) => region.nombre);
  
+  inicializaCategorias_elementos(){
+    this.elementosService.getCategorias_elementos().subscribe((elementos: categorias_elementos[]) => {
+      this.categorias_elementos = elementos; 
+      this.opcionesCategoria = elementos.map((elemento) => elemento.nombre);
+    })
+  }
+
+
   
-
-
-  ngOnInit(): void {
+  ngOnInit(): void { 
     this.inicializaElementos();
+    this.inicializaCategorias_elementos();
 
     this.elementosService.getAllRegiones().subscribe((regiones: regiones[]) => {
       this.regiones = regiones;
@@ -186,11 +217,11 @@ export class ElementosComponent implements OnInit{
       {estado: 'Descatalogados'}
     ]
 
-    this.opcionesCategoria = [
-      {clase: 'Carteles'},
-      {clase: 'Dispositivos'},
-      {clase: 'Modelos'}
-    ]
+    // this.opcionesCategoria = new FormGroup({
+    //   categoriaSeleccionada: new FormControl<categorias_elementos | null>(null)
+    // });
+  
+ 
 
   }
 

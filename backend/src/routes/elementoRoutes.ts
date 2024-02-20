@@ -1,12 +1,13 @@
 import express, { Router } from 'express';
 import {  uploadImagenRepresentativa } from '../config/multer';
-import {  deleteElemento, guardarElemento,editarEstadoElemento,getRegionesDisponibles } from '../controller/expositorController';
+import {  deleteElemento, guardarElemento,editarEstadoElemento,getRegionesDisponibles, getCategorias_elementos } from '../controller/elementoController';
 import { uploadFileToFtp } from '../config/ftpUpload'; 
-import { getElementos } from '../controller/expositorController';
+import { getElementos } from '../controller/elementoController';
 
 const router: Router = express.Router();
 
 router.get('/elementos', getElementos);
+router.get('/categorias_elementos', getCategorias_elementos);
 router.delete('/elementos/:id_elementos', deleteElemento);
 
 router.post('/elementos', uploadImagenRepresentativa, uploadFileToFtp('imagenesReferencia'), guardarElemento);
@@ -14,7 +15,6 @@ router.post('/elementos', uploadImagenRepresentativa, uploadFileToFtp('imagenesR
 router.post('/elementosActivaDesactiva', editarEstadoElemento);
 
 router.get('/regiones', getRegionesDisponibles);
-
-// router.get('/elementoses/:id_mueble', getelementosesByIdMueble);
+ 
 
 export default router;
