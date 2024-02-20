@@ -125,6 +125,7 @@ export class TiendasComponent implements OnInit{
     }
   }
   editarTienda(tienda: tienda){
+    this
     this.nuevaTienda = tienda;
     this.crearEditarTienda = 'Editar tienda';
     this.cabeceraNuevaEditarTienda = 'Editar tienda';
@@ -180,7 +181,11 @@ export class TiendasComponent implements OnInit{
 
   informe(){
     const informe = this.generarPDF();
-    informe.save('informe.pdf');
+    const pdfBlob = new Blob([informe.output('blob')], { type: 'application/pdf' });
+    const formData = new FormData();
+    formData.append('pdfFile', pdfBlob, 'generated.pdf');
+    this.TiendasService.informe(formData).subscribe((response: any) => {
+    })
   }
   generarPDF(){
     let informe = new jsPDF();
