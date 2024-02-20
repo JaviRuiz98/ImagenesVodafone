@@ -9,7 +9,7 @@
           <div class="custom-header" >
             Elemento/mueble {{mueble.nombre !== undefined ? ' - ' + mueble.nombre : mueble.id}}
             
-             <p-progressSpinner *ngIf="mueble.expositores[0] != undefined? cargas_procesamiento[mueble.expositores[0].id]: false" 
+            <p-progressSpinner *ngIf="mueble.expositores[0] != undefined? cargas_procesamiento[mueble.expositores[0].id]: false" 
               class="spinner" strokeWidth="6" fill="var(--surface-ground)" animationDuration=".6s"
               [style]="{'width': '30px', 'height': '30px'}"></p-progressSpinner> 
           </div>
