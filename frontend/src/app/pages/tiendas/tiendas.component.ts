@@ -5,6 +5,7 @@ import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 
 import { tienda } from 'src/app/interfaces/tienda';
 import { muebles } from 'src/app/interfaces/muebles';
+import { jsPDF } from 'jspdf';
 
 @Component({
   selector: 'app-tiendas',
@@ -124,6 +125,7 @@ export class TiendasComponent implements OnInit{
     }
   }
   editarTienda(tienda: tienda){
+    this
     this.nuevaTienda = tienda;
     this.crearEditarTienda = 'Editar tienda';
     this.cabeceraNuevaEditarTienda = 'Editar tienda';
@@ -178,8 +180,21 @@ export class TiendasComponent implements OnInit{
   }
 
   informe(){
-    this.TiendasService.informe().subscribe((response: any) => {
-      
+    const informe = this.generarPDF();
+    const pdfBlob = new Blob([informe.output('blob')], { type: 'application/pdf' });
+    const formData = new FormData();
+    formData.append('pdfFile', pdfBlob, 'generated.pdf');
+    this.TiendasService.informe(formData).subscribe((response: any) => {
     })
+  }
+  generarPDF(){
+    let informe = new jsPDF();
+    informe.setFont("helvetica","bold"); 
+    informe.text('Resumen de la auditoria ', 20, 20);
+    return informe;
+  }
+  eliminarMueblesSeleccionados(listaCompleta: muebles[], listaMueblesSeleccionados: muebles[]){
+    const idsLista2 = new Set(listaMueblesSeleccionados.map(mueble => mueble.id));
+    const listaFiltrada = listaCompleta.filter((mueble) => !idsLista2.has(mueble.id));
   }
 }
