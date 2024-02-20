@@ -161,6 +161,7 @@ export const auditoriaService = {
                 where: {
                     id_auditoria: id_auditoria
                 }, include: {
+                    muebles: true,
                     elementos: true,
                     procesados_imagenes: true
                 }

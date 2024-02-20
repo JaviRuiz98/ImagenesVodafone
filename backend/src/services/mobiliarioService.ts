@@ -202,60 +202,7 @@ export const mobiliarioService = {
         }
     },
 
-    async getExpositoresAndElementosAndProcesadosByIdAuditoria(
-        id_auditoria: number
-    ): Promise<any> {
-        try {
-            throw new Error(
-                `No se implementado el getExpositoresAndElementosByIdAuditoria ${id_auditoria}`
-            );
-
-            //     const muebles = await db.muebles.findMany({
-            //         where: {
-            //             expositores: {
-            //                 some:{
-            //                     pertenencia_elementos_auditoria: {
-            //                         some: {
-            //                             id_auditoria: id_auditoria
-            //                         }
-            //                     }
-            //                 }
-
-            //             }
-
-            //         },
-            //         include: {
-            //            expositores: {
-            //                select: {
-            //                    id: true,
-            //                },
-            //                include: {
-            //                    atributos_expositores: {
-            //                        include: {
-            //                            pertenencia_elementos_atributos:{
-            //                             include: {
-            //                                 elementos:{
-            //                                     select:{
-            //                                         id: true,
-            //                                     }
-            //                                 }
-            //                             }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //         }
-            //     });
-
-            });
-
-        } catch (error) {
-            throw error;
-        } finally {
-            await db.$disconnect();
-        }
-    },
+    
 };
 
 // //NO FUNCIONA
