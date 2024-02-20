@@ -3,7 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, Validator, ValidatorFn, Valida
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { elementos } from 'src/app/interfaces/elementos';
 import { muebles } from 'src/app/interfaces/muebles';
-import { ExpositoresService } from 'src/app/servicios/elementos/expositores.service';
+import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
 import { MuebleCreacion } from '../../interfaces/muebleCreacion';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 
@@ -19,7 +19,7 @@ export class FormMuebleComponent implements OnInit {
 
  
   
-  constructor( public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private expositoresService: ExpositoresService, private muebleService: MueblesService) { }
+  constructor( public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private elementosService: ElementosService, private muebleService: MueblesService) { }
 
   showing_asignar_expositores: boolean = false;
   all_expositores: elementos[] = [];
@@ -106,7 +106,7 @@ export class FormMuebleComponent implements OnInit {
   showExpositores(categoria: number) {
     
    
-    this.expositoresService.getExpositores(categoria).subscribe( (expositores:elementos[]) => {
+    this.elementosService.getElementos(categoria).subscribe( (expositores:elementos[]) => {
       this.all_expositores = expositores;
       this.new_expositor_for_categoria = categoria;
       this.showing_asignar_expositores = true;

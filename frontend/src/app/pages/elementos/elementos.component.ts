@@ -34,8 +34,10 @@ export class ElementosComponent implements OnInit{
 
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
-  opcionesMostrar!: any[];
-  opcionSeleccionada = {estado: 'Todos'};
+  opcionesCategoria!: any[];
+  categoriaSeleccionada = {tipo: 'Todos'};
+  opcionesCatalogo!: any[];
+  opcionCatalogoSeleccionado = {estado: 'Todos'};
 
   regiones!: regiones[];
   mostrar: boolean = false;
@@ -59,10 +61,10 @@ export class ElementosComponent implements OnInit{
   resetTabla() {
     this.elementos = this.elementosTodos;
     if(this.tableSelected == "dispositivos"){
-      this.elementos = this.elementos.filter(elementos => elementos.id_categoria == 2);
+      this.elementos = this.elementos.filter(elementos => elementos.categorias_elementos.id == 2);
       
     }else{
-      this.elementos = this.elementos.filter(elementos => elementos.id_categoria == 1);
+      this.elementos = this.elementos.filter(elementos => elementos.categorias_elementos.id == 1);
     }
   }
 
@@ -83,7 +85,10 @@ export class ElementosComponent implements OnInit{
       },
       nombre: '',
       activo: true,
-      id_categoria:1,
+      categorias_elementos: {
+        id: 0,
+        nombre: ''
+      },
       procesados_imagenes: []
     };
     this.mostrarDialogoNuevoElemento = true;
@@ -150,6 +155,7 @@ export class ElementosComponent implements OnInit{
 
 
   cambiarOpcionBusqueda($event: any) {
+
     if($event.value == "Todos"){
       this.inicializaElementos();
     }else if($event.value == "Catalogados"){
@@ -157,6 +163,8 @@ export class ElementosComponent implements OnInit{
     }else if($event.value == "Descatalogados"){
       this.elementos = this.elementosTodos.filter(elemento => elemento.activo == false);
     }
+
+    
 
   }
 
@@ -172,12 +180,17 @@ export class ElementosComponent implements OnInit{
     });
 
 
-    this.opcionesMostrar = [
+    this.opcionesCatalogo = [
       {estado: 'Todos'}, 
       {estado: 'Catalogados'}, 
       {estado: 'Descatalogados'}
     ]
 
+    this.opcionesCategoria = [
+      {clase: 'Carteles'},
+      {clase: 'Dispositivos'},
+      {clase: 'Modelos'}
+    ]
 
   }
 

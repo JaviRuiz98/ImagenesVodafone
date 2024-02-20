@@ -2,6 +2,7 @@
 import { imagenes } from "./imagenes";
 import { procesados_imagenes } from "./procesados_imagenes";
 import { regiones } from "./regiones";
+import { categorias_elementos } from "./categoria";
 
 export interface elementos {
     id: number;
@@ -9,6 +10,7 @@ export interface elementos {
     region: regiones;
     nombre: string;
     activo: boolean;
-    id_categoria:number;
+    categorias_elementos: categorias_elementos;
     procesados_imagenes: procesados_imagenes[];
 }
+

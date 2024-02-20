@@ -27,7 +27,7 @@ import { SelectorImagenesComponent } from './../../componentes/selector-imagenes
 import { PaginadorProcesamientoSubidaComponent } from './../../componentes/paginador-procesamiento-subida/paginador-procesamiento-subida.component'; 
 import { FileUploadModule } from 'primeng/fileupload';
 import { FormsModule } from '@angular/forms'; // Add this import 
-import { NuevoExpositorComponent } from 'src/app/componentes/nuevo-expositor/nuevo-expositor.component';
+import { NuevoElementoComponent } from 'src/app/componentes/nuevo-elemento/nuevo-elemento.component';
 import { ElementosComponent } from './elementos.component';
 
 
@@ -54,7 +54,7 @@ import { ElementosComponent } from './elementos.component';
     TableModule,
     CheckboxModule,
     InputTextModule,
-    NuevoExpositorComponent,
+    NuevoElementoComponent,
     OverlayPanelModule,
     DropdownModule,
     SelectButtonModule

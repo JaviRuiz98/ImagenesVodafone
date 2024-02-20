@@ -121,7 +121,7 @@
 
   <div *ngIf="!showing_asignar_expositores && showing_crear_expositores ">
     <p-button severity="danger" [text]="true" [raised]="true" (onClick)="showing_crear_expositores = false" label="volver" ></p-button>
-    <app-nuevo-expositor [categoriaPredefinida]="new_expositor_for_categoria " ></app-nuevo-expositor>
+    <app-nuevo-elemento [categoriaPredefinida]="new_expositor_for_categoria " ></app-nuevo-elemento>
   </div>
 
   <div *ngIf="showing_asignar_expositores && !showing_crear_expositores ">

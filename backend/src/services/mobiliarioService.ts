@@ -209,67 +209,7 @@ export const mobiliarioService = {
         }
     },
 
-    async getExpositoresAndElementosAndProcesadosByIdAuditoria(
-        id_auditoria: number
-    ): Promise<any> {
-        try {
-           
-            return  await db.muebles.findMany({
-                where: {
-                    expositores: {
-                        some:{
-                            pertenencia_elementos_auditoria: {
-                                some: {
-                                    id_auditoria: id_auditoria
-                                }
-                            }
-                        }
-
-                    }
-
-                },
-                include: {
-                    expositores: {
-                       
-                        include: {
-                            atributos_expositores: {
-                                include: {
-                                    pertenencia_elementos_atributos:{
-                                        include: {
-                                            elementos:{
-                                                include: {
-                                                    imagenes: true
-                                                }
-                                            }
-                                               
-                                        }
-                                    }
-                                }
-                            }, 
-                            pertenencia_elementos_auditoria: {
-                                include: {
-                                    procesados_imagenes: {
-                                        include: {
-                                            imagenes: true,
-                                            prompts: true,
-                                            probabilidades_respuesta_carteles: true
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                }
-
-            });
-
-        } catch (error) {
-            throw error;
-        } finally {
-            await db.$disconnect();
-        }
-    },
+    
 };
 
 // //NO FUNCIONA

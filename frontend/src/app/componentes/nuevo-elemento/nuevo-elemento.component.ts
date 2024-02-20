@@ -78,23 +78,28 @@ export class NuevoElementoComponent implements OnInit {
       this.nuevoElemento_form.patchValue({ categoria: this.categoriaPredefinida });
       this.bloqueaCategoria = true;
     } 
-    this.nuevoElemento = {
-      id: 0,
-      imagenes: {
-        url:"",
-        id_imagen: 0
-      },
-      region: {
-        id: 0,
-        nombre: ''
-      },
-      nombre: '',
-      activo: true,
-      id_categoria: this.categoriaPredefinida,
-      procesados_imagenes: []
-    };
-    this.submitted = false;
   }
+
+//   this.nuevoElemento = {
+//     id: 0,
+//     imagenes: {
+//       url:"",
+//       id_imagen: 0
+//     },
+//     region: {
+//       id: 0,
+//       nombre: ''
+//     },
+//     nombre: '',
+//     activo: true,
+//     {
+//       id: 0,
+//       nombre: ''
+//     }
+//     procesados_imagenes: []
+//   };
+//   this.submitted = false;
+// }
   
   recibirFile(event: {archivo:File}) {
     this.nuevoElemento_form.patchValue({ imagen: event.archivo });
