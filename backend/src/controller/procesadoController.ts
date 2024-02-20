@@ -34,13 +34,14 @@ export async function procesarImagenes(req: Request, res: Response) {
        res.status(500).json({ error: 'La imagen procesada no existe' });
        return;
     }
-    
-    //creo la imagen nueva y compruebo que existe el expositor (falta tipar)
+
+    //Creo la imagen, y obtengo el elemento
     const [nuevaImagen, existingElemento, id_expositor_auditoria]  = await Promise.all([
       imagenService.create(imagenProcesada.filename, imagenProcesada.originalname),
       elementosService.getById(id_elemento),
       procesadoService.getIdExpositorAuditoria(id_elemento, id_auditoria)
     ]);    
+
 
     if (!existingElemento || !id_expositor_auditoria) {
         res.status(404).json({ error: 'Expositor no encontrado' });
@@ -48,13 +49,15 @@ export async function procesarImagenes(req: Request, res: Response) {
     }
     
 
-    //obtengo la imagen de referencia
+    //la imagen de referencia no puese nula (hace falta para el procesado)
     if (!existingElemento.id_imagen) {
       res.status(500).json({ error: 'La imagen de referencia no existe' }); //es un dispositivo, no se puede procesar
+      return;
     }
+
+    //la imagen de referencia  es necesaria para el procesado
     const imagenReferencia = await elementosService.getImage(existingElemento.id_imagen!);       
     
-
     if (!imagenReferencia) {
       res.status(500).json({ error: 'La imagen referencia no existe' });
       return;

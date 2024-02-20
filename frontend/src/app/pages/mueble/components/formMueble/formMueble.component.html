@@ -2,12 +2,12 @@
 
   <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
 
-    <div class="flex flex-column" *ngIf="!showing_asignar_expositores && !showing_crear_expositores ">
+    <div class="flex flex-column" *ngIf="!showing_asignar_expositores">
      
         <div class="flex align-items-center justify-content-center mt-2">
           <p-card [style]="{'width':'100vh'}" header="Nombre*">
             <!-- <span class="p-float-label"> -->
-              <input type="text" formControlName="nombre_mueble" pInputText class="w-full">
+              <input type="text" formControlName="nombre" pInputText class="w-full">
               <!-- <label >Nombre * </label>
             </span> -->
             <small *ngIf="nombre_mueble.invalid && (nombre_mueble.dirty || nombre_mueble.touched)" class="block p-error">
@@ -102,7 +102,7 @@
   
   </div> -->
 
-  <div class ="flex align-items-center justify-content-center mt-2" *ngIf="!showing_asignar_expositores && !showing_crear_expositores">
+  <div class ="flex align-items-center justify-content-center mt-2" *ngIf="!showing_asignar_expositores">
    
     <p-button  type="submit"  severity="danger" [icon]="'pi pi-check'" [label]="'Guardar'"  (onClick)="onSubmit()">    </p-button>
  
