@@ -17,6 +17,7 @@ import { PanelModule } from 'primeng/panel';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
+import { SelectorImagenesComponent } from 'src/app/componentes/selector-imagenes/selector-imagenes.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { FormMuebleComponent } from './components/formMueble/formMueble.component';
@@ -53,7 +54,8 @@ import { NuevoExpositorComponent } from 'src/app/componentes/nuevo-expositor/nue
     FormsModule,
 
     IrArribaComponent,
-    NuevoExpositorComponent
+    NuevoExpositorComponent,
+    SelectorImagenesComponent
     
   ],
   declarations: [MuebleComponent, FormMuebleComponent, HistorialExpositoresComponent, AsignarExpositorComponent], 
