@@ -25,7 +25,7 @@ export class AuditoriaComponent implements OnInit{
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
 
-  muebles: muebles[] = [];
+  muebles: any[] = [];
 
   id_auditoria_seleccionada: number = 0;
   auditoria_seleccionada: auditoria = new auditoria(null);
@@ -63,7 +63,8 @@ export class AuditoriaComponent implements OnInit{
 
     async inicializaImagenesReferencia() {
       this.auditoriaService.getMueblesAndExpositoresWithProcesadosByIdAuditoria(this.auditoriaService.id_auditoria_seleccionada).subscribe(
-        (data: muebles[]) => {
+        (data: any[]) => {
+          console.log(data)
           this.muebles = data;
         }, (error: Error) => { console.log(error) }
       );
@@ -103,7 +104,7 @@ export class AuditoriaComponent implements OnInit{
       // }
     }
 
-    getImagenModelo(expositor: expositores): string | undefined {
+    getImagenModelo(elemento: elementos): string | undefined {
       // const elementoModelo: elementos | undefined = expositor.elementos.find((elemento) => elemento.id_categoria === 3);
       
       // if (elementoModelo) {
@@ -111,8 +112,8 @@ export class AuditoriaComponent implements OnInit{
       // } else {
       //   return undefined;
       // }
-      return "completar"
-
+      // return "completar"
+      return
     }
     
       

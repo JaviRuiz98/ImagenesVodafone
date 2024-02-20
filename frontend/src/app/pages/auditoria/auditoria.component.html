@@ -7,33 +7,33 @@
       <p-panel [style]="{'border': '1px solid black', 'margin-bottom': '20px'}">
         <ng-template pTemplate="header">
           <div class="custom-header" >
-            Elemento/mueble {{mueble.nombre !== undefined ? ' - ' + mueble.nombre : mueble.id}}
+            Mueble {{mueble.nombre !== undefined ? ' - ' + mueble.nombre : mueble.id}}
             
-             <p-progressSpinner *ngIf="mueble.expositores[0] != undefined? cargas_procesamiento[mueble.expositores[0].id]: false" 
+            <p-progressSpinner *ngIf="mueble.elementos[0] != undefined? cargas_procesamiento[mueble.elementos[0].id]: false" 
               class="spinner" strokeWidth="6" fill="var(--surface-ground)" animationDuration=".6s"
               [style]="{'width': '30px', 'height': '30px'}"></p-progressSpinner> 
           </div>
         </ng-template>
-          <div class="panelCompleto " *ngIf="mueble.expositores != undefined">
+          <div class="panelCompleto " *ngIf="mueble.elementos != undefined">
             <div class="panelIzquierda" >
               <div   class="anchoAltoFotoReferencia" >
-                <div *ngIf=" mueble.expositores.length == 1 ">
-                  <p-image [src]="url_imagenes_referencias + getImagenModelo(mueble.expositores[0])" [alt]="getImagenModelo(mueble.expositores[0])" class="imagenSimple" [width]="'100%'" [height]="'100%'" [preview]="true"></p-image>
+                <div *ngIf=" mueble.elementos.length == 1 ">
+                  <p-image [src]="url_imagenes_referencias + mueble.elementos[0].imagenes.url" [alt]="getImagenModelo(mueble.elementos[0])" class="imagenSimple" [width]="'100%'" [height]="'100%'" [preview]="true"></p-image>
                 </div>
               </div>
   
-              <div *ngIf="mueble.expositores.length == 2 && mueble.expositores[0] != undefined && mueble.expositores[1] != undefined" class="grid anchoAltoFotoReferencia">
+              <div *ngIf="mueble.elementos.length == 2 && mueble.elementos[0] != undefined && mueble.elementos[1] != undefined" class="grid anchoAltoFotoReferencia">
              
                   <div style="margin-right: 5px;">
-                    <img [src]="url_imagenes_referencias +  getImagenModelo(mueble.expositores[0])" [alt]=" getImagenModelo(mueble.expositores[0])" class="imagenDoble">
+                    <img [src]="url_imagenes_referencias +  getImagenModelo(mueble.elementos[0])" [alt]=" getImagenModelo(mueble.elementos[0])" class="imagenDoble">
                   </div>
                   <div> 
-                    <img [src]="url_imagenes_referencias +  getImagenModelo(mueble.expositores[1])" [alt]=" getImagenModelo(mueble.expositores[1])" class="imagenDoble">
+                    <img [src]="url_imagenes_referencias +  getImagenModelo(mueble.elementos[1])" [alt]=" getImagenModelo(mueble.elementos[1])" class="imagenDoble">
                   </div>
               </div> 
             </div>
             <div class="panelDerecha">
-              <div *ngIf="mueble.expositores.length == 1 && mueble.expositores[0] != undefined" class="anchoAltoSubirFoto">              
+              <div *ngIf="mueble.elementos.length == 1 && mueble.elementos[0] != undefined" class="anchoAltoSubirFoto">              
                 <app-paginador-procesamiento-subida  
                   class="anchoAltoPaginador"
                  >

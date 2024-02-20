@@ -53,16 +53,16 @@ export class GestionDeAuditoriasComponent implements OnInit {
   }
 
   async nuevaAuditoria() {
-    this.auditoriaService.nuevaAuditoria(this.tiendaSeleccionada?.id_tienda || 0).subscribe(
+    this.auditoriaService.nuevaAuditoria(this.tiendaSeleccionada? this.tiendaSeleccionada.id : 0).subscribe(
       (data)=>{
         this.inicializaAuditorias();
-        this.goToAuditoria(data.id_auditoria);
+        this.goToAuditoria(data.id);
       }
     );
   } 
 
   inicializaAuditorias() {
-    this.auditoriaService.getAuditorias(this.tiendaSeleccionada?.id_tienda || 0).subscribe((data)=>{
+    this.auditoriaService.getAuditorias(this.tiendaSeleccionada!=undefined? this.tiendaSeleccionada.id : 0).subscribe((data)=>{
       this.auditorias = data;
       this.cargando_auditorias = false;
     })
@@ -70,6 +70,7 @@ export class GestionDeAuditoriasComponent implements OnInit {
 
   goToAuditoria(id_auditoria: number){
     this.auditoriaService.id_auditoria_seleccionada = id_auditoria;
+    console.log('Auditoria seleccionada ' + this.auditoriaService.id_auditoria_seleccionada);
     this.router.navigate(['/auditoria']);
   }
 

@@ -23,7 +23,7 @@ export class TiendasComponent implements OnInit{
   tiendasMostrar: tienda[] = [];
   nuevaTienda: tienda = {
     sfid: '',
-    id_tienda: 0,
+    id: 0,
     pertenencia_mueble_tienda: [],
     activa: true
   };
@@ -131,8 +131,8 @@ export class TiendasComponent implements OnInit{
     this.cabeceraNuevaEditarTienda = 'Editar tienda';
     this.sfidInput = tienda.sfid;
     this.comunidadInput = 'prueba';
-    this.MueblesService.getMueblesTiendaByIdTienda(tienda.id_tienda).subscribe((response: muebles[]) => {
-      this.listaMueblesNuevaTienda = this.ordenarListaAlfabeticamente(response, 'nombre');
+    this.MueblesService.getMueblesTiendaByIdTienda(tienda.id).subscribe((response: muebles[]) => {
+      this.listaMueblesNuevaTienda = response;
     })
     this.activeIndex = 1;
     this.verFormularioNuevaTienda = true;
@@ -156,7 +156,7 @@ export class TiendasComponent implements OnInit{
       rejectLabel: 'No',
       accept: () => {
         this.TiendasService.activarDesactivarTienda(tienda).subscribe((response: tienda) => {
-          const index = this.tiendas.findIndex(t => t.id_tienda === tienda.id_tienda && t.sfid === tienda.sfid);
+          const index = this.tiendas.findIndex(t => t.id === tienda.id && t.sfid === tienda.sfid);
           if (index !== -1) {
             this.tiendas[index].activa = response.activa;
           }

@@ -107,7 +107,7 @@ export const mobiliarioService = {
         }
     },
 
-    async getExpositoresAndElementosByIdTienda(
+    async getMueblesAndElementosByIdTienda(
         id_tienda: number
     ) {
         try {
@@ -123,19 +123,12 @@ export const mobiliarioService = {
                 },
                 include: {
                     expositores: {
-                        select: {
-                            id: true,
-                        },
                         include: {
                             atributos_expositores: {
                                 include: {
                                     pertenencia_elementos_atributos: {
                                         include: {
-                                            elementos: {
-                                                select: {
-                                                    id: true,
-                                                },
-                                            },
+                                            elementos: true,
                                         },
                                         orderBy: {
                                             fecha: "desc",
@@ -149,9 +142,9 @@ export const mobiliarioService = {
                 },
             });
 
-            const expositores = muebles.flatMap((m) => m.expositores); //revisar
+            //const expositores = muebles.flatMap((m) => m.expositores); //revisar
 
-            return expositores;
+            return muebles;
         } catch (error) {
             throw error;
         } finally {
@@ -213,54 +206,47 @@ export const mobiliarioService = {
         id_auditoria: number
     ): Promise<any> {
         try {
-           
-            return  await db.muebles.findMany({
-                where: {
-                    expositores: {
-                        some:{
-                            pertenencia_elementos_auditoria: {
-                                some: {
-                                    id_auditoria: id_auditoria
-                                }
-                            }
-                        }
+            throw new Error(
+                `No se implementado el getExpositoresAndElementosByIdAuditoria ${id_auditoria}`
+            );
 
-                    }
+            //     const muebles = await db.muebles.findMany({
+            //         where: {
+            //             expositores: {
+            //                 some:{
+            //                     pertenencia_elementos_auditoria: {
+            //                         some: {
+            //                             id_auditoria: id_auditoria
+            //                         }
+            //                     }
+            //                 }
 
-                },
-                include: {
-                    expositores: {
-                       
-                        include: {
-                            atributos_expositores: {
-                                include: {
-                                    pertenencia_elementos_atributos:{
-                                        include: {
-                                            elementos:{
-                                                include: {
-                                                    imagenes: true
-                                                }
-                                            }
-                                               
-                                        }
-                                    }
-                                }
-                            }, 
-                            pertenencia_elementos_auditoria: {
-                                include: {
-                                    procesados_imagenes: {
-                                        include: {
-                                            imagenes: true,
-                                            prompts: true,
-                                            probabilidades_respuesta_carteles: true
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+            //             }
 
-                }
+            //         },
+            //         include: {
+            //            expositores: {
+            //                select: {
+            //                    id: true,
+            //                },
+            //                include: {
+            //                    atributos_expositores: {
+            //                        include: {
+            //                            pertenencia_elementos_atributos:{
+            //                             include: {
+            //                                 elementos:{
+            //                                     select:{
+            //                                         id: true,
+            //                                     }
+            //                                 }
+            //                             }
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //         }
+            //     });
 
             });
 
