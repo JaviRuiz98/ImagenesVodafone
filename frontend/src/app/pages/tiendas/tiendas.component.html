@@ -9,7 +9,7 @@
                 </span> 
             </div>
         </div>
-        <p-dialog [header]="cabeceraNuevaEditarTienda" [(visible)]="verFormularioNuevaTienda" [style]="{'width': '80vw', 'max-height': '100vh'}">
+        <p-dialog [header]="cabeceraNuevaEditarTienda" [(visible)]="verFormularioNuevaTienda" [style]="{'width': '80vw', 'max-height': '100vh'}" [draggable]="false">
             <div class="formulario" *ngIf="activeIndex === 0">
                 <p><strong>Nuevo sfid:</strong></p>
                 <input type="text" pInputText [(ngModel)]="sfidInput" [disabled]="editarTiendaCreada"/>
@@ -18,11 +18,12 @@
             </div>
             <div class="formulario" *ngIf="activeIndex === 1">
                 <p-pickList [source]="listaMueblesMostrar" [target]="listaMueblesNuevaTienda" sourceHeader="Muebles disponibles"  targetHeader="Muebles nueva tienda" 
-                filterBy="nombre_mueble" sourceFilterPlaceholder="Buscar por nombre" targetFilterPlaceholder="Buscar por nombre" [dragdrop]="true" [responsive]="true">
+                filterBy="nombre" sourceFilterPlaceholder="Buscar por nombre" targetFilterPlaceholder="Buscar por nombre" [dragdrop]="true" [responsive]="true"
+                [showSourceControls] = "false" [showTargetControls] = "false">
                     <ng-template let-mueble pTemplate="item">
                         <div class="contenedorMuebleArrastras">
                             <div class="anchoAltoDescripcionFotoReferencia">
-                                <span class="letrasCaracteristicasMueble"><strong>{{ mueble.nombre_mueble }}</strong></span>
+                                <span class="letrasCaracteristicasMueble"><strong>{{ mueble.nombre }}</strong></span>
                             </div>
                         </div>
                     </ng-template>
@@ -39,7 +40,7 @@
                         <ng-template let-mueble pTemplate="item">
                             <div class="contenedorMuebleArrastras">
                                 <div class="anchoAltoDescripcionFotoReferencia">
-                                    <span class="letrasCaracteristicasMueble"><strong>{{ mueble.nombre_mueble }}</strong></span>
+                                    <span class="letrasCaracteristicasMueble"><strong>{{ mueble.nombre }}</strong></span>
                                 </div>
                             </div>
                         </ng-template>
@@ -81,8 +82,8 @@
                 <td><i class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendas.activa, 'text-red-500 pi-times-circle': !tiendas.activa }"></i></td>
             </tr>
         </ng-template>
-    </p-table>
-</div>
+        </p-table>
+    </div>
 </div>
 <p-toast></p-toast>
 <p-confirmDialog [style]="{width: '50vw'}" ></p-confirmDialog>

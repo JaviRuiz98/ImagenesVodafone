@@ -11,6 +11,12 @@ export const elementosService = {
             return db.elementos.findUnique({
                 where: {
                   id: id_elemento
+                },
+                include: {
+                  imagenes: true,
+                  regiones: true,
+                  categorias_elementos: true,
+
                 }
             })
         }
@@ -88,7 +94,8 @@ export const elementosService = {
             where:whereClause,
             include: {
               regiones: true,
-              imagenes: true
+              imagenes: true,
+              categorias_elementos: true
             }
           });
         } catch (error) {

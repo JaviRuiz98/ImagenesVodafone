@@ -64,14 +64,6 @@ export class BarraMenuComponent implements OnInit {
     }
   }
 
-  onTiendaSelected(){
-    if (this.tiendaSeleccionada){
-      this.localStorageService.setItem('tiendas', this.tiendaSeleccionada.id );
-    }else{
-      this.localStorageService.removeItem('tiendas');
-    }
-  }
-
   private  formatDate(date: Date): string {
     const day = String(date.getDate()).padStart(2, '0'); 
     const month = String(date.getMonth() + 1).padStart(2, '0'); 
@@ -115,7 +107,7 @@ export class BarraMenuComponent implements OnInit {
   obtenerRuta(){
     let rutaActual = this.router.url;
     this.currentState = rutaActual;
-    if(rutaActual === '/gestionAuditorias' || rutaActual === '/tiendas' || rutaActual === '/muebles'){
+    if(rutaActual === '/gestionAuditorias' || rutaActual === '/tiendas' || rutaActual === '/muebles' || rutaActual === '/expositor'){
       rutaActual = '/volverHome';
     }
     return rutaActual;

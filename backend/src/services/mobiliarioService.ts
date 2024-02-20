@@ -5,6 +5,36 @@ import db from "../config/database";
 // import {expositoresConProcesados} from "../interfaces/expositoresProcesados"
 
 export const mobiliarioService = {
+    async getHuecosDisponibles (id_mueble: number)  {
+        try {
+           return await db.muebles.count(
+                { 
+                    where: { 
+                        id: id_mueble,
+                        expositores: {
+                            some: {
+                                atributos_expositores: {
+                                    some: {
+                                        pertenencia_elementos_atributos: {
+                                            some: {
+                                                elementos: {
+                                                    id_categoria: 3,
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }, 
+                   
+                });
+        } catch (error) {
+            throw error;
+        } finally {
+            await db.$disconnect();
+        }
+    },
     getFilteredMuebles: async (
         id?: number,
         _orden_clause:
@@ -82,10 +112,23 @@ export const mobiliarioService = {
                 },
             });
 
+            const mueblesMapeados = muebles.map((mueble) => {
+                const expositores = mueble.expositores.map((expositor) => {
+                    const atributos = expositor.atributos_expositores.map((atributo) => {
+                        const elemento = atributo.pertenencia_elementos_atributos.map((pertenencia) => pertenencia.elementos)[0]; //quiero devolver el elemento activo
+                        return { ...atributo, elemento }; 
+                    });
+                    return { ...expositor, atributos_expositores: atributos }; 
+                });
+
+
+        
+                return { ...mueble, expositores };
+            });
+        
             
             
-            
-            return muebles;
+            return mueblesMapeados;
 
         } catch (error) {
             throw error;

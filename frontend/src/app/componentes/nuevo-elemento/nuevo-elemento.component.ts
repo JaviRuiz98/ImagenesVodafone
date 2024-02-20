@@ -2,7 +2,7 @@
 import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import { elementos } from 'src/app/interfaces/elementos';
-import { ExpositoresService } from 'src/app/servicios/expositores/expositores.service';
+import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
 import { SelectorImagenesComponent } from './../../componentes/selector-imagenes/selector-imagenes.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -16,10 +16,11 @@ import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormControl, 
  
 import { regiones } from 'src/app/interfaces/regiones';
 
+
 @Component({
-  selector: 'app-nuevo-expositor',
-  templateUrl: './nuevo-expositor.component.html',
-  styleUrls: ['./nuevo-expositor.component.css'],
+  selector: 'app-nuevo-elemento',
+  templateUrl: './nuevo-elemento.component.html',
+  styleUrls: ['./nuevo-elemento.component.css'],
   providers: [ MessageService, ConfirmationService],
   standalone: true,
   imports: [
@@ -34,37 +35,34 @@ import { regiones } from 'src/app/interfaces/regiones';
     DropdownModule,
     InputNumberModule
   ],
-
 })
-
-
-
-
-export class NuevoExpositorComponent implements OnInit {
+ 
+  
+export class NuevoElementoComponent implements OnInit {
 
   @Input() categoriaPredefinida: number = 0; //sin implementar
   @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
-  @Output() mostrarDialogoNuevoExpositor = new EventEmitter<boolean>();
-  @Output() nuevoExpositorCreado = new EventEmitter<elementos>();
+  @Output() mostrarDialogoNuevoElemento = new EventEmitter<boolean>();
+  @Output() nuevoElementoCreado = new EventEmitter<elementos>();
 
-  nuevoExpositor_form: FormGroup = this.formBuilder.group({
-    nombre: new FormControl('', [Validators.required, Validators.minLength(5)]),
+  nuevoElemento_form: FormGroup = this.formBuilder.group({
+    nombre: new FormControl('', [Validators.required, Validators.minLength(2)]),
     activo: new FormControl(false),
-    region: new FormControl(0, [Validators.required, Validators.minLength(1)]),  // interfaz
-    imagen: new FormControl(0, [Validators.required, this.fileValidator]), // interfaz ?
-    categoria: new FormControl('', Validators.required ),                                            //////// POR AQUI
+    region: new FormControl('', [Validators.required, Validators.minLength(2)]), 
+    imagen: new FormControl(0, [Validators.required, this.fileValidator]), 
+    categoria: new FormControl('', Validators.required ),                                        
     numero_dispositivos: new FormControl(0), 
   });
 
 
-  formData  = this.nuevoExpositor_form?.value;
+  formData  = this.nuevoElemento_form?.value;
 
   submitted: boolean = false;
   mostrar: boolean = true;
   messages: Message[] | undefined;
   n_dispositivos: number = 0;
   
-  nuevoExpositor!: elementos;
+  nuevoElemento!: elementos;
   
   archivoSeleccionado!: File;
  
@@ -73,59 +71,64 @@ export class NuevoExpositorComponent implements OnInit {
   Dropdown_regiones: string[] = [];
   Dropdown_categorias: string[] = ["Carteles", "Dispositivos"];
 
-  constructor(private formBuilder: FormBuilder, private expositoresService: ExpositoresService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
+  constructor(private formBuilder: FormBuilder, private elementosService: ElementosService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
-  AbrirnuevoExpositor() {
+  AbrirnuevoElemento() {
     if(this.categoriaPredefinida != 0) {
-      this.nuevoExpositor_form.patchValue({ categoria: this.categoriaPredefinida });
+      this.nuevoElemento_form.patchValue({ categoria: this.categoriaPredefinida });
       this.bloqueaCategoria = true;
     } 
-    this.nuevoExpositor = {
-      id: 0,
-      imagenes: {
-        url:"",
-        id_imagen: 0
-      },
-      region: {
-        id: 0,
-        nombre: ''
-      },
-      nombre: '',
-      activo: true,
-      id_categoria: this.categoriaPredefinida,
-      procesados_imagenes: []
-    };
-    this.submitted = false;
   }
+
+//   this.nuevoElemento = {
+//     id: 0,
+//     imagenes: {
+//       url:"",
+//       id_imagen: 0
+//     },
+//     region: {
+//       id: 0,
+//       nombre: ''
+//     },
+//     nombre: '',
+//     activo: true,
+//     {
+//       id: 0,
+//       nombre: ''
+//     }
+//     procesados_imagenes: []
+//   };
+//   this.submitted = false;
+// }
   
   recibirFile(event: {archivo:File}) {
-    this.nuevoExpositor_form.patchValue({ imagen: event.archivo });
+    this.nuevoElemento_form.patchValue({ imagen: event.archivo });
     const imagenAProcesar = event.archivo;
     this.archivoSeleccionadoChange.emit({ archivo: imagenAProcesar });
   }
 
   onRegionChange(event: any) {
     const selectedRegionValue = this.regiones.find((region) => region.nombre === event.value);
-    this.nuevoExpositor_form.patchValue({ region: selectedRegionValue });
+    this.nuevoElemento_form.patchValue({ region: selectedRegionValue });
   }
 
   nuevoGuardar() {
-    console.log(this.nuevoExpositor_form.get('nombre')?.value);
-    if(this.nuevoExpositor_form.get('nombre')?.value == '') {
-      this.messageService.add({severity:'error', summary: 'Error', detail: 'Expositor no guardado'});
+    console.log(this.nuevoElemento_form.get('nombre')?.value);
+    if(this.nuevoElemento_form.get('nombre')?.value == '') {
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Elemento no guardado'});
       this.submitted = true;
     }else{
-      this.expositoresService.guardarExpositor(this.nombre?.value, this.nuevoExpositor.activo, this.region?.value, this.imagen?.value, this.categoria?.value).subscribe((expositor) => {
-        if(expositor.id> 0) {
-          this.messageService.add({severity:'success', summary: 'Guardado', detail: 'Expositor guardado correctamente'});
-          this.nuevoExpositorCreado.emit(expositor);
+      this.elementosService.guardarElemento(this.nombre?.value, this.nuevoElemento.activo, this.region?.value, this.imagen?.value, this.categoria?.value).subscribe((elemento) => {
+        if(elemento.id> 0) {
+          this.messageService.add({severity:'success', summary: 'Guardado', detail: 'Elemento guardado correctamente'});
+          this.nuevoElementoCreado.emit(elemento);
         }else{
-          this.messageService.add({severity:'error', summary: 'Error', detail: 'Expositor no guardado'});
+          this.messageService.add({severity:'error', summary: 'Error', detail: 'Elemento no guardado'});
         }
       })
       this.messageService.add({ key: 'tc', severity: 'warn', summary: 'Warn', detail: 'Message Content' });
       this.mostrar = false;
-      this.mostrarDialogoNuevoExpositor.emit(this.mostrar);
+      this.mostrarDialogoNuevoElemento.emit(this.mostrar);
     }
 
   }
@@ -133,17 +136,17 @@ export class NuevoExpositorComponent implements OnInit {
   nuevoCancelar() {
     this.mostrar = false;
     this.submitted = false;
-    this.mostrarDialogoNuevoExpositor.emit(this.mostrar);
+    this.mostrarDialogoNuevoElemento.emit(this.mostrar);
   }
 
   onDialogHidden() {
     this.mostrar = false;
-    this.mostrarDialogoNuevoExpositor.emit(this.mostrar);
+    this.mostrarDialogoNuevoElemento.emit(this.mostrar);
   }
 
 
   inicializaDropDownZonas(){
-    this.expositoresService.getAllRegiones().subscribe((regiones)=>{
+    this.elementosService.getAllRegiones().subscribe((regiones)=>{
       this.regiones = regiones;
       this.Dropdown_regiones = regiones.map((region) => region.nombre);
     })
@@ -152,17 +155,17 @@ export class NuevoExpositorComponent implements OnInit {
  
 
   ngOnInit(): void {
-    this.AbrirnuevoExpositor();
+    this.AbrirnuevoElemento();
     this.inicializaDropDownZonas();
   }
 
 
 
-  get categoria() { return this.nuevoExpositor_form.get('categoria')}
-  get nombre() { return this.nuevoExpositor_form.get('nombre') }
-  get region() { return this.nuevoExpositor_form.get('region') }
-  get numero_dispositivos() { return this.nuevoExpositor_form.get('numero_dispositivos') }
-  get imagen() { return this.nuevoExpositor_form.get('imagen') }
+  get categoria() { return this.nuevoElemento_form.get('categoria')}
+  get nombre() { return this.nuevoElemento_form.get('nombre') }
+  get region() { return this.nuevoElemento_form.get('region') }
+  get numero_dispositivos() { return this.nuevoElemento_form.get('numero_dispositivos') }
+  get imagen() { return this.nuevoElemento_form.get('imagen') }
 
 
 

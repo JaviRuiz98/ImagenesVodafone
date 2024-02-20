@@ -12,5 +12,6 @@ router.post('/nueva_auditoria',  createAuditoria);
 router.post('/auditoria_global',  createAuditoriaGlobal);
 
 router.put('/terminar_auditoria',  terminarAuditoria);
+router.put('/enviar_informe',  terminarAuditoria);
 
 export default router;

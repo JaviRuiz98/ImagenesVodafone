@@ -29,7 +29,9 @@
         <ng-template pTemplate="header">
             <tr>
                 <th pSortableColumn="nombre">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
-                <th> Expositor </th>
+                <th> Expositor 
+
+                </th>
                 <th>Opciones</th>
             </tr>
             <tr>
@@ -38,29 +40,28 @@
                 </th>
                 <th></th>
                 <th></th>
-                <th></th>
+            
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-mueble>
-
             <tr>
-
                 <td>{{ mueble.nombre }}</td>
-      
 
                 <td [ngClass]=" mueble.expositores.length > 1 ?  'expositores-container':''">
-                    <div *ngFor="let expositor of mueble.expositores" class="expositores-item">
-                        <p-image class ="imagenSimple" [src]="url_imagenes_referencias + getImagenModelo(expositor)"  height="100vh"  [alt]=" getImagenModelo(expositor)? getImagenModelo(expositor):'No disponible'"  [preview]="true"></p-image>
-
+                    <div *ngFor="let expositor of mueble.expositores" >
+                        
+                        <p-image *ngIf="tieneModelo(expositor.atributos_expositores)" class ="imagenSimple" [src]="url_imagenes_referencias + getImagenModelo(expositor)"  height="100vh"  [alt]=" getImagenModelo(expositor)? getImagenModelo(expositor):'No disponible'"  [preview]="true"></p-image>
+                        <div *ngIf="!tieneModelo(expositor.atributos_expositores)" class="flex align-items-center justify-content-center">-</div>
+                        <div> 
+                            <p-button  [raised]="true"  [text]="true" [rounded]="true" severity="danger" label="Elementos" icon="pi pi-plus-circle" [disabled]="!tieneModelo(expositor.atributos_expositores)"  class="mr-2 mt-2" ></p-button>
+                        </div>
                     </div>
-                    <div *ngIf="mueble.expositores.length < 1" class="flex align-items-center justify-content-center">-</div>
                 </td>
 
 
                 <td class="opciones">
                     <p-button severity="danger" class="mr-2" [raised]="true" [text]="true" [rounded]="true" label="Editar" icon="pi pi-pencil"  (click)="editMueble(mueble)"></p-button>
                     <p-button  [raised]="true"  [text]="true" [rounded]="true" severity="danger" label="Historial de elementos" icon="pi pi-history" [disabled]="mueble.expositores.length < 1" (click) ="showHistorial(mueble)"></p-button>
-
                 </td>
             </tr>
         </ng-template>

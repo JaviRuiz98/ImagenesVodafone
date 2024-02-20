@@ -8,6 +8,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 import { Router } from '@angular/router';
 import { BarraDeBarrasComponent } from '../barra-de-barras/barra-de-barras.component';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-progreso-auditoria',
@@ -19,7 +20,8 @@ import { BarraDeBarrasComponent } from '../barra-de-barras/barra-de-barras.compo
     ButtonModule,
     ConfirmDialogModule,
     ToastModule,
-    BarraDeBarrasComponent
+    BarraDeBarrasComponent,
+    DialogModule
   ], providers: [
     ConfirmationService,
     MessageService
@@ -31,7 +33,7 @@ export class ProgresoAuditoriaComponent implements OnInit {
 
   id_auditoria_seleccionada: number | undefined;
   auditoria_seleccionada: auditoria | undefined;
-
+  verDialogInforme: boolean = false;
   datos_barra_progreso: number[] = [];
 
   constructor(
@@ -70,32 +72,44 @@ export class ProgresoAuditoriaComponent implements OnInit {
     )
   }
 
-  terminarAuditoria() {
-    this.confirmationService.confirm({
-      message: '¿Seguro que quieres terminar esta auditoria?',
-      header: 'Confirmacion',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.auditoriaService.terminarAuditoria(this.auditoriaService.id_auditoria_seleccionada).subscribe(
-          (data) => {
-            this.messageService.add({ severity: 'info', summary: 'Confirmado', detail: 'Auditoria finalizada correctamente' });
-            this.router.navigate(['/gestionAuditorias']);
-          }, (error) => {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'No se pudo terminar la auditoria' });
-          }
-        );        
-      }, reject: () => {
-        this.messageService.add({ severity: 'error', summary: '', detail: 'Acción cancelada' });
-      }
-    })
-  }
-
   getColorByValue(value: number): string {
     if(value == undefined) return 'transparent';
     else if(value <= 1) return 'green';
     else if(value <= 2) return 'yellow';
     else return 'red';
   }
-
   
+  terminarAuditoria(auditoria: auditoria) {
+    if(auditoria.estado !== 'finalizado'){
+      const mensaje = '¿Seguro que quieres terminar esta auditoría? Te faltan ' + (auditoria.num_expositores-auditoria.num_expositores_procesados) + ' expositores por procesar.';
+      this.dialogoConfirmacionTerminarAuditoria(mensaje);
+    } else {
+      this.verDialogInforme = true;
+    }
+  }
+  
+  dialogoConfirmacionTerminarAuditoria(mensaje: string){
+    this.confirmationService.confirm({
+      message: mensaje,
+      header: 'Confirmación',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.verDialogInforme = true;
+      },
+      reject: () => {
+        this.messageService.add({ severity: 'error', summary: '', detail: 'Acción cancelada' });
+      }
+    });
+  }
+  enviarInforme(){
+    if(this.auditoria_seleccionada !== undefined){
+      this.auditoriaService.enviarInforme(this.auditoria_seleccionada.id_auditoria).subscribe((response: any)=>{
+      });
+    }
+  }
+  descargarInforme(){
+    if(this.auditoria_seleccionada !== undefined){
+      
+    }
+  }
 }

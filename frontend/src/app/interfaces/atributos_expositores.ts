@@ -9,6 +9,6 @@ export interface atributos_expositores {
     y_min? : number;
     y_max? : number;
     id_categoria:number;
-    elemento: elementos;
+    elemento?: elementos; //es el elemento activo del atributo
 
 }
