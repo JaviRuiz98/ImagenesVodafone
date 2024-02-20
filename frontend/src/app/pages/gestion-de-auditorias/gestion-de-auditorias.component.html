@@ -71,7 +71,7 @@
                     <p-button class ="smallMarginRight" severity="danger" [raised]="true" [text]="true" [rounded]="true" label="Ir auditoría" icon="pi pi-pencil"  (click)="goToAuditoria(auditoria.id)"></p-button>                    
                 </td>
                 <td>
-                    <p-button (click)="enviarInforme(auditoria.id_auditoria)" class="botonInforme" label="Atrás" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px'}" [disabled]="auditoria.estado !== 'finalizado'"></p-button>
+                    <p-button label="Enviar" icon="pi pi-envelope" severity="danger" [text]="true" [raised]="true" [rounded]="true" (click)="enviarInforme(auditoria.id_auditoria)"></p-button>
                 </td>
             </tr>
         </ng-template>
