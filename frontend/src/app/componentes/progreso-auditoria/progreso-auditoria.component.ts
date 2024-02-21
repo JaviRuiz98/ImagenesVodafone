@@ -106,8 +106,7 @@ export class ProgresoAuditoriaComponent implements OnInit {
   }
   enviarInforme(){
     if(this.auditoria_seleccionada !== undefined){
-      this.auditoriaService.enviarInforme(this.auditoria_seleccionada.id_auditoria).subscribe((response: any)=>{
-      });
+
     }
   }
   descargarInforme(){

@@ -53,6 +53,7 @@
                 <th>Prog. visual</th>
                 <th>Opciones</th>
                 <th>Enviar informe</th>
+                <th>Descargar informe</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-auditoria>            
@@ -71,7 +72,10 @@
                     <p-button class ="smallMarginRight" severity="danger" [raised]="true" [text]="true" [rounded]="true" label="Ir auditoría" icon="pi pi-pencil"  (click)="goToAuditoria(auditoria.id)"></p-button>                    
                 </td>
                 <td>
-                    <p-button label="Enviar" icon="pi pi-envelope" severity="danger" [text]="true" [raised]="true" [rounded]="true" (click)="enviarInforme(auditoria.id_auditoria)"></p-button>
+                    <p-button label="Enviar" icon="pi pi-envelope" severity="danger" [text]="true" [raised]="true" [rounded]="true" (click)="enviarInforme(auditoria)"></p-button>
+                </td>
+                <td>
+                    <p-button label="Descargar" icon="pi pi-download" severity="danger" [text]="true" [raised]="true" [rounded]="true" (click)="descargarInforme(auditoria.id_auditoria)"></p-button>
                 </td>
             </tr>
         </ng-template>

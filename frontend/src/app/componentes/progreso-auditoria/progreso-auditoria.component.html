@@ -1,7 +1,7 @@
 <p-toast></p-toast>
 <p-confirmDialog [style]="{width: '50vw', height: 'auto'}"></p-confirmDialog>
 <div class="terminarAuditoria">
-    <div style="margin-right: 5%">
+    <div class="progresoTerminarAuditoria">
         Progreso: {{ auditoria_seleccionada?.num_expositores_procesados }}/{{ auditoria_seleccionada?.num_expositores }}
         <app-barra-de-barras [datos_barras]="this.datos_barra_progreso"></app-barra-de-barras>
     </div>

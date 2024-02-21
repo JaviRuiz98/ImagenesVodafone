@@ -7,6 +7,7 @@ import { tienda } from 'src/app/interfaces/tienda';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
 import { DatePipe } from '@angular/common';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { jsPDF } from 'jspdf';
 
 
 @Component({
@@ -104,8 +105,26 @@ export class GestionDeAuditoriasComponent implements OnInit {
     });
   }
   enviarInforme(id_auditoria: number) {
-    this.auditoriaService.enviarInforme(id_auditoria).subscribe((response)=>{
-        
-    });
+  }
+
+  descargarInforme(auditoria: auditoria){
+    console.log(auditoria);
+    //const informe = this.generarPDF();
+  }
+  informe(){
+    const informe = this.generarPDF();
+    
+    // const pdfBlob = new Blob([informe.output('blob')], { type: 'application/pdf' });
+    // const formData = new FormData();
+    // formData.append('pdfFile', pdfBlob, 'generated.pdf');
+    // this.auditoriaService.informe(formData).subscribe((response: any) => {
+    // })
+  }
+  generarPDF(){
+    let informe = new jsPDF();
+    informe.setFont("helvetica","bold"); 
+    informe.text('Resumen de la auditoria ', 20, 20);
+    informe.save()
+    return informe;
   }
 }
