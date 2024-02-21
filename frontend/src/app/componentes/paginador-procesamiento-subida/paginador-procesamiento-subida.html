@@ -12,7 +12,7 @@
     <div class="anchoAltoSelector" *ngIf="valueSelected==='new'"> 
         <app-selector-imagenes 
             *ngIf="valueSelected==='new'"
-            (archivoSeleccionadoChange)="recibirFile($event, id_expositor_selected)"
+            (archivoSeleccionadoChange)="recibirFile($event)"
             [cargando_procesado]="cargando_procesamiento">
         </app-selector-imagenes>
     </div>

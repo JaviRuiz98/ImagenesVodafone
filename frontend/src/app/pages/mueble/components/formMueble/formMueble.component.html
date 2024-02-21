@@ -2,12 +2,12 @@
 
   <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
 
-    <div class="flex flex-column" *ngIf="!showing_asignar_expositores && !showing_crear_expositores ">
+    <div class="flex flex-column" *ngIf="!showing_asignar_expositores">
      
         <div class="flex align-items-center justify-content-center mt-2">
           <p-card [style]="{'width':'100vh'}" header="Nombre*">
             <!-- <span class="p-float-label"> -->
-              <input type="text" formControlName="nombre_mueble" pInputText class="w-full">
+              <input type="text" formControlName="nombre" pInputText class="w-full">
               <!-- <label >Nombre * </label>
             </span> -->
             <small *ngIf="nombre_mueble.invalid && (nombre_mueble.dirty || nombre_mueble.touched)" class="block p-error">
@@ -19,83 +19,47 @@
   
 
       <div class="flex align-items-center justify-content-center mt-2">
-        <p-card [style]="{'width':'100vh'}" header="Vistas para conteo de dispositivos esperados">
+        <p-card [style]="{'width':'100vh'}" header="Subir modelo">
             <div class="grid">
-              
-
-              <!-- <div class ="col-12" *ngIf ="expositores_dispositivos != null && expositores_dispositivos.length > 0" >
-                <p-table [value]="expositores_dispositivos" [tableStyle]="{ 'min-width': '50rem' }">
-                  <ng-template pTemplate="header">
-                      <tr>
-                          <th>Nombre</th>
-                          <th>Imagen</th>
-                          <th>Opciones</th>
-                   
-                      </tr>
-                  </ng-template>
-                  <ng-template pTemplate="body" let-expositor>
-                      <tr>
-                          <td>{{ expositor.nombre }}</td>
-                          <td>                        
-                            <p-image class ="imagenSimple" [src]="url_imagenes_referencias + expositor.imagenes.url"  height="100vh"  [alt]="expositor.imagenes.url"  [preview]="true"></p-image>
-                          </td>
-                          <td>
-                            <p-button  [rounded]="true" severity="danger"  icon="pi pi-trash" (onClick)="deleteExpositor('dispositivos',expositor)" ></p-button>
-                              
-                          </td>
-                       
-                      </tr>
-                  </ng-template>
-              </p-table>
-              </div> -->
-
-              <div class="col-12">
-            
-                <div class="p-toolbar-group-start">
-                  <p-button severity="danger" [text]="true" [raised]="true" (onClick)="showExpositores(2)" label="asignar expositor" ></p-button>
-                  <p-button severity="danger" class="ml-2" [text]="true" [raised]="true" (onClick)="createExpositores(2)" label="crear expositor" ></p-button>
-
-                </div>
-                <div class="p-toolbar-group-end">
-                  
-                </div>
-        
+              <div class= "col-6" style=" width: 50%; margin-left: 20px; height: 300px; overflow: hidden;">
+                <app-selector-imagenes 
+                
+                    [cargando_procesado]="true">
+                </app-selector-imagenes>
             </div>
+          
+              <div class="col-6">
+                <!-- <p-button severity="danger" [text]="true" [raised]="true" (onClick)="showExpositores(2)" label="Asignar Elemento" ></p-button>
+                <p-button severity="danger" class="ml-2" [text]="true" [raised]="true" (onClick)="createExpositores(2)" label="Crear Elemento" ></p-button> -->
+
+                <div class="card grid grid-nogutter">
+                  <div class="col-12 md:col-6 drag-column">
+                      <div *ngFor="let elemento of filtered_elementos">
+                          <div class="product-item" pDraggable="elemento" (onDragStart)="dragStart(elemento)" (onDragEnd)="dragEnd()">
+                              <div class="image-container">
+                                      <img src="https://primefaces.org/cdn/primeng/images/demo/product/{{ elemento.image }}"[alt]="elemento.nombre" class="product-image" />
+                              </div>
+
+                              <div class="product-list-detail">
+                                  <h5 class="mb-2">{{elemento.nombre}}</h5>
+                                  <i class="pi pi-tag product-category-icon"></i>
+                                  <span class="product-category">{{elemento.categoria_elemento.nombre}}</span>
+                                </div>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+
+              </div>
             </div>
 
         </p-card> 
           
       </div>
      
-      <div class="flex align-items-center justify-content-center mt-2">
+      <!-- <div class="flex align-items-center justify-content-center mt-2">
         <p-card [style]="{'width':'100vh'}" header="Carteles">
           <div class="grid">
-
-            <!-- <div class ="col-12" *ngIf ="expositores_carteles != null && expositores_carteles.length > 0" >
-              <p-table [value]="expositores_carteles" [tableStyle]="{ 'min-width': '50rem' }">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Imagen</th>
-                        <th>Opciones</th>
-                 
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-expositor>
-                    <tr>
-                        <td>{{ expositor.nombre }}</td>
-                        <td>                        
-                          <p-image class ="imagenSimple" [src]="url_imagenes_referencias + expositor.imagenes.url"  height="100vh"  [alt]="expositor.imagenes.url"  [preview]="true"></p-image>
-                        </td>
-                        <td>
-                          <p-button  [rounded]="true" severity="danger"  (onClick)="deleteExpositor('carteles',expositor)" icon="pi pi-trash" ></p-button>
-                            
-                        </td>
-                     
-                    </tr>
-                </ng-template>
-            </p-table>
-            </div> -->
             <div class="col-12">
           
               <div class="p-toolbar-group-start">
@@ -112,16 +76,16 @@
 
       </p-card> 
           
-      </div>
+      </div> -->
 
     
     
 
   </div>
 
-  <div *ngIf="!showing_asignar_expositores && showing_crear_expositores ">
+  <!-- <div *ngIf="!showing_asignar_expositores && showing_crear_expositores ">
     <p-button severity="danger" [text]="true" [raised]="true" (onClick)="showing_crear_expositores = false" label="volver" ></p-button>
-    <app-nuevo-elemento [categoriaPredefinida]="new_expositor_for_categoria " ></app-nuevo-elemento>
+   < <app-nuevo-elemento [categoriaPredefinida]="new_expositor_for_categoria " ></app-nuevo-elemento>
   </div>
 
   <div *ngIf="showing_asignar_expositores && !showing_crear_expositores ">
@@ -136,9 +100,9 @@
   <div *ngIf="!showing_asignar_expositores && showing_crear_expositores ">
 
   
-  </div>
+  </div> -->
 
-  <div class ="flex align-items-center justify-content-center mt-2" *ngIf="!showing_asignar_expositores && !showing_crear_expositores">
+  <div class ="flex align-items-center justify-content-center mt-2" *ngIf="!showing_asignar_expositores">
    
     <p-button  type="submit"  severity="danger" [icon]="'pi pi-check'" [label]="'Guardar'"  (onClick)="onSubmit()">    </p-button>
  

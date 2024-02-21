@@ -5,6 +5,36 @@ import db from "../config/database";
 // import {expositoresConProcesados} from "../interfaces/expositoresProcesados"
 
 export const mobiliarioService = {
+    async getHuecosDisponibles (id_mueble: number)  {
+        try {
+           return await db.muebles.count(
+                { 
+                    where: { 
+                        id: id_mueble,
+                        expositores: {
+                            some: {
+                                atributos_expositores: {
+                                    some: {
+                                        pertenencia_elementos_atributos: {
+                                            some: {
+                                                elementos: {
+                                                    id_categoria: 3,
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }, 
+                   
+                });
+        } catch (error) {
+            throw error;
+        } finally {
+            await db.$disconnect();
+        }
+    },
     getFilteredMuebles: async (
         id?: number,
         _orden_clause:
@@ -90,14 +120,8 @@ export const mobiliarioService = {
                     });
                     return { ...expositor, atributos_expositores: atributos }; 
                 });
-
-
-        
                 return { ...mueble, expositores };
             });
-        
-            
-            
             return mueblesMapeados;
 
         } catch (error) {
@@ -202,62 +226,10 @@ export const mobiliarioService = {
         }
     },
 
-    async getExpositoresAndElementosByIdAuditoria(
-        id_auditoria: number
-    ): Promise<any> {
-        try {
-            throw new Error(
-                `No se implementado el getExpositoresAndElementosByIdAuditoria ${id_auditoria}`
-            );
-
-            //     const muebles = await db.muebles.findMany({
-            //         where: {
-            //             expositores: {
-            //                 some:{
-            //                     pertenencia_elementos_auditoria: {
-            //                         some: {
-            //                             id_auditoria: id_auditoria
-            //                         }
-            //                     }
-            //                 }
-
-            //             }
-
-            //         },
-            //         include: {
-            //            expositores: {
-            //                select: {
-            //                    id: true,
-            //                },
-            //                include: {
-            //                    atributos_expositores: {
-            //                        include: {
-            //                            pertenencia_elementos_atributos:{
-            //                             include: {
-            //                                 elementos:{
-            //                                     select:{
-            //                                         id: true,
-            //                                     }
-            //                                 }
-            //                             }
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //         }
-            //     });
-
-            //   return muebles
-        } catch (error) {
-            throw error;
-        } finally {
-            await db.$disconnect();
-        }
-    },
+    
 };
 
-// //NO FUNCIONA
+// //NO FUNCIONA UTIL POR SI QUEREMOS HACER FILTROS
 // function mapearResultadoParaFront(mueble: any): MuebleFrontInterfaz {
 
 //     let elementos = [];

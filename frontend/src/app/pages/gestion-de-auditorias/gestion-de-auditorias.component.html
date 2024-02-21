@@ -45,13 +45,15 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>             
-                <th>Id.</th>
+                <th>Id</th>
                 <th>SFID</th>
                 <th>Fecha inicio</th>
                 <th>Estado</th> 
                 <th>Progreso</th>
                 <th>Prog. visual</th>
                 <th>Opciones</th>
+                <th>Enviar informe</th>
+                <th>Descargar informe</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-auditoria>            
@@ -67,19 +69,20 @@
                     <app-barra-de-barras [datos_barras]="auditoria.datos_barra_progreso"></app-barra-de-barras>
                 </td>
                 <td class="opciones">         
-                    <p-button class ="smallMarginRight" severity="danger" [raised]="true" [text]="true" [rounded]="true" label="Ir auditoría" icon="pi pi-pencil"  (click)="goToAuditoria(auditoria.id_auditoria)"></p-button>                    
+                    <p-button class ="smallMarginRight" severity="danger" [raised]="true" [text]="true" [rounded]="true" label="Ir auditoría" icon="pi pi-pencil"  (click)="goToAuditoria(auditoria.id)"></p-button>                    
+                </td>
+                <td>
+                    <p-button label="Enviar" icon="pi pi-envelope" severity="danger" [text]="true" [raised]="true" [rounded]="true" (click)="enviarInforme(auditoria)"></p-button>
+                </td>
+                <td>
+                    <p-button label="Descargar" icon="pi pi-download" severity="danger" [text]="true" [raised]="true" [rounded]="true" (click)="descargarInforme(auditoria.id_auditoria)"></p-button>
                 </td>
             </tr>
         </ng-template>
-
         <ng-template pTemplate="emptymessage">
             <tr>
                 <td colspan="3">Todavía no hay auditorías en esta tienda</td>
             </tr>
         </ng-template>
-        
     </p-table>
-
-
-
 </div>

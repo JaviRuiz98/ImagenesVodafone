@@ -9,17 +9,6 @@
         {{tiendaSeleccionada?  getTiendaTitle() : ''}}
       </h1>
     </div>
-    <div *ngIf="currentState === '/home'" class ="seleccionarTienda" >
-      <p-dropdown 
-        [options]="tiendas" 
-        [(ngModel)]="tiendaSeleccionada"
-        (ngModelChange)="onTiendaSelected()"
-        optionLabel="sfid" 
-        [showClear]="true" 
-        placeholder="Selecciona tu tienda" 
-        class="centrar">
-      </p-dropdown>
-    </div>
     <div *ngIf="currentState === '/gestionAuditorias'" class ="elementosValidator" >        
       <app-sidebar></app-sidebar>
     </div> 

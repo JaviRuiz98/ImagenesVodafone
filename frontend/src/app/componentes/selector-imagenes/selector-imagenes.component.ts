@@ -12,7 +12,6 @@ import { ButtonModule } from 'primeng/button';
 export class SelectorImagenesComponent {
  
   @Input() cargando_procesado: boolean = false;
-  // @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
   @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
  
   @ViewChild('dropArea') dropAreaRef!: ElementRef;
@@ -41,6 +40,7 @@ export class SelectorImagenesComponent {
     if (input && input.files) {
       this.archivoSeleccionado = input.files[0];
       this.archivoSeleccionadoChange.emit({ archivo: this.archivoSeleccionado });
+      console.log('evento dentro selector', event);
     }
   }
  

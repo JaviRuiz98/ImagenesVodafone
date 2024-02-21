@@ -1,8 +1,6 @@
-
 .paginaCompleta {
   width: 100%; 
   display: flex;
-
   flex-direction: column;
 }
 
@@ -16,6 +14,7 @@
  margin-left: 10%;
  margin-bottom: 2%;
 }
+
 :host::ng-deep {
   .p-button.p-highlight.optionColorVodafone {
      background: red;

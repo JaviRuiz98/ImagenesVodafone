@@ -1,17 +1,28 @@
 <p-toast></p-toast>
-<p-confirmDialog [style]="{width: '50vw'}"></p-confirmDialog>
-
-<div style="display: flex">
-    <div style="margin-right: 5%">
+<p-confirmDialog [style]="{width: '50vw', height: 'auto'}"></p-confirmDialog>
+<div class="terminarAuditoria">
+    <div class="progresoTerminarAuditoria">
         Progreso: {{ auditoria_seleccionada?.num_expositores_procesados }}/{{ auditoria_seleccionada?.num_expositores }}
         <app-barra-de-barras [datos_barras]="this.datos_barra_progreso"></app-barra-de-barras>
     </div>
     <div>
         <p-button
-            *ngIf="this.auditoria_seleccionada?.estados_auditoria?.estado == 'en progreso'"
-            (click)="terminarAuditoria()"
+            *ngIf="this.auditoria_seleccionada && this.auditoria_seleccionada.estados_auditoria?.estado === 'en progreso'"
+            (click)="terminarAuditoria(this.auditoria_seleccionada)"
             [severity]="'danger'"
             label="Terminar auditoria"
         ></p-button>
+        <p-dialog header="Informe" [(visible)]="verDialogInforme" [draggable]="false" [style]="{width: '50vw'}" [ngClass]="verDialogInforme ? 'informe p-component-overlay' : 'informe'">
+            <div class="p-dialog-title">
+                Seleccione en qué formato desea el informe.
+            </div>
+            <div class="p-dialog-footer" style="padding: 0;">
+                <p-button (click)="enviarInforme()" [severity]="'danger'" label="Enviar por correo" icon="pi pi-envelope" [style]="{'cursor': 'pointer'}"></p-button>
+                <p-button (click)="descargarInforme()" [severity]="'danger'" label="Descargar" icon="pi pi-download" [style]="{'cursor': 'pointer'}"></p-button>
+            </div>
+        </p-dialog>
+    </div>
+    <div class="irArriba">
+        <app-ir-arriba></app-ir-arriba>
     </div>
 </div>

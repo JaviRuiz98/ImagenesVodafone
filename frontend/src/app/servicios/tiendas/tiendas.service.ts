@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { tienda } from '../../interfaces/tienda';  
-import { elementos } from '../../interfaces/elementos';
 import { muebles } from 'src/app/interfaces/muebles';
-
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +33,4 @@ export class TiendasService {
   activarDesactivarTienda(tienda: tienda): Observable<tienda> {
     return this.http.put<tienda>(`${this.API_URI}/tiendas/`, tienda);
   }
-
-  
 }

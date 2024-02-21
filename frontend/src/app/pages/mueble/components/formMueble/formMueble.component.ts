@@ -16,6 +16,13 @@ import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 
 
 export class FormMuebleComponent implements OnInit {
+filtered_elementos: any;
+dragEnd() {
+throw new Error('Method not implemented.');
+}
+dragStart(_t34: any) {
+throw new Error('Method not implemented.');
+}
 
  
   
@@ -23,8 +30,7 @@ export class FormMuebleComponent implements OnInit {
 
   showing_asignar_expositores: boolean = false;
   all_expositores: elementos[] = [];
-  showing_crear_expositores: boolean = false;
-  new_expositor_for_categoria: number = 0;
+  //showing_crear_expositores: boolean = false;
 
   
 
@@ -38,8 +44,7 @@ export class FormMuebleComponent implements OnInit {
     // numero_expositores_carteles: [0, [Validators.required, Validators.min(0)]],
   })
 
-  elementos_carteles: elementos[] = [];
-  elementos_dispositivos: elementos[] = [];
+
   id_mueble_existente?:number;
   
 
@@ -49,13 +54,9 @@ export class FormMuebleComponent implements OnInit {
   get expositores() {
     return this.formulario.controls['expositores'];
   }
-  get expositores_dispositivos_list() {
-    return this.elementos_dispositivos;
-  }
 
-  get expositores_carteles_list() {
-    return this.elementos_carteles;
-  }
+
+
   // get numero_expositores_dispositivos() {
   //   return this.formulario.controls['numero_expositores_dispositivos'];
   // } 
@@ -72,14 +73,12 @@ export class FormMuebleComponent implements OnInit {
       const mueble = this.dialogConfig.data.mueble;
       this.id_mueble_existente = mueble?.id;
 
-      this.elementos_carteles = mueble?.expositores_carteles;
-      this.elementos_dispositivos = mueble?.expositores_dispositivos;
+  
 
       this.formulario.patchValue({
-        nombre_mueble: mueble?.nombre_mueble,
+        nombre_mueble: mueble?.nombre,
         expositores: mueble?.expositores
-        // numero_expositores_carteles: mueble?.numero_expositores_carteles,
-        // numero_expostores_dispositivos: mueble?.numero_expositores_dispositivos,
+
       })
     }else{
       console.log ("nuevo");
@@ -98,22 +97,22 @@ export class FormMuebleComponent implements OnInit {
     };
   }
 
-  createExpositores(categoria: number) {
-   this.new_expositor_for_categoria = categoria;
-   this.showing_crear_expositores = true;
-  }
+  // createExpositores(categoria: number) {
+  //  this.new_expositor_for_categoria = categoria;
+  //  this.showing_crear_expositores = true;
+  // }
 
-  showExpositores(categoria: number) {
+  // showExpositores(categoria: number) {
     
    
-    this.elementosService.getElementos(categoria).subscribe( (expositores:elementos[]) => {
-      this.all_expositores = expositores;
-      this.new_expositor_for_categoria = categoria;
-      this.showing_asignar_expositores = true;
+  //   this.elementosService.getElementos(categoria).subscribe( (expositores:elementos[]) => {
+  //     this.all_expositores = expositores;
+  //     this.new_expositor_for_categoria = categoria;
+  //     this.showing_asignar_expositores = true;
 
-   });
+  //  });
      
-  }
+  // }
   asignar_expositores(event: elementos | null) {
     // this.showing_asignar_expositores = false;
     // if (event != null) {

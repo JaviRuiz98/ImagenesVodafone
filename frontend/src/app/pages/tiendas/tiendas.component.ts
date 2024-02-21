@@ -46,14 +46,33 @@ export class TiendasComponent implements OnInit{
 
   constructor(private TiendasService: TiendasService, private MueblesService: MueblesService, private messageService: MessageService, private ConfirmationService: ConfirmationService){}
   ngOnInit(): void {
+    this.getAllTiendas();
+    this.getAllMuebles();
+    this.inicializarSteps();
+  }
+  iniciarFormularioNuevaTienda(){
+    this.verFormularioNuevaTienda = true;
+    this.activeIndex = 0;
+    this.listaMueblesNuevaTienda = [];
+    this.editarTiendaCreada = false;
+    this.crearEditarTienda = 'Crear Tienda';
+    this.sfidInput = '';
+    this.comunidadInput = '';
+    this.cabeceraNuevaEditarTienda = 'Nueva Tienda';
+  }
+  getAllTiendas(){
     this.TiendasService.getAllTiendas().subscribe((response: tienda[]) => {
       this.tiendas = response;
       this.tiendasMostrar = response;
     })
+  }
+  getAllMuebles(){
     this.MueblesService.getAllMuebles().subscribe((response: muebles[]) => {
-      this.listaTodosMuebles = this.ordenarListaAlfabeticamente(response, 'nombre_mueble');
+      this.listaTodosMuebles = this.ordenarListaAlfabeticamente(response, 'nombre');
       this.listaMueblesMostrar = this.listaTodosMuebles;
     });
+  }
+  inicializarSteps(){
     this.parametrosSteps = [
       {
         label: 'Datos Tienda',
@@ -75,16 +94,7 @@ export class TiendasComponent implements OnInit{
       }
     ];
   }
-  iniciarFormularioNuevaTienda(){
-    this.verFormularioNuevaTienda = true;
-    this.activeIndex = 0;
-    this.listaMueblesNuevaTienda = [];
-    this.editarTiendaCreada = false;
-    this.crearEditarTienda = 'Crear Tienda';
-    this.sfidInput = '';
-    this.comunidadInput = '';
-    this.cabeceraNuevaEditarTienda = 'Nueva Tienda';
-  }
+
   botonSiguiente(){
     if(this.sfidInput === '' || this.comunidadInput === ''){
       this.messageService.add({severity:'error', summary:'Error!', detail:'Los campos necesarios no estan completos.'});
@@ -114,13 +124,15 @@ export class TiendasComponent implements OnInit{
     }
   }
   editarTienda(tienda: tienda){
+    const listaMueblesDisponibles = this.eliminarMueblesSeleccionados(this.listaTodosMuebles, this.listaMueblesNuevaTienda)
     this.nuevaTienda = tienda;
     this.crearEditarTienda = 'Editar tienda';
     this.cabeceraNuevaEditarTienda = 'Editar tienda';
     this.sfidInput = tienda.sfid;
     this.comunidadInput = 'prueba';
     this.MueblesService.getMueblesTiendaByIdTienda(tienda.id).subscribe((response: muebles[]) => {
-      this.listaMueblesNuevaTienda = response;
+      this.listaMueblesNuevaTienda = this.ordenarListaAlfabeticamente(response, 'nombre');
+      this.listaMueblesMostrar = this.eliminarMueblesSeleccionados(this.listaTodosMuebles, response);
     })
     this.activeIndex = 1;
     this.verFormularioNuevaTienda = true;
@@ -136,6 +148,7 @@ export class TiendasComponent implements OnInit{
   }
 
   confirmarCambio(tienda: tienda) {
+    console.log('entro')
     this.ConfirmationService.confirm({
       message: this.mensajeDialog,
       header: this.mensajeActivarDesactivar,
@@ -150,7 +163,7 @@ export class TiendasComponent implements OnInit{
           }
         })
         const mensajeDetalle = tienda.activa ? 'La tienda ha sido desactivada.' : 'La tienda ha sido activada.';
-        this.messageService.add({ severity: 'info', summary: 'Confirmado!', detail: mensajeDetalle });
+        this.messageService.add({ severity: 'success', summary: 'Confirmado!', detail: mensajeDetalle });
       },
       reject: (type: ConfirmEventType) => {
         switch (type) {
@@ -165,5 +178,10 @@ export class TiendasComponent implements OnInit{
   ordenarListaAlfabeticamente(lista: any[], campo: string) {
     const listaOrdenada = lista.sort((a, b) => a[campo].localeCompare(b[campo]));
     return listaOrdenada;
+  }
+  eliminarMueblesSeleccionados(listaCompleta: muebles[], listaMueblesSeleccionados: muebles[]){
+    const idsLista2 = new Set(listaMueblesSeleccionados.map(mueble => mueble.id));
+    const listaFiltrada = listaCompleta.filter((mueble) => !idsLista2.has(mueble.id));
+    return listaFiltrada;
   }
 }
