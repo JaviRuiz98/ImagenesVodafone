@@ -1,6 +1,6 @@
 import express from 'express';
 import { getAllTiendas, newTienda, updateTienda, activarDesactivarTienda} from '../controller/tiendasController';
-//import { informe } from '../controller/informeController';
+import { informe } from '../controller/informeController';
 
 const router = express.Router();
 

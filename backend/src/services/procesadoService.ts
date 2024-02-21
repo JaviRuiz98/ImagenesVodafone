@@ -98,7 +98,7 @@ export const procesadoService = {
             where: {
                 id_elemento: id_elemento,
                 id_auditoria: id_auditoria,
-            
+                
             }
         })
 

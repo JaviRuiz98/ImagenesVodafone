@@ -120,14 +120,8 @@ export const mobiliarioService = {
                     });
                     return { ...expositor, atributos_expositores: atributos }; 
                 });
-
-
-        
                 return { ...mueble, expositores };
             });
-        
-            
-            
             return mueblesMapeados;
 
         } catch (error) {

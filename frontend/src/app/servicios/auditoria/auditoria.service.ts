@@ -15,9 +15,6 @@ export class AuditoriaService {
 
   API_URI = 'http://localhost:3000';
 
-  id_auditoria_seleccionada: number = 0;
-  auditoria_seleccionada: auditoria = new auditoria(null);
-
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
   });

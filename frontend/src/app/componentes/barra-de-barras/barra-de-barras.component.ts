@@ -23,7 +23,6 @@ export class BarraDeBarrasComponent implements OnChanges {
       width: 100 / this.datos_barras.length // Asume que todas las barras deben tener el mismo ancho
     }));
 
-    console.log(this.bars);
   }
 
   getColorByValue(value: number): string {
