@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { auditoria } from '../../interfaces/auditoria';
-import { procesados_imagenes } from '../../interfaces/procesados_imagenes';
-import { BaseRouteReuseStrategy } from '@angular/router';
 import { muebles } from 'src/app/interfaces/muebles';
 
 
@@ -14,9 +12,6 @@ import { muebles } from 'src/app/interfaces/muebles';
 export class AuditoriaService {
 
   API_URI = 'http://localhost:3000';
-
-  id_auditoria_seleccionada: number = 0;
-  auditoria_seleccionada: auditoria = new auditoria(null);
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -64,8 +59,8 @@ export class AuditoriaService {
   getBarraProgresoAuditoria(id_auditoria_seleccionada: number): Observable<number[]> {
     return this.http.get<number[]>(`${this.API_URI}/barra_progreso_auditoria/${id_auditoria_seleccionada}`);
   }
-
-  enviarInforme(id_auditoria: number): Observable<auditoria> { //puede cambiar el tipo de response
-    return this.http.post<auditoria>(`${this.API_URI}/enviar_informe`, id_auditoria);
+  
+  informe(formData: FormData): Observable<any> {
+    return this.http.post<any>(`${this.API_URI}/tiendas/informe`, formData);
   }
 }

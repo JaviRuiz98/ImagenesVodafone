@@ -3,8 +3,6 @@ import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { tienda } from '../../interfaces/tienda';  
 import { muebles } from 'src/app/interfaces/muebles';
-import { Form } from '@angular/forms';
-
 
 @Injectable({
   providedIn: 'root'
@@ -34,9 +32,5 @@ export class TiendasService {
 
   activarDesactivarTienda(tienda: tienda): Observable<tienda> {
     return this.http.put<tienda>(`${this.API_URI}/tiendas/`, tienda);
-  }
-
-  informe(formData: FormData): Observable<any> {
-    return this.http.post<any>(`${this.API_URI}/tiendas/informe`, formData);
   }
 }

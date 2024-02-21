@@ -36,7 +36,7 @@
                     <p><strong>Comunidad:</strong> {{comunidadInput}}</p>
                 </div>
                 <div>
-                    <p-orderList [value]="listaMueblesNuevaTienda" [listStyle]="{ height: '20rem' }" header="Muebles Seleccionados">
+                    <p-orderList [value]="listaMueblesNuevaTienda" [listStyle]="{ height: '20rem' }" header="Muebles Seleccionados" >
                         <ng-template let-mueble pTemplate="item">
                             <div class="contenedorMuebleArrastras">
                                 <div class="anchoAltoDescripcionFotoReferencia">
@@ -61,29 +61,30 @@
         [paginator]="true"
         [rows]="5"
         [showCurrentPageReport]="true"
-        [tableStyle]="{ 'min-width': '50rem' }"
+        [tableStyle]="{ 'min-width': '50rem', 'height': 'auto' }"
         [rowsPerPageOptions]="[5, 10, 20]"
         [ngStyle]="{ 'width': '80%' }"
         [globalFilterFields]="['activa']"
     >
         <ng-template pTemplate="header">
             <tr>
-                <th style="width:25%">Sfid</th>
-                <th style="width:25%">Editar</th>
-                <th style="width:25%">Activar/Desactivar</th>
-                <th style="width:10%"><p-columnFilter type="boolean" field="activa"></p-columnFilter></th>
+                <th style="width:40%">Sfid</th>
+                <th style="width:40%">Editar</th>
+                <th class="activarDesactivar">
+                    <p-columnFilter type="boolean" field="activa"></p-columnFilter>
+                    Activar/Desactivar
+                </th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-tiendas>
             <tr>
                 <td>{{ tiendas.sfid }}</td>
                 <td><p-button class="botonNuevaTienda" label="Editar Tienda" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="editarTienda(tiendas)" [style]="{'min-width': '130px'}" [disabled]="!tiendas.activa"></p-button></td>
-                <td><p-button class="botonNuevaTienda" [label]="tiendas.activa ? 'Desactivar' : 'Activar'"  [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="confirmarCambio(tiendas)" [style]="{'min-width': '130px'}"></p-button></td>
-                <td><i class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendas.activa, 'text-red-500 pi-times-circle': !tiendas.activa }"></i></td>
+                <td><p-button class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendas.activa, 'text-red-500 pi-times-circle': !tiendas.activa }" (click)="confirmarCambio(tiendas)" [style]="{'border': 'none', 'background': 'none', 'cursor': 'pointer', 'padding': '0'}"></p-button></td>
             </tr>
         </ng-template>
         </p-table>
     </div>
 </div>
 <p-toast></p-toast>
-<p-confirmDialog [style]="{width: '50vw'}" ></p-confirmDialog>
+<p-confirmDialog [style]="{width: '50vw', height: 'auto'}" ></p-confirmDialog>

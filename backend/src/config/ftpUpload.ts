@@ -3,7 +3,7 @@ import { NextFunction, Request, Response } from "express";
 const ftp = require('basic-ftp');
 
 const config = {
-    host:process.env.HOST_FTP,
+    host: process.env.HOST_FTP,
     user: process.env.USER_FTP,
     password: process.env.PASSWORD_FTP,
 

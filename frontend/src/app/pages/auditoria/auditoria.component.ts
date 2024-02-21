@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
 import { AuditoriaService } from 'src/app/servicios/auditoria/auditoria.service';
 
@@ -8,9 +7,8 @@ import { filtro_procesados } from 'src/app/interfaces/filtro_procesados';
 import { auditoria } from 'src/app/interfaces/auditoria';
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 import { ProgresoAuditoriaComponent } from 'src/app/componentes/progreso-auditoria/progreso-auditoria.component';
-import { muebles } from 'src/app/interfaces/muebles';
-import { expositores } from 'src/app/interfaces/expositores';
-import { elementos } from 'src/app/interfaces/elementos';
+import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
+import { UrlService } from 'src/app/servicios/url/url.service';
 
 @Component({
   selector: 'auditoria',
@@ -22,8 +20,8 @@ export class AuditoriaComponent implements OnInit{
 
   @ViewChild('progresoRef') progresoAuditoria!: ProgresoAuditoriaComponent;
 
-  url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
-
+  url_imagenes: string = '';
+  carpeta_imagenes_referencias: string = 'imagenesReferencia/';
 
   muebles: any[] = [];
 
@@ -47,13 +45,17 @@ export class AuditoriaComponent implements OnInit{
   constructor( 
     private auditoriaService: AuditoriaService ,
     private procesamientoService: ProcesamientoService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private localStorageService: LocalStorageService,
+    private urlService: UrlService
     ) {}
 
     ngOnInit(): void {
-      this.id_auditoria_seleccionada = this.auditoriaService.id_auditoria_seleccionada;
+      this.id_auditoria_seleccionada = this.localStorageService.getItem('id_auditoria_seleccionada')
 
-      this.auditoriaService.getAuditoriaById(this.auditoriaService.id_auditoria_seleccionada).subscribe(
+      this.url_imagenes = this.urlService.url_en_uso + this.carpeta_imagenes_referencias;
+
+      this.auditoriaService.getAuditoriaById(this.id_auditoria_seleccionada).subscribe(
         auditoria => {
           this.auditoria_seleccionada = auditoria
           this.inicializaImagenesReferencia();
@@ -62,7 +64,7 @@ export class AuditoriaComponent implements OnInit{
     }
 
     async inicializaImagenesReferencia() {
-      this.auditoriaService.getMueblesAndExpositoresWithProcesadosByIdAuditoria(this.auditoriaService.id_auditoria_seleccionada).subscribe(
+      this.auditoriaService.getMueblesAndExpositoresWithProcesadosByIdAuditoria(this.id_auditoria_seleccionada).subscribe(
         (data: any[]) => {
           console.log(data)
           this.muebles = data;
@@ -74,20 +76,21 @@ export class AuditoriaComponent implements OnInit{
       this.inicializaImagenesReferencia();  
     }
 
-    async recibirFile(event: {archivo:File}, id_expositor_selected: number, id_mueble_selected: number) {
+    async procesarImagen(event: {archivo:File}, id_elemento_selected: number, id_mueble_selected: number) {
+      console.log("id_elemento_selected", id_elemento_selected, "id_mueble_selected", id_mueble_selected);
       this.imagenAProcesar = event.archivo;
-      this.cargas_procesamiento[id_expositor_selected]= true;   
+      this.cargas_procesamiento[id_elemento_selected]= true;   
       this.messageService.add({ severity: 'info', summary: 'Cargando', detail: 'La imagen se está procesando' });
-      this.procesamientoService.postProcesamientoImagenes(id_expositor_selected, id_mueble_selected, this.auditoriaService.id_auditoria_seleccionada, this.imagenAProcesar).subscribe( 
+      this.procesamientoService.postProcesamientoImagenes(id_elemento_selected, id_mueble_selected, this.id_auditoria_seleccionada, this.imagenAProcesar).subscribe( 
         ( response: procesados_imagenes ) => {
-          this.cargas_procesamiento[id_expositor_selected] = false;
-          this.modos_visualizacion[id_expositor_selected] = 'historial';        
-          this.actualizarProcesamientoEnMueble(id_expositor_selected, response);
+          this.cargas_procesamiento[id_elemento_selected] = false;
+          this.modos_visualizacion[id_elemento_selected] = 'historial';        
+          this.actualizarProcesamientoEnMueble(id_elemento_selected, response);
           this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Imagen procesada correctamente' });
-          this.progresoAuditoria.actualizarProgresoAuditoria(this.auditoriaService.id_auditoria_seleccionada);
+          this.progresoAuditoria.actualizarProgresoAuditoria(this.id_auditoria_seleccionada);
         }, ( error: any ) => {
           console.log("error", error);
-          this.cargas_procesamiento[id_expositor_selected] = false;
+          this.cargas_procesamiento[id_elemento_selected] = false;
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error procesando imagen' });
       })
     }
@@ -102,18 +105,6 @@ export class AuditoriaComponent implements OnInit{
       //     break; 
       //   }
       // }
-    }
-
-    getImagenModelo(elemento: elementos): string | undefined {
-      // const elementoModelo: elementos | undefined = expositor.elementos.find((elemento) => elemento.id_categoria === 3);
-      
-      // if (elementoModelo) {
-      //   return elementoModelo.imagenes.url;
-      // } else {
-      //   return undefined;
-      // }
-      // return "completar"
-      return '';
     }
     
       

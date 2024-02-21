@@ -145,6 +145,9 @@ export const auditoriaService = {
                         }
                     }, 
                     elementos: true
+                },
+                orderBy: {
+                    id_mueble: 'asc'
                 }
             })
         } catch (error) {
@@ -168,6 +171,9 @@ export const auditoriaService = {
                         }
                     },
                     procesados_imagenes: true,                
+                },
+                orderBy: {
+                    id_mueble: 'asc'
                 }
             })
         } catch (error) {
@@ -178,7 +184,7 @@ export const auditoriaService = {
         }
     },
 
-    getNumExpositoresByAuditoria(id_auditoria: number) {
+    getNumExpositoresByAuditoria(id_auditoria: number): Promise<number> {
         try {
             return db.pertenencia_elementos_auditoria.count({
                 where: {
@@ -193,7 +199,7 @@ export const auditoriaService = {
         }
     },
     
-    getNumExpositoresProcesadosByAuditoria(id_auditoria: number) {
+    getNumExpositoresProcesadosByAuditoria(id_auditoria: number): Promise<number> {
         try {
             return db.pertenencia_elementos_auditoria.count({
                 where: {

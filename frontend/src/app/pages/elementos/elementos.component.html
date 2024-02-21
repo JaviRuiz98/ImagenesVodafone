@@ -41,7 +41,7 @@
                 <th>Nombre</th>
                 <th>imagen</th>
 
-                <th *ngIf="categoriaSeleccionada == 'Carteles'" >Region</th>
+                <th *ngIf="categoriaSeleccionada.nombre == 'Carteles'" >Region</th>
 
                 <th></th> 
             </tr>
@@ -51,11 +51,12 @@
             <tr >
 
                 <td>{{ elemento.id }}</td>
+
+                <td>{{ elemento.nombre }}</td>
                 <td>
                     <p-image [src]="url_imagenes_referencias + elemento.imagenes.url" [alt]="elemento.imagenes.url" [width]="'auto'" [height]="'100px'" class="shadow-4" [preview]="true"></p-image>
                 </td>
-                <td>{{ elemento.nombre }}</td>
-                <td *ngIf="categoriaSeleccionada == 'Carteles'">{{ elemento.region }}</td>
+                <td *ngIf="categoriaSeleccionada.nombre == 'Carteles'">{{ elemento.regiones.nombre }}</td>
                 <td>
                     <p-button *ngIf="elemento.activo == 1" (mouseover)="descatalogar.toggle($event)" (click)="activarDesactivarElementos(elemento)" icon="pi pi-eye-slash" [rounded]="true" [text]="true" severity="danger "></p-button>
                     <p-button *ngIf="elemento.activo == 0" (mouseover)="catalogar.toggle($event)" (click)="activarDesactivarElementos(elemento)" icon="pi pi-eye" [rounded]="true" [text]="true" severity="info "></p-button>
@@ -73,6 +74,6 @@
      
     <p-dialog [(visible)]="mostrarDialogoNuevoElemento" [style]="{height: '45%', width: '40%'  }" header="Crear un nuevo elemento" [modal]="true" [closable]="true" [draggable]="false"[resizable]="false" styleClass="p-fluid"
     [closeOnEscape] = "false" (onHide)="onDialogHidden()"> 
-        <app-nuevo-elemento *ngIf="mostrarDialogoNuevoElemento == true" (mostrarDialogoNuevoelemento)="cerrarDialog($event)" ></app-nuevo-elemento>        
+        <app-nuevo-elemento *ngIf="mostrarDialogoNuevoElemento == true"  (mostrarDialogoNuevoElemento)="manejarMostrarDialogo($event)" ></app-nuevo-elemento>        
     </p-dialog>
 </p-panel>

@@ -9,6 +9,8 @@ import { ToastModule } from 'primeng/toast';
 import { Router } from '@angular/router';
 import { BarraDeBarrasComponent } from '../barra-de-barras/barra-de-barras.component';
 import { DialogModule } from 'primeng/dialog';
+import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
+import { IrArribaComponent } from '../ir-arriba/ir-arriba.component';
 
 @Component({
   selector: 'app-progreso-auditoria',
@@ -21,7 +23,8 @@ import { DialogModule } from 'primeng/dialog';
     ConfirmDialogModule,
     ToastModule,
     BarraDeBarrasComponent,
-    DialogModule
+    DialogModule,
+    IrArribaComponent
   ], providers: [
     ConfirmationService,
     MessageService
@@ -29,7 +32,6 @@ import { DialogModule } from 'primeng/dialog';
 
 })
 export class ProgresoAuditoriaComponent implements OnInit {
-
 
   id_auditoria_seleccionada: number | undefined;
   auditoria_seleccionada: auditoria | undefined;
@@ -40,25 +42,25 @@ export class ProgresoAuditoriaComponent implements OnInit {
     private auditoriaService: AuditoriaService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private router: Router
+    private router: Router,
+    private localStorageService: LocalStorageService
   ) {}  
 
   ngOnInit(): void {
-    this.id_auditoria_seleccionada = this.auditoriaService.id_auditoria_seleccionada;
+    this.id_auditoria_seleccionada = this.localStorageService.getItem('id_auditoria_seleccionada');
 
-    this.actualizarProgresoAuditoria(this.auditoriaService.id_auditoria_seleccionada);
+    this.actualizarProgresoAuditoria(this.id_auditoria_seleccionada);
 
   }
 
   public actualizarProgresoAuditoria(id_auditoria: number) {
-    this.auditoriaService.getAuditoriaById(this.auditoriaService.id_auditoria_seleccionada).subscribe(
+    this.auditoriaService.getAuditoriaById(this.id_auditoria_seleccionada).subscribe(
       auditoria => {
         this.auditoria_seleccionada = auditoria
-        console.log("auditoria_seleccionada", this.auditoria_seleccionada);
-        this.getBarraProgresoAuditoria(this.auditoriaService.id_auditoria_seleccionada);
+        this.getBarraProgresoAuditoria(this.id_auditoria_seleccionada);
 
       }, error => { 
-        console.log(error) 
+        console.error(error) 
       }
     );
   }
@@ -67,8 +69,7 @@ export class ProgresoAuditoriaComponent implements OnInit {
     this.auditoriaService.getBarraProgresoAuditoria(id_auditoria_seleccionada).subscribe(
       (data) => {
         this.datos_barra_progreso = data;
-        console.log("barra de progreso", this.datos_barra_progreso);
-      }, (error) => { console.log(error) }
+      }, (error) => { console.error(error) }
     )
   }
 
@@ -98,13 +99,14 @@ export class ProgresoAuditoriaComponent implements OnInit {
       },
       reject: () => {
         this.messageService.add({ severity: 'error', summary: '', detail: 'Acción cancelada' });
-      }
+      },
+      acceptButtonStyleClass: 'p-button-danger',
+      rejectButtonStyleClass: 'p-button-danger'
     });
   }
   enviarInforme(){
     if(this.auditoria_seleccionada !== undefined){
-      this.auditoriaService.enviarInforme(this.auditoria_seleccionada.id_auditoria).subscribe((response: any)=>{
-      });
+
     }
   }
   descargarInforme(){

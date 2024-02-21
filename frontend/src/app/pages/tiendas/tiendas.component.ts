@@ -5,7 +5,6 @@ import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 
 import { tienda } from 'src/app/interfaces/tienda';
 import { muebles } from 'src/app/interfaces/muebles';
-import { jsPDF } from 'jspdf';
 
 @Component({
   selector: 'app-tiendas',
@@ -125,14 +124,15 @@ export class TiendasComponent implements OnInit{
     }
   }
   editarTienda(tienda: tienda){
-    this
+    const listaMueblesDisponibles = this.eliminarMueblesSeleccionados(this.listaTodosMuebles, this.listaMueblesNuevaTienda)
     this.nuevaTienda = tienda;
     this.crearEditarTienda = 'Editar tienda';
     this.cabeceraNuevaEditarTienda = 'Editar tienda';
     this.sfidInput = tienda.sfid;
     this.comunidadInput = 'prueba';
     this.MueblesService.getMueblesTiendaByIdTienda(tienda.id).subscribe((response: muebles[]) => {
-      this.listaMueblesNuevaTienda = response;
+      this.listaMueblesNuevaTienda = this.ordenarListaAlfabeticamente(response, 'nombre');
+      this.listaMueblesMostrar = this.eliminarMueblesSeleccionados(this.listaTodosMuebles, response);
     })
     this.activeIndex = 1;
     this.verFormularioNuevaTienda = true;
@@ -148,6 +148,7 @@ export class TiendasComponent implements OnInit{
   }
 
   confirmarCambio(tienda: tienda) {
+    console.log('entro')
     this.ConfirmationService.confirm({
       message: this.mensajeDialog,
       header: this.mensajeActivarDesactivar,
@@ -178,23 +179,9 @@ export class TiendasComponent implements OnInit{
     const listaOrdenada = lista.sort((a, b) => a[campo].localeCompare(b[campo]));
     return listaOrdenada;
   }
-
-  informe(){
-    const informe = this.generarPDF();
-    const pdfBlob = new Blob([informe.output('blob')], { type: 'application/pdf' });
-    const formData = new FormData();
-    formData.append('pdfFile', pdfBlob, 'generated.pdf');
-    this.TiendasService.informe(formData).subscribe((response: any) => {
-    })
-  }
-  generarPDF(){
-    let informe = new jsPDF();
-    informe.setFont("helvetica","bold"); 
-    informe.text('Resumen de la auditoria ', 20, 20);
-    return informe;
-  }
   eliminarMueblesSeleccionados(listaCompleta: muebles[], listaMueblesSeleccionados: muebles[]){
     const idsLista2 = new Set(listaMueblesSeleccionados.map(mueble => mueble.id));
     const listaFiltrada = listaCompleta.filter((mueble) => !idsLista2.has(mueble.id));
+    return listaFiltrada;
   }
 }

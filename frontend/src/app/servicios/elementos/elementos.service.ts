@@ -22,7 +22,7 @@ export class ElementosService {
   }
 
   
-  guardarElemento(nombre: string, activo: boolean, region: regiones, imageFile: File, categoria: number, ): Observable<elementos> {
+  guardarElemento(nombre: string,  region: regiones, imageFile: File, categoria: number ): Observable<elementos> {
     const formData = new FormData();
 
     formData.append('imagenesReferencia', imageFile);
@@ -50,6 +50,7 @@ export class ElementosService {
   getCategorias_elementos(){
     return this.http.get<regiones[]>(`${this.API_URI}/categorias_elementos`);
   }
+  
   
 
 }
