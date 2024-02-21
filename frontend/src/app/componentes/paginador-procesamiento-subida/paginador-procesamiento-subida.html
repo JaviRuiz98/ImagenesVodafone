@@ -1,5 +1,5 @@
 <div [ngClass]="{'componente-completo': procesados.length > 0, 'componente-solo-selector': procesados.length === 0}">
-    <div *ngIf="">
+    <div *ngIf="recibirEstado() === 'en progreso'">
         <p-selectButton
             class="botonNuevoHistorial"
             [options]="SelectButtonOptions" 

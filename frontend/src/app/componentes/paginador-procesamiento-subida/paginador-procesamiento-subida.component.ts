@@ -19,7 +19,7 @@ import { ConfirmationService, ConfirmEventType } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { VisualizacionProcesadosComponent } from '../visualizacion-procesados/visualizacion-procesados.component';
-
+import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
 @Component({
     selector: 'app-paginador-procesamiento-subida',
     templateUrl: './paginador-procesamiento-subida.html',
@@ -67,11 +67,16 @@ export class PaginadorProcesamientoSubidaComponent {
         {label:'Dislike' ,icon: 'pi pi-thumbs-down', value: 'dislike', styleClass: "optionColorVodafone" }
     ];
 
-    constructor(private publicMethodsService: PublicMethodsService, private confirmationService: ConfirmationService, private messageService: MessageService, private procesamientoService: ProcesamientoService) { }
+    constructor(private localstorage: LocalStorageService, private publicMethodsService: PublicMethodsService, private confirmationService: ConfirmationService, private messageService: MessageService, private procesamientoService: ProcesamientoService) { }
  
     recibirFile(event: {archivo:File}) {
         const imagenAProcesar = event.archivo;
         this.archivoSeleccionadoChange.emit( { archivo: imagenAProcesar });
         this.cargando_procesamiento = true;
+    }
+    recibirEstado(){
+        const auditoria = this.localstorage.getItem('auditoria_seleccionada');
+        const estadoAuditoria = auditoria.estados_auditoria.estado;
+        return estadoAuditoria;
     }
 }
