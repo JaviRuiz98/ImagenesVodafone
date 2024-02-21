@@ -9,6 +9,7 @@ import promptsRoutes from './routes/promptsRoutes';
 import  mobiliarioRouter from './routes/mobiliarioRoutes';
 import auditoriaRouter from './routes/auditoriaRoutes';
 import expositoresRoutes from './routes/expositoresRoutes';
+import informeRoutes from './routes/informeRoutes';
 
 const app = express();
 app.use(bodyParser.json({ limit: '10mb' }));
@@ -23,6 +24,7 @@ app.use('/', promptsRoutes);
 app.use('/', mobiliarioRouter);
 app.use('/', auditoriaRouter);
 app.use('/', expositoresRoutes);
+app.use('/', informeRoutes);
 
 app.get('/', (_req: Request, res: Response) => {
     res.send('Hello World! ');

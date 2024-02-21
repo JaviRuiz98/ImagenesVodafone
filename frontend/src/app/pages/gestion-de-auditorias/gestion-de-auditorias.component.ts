@@ -9,7 +9,7 @@ import { DatePipe } from '@angular/common';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
 import { jsPDF } from 'jspdf';
-
+import { InformeService } from 'src/app/servicios/informe/informe.service';
 
 
 
@@ -38,7 +38,8 @@ export class GestionDeAuditoriasComponent implements OnInit {
     private datePipe: DatePipe,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private informeService: InformeService
   ) { }
  
   ngOnInit(): void {
@@ -109,12 +110,27 @@ export class GestionDeAuditoriasComponent implements OnInit {
     });
   }
   enviarInforme(id_auditoria: number) {
+
+    console.log(id_auditoria);
+    const body = {
+      id_auditoria: id_auditoria
+    }
+
+
+    this.informeService.enviarInforme(body).subscribe(
+      (data)=>{
+        console.log(data);
+      }, (error)=>{
+        console.error(error);
+      }
+    )
   }
 
   descargarInforme(auditoria: auditoria){
     console.log(auditoria);
     //const informe = this.generarPDF();
   }
+
   informe(){
     const informe = this.generarPDF();
     
@@ -124,11 +140,12 @@ export class GestionDeAuditoriasComponent implements OnInit {
     // this.auditoriaService.informe(formData).subscribe((response: any) => {
     // })
   }
+
   generarPDF(){
     let informe = new jsPDF();
     informe.setFont("helvetica","bold"); 
     informe.text('Resumen de la auditoria ', 20, 20);
-    informe.save()
+    //informe.save()
     return informe;
   }
 }
