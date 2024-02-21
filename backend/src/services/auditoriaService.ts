@@ -171,6 +171,9 @@ export const auditoriaService = {
                         }
                     },
                     procesados_imagenes: true,                
+                },
+                orderBy: {
+                    id_mueble: 'asc'
                 }
             })
         } catch (error) {
