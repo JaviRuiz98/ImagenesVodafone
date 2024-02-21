@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DialogInformacionProcesadoComponent } from '../dialog-informacion-procesado/dialog-informacion-procesado.component';
 import { ToastModule } from 'primeng/toast';
@@ -29,29 +29,26 @@ import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/p
     MessageService
   ]
 })
-export class VisualizacionProcesadosComponent {
+export class VisualizacionProcesadosComponent implements OnInit{
 
   @Input() procesados: procesados_imagenes[] = [];
 
   url_imagenes_procesadas: string = 'http://validador-vf.topdigital.local/imagenes/imagenesProcesamiento/';
-
   items_per_page: number = 1;
   indice_paginador: number = 0;
-
   visiblePrompt: boolean = false;
-  LikeDislike: number =-1;
-
   likeButton: string = "pi pi-thumbs-up";
   dislikeButton: string = "pi pi-thumbs-down";
-
   constructor(
     private confirmationService: ConfirmationService,
     private procesamientoService: ProcesamientoService,
     private messageService: MessageService
   ) {}
 
+  ngOnInit(): void {
+  }
   getElementosPaginados(): procesados_imagenes[] | undefined {
-    console.log("procesados",this.procesados.slice(this.indice_paginador, this.indice_paginador + this.items_per_page))
+    console.log(this.procesados.slice(this.indice_paginador, this.indice_paginador + this.items_per_page))
     return this.procesados.slice(this.indice_paginador, this.indice_paginador + this.items_per_page);
   }
 
@@ -116,27 +113,5 @@ export class VisualizacionProcesadosComponent {
         this.dislikeButton = "pi pi-thumbs-down";
     }
     this.procesamientoService.updateFeedbackProcesado(procesado.id, procesado.feedback_humano).subscribe();
-  }
-
-  inicializa_likeButon(procesado: procesados_imagenes){
-    if(procesado.feedback_humano == true){
-        this.likeButton = "pi pi-thumbs-up-fill";
-    } else if(procesado.feedback_humano == false){
-        this.likeButton = "pi pi-thumbs-up";
-    } else if(procesado.feedback_humano == null){
-        this.likeButton = "pi pi-thumbs-up";
-    }
-    return this.likeButton;
-  }
-
-  inicializa_dislikeButon(procesado: procesados_imagenes){
-      if(procesado.feedback_humano == true){
-          this.dislikeButton = "pi pi-thumbs-down";
-      } else if(procesado.feedback_humano == false){
-          this.dislikeButton = "pi pi-thumbs-down-fill";
-      } else if(procesado.feedback_humano == null){
-          this.dislikeButton = "pi pi-thumbs-down";
-      }
-      return this.dislikeButton;
   }
 }

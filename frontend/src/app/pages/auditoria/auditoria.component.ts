@@ -63,10 +63,10 @@ export class AuditoriaComponent implements OnInit{
     }
 
     async inicializaImagenesReferencia() {
-      this.auditoriaService.getMueblesAndExpositoresWithProcesadosByIdAuditoria(this.auditoria_seleccionada.id).subscribe(
-        (data: any[]) => {
+      this.auditoriaService.getMueblesAndExpositoresWithProcesadosByIdAuditoria(this.auditoria_seleccionada.id).subscribe((data: any[]) => {
           this.muebles = data;
-        }, (error: Error) => { console.log(error) }
+        }, 
+        (error: Error) => { console.log(error) }
       );
     }
 
@@ -75,12 +75,12 @@ export class AuditoriaComponent implements OnInit{
     }
 
     async procesarImagen(event: {archivo:File}, id_elemento_selected: number, id_mueble_selected: number) {
-      console.log("id_elemento_selected", id_elemento_selected, "id_mueble_selected", id_mueble_selected);
       this.imagenAProcesar = event.archivo;
       this.cargas_procesamiento[id_elemento_selected]= true;   
       this.messageService.add({ severity: 'info', summary: 'Cargando', detail: 'La imagen se está procesando' });
       this.procesamientoService.postProcesamientoImagenes(id_elemento_selected, id_mueble_selected, this.auditoria_seleccionada.id, this.imagenAProcesar).subscribe( 
         ( response: procesados_imagenes ) => {
+          
           this.cargas_procesamiento[id_elemento_selected] = false;
           this.modos_visualizacion[id_elemento_selected] = 'historial';        
           this.actualizarProcesamientoEnMueble(id_elemento_selected, response);
@@ -93,17 +93,14 @@ export class AuditoriaComponent implements OnInit{
       })
     }
 
-    //refactorizar a nueva bbd
-
-    actualizarProcesamientoEnMueble(id_expositor_selected: number, response: procesados_imagenes) {
-      // for (const mueble of this.muebles) {
-      //   const expositorIndex = mueble.elementos.findIndex((elementos) => elementos.id === id_expositor_selected);
-      //   if (expositorIndex !== -1) {
-      //     mueble.elementos[expositorIndex].procesados_imagenes.unshift(response);
-      //     break; 
-      //   }
-      // }
+  actualizarProcesamientoEnMueble(id_expositor_selected: number, response: procesados_imagenes) {
+    for (const mueble of this.muebles) {
+      const expositorIndex = mueble.elementos.findIndex((elementos) => elementos.id === id_expositor_selected);
+      if (expositorIndex !== -1) {
+        mueble.elementos[expositorIndex].procesados_imagenes.unshift(response);
+        break; 
+      }
     }
-    
-      
+    console.log('MUEBLEs', this.muebles)
+  }
 }
