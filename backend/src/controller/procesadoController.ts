@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { ChatMessage } from '../interfaces/procesadoInterfaces';
 import * as fs from 'fs';
 import openai from '../config/openAi';
-import { elementosService } from '../services/expositorService';
+import { elementosService } from '../services/elementoService';
 import { procesadoService } from '../services/procesadoService';
 import { parseBool } from '../utils/funcionesCompartidasController';
 import { imagenService } from '../services/imagenService';
@@ -233,64 +233,46 @@ function isValidOpenAiResponse  (response: string, tipoProcesado: number): boole
   }
 }
 
-  export async function borrarProcesado(req: Request, res: Response) {
-    try{
-      const id_procesado_imagen: number = parseInt(req.params.id_procesado_imagen);
-      await procesadoService.borrarProcesado(id_procesado_imagen);
-      res.status(200).json({ message: 'Borrado exitoso' });
-      console.log('Procesado borrado: ', id_procesado_imagen);
-    }catch(error){
-        console.error('Error al borrar procesado:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-
+export async function borrarProcesado(req: Request, res: Response) {
+  try{
+    const id_procesado_imagen: number = parseInt(req.params.id_procesado_imagen);
+    await procesadoService.borrarProcesado(id_procesado_imagen);
+    res.status(200).json({ message: 'Borrado exitoso' });
+  }catch(error){
+      console.error('Error al borrar procesado:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
 }
 
 export async function feedbackProcesado(req: Request, res: Response) {
-  
   try{
-
     const id_procesado_imagen = parseInt(req.body.id_procesado_imagen);  
-
-      const feedback = req.body.feedback;
-      console.log('id_procesado_imagen: ', id_procesado_imagen);
-      console.log('feedback: ', feedback);
-      await procesadoService.feedbackProcesado(id_procesado_imagen, feedback);
-      res.status(200).json({ message: 'feedback insertado' });
+    const feedback = req.body.feedback;
+    await procesadoService.feedbackProcesado(id_procesado_imagen, feedback);
+    res.status(200).json({ message: 'feedback insertado' });
 
   }catch(error){
       console.error('Error al editar el feedback del procesado:', error);
       res.status(500).json({ error: 'error feedback' });
   }
-
-
-  }
+}
   
-
-  export async function getProcesadosByIdExpositor(req: Request, res: Response) {
-    try{
-      
+export async function getProcesadosByIdExpositor(req: Request, res: Response) {
+  try{
     const id_expositor: number = parseInt(req.params.id_expositor);
     const procesados: procesados_imagenes[] = await procesadoService.getProcesadosByIdExpositor(id_expositor);
     res.status(200).json({ procesados });
-
-    }catch(error){
-      console.error('Error al obtener procesados:', error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-
+  }catch(error){
+    console.error('Error al obtener procesados:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
 }
 
-
-  export async function getProcesadosByIdAuditoria(req: Request, res: Response) {
-
-    try{
-      const id_auditoria: number = parseInt(req.params.id_auditoria);
-      const procesados: procesados_imagenes[] = await procesadoService.getProcesadosByIdAuditoria(id_auditoria);
-      res.status(200).json({ procesados });
-           
-    }catch{
-    }
-
-    
+export async function getProcesadosByIdAuditoria(req: Request, res: Response) {
+  try{
+    const id_auditoria: number = parseInt(req.params.id_auditoria);
+    const procesados: procesados_imagenes[] = await procesadoService.getProcesadosByIdAuditoria(id_auditoria);
+    res.status(200).json({ procesados });
+  }catch{
   }
+}

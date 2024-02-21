@@ -5,13 +5,14 @@ import { ElementosService } from 'src/app/servicios/elementos/elementos.service'
 import { elementos } from 'src/app/interfaces/elementos';
 import { regiones } from 'src/app/interfaces/regiones';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ElementosModule } from './elementos.modules';
+import { categorias_elementos } from 'src/app/interfaces/categoria';
+import { FormControl, FormGroup } from '@angular/forms';
+import { timeout } from 'rxjs';
 
 @Component({
   selector: 'app-elementos',
   templateUrl: './elementos.component.html',
-  styleUrls: ['./elementos.component.css'],
-  providers: [ MessageService, ConfirmationService],  
+  styleUrls: ['./elementos.component.css']
 })
 
 
@@ -33,9 +34,12 @@ export class ElementosComponent implements OnInit{
   archivoSeleccionado!: File;
 
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
+ 
+  opcionesCategoria: string[] = [];
+  categoriaSeleccionada!: categorias_elementos;
+  categorias_elementos !: categorias_elementos[];
 
-  opcionesCategoria!: any[];
-  categoriaSeleccionada = {tipo: 'Todos'};
+
   opcionesCatalogo!: any[];
   opcionCatalogoSeleccionado = {estado: 'Todos'};
 
@@ -45,28 +49,26 @@ export class ElementosComponent implements OnInit{
   tableStateOption: any[] = [{label:'Dispositivos', icon: 'pi pi-mobile', value: 'dispositivos',  styleClass: "optionColorVodafone" }, {label:'Carteles' ,icon: 'pi pi-book', value: 'cartel', styleClass: "optionColorVodafone" }];
   tableSelected:string = 'dispositivos';
 
-
-
-  constructor(private router: Router, private elementosService: ElementosService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
+  constructor( private elementosService: ElementosService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
   inicializaElementos() {
     this.elementosService.getElementos().subscribe((elementos: elementos[]) => {
       this.elementos = elementos;
       this.elementosTodos = elementos;
       console.log("elementos", elementos);
-      this.resetTabla();
+ //     this.resetTabla();
     });
   }
 
-  resetTabla() {
-    this.elementos = this.elementosTodos;
-    if(this.tableSelected == "dispositivos"){
-      this.elementos = this.elementos.filter(elementos => elementos.categorias_elementos.id == 2);
+  // resetTabla() {
+  //   this.elementos = this.elementosTodos;
+  //   if(this.tableSelected == "dispositivos"){
+  //     this.elementos = this.elementos.filter(elementos => elementos.categorias_elementos.id == 2);
       
-    }else{
-      this.elementos = this.elementos.filter(elementos => elementos.categorias_elementos.id == 1);
-    }
-  }
+  //   }else{
+  //     this.elementos = this.elementos.filter(elementos => elementos.categorias_elementos.id == 1);
+  //   }
+  // }
 
  
   AbrirnuevoElemento() {
@@ -101,25 +103,28 @@ export class ElementosComponent implements OnInit{
     this.archivoSeleccionadoChange.emit({ archivo: imagenAProcesar });
     this.cargando_procesamiento = true;
   }
-
-
-  cerrarDialog(value: boolean) {
+ 
+  manejarMostrarDialogo(valor: boolean): void {
     this.mostrarDialogoNuevoElemento = false;
-    this.cargando_procesamiento = true;
+    console.log('Valor recibido: ', valor);
+    // Aquí haces algo con el valor recibido
   }
-
-
+ 
 
   activarDesactivarElementos(elemento: elementos) {
     //this.opcionMostrarCambia
 
     this.elementosService.cambiarActivo(elemento.id, !elemento.activo).subscribe((elemento: elementos) => {
-      this.inicializaElementos();
+     this.inicializaElementos();
       if(!elemento.activo){
         this.messageService.add({ severity: 'success', summary: 'Modificado con exito', detail: 'Elemento descatalogado' });
       }else{
         this.messageService.add({ severity: 'success', summary: 'Modificado con exito', detail: 'Elemento añadido al catalogo' });
       }
+     // this.elementos.find(elementos => elementos.id === this.id_elemento_selected)?.activo = !this.elementos.find(elemento => elemento.id === this.id_elemento_selected)?.activo
+      setInterval(() => {
+        this.cambiarOpcionBusqueda(0);
+      },100)
     })
   }
 
@@ -155,25 +160,50 @@ export class ElementosComponent implements OnInit{
 
 
   cambiarOpcionBusqueda($event: any) {
+     
+    this.elementos = this.elementosTodos;
+    if(this.opcionesCatalogo.find((opcion) => opcion.estado === $event.value?.estado)){
+  //    this.opcionCatalogoSeleccionado.estado = $event.value.nombre; da bugazo
+    }else{
 
-    if($event.value == "Todos"){
-      this.inicializaElementos();
-    }else if($event.value == "Catalogados"){
+      if(this.categorias_elementos.find((opcion) => opcion.nombre === $event.value?.nombre)){
+        //  this.categoriaSeleccionada = $event.value?.nombre;
+      }
+    }
+
+    if(this.opcionCatalogoSeleccionado.estado == "Todos"){
+   //   this.inicializaElementos();
+      this.elementos = this.elementosTodos;
+    }else if(this.opcionCatalogoSeleccionado.estado  == "Catalogados"){
       this.elementos = this.elementosTodos.filter(elemento => elemento.activo == true);
-    }else if($event.value == "Descatalogados"){
+    }else if(this.opcionCatalogoSeleccionado.estado == "Descatalogados"){
       this.elementos = this.elementosTodos.filter(elemento => elemento.activo == false);
     }
 
-    
-
+    if(this.categoriaSeleccionada.nombre  == "Carteles"){ 
+      this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == "Carteles");
+    }else if(this.categoriaSeleccionada.nombre  == "Dispositivos"){
+      this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == "Dispositivos");
+    }else if(this.categoriaSeleccionada.nombre  == "Otros"){
+      this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == "Otros");
+    }
   }
 
+  // this.regiones = regiones;
+  // this.Dropdown_regiones = regiones.map((region) => region.nombre);
  
+  inicializaCategorias_elementos(){
+    this.elementosService.getCategorias_elementos().subscribe((elementos: categorias_elementos[]) => {
+      this.categorias_elementos = elementos; 
+      this.categoriaSeleccionada = this.categorias_elementos[0];
+    })
+  }
+
+
   
-
-
-  ngOnInit(): void {
+  ngOnInit(): void { 
     this.inicializaElementos();
+    this.inicializaCategorias_elementos();
 
     this.elementosService.getAllRegiones().subscribe((regiones: regiones[]) => {
       this.regiones = regiones;
@@ -186,11 +216,11 @@ export class ElementosComponent implements OnInit{
       {estado: 'Descatalogados'}
     ]
 
-    this.opcionesCategoria = [
-      {clase: 'Carteles'},
-      {clase: 'Dispositivos'},
-      {clase: 'Modelos'}
-    ]
+    // this.opcionesCategoria = new FormGroup({
+    //   categoriaSeleccionada: new FormControl<categorias_elementos | null>(null)
+    // });
+  
+ 
 
   }
 

@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
-import { elementosService } from '../services/expositorService';
+import { elementosService } from '../services/elementoService';
 import { imagenService } from '../services/imagenService'; // 
+
+
 export async function createElementos(req: Request, res: Response) {
     const {nombre} = req.body; //tipar en un futuro
     //hacer valdiator 
@@ -41,13 +43,13 @@ export async function getElementos(req: Request, res: Response) {
 
 export async function deleteElemento(req: Request, res: Response) {
     try{
-        const id_expositor = req.params.id_expositor ? parseInt(req.params.id_expositor as string) : undefined;
+        const id_elemento = req.params.id_elemento ? parseInt(req.params.id_elemento as string) : undefined;
         //hacer validator
-        if (!id_expositor) {
-            res.status(400).json({ error: 'id_expositor es necesario' });
+        if (!id_elemento) {
+            res.status(400).json({ error: 'id_elemento es necesario' });
             return;
         }
-        const mobiliario = await elementosService.deleteElemento(id_expositor);
+        const mobiliario = await elementosService.deleteElemento(id_elemento);
         res.status(200).json(mobiliario);
     }catch(error){
         
@@ -60,7 +62,7 @@ export async function guardarElemento(req: Request, res: Response) {
         const activo = req.body.activo === 'true';
         const imagenExpositor = req.file;//(files['imagenesprocesado'] as Express.Multer.File[]).map(file => file.path)[0];
         const region = parseInt(req.body.id_region);
-        const categoria = req.body.categoria;
+        const categoria = parseInt(req.body.categoria);
 
 
 
@@ -82,10 +84,10 @@ export async function guardarElemento(req: Request, res: Response) {
 
 export async function editarEstadoElemento(req: Request, res: Response){
     try{
-        const id_expositor = req.body.id_expositor;
+        const id_elemento = req.body.id_elemento;
         const activo = req.body.activo;
 
-        const row = await elementosService.editarEstadoelemento(id_expositor, activo);
+        const row = await elementosService.editarEstadoelemento(id_elemento, activo);
         res.status(200).json(row)
 
     }catch(error){
@@ -103,14 +105,15 @@ export async function getRegionesDisponibles(__req: Request, res: Response) {
     }
 }
 
-// export async function getExpositoresByIdMueble(req: Request, res: Response) {
-//     try{
-//         const id_mueble = parseInt(req.params.id_mueble);
-//         const expositores = await elementosService.getElm(id_mueble);
-//         res.status(200).json(expositores);
-//     }catch(error){
-//         res.status(500).json({ error: 'Error interno del servidor' });
-        
-//     }
-    
-// }
+
+export async function getCategorias_elementos(__req: Request, res: Response) {
+    try{
+        const categorias = await elementosService.getCategorias();
+        res.status(200).json(categorias);
+    }catch(error){
+       console.log(error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}
+
+

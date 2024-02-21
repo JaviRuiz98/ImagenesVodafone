@@ -13,7 +13,8 @@ import { CommonModule } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormControl, Validators  } from '@angular/forms';
- 
+import { categorias_elementos } from 'src/app/interfaces/categoria';
+
 import { regiones } from 'src/app/interfaces/regiones';
 
 
@@ -47,13 +48,11 @@ export class NuevoElementoComponent implements OnInit {
 
   nuevoElemento_form: FormGroup = this.formBuilder.group({
     nombre: new FormControl('', [Validators.required, Validators.minLength(2)]),
-    activo: new FormControl(false),
     region: new FormControl('', [Validators.required, Validators.minLength(2)]), 
     imagen: new FormControl(0, [Validators.required, this.fileValidator]), 
-    categoria: new FormControl('', Validators.required ),                                        
-    numero_dispositivos: new FormControl(0), 
+    categoria: new FormControl('', Validators.required ),
+  
   });
-
 
   formData  = this.nuevoElemento_form?.value;
 
@@ -63,14 +62,16 @@ export class NuevoElementoComponent implements OnInit {
   n_dispositivos: number = 0;
   
   nuevoElemento!: elementos;
-  
+
   archivoSeleccionado!: File;
  
   bloqueaCategoria: boolean = false;
   regiones: regiones[] = [];
   Dropdown_regiones: string[] = [];
-  Dropdown_categorias: string[] = ["Carteles", "Dispositivos"];
 
+  categorias_elementos: categorias_elementos[] = [];
+  Dropdown_categorias: string[] = [];
+  categoriaSeleccionada = 'Carteles';
   constructor(private formBuilder: FormBuilder, private elementosService: ElementosService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
   AbrirnuevoElemento() {
@@ -79,27 +80,6 @@ export class NuevoElementoComponent implements OnInit {
       this.bloqueaCategoria = true;
     } 
   }
-
-//   this.nuevoElemento = {
-//     id: 0,
-//     imagenes: {
-//       url:"",
-//       id_imagen: 0
-//     },
-//     region: {
-//       id: 0,
-//       nombre: ''
-//     },
-//     nombre: '',
-//     activo: true,
-//     {
-//       id: 0,
-//       nombre: ''
-//     }
-//     procesados_imagenes: []
-//   };
-//   this.submitted = false;
-// }
   
   recibirFile(event: {archivo:File}) {
     this.nuevoElemento_form.patchValue({ imagen: event.archivo });
@@ -112,13 +92,20 @@ export class NuevoElementoComponent implements OnInit {
     this.nuevoElemento_form.patchValue({ region: selectedRegionValue });
   }
 
+  onCategoriaChange(event: any) {
+    const selectedCategoriaValue = this.categorias_elementos.find((categoria) => categoria.nombre === event.value);
+    this.nuevoElemento_form.patchValue({ categoria: selectedCategoriaValue });
+  }
+
+
   nuevoGuardar() {
     console.log(this.nuevoElemento_form.get('nombre')?.value);
-    if(this.nuevoElemento_form.get('nombre')?.value == '') {
+    if(this.nombre?.invalid || this.region?.invalid || this.imagen?.invalid || this.categoria?.invalid ) {
       this.messageService.add({severity:'error', summary: 'Error', detail: 'Elemento no guardado'});
       this.submitted = true;
     }else{
-      this.elementosService.guardarElemento(this.nombre?.value, this.nuevoElemento.activo, this.region?.value, this.imagen?.value, this.categoria?.value).subscribe((elemento) => {
+ 
+      this.elementosService.guardarElemento(this.nombre?.value,  this.region?.value, this.imagen?.value, this.categoria?.value.id).subscribe((elemento) => {
         if(elemento.id> 0) {
           this.messageService.add({severity:'success', summary: 'Guardado', detail: 'Elemento guardado correctamente'});
           this.nuevoElementoCreado.emit(elemento);
@@ -130,7 +117,6 @@ export class NuevoElementoComponent implements OnInit {
       this.mostrar = false;
       this.mostrarDialogoNuevoElemento.emit(this.mostrar);
     }
-
   }
 
   nuevoCancelar() {
@@ -148,15 +134,22 @@ export class NuevoElementoComponent implements OnInit {
   inicializaDropDownZonas(){
     this.elementosService.getAllRegiones().subscribe((regiones)=>{
       this.regiones = regiones;
-      this.Dropdown_regiones = regiones.map((region) => region.nombre);
+  //    this.Dropdown_regiones = regiones.map((region) => region.nombre);
     })
   }
 
- 
+  inicializaCategorias_elementos(){
+    this.elementosService.getCategorias_elementos().subscribe((categorias: categorias_elementos[])=>{
+     // this.Dropdown_categorias = categorias.map((categorias) => categorias.nombre);
+      this.categorias_elementos = categorias
+    })
+  }
+  
 
   ngOnInit(): void {
     this.AbrirnuevoElemento();
     this.inicializaDropDownZonas();
+    this.inicializaCategorias_elementos();
   }
 
 

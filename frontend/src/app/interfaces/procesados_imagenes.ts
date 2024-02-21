@@ -4,7 +4,7 @@ import { Prompt } from "./prompts";
 
 
 export interface procesados_imagenes {
-    id_procesado_imagen: number;
+    id: number;
     id_expositor: number;
     fecha: Date;
     comentarios?: string;
