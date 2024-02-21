@@ -1,6 +1,6 @@
 <div class="paginaCompleta">
   <p-toast></p-toast>
-  <div class="floatintPanel" *ngIf="this.id_auditoria_seleccionada !== 0">
+  <div class="floatintPanel" *ngIf="this.auditoria_seleccionada.id !== 0">
     <app-progreso-auditoria #progresoRef></app-progreso-auditoria>
   </div>    
   <div *ngFor="let mueble of this.muebles" class="divPanelCompleto">
@@ -18,8 +18,6 @@
           <div class="anchoAltoFotoReferencia">
             <div *ngFor=" let elemento of mueble.elementos">
               <p-image [src]="url_imagenes + elemento.imagenes.url" [alt]="elemento.imagenes.url" [preview]="true" [height]="'400px'" class="imagenSimple"></p-image>
-              <!--
-            -->
             </div>
           </div>
         </div>

@@ -62,7 +62,7 @@ export class GestionDeAuditoriasComponent implements OnInit {
     this.auditoriaService.nuevaAuditoria(this.tiendaSeleccionada? this.tiendaSeleccionada.id : 0).subscribe(
       (data)=>{
         this.inicializaAuditorias();
-        this.goToAuditoria(data.id);
+        this.goToAuditoria(data);
       }
     );
   } 
@@ -74,8 +74,8 @@ export class GestionDeAuditoriasComponent implements OnInit {
     })
   }
 
-  goToAuditoria(id_auditoria: number){
-    this.localStorageService.setItem('id_auditoria_seleccionada', id_auditoria);
+  goToAuditoria(auditoria: auditoria){
+    this.localStorageService.setItem('auditoria_seleccionada', auditoria);
     this.router.navigate(['/auditoria']);
   }
 

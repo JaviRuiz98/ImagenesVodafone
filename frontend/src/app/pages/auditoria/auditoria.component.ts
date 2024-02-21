@@ -25,7 +25,6 @@ export class AuditoriaComponent implements OnInit{
 
   muebles: any[] = [];
 
-  id_auditoria_seleccionada: number = 0;
   auditoria_seleccionada: auditoria = new auditoria(null);
 
   imagenAProcesar = new File([""], "");
@@ -51,11 +50,11 @@ export class AuditoriaComponent implements OnInit{
     ) {}
 
     ngOnInit(): void {
-      this.id_auditoria_seleccionada = this.localStorageService.getItem('id_auditoria_seleccionada')
+      this.auditoria_seleccionada = this.localStorageService.getItem('auditoria_seleccionada')
 
       this.url_imagenes = this.urlService.url_en_uso + this.carpeta_imagenes_referencias;
 
-      this.auditoriaService.getAuditoriaById(this.id_auditoria_seleccionada).subscribe(
+      this.auditoriaService.getAuditoriaById(this.auditoria_seleccionada.id).subscribe(
         auditoria => {
           this.auditoria_seleccionada = auditoria
           this.inicializaImagenesReferencia();
@@ -64,7 +63,7 @@ export class AuditoriaComponent implements OnInit{
     }
 
     async inicializaImagenesReferencia() {
-      this.auditoriaService.getMueblesAndExpositoresWithProcesadosByIdAuditoria(this.id_auditoria_seleccionada).subscribe(
+      this.auditoriaService.getMueblesAndExpositoresWithProcesadosByIdAuditoria(this.auditoria_seleccionada.id).subscribe(
         (data: any[]) => {
           this.muebles = data;
         }, (error: Error) => { console.log(error) }
@@ -80,13 +79,13 @@ export class AuditoriaComponent implements OnInit{
       this.imagenAProcesar = event.archivo;
       this.cargas_procesamiento[id_elemento_selected]= true;   
       this.messageService.add({ severity: 'info', summary: 'Cargando', detail: 'La imagen se está procesando' });
-      this.procesamientoService.postProcesamientoImagenes(id_elemento_selected, id_mueble_selected, this.id_auditoria_seleccionada, this.imagenAProcesar).subscribe( 
+      this.procesamientoService.postProcesamientoImagenes(id_elemento_selected, id_mueble_selected, this.auditoria_seleccionada.id, this.imagenAProcesar).subscribe( 
         ( response: procesados_imagenes ) => {
           this.cargas_procesamiento[id_elemento_selected] = false;
           this.modos_visualizacion[id_elemento_selected] = 'historial';        
           this.actualizarProcesamientoEnMueble(id_elemento_selected, response);
           this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Imagen procesada correctamente' });
-          this.progresoAuditoria.actualizarProgresoAuditoria(this.id_auditoria_seleccionada);
+          this.progresoAuditoria.actualizarProgresoAuditoria(this.auditoria_seleccionada.id);
         }, ( error: any ) => {
           console.log("error", error);
           this.cargas_procesamiento[id_elemento_selected] = false;
