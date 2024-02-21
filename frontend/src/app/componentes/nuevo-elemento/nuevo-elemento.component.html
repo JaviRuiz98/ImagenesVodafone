@@ -3,9 +3,10 @@
     <div style="display: flex; flex-direction: row; width: 100%" height="100%">
         <form [formGroup]="nuevoElemento_form" style="width: 50%">
             <input type="text" pInputText pKeyFilter="int" placeholder="Nombre del elemento" [formControlName]="'nombre'" style="margin-top: 10px;"/>
-            <p-dropdown name="region" (onChange)="onRegionChange($event)" [options]="Dropdown_regiones" value="#region" [placeholder]="'Seleccione región'" [formControlName]="'id_region'" [style]="{marginTop: '10px'}" ></p-dropdown>
-            <p-dropdown *ngIf="!bloqueaCategoria" name="categoria" [options]="Dropdown_categorias" value="#categoria" [placeholder]="'Seleccione categoria'" [formControlName]="'categoria'" [style]="{marginTop: '10px'}" ></p-dropdown>
-            <input *ngIf="bloqueaCategoria" id="disabled-input" type="text" pInputText [disabled]="true" [value]="categoriaPredefinida" />
+            <p-dropdown name="region"  [options]="regiones" optionLabel="nombre" value="#region" [placeholder]="'Seleccione región'" [formControlName]="'region'" [style]="{marginTop: '10px'}" ></p-dropdown>
+            <p-dropdown name="categoria"   [options]="categorias_elementos"  optionLabel="nombre"  value="#categoria" [placeholder]="'Seleccione categoria'" [formControlName]="'categoria'" [style]="{marginTop: '10px'}" ></p-dropdown>
+         
+            <!-- <input *ngIf="bloqueaCategoria" id="disabled-input" type="text" pInputText [disabled]="true" [value]="categoriaPredefinida" /> -->
 
 
             <div *ngIf="categoria?.value == 'Dispositivos'" style="margin-top: 10px;">

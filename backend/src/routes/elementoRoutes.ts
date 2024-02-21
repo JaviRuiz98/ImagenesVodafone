@@ -10,9 +10,9 @@ router.get('/elementos', getElementos);
 router.get('/categorias_elementos', getCategorias_elementos);
 router.delete('/elementos/:id_elementos', deleteElemento);
 
-router.post('/elementos', uploadImagenRepresentativa, uploadFileToFtp('imagenesReferencia'), guardarElemento);
+router.post('/elemento', uploadImagenRepresentativa, uploadFileToFtp('imagenesReferencia'), guardarElemento);
 
-router.post('/elementosActivaDesactiva', editarEstadoElemento);
+router.post('/elementoActivaDesactiva', editarEstadoElemento);
 
 router.get('/regiones', getRegionesDisponibles);
  

@@ -7,6 +7,7 @@ import { regiones } from 'src/app/interfaces/regiones';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { categorias_elementos } from 'src/app/interfaces/categoria';
 import { FormControl, FormGroup } from '@angular/forms';
+import { timeout } from 'rxjs';
 
 @Component({
   selector: 'app-elementos',
@@ -35,14 +36,8 @@ export class ElementosComponent implements OnInit{
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
  
   opcionesCategoria: string[] = [];
-  categoriaSeleccionada = 'Carteles';
+  categoriaSeleccionada!: categorias_elementos;
   categorias_elementos !: categorias_elementos[];
-
-      
-  // opcionesCategoria: FormGroup | undefined;
-
-
-
 
 
   opcionesCatalogo!: any[];
@@ -54,8 +49,6 @@ export class ElementosComponent implements OnInit{
   tableStateOption: any[] = [{label:'Dispositivos', icon: 'pi pi-mobile', value: 'dispositivos',  styleClass: "optionColorVodafone" }, {label:'Carteles' ,icon: 'pi pi-book', value: 'cartel', styleClass: "optionColorVodafone" }];
   tableSelected:string = 'dispositivos';
 
-
-
   constructor( private elementosService: ElementosService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
   inicializaElementos() {
@@ -63,19 +56,19 @@ export class ElementosComponent implements OnInit{
       this.elementos = elementos;
       this.elementosTodos = elementos;
       console.log("elementos", elementos);
-      this.resetTabla();
+ //     this.resetTabla();
     });
   }
 
-  resetTabla() {
-    this.elementos = this.elementosTodos;
-    if(this.tableSelected == "dispositivos"){
-      this.elementos = this.elementos.filter(elementos => elementos.categorias_elementos.id == 2);
+  // resetTabla() {
+  //   this.elementos = this.elementosTodos;
+  //   if(this.tableSelected == "dispositivos"){
+  //     this.elementos = this.elementos.filter(elementos => elementos.categorias_elementos.id == 2);
       
-    }else{
-      this.elementos = this.elementos.filter(elementos => elementos.categorias_elementos.id == 1);
-    }
-  }
+  //   }else{
+  //     this.elementos = this.elementos.filter(elementos => elementos.categorias_elementos.id == 1);
+  //   }
+  // }
 
  
   AbrirnuevoElemento() {
@@ -110,25 +103,28 @@ export class ElementosComponent implements OnInit{
     this.archivoSeleccionadoChange.emit({ archivo: imagenAProcesar });
     this.cargando_procesamiento = true;
   }
-
-
-  cerrarDialog(event: Event ) {
+ 
+  manejarMostrarDialogo(valor: boolean): void {
     this.mostrarDialogoNuevoElemento = false;
-    this.cargando_procesamiento = true;
+    console.log('Valor recibido: ', valor);
+    // Aquí haces algo con el valor recibido
   }
-
-
+ 
 
   activarDesactivarElementos(elemento: elementos) {
     //this.opcionMostrarCambia
 
     this.elementosService.cambiarActivo(elemento.id, !elemento.activo).subscribe((elemento: elementos) => {
-      this.inicializaElementos();
+     this.inicializaElementos();
       if(!elemento.activo){
         this.messageService.add({ severity: 'success', summary: 'Modificado con exito', detail: 'Elemento descatalogado' });
       }else{
         this.messageService.add({ severity: 'success', summary: 'Modificado con exito', detail: 'Elemento añadido al catalogo' });
       }
+     // this.elementos.find(elementos => elementos.id === this.id_elemento_selected)?.activo = !this.elementos.find(elemento => elemento.id === this.id_elemento_selected)?.activo
+      setInterval(() => {
+        this.cambiarOpcionBusqueda(0);
+      },200)
     })
   }
 
@@ -166,10 +162,13 @@ export class ElementosComponent implements OnInit{
   cambiarOpcionBusqueda($event: any) {
      
     this.elementos = this.elementosTodos;
-    if(this.opcionesCatalogo.find((elemento) => elemento.estado === $event.value.estado)){
+    if(this.opcionesCatalogo.find((opcion) => opcion.estado === $event.value?.estado)){
   //    this.opcionCatalogoSeleccionado.estado = $event.value.nombre; da bugazo
     }else{
-      this.categoriaSeleccionada = $event.value.nombre;
+
+      if(this.categorias_elementos.find((opcion) => opcion.nombre === $event.value?.nombre)){
+        //  this.categoriaSeleccionada = $event.value?.nombre;
+      }
     }
 
     if(this.opcionCatalogoSeleccionado.estado == "Todos"){
@@ -181,11 +180,11 @@ export class ElementosComponent implements OnInit{
       this.elementos = this.elementosTodos.filter(elemento => elemento.activo == false);
     }
 
-    if(this.categoriaSeleccionada  == "Carteles"){ 
+    if(this.categoriaSeleccionada.nombre  == "Carteles"){ 
       this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == "Carteles");
-    }else if(this.categoriaSeleccionada == "Dispositivos"){
+    }else if(this.categoriaSeleccionada.nombre  == "Dispositivos"){
       this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == "Dispositivos");
-    }else if(this.categoriaSeleccionada  == "Otros"){
+    }else if(this.categoriaSeleccionada.nombre  == "Otros"){
       this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == "Otros");
     }
   }
@@ -196,7 +195,7 @@ export class ElementosComponent implements OnInit{
   inicializaCategorias_elementos(){
     this.elementosService.getCategorias_elementos().subscribe((elementos: categorias_elementos[]) => {
       this.categorias_elementos = elementos; 
-      this.opcionesCategoria = elementos.map((elemento) => elemento.nombre);
+      this.categoriaSeleccionada = this.categorias_elementos[0];
     })
   }
 
