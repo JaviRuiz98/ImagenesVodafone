@@ -1,11 +1,11 @@
 <div (mouseover)="open.toggle($event)" (mouseout)="onMouseOut($event)">
-    <p-tag *ngIf="procesado.categoria.toLowerCase() === 'carteles'" 
+    <p-tag *ngIf="procesado.id_categoria === 1" 
         class = "cursor-pointer "
         icon="pi pi-info-circle" 
         value="{{procesado.probabilidades_respuesta_carteles.probabilidad}}"
         [severity]="getSeverityCartel(procesado.probabilidades_respuesta_carteles.probabilidad)" 
     ></p-tag>
-    <p-tag *ngIf="procesado.categoria === 'dispositivos'" 
+    <p-tag *ngIf="procesado.id_categoria === 2" 
         class = "cursor-pointer "
         icon="pi pi-info-circle"
         value="{{procesado.dispositivos_contados}}/{{procesado.huecos_esperados}}"

@@ -170,7 +170,15 @@ export const auditoriaService = {
                             imagenes: true
                         }
                     },
-                    procesados_imagenes: true,                
+                    procesados_imagenes: {
+                        include: {
+                            imagenes: true,
+                            prompts: true,
+                            categorias_elementos: true,
+                            probabilidades_respuesta_carteles: true
+                            
+                        }
+                    },                
                 },
                 orderBy: {
                     id_mueble: 'asc'
