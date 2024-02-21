@@ -124,7 +124,7 @@ export class ElementosComponent implements OnInit{
      // this.elementos.find(elementos => elementos.id === this.id_elemento_selected)?.activo = !this.elementos.find(elemento => elemento.id === this.id_elemento_selected)?.activo
       setInterval(() => {
         this.cambiarOpcionBusqueda(0);
-      },200)
+      },100)
     })
   }
 
