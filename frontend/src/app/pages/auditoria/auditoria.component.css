@@ -61,11 +61,19 @@
 }
 .anchoAltoFotoReferencia {
   display: grid;
-  max-height: 806px;
   width: 100%;
 }
-
-
+/*
+descomentar para que una imagen se vea bien 1 sola imagen
+.imagenSimple{
+  height: 100%;
+  width: 90%;
+  margin: 5%;
+  display: flex;
+  justify-content: center;
+  margin: 5%;
+}
+*/
 .floatintPanel {
   position: fixed;
   right: 50px;
