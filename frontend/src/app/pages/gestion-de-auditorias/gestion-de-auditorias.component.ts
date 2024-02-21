@@ -113,7 +113,9 @@ export class GestionDeAuditoriasComponent implements OnInit {
 
     console.log(id_auditoria);
     const body = {
-      id_auditoria: id_auditoria
+      to: 'raul.perez@tdconsulting.es',
+      subject: 'Informes de auditoria',
+      message: 'Se esta desarrollando el informe para la auditoria: ' + id_auditoria,
     }
 
 
