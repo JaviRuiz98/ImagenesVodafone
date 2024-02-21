@@ -1,14 +1,16 @@
 <div [ngClass]="{'componente-completo': procesados.length > 0, 'componente-solo-selector': procesados.length === 0}">
-    <p-selectButton
-        class="botonNuevoHistorial"
-        [options]="SelectButtonOptions" 
-        [(ngModel)]="valueSelected" 
-        optionLabel="label"
-        optionValue="value"
-        [allowEmpty]=false
-        *ngIf="procesados.length>0 "
-        ngClass="botonSelectorHistorial">
-    </p-selectButton>
+    <div *ngIf="">
+        <p-selectButton
+            class="botonNuevoHistorial"
+            [options]="SelectButtonOptions" 
+            [(ngModel)]="valueSelected" 
+            optionLabel="label"
+            optionValue="value"
+            [allowEmpty]=false
+            *ngIf="procesados.length>0 "
+            ngClass="botonSelectorHistorial">
+        </p-selectButton>
+    </div>
     <div class="anchoAltoSelector" *ngIf="valueSelected==='new'"> 
         <app-selector-imagenes 
             *ngIf="valueSelected==='new'"

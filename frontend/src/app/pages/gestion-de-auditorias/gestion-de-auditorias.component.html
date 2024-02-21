@@ -69,7 +69,7 @@
                     <app-barra-de-barras [datos_barras]="auditoria.datos_barra_progreso"></app-barra-de-barras>
                 </td>
                 <td class="opciones">         
-                    <p-button class ="smallMarginRight" severity="danger" [raised]="true" [text]="true" [rounded]="true" label="Ir auditoría" icon="pi pi-pencil"  (click)="goToAuditoria(auditoria.id)"></p-button>                    
+                    <p-button class ="smallMarginRight" severity="danger" [raised]="true" [text]="true" [rounded]="true" label="Ir auditoría" icon="pi pi-pencil"  (click)="goToAuditoria(auditoria)"></p-button>                    
                 </td>
                 <td>
                     <p-button label="Enviar" icon="pi pi-envelope" severity="danger" [text]="true" [raised]="true" [rounded]="true" (click)="enviarInforme(auditoria)"></p-button>
