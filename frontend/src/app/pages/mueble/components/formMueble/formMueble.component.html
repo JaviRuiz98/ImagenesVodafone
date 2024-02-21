@@ -1,6 +1,7 @@
 <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
 
-  <div class="flex flex-column" *ngIf="!showing_asignar_expositores">
+  
+  <div class="flex flex-column" *ngIf="showingExpositoresIsFalse()">
 
     <div class="flex align-items-center justify-content-center mt-4">
       <p-card [style]="{'width':'130vh'}" header="Nombre*">
@@ -17,143 +18,59 @@
 
 
     <div class="flex align-items-center justify-content-center mt-4">
-      <p-card [style]="{'width':'130vh '}" header="Subir modelo">
+      <p-card [style]="{'width':'130vh'}" header="Subir modelo">
         <div class="flex">
-          <div class="flex-1 m-2">
 
-            <!-- Creando mueble -->
-            <div *ngIf=" mueble_existente == null || mueble_existente.expositores.length == 0" style="height: 42vh" >
-
-              <app-selector-imagenes [cargando_procesado]="true" style="width: 45%; ; overflow: hidden;">
+          <div  class="flex" style="width: 100%">
+            <div class="flex-1 m-2" style="height: 50vh">
+              <app-selector-imagenes [cargando_procesado]="true" style="width: 100%; ; overflow: hidden;">
               </app-selector-imagenes>
             </div>
 
-            <!-- Editando mueble -->
-            <div *ngIf="mueble_existente != null && mueble_existente.expositores.length > 0" class="flex flex-wrap" style="width: 100%">
-              <div *ngFor="let expositor of mueble_existente.expositores">
-                <p-image class="flex m-2"  *ngIf="tieneModelo(expositor.atributos_expositores)" 
+            <div class="flex-1 m-2 flex flex-wrap">
+
+              <div *ngFor="let expositor of mueble_existente.expositores; let i = index">
+                <p-image class="flex m-2" *ngIf="tieneModelo(expositor.atributos_expositores)"
                   [src]="url_imagenes_referencias + getImagenModelo(expositor)" height="150vh"
                   [alt]=" getImagenModelo(expositor)? getImagenModelo(expositor):'No disponible'"
                   [preview]="true"></p-image>
-                <div *ngIf="!tieneModelo(expositor.atributos_expositores)"
-                  class="flex align-items-center justify-content-center">
-                  <app-selector-imagenes [cargando_procesado]="true">
-                  </app-selector-imagenes>
-                </div>
+
                 <div>
                   <p-button [raised]="true" [text]="true" [rounded]="true" severity="danger" label="Elementos"
-                    icon="pi pi-plus-circle" [disabled]="!tieneModelo(expositor.atributos_expositores)"
+                    icon="pi pi-plus-circle" [disabled]="!tieneModelo(expositor.atributos_expositores)" (onClick)="showing_asignar_expositores[i]=true"
                     class="mr-2 mt-2"></p-button>
                 </div>
               </div>
+
             </div>
-
           </div>
 
-          <!-- <p-button severity="danger" [text]="true" [raised]="true" (onClick)="showExpositores(2)" label="Asignar Elemento" ></p-button>
-                <p-button severity="danger" class="ml-2" [text]="true" [raised]="true" (onClick)="createExpositores(2)" label="Crear Elemento" ></p-button> -->
-
-
-          <div class="flex-1 m-2">
-            <p-toolbar>
-
-              <div class="p-toolbar-group-start">
-                <span class="p-input-icon-left" style="margin-left: 20px">
-                  <i class="pi pi-search"></i>
-                  <input pInputText type="text" (input)="filterByNombre(filterNameValue.value)"
-                    formControlName="filterNameValue" placeholder="Filtrar por nombre" />
-                </span>
-
-
-                <!-- <p-dropdown  [options]="opcionesCategoria" (onChange)="cambiarOpcionBusqueda($event)" [(ngModel)]="categoriaSeleccionada" optionLabel="estado" [showClear]="true" placeholder="Estado del catalogo" [style] = "{'margin-left': '20px'}" ></p-dropdown> -->
-                <p-dropdown class="ml-2" [options]="categorias_elementos" formControlName="categoriaSeleccionada"
-                  optionLabel="nombre" [showClear]="true" placeholder="Buscar por categoría"
-                  [style]="{'margin-left': '20px'}"></p-dropdown>
-              </div>
-
-              <div class="p-toolbar-group-end">
-                <p-progressSpinner *ngIf="filtered_elementos.length == 0 || filtered_elementos.length == undefined"
-                  fill="var(--surface-ground)" [style]="{'width': '5%', 'height': '5%'}" animationDuration=".6s"
-                  class="fadein animation-duration-1000 "></p-progressSpinner>
-              </div>
-            </p-toolbar>
-
-            <p-scrollPanel [style]="{ width: '100%', height: '37vh' }">
-              <div *ngFor="let elemento of filtered_elementos" class="p-2 shadow-2 border-round mb-3">
-                <div class="flex align-items-center gap-2" pDraggable="elemento"
-                  (onDragStart)="onDragStart($event, elemento)" (onDragEnd)="onDragEnd($event)">
-                  <img class="border-round" [src]="url_imagenes_referencias + elemento.imagenes.url"
-                    alt="{{elemento.imagenes.url}}" style="width: 64px; height: 64px; object-fit: cover;">
-                  <div class="flex flex-column flex-1 gap-1">
-                    <span class="font-bold">{{ elemento.nombre }}</span>
-                    <div class="flex align-items-center gap-1">
-                      <i class="pi pi-tag text-sm"></i>
-                      <span>{{ elemento.categorias_elementos.nombre }}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </p-scrollPanel>
-
-          </div>
         </div>
 
       </p-card>
 
     </div>
 
-    <!-- <div class="flex align-items-center justify-content-center mt-2">
-        <p-card [style]="{'width':'100vh'}" header="Carteles">
-          <div class="grid">
-            <div class="col-12">
-          
-              <div class="p-toolbar-group-start">
-                <p-button severity="danger" [text]="true" [raised]="true" (onClick)="showExpositores(1)" label="asignar expositor" ></p-button>
-                <p-button severity="danger" class="ml-2" [text]="true" [raised]="true" (onClick)="createExpositores(1)" label="crear expositor" ></p-button>
-
-              </div>
-              <div class="p-toolbar-group-end">
-                
-              </div>
-    
-          </div>
-         </div>
-
-      </p-card> 
-          
-      </div> -->
-
-
-
 
   </div>
 
-  <!-- <div *ngIf="!showing_asignar_expositores && showing_crear_expositores ">
-    <p-button severity="danger" [text]="true" [raised]="true" (onClick)="showing_crear_expositores = false" label="volver" ></p-button>
-   < <app-nuevo-elemento [categoriaPredefinida]="new_expositor_for_categoria " ></app-nuevo-elemento>
+ 
+
+  <div class="flex align-items-center justify-content-center mt-2" *ngIf="showingExpositoresIsFalse()">
+
+    <p-button type="submit" severity="danger" [icon]="'pi pi-check'" [label]="'Guardar'" (onClick)="onSubmit()"> </p-button>
+
   </div>
 
-  <div *ngIf="showing_asignar_expositores && !showing_crear_expositores ">
-    <div *ngIf ="all_expositores.length==0">
-      <p-progressSpinner></p-progressSpinner>
+
+  <div *ngIf="!showingExpositoresIsFalse()">
+
+      <p-button label="volver" icon="pi pi-arrow-left" class="m-2" severity="danger" (click)="showingExpositoresIsIndeedFalse()"></p-button>
+
+      <app-asignarElementoAMueble [expositor]="getExpositorTrue()"></app-asignarElementoAMueble>
     </div>
-    <div *ngIf ="all_expositores.length > 0 " >
-      <app-asignarExpositor [all_expositores]="all_expositores" [already_selected_expositores]="expositores.value" (expositores_selected)="asignar_expositores($event)"></app-asignarExpositor>
-     </div>
-  </div>
 
-  <div *ngIf="!showing_asignar_expositores && showing_crear_expositores ">
 
   
-  </div> -->
-
-  <div class="flex align-items-center justify-content-center mt-2" *ngIf="!showing_asignar_expositores">
-
-    <p-button type="submit" severity="danger" [icon]="'pi pi-check'" [label]="'Guardar'" (onClick)="onSubmit()">
-    </p-button>
-
-  </div>
-
 
 </form>

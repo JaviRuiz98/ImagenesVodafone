@@ -21,32 +21,29 @@ import { atributos_expositores } from 'src/app/interfaces/atributos_expositores'
 export class FormMuebleComponent implements OnInit {
 
 
+  url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
+
 
   constructor( public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private elementosService: ElementosService, private muebleService: MueblesService) { }
 
-  showing_asignar_expositores: boolean = false;
-  all_elementos: elementos[] = [];
-  filtered_elementos: elementos[] = [];
-  dragged_elemento?: elementos;
+  showing_asignar_expositores: boolean[] = [];
 
-  
-  opcionesCategoria: string[] = [];
-  categorias_elementos: categorias_elementos[];
 
 
   objetivo_form: 'crear' | 'editar' = 'crear';
-  url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
   formulario:FormGroup = this.fb.group({
     nombre: ['', Validators.required],
     expositores: [[],],
-    categoriaSeleccionada: new FormControl<categorias_elementos | null>(null),
-    filterNameValue: new FormControl<string | null>(null),
-
+   
   })
 
 
-  mueble_existente?: muebles;
+  mueble_existente: muebles = {
+    id: 0,
+    nombre: '',
+    expositores: []
+  };
   
 
   get nombre() {
@@ -68,7 +65,16 @@ export class FormMuebleComponent implements OnInit {
       this.objetivo_form='editar';
 
       const mueble = this.dialogConfig.data.mueble;
+      const showing_asignar_expositores_index: number | undefined = this.dialogConfig.data.showing_asignar_expositores_index;
+
       this.mueble_existente = mueble;
+
+      const expositoresCount = mueble.expositores.length;
+      this.showing_asignar_expositores = new Array(expositoresCount).fill(false);
+      if (showing_asignar_expositores_index !== undefined) {
+        
+        this.showing_asignar_expositores[showing_asignar_expositores_index] = true;
+      }
 
       this.formulario.patchValue({
         nombre: mueble?.nombre,
@@ -80,35 +86,7 @@ export class FormMuebleComponent implements OnInit {
       this.objetivo_form='crear';
     }
 
-      
-      this.inicializarElementos();
-
-      this.inicializaCategorias_elementos();
-
-  }
-
-  inicializarElementos(){
-    this.elementosService.getElementos().subscribe( (elementos:elementos[]) => {
-      this.all_elementos = elementos.filter((elemento) => elemento.categorias_elementos.id !== 3);
-      this.filtered_elementos=this.all_elementos;
-    });
-  }
-
-  inicializaCategorias_elementos(){
-    this.elementosService.getCategorias_elementos().subscribe((categorias: categorias_elementos[]) => {
-      this.categorias_elementos = categorias; 
-      this.opcionesCategoria = categorias.map((elemento) => elemento.nombre);
-    })
-  }
-
-  filterByNombre(value: string) {
-    if (value === "" || value === null) {
-      this.filtered_elementos = this.all_elementos;
-    } else {
-       this.filtered_elementos = this.all_elementos.filter(elemento => 
-        elemento.nombre && elemento.nombre.toLowerCase().includes(value.toLowerCase())
-      );
-    }
+     
   }
 
   getImagenModelo(expositor: expositores): string | undefined {
@@ -118,7 +96,6 @@ export class FormMuebleComponent implements OnInit {
     if (atributoModelo && atributoModelo.elemento) {
       return atributoModelo.elemento.imagenes.url;
     } else {
-      console.log("Hola");
       return undefined;
     }
 
@@ -127,16 +104,25 @@ export class FormMuebleComponent implements OnInit {
     const atributoModelo: atributos_expositores | undefined = atributos_expositores.find((atributo) => atributo.id_categoria === 3);
     return atributoModelo !== undefined;
   }
+
+  showingExpositoresIsFalse(): boolean {
+    return !this.showing_asignar_expositores.includes(true) || this.showing_asignar_expositores.length === 0;
+  }
+
+  getExpositorTrue(): expositores | undefined {
+    const index = this.showing_asignar_expositores.indexOf(true);
+    if (index !== -1) {
+      return this.mueble_existente.expositores[index];
+    }
+    return undefined;
+  }
+  showingExpositoresIsIndeedFalse() {
+    const expositoresCount = this.mueble_existente.expositores.length;
+    this.showing_asignar_expositores = new Array(expositoresCount).fill(false);
+  }
  
-  
+ 
 
-  onDragStart( $event: DragEvent, elemento: elementos) {
-    this.dragged_elemento = elemento;
-  }
-
-  onDragEnd($event: DragEvent) {
-    console.log("terminar");
-  }
 
   onSubmit() {
     throw new Error('Method not implemented.');

@@ -33,6 +33,8 @@ import { AsignarExpositorComponent } from './components/asignarExpositor/asignar
 import { DragDropModule } from 'primeng/dragdrop';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { DividerModule } from 'primeng/divider';
+import { AsignarElementoAMuebleComponent } from './components/asignarElementoAMueble/asignarElementoAMueble.component';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -61,7 +63,7 @@ import { DividerModule } from 'primeng/divider';
     
     
   ],
-  declarations: [MuebleComponent, FormMuebleComponent, HistorialExpositoresComponent, AsignarExpositorComponent], 
+  declarations: [MuebleComponent, FormMuebleComponent, HistorialExpositoresComponent, AsignarElementoAMuebleComponent,AsignarExpositorComponent], 
   providers: [MessageService, DialogService],
 })
 export class MuebleModule { }
