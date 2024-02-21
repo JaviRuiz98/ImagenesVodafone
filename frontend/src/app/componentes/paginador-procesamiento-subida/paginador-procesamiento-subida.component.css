@@ -4,6 +4,7 @@
     display: grid;
     align-content: center;
     grid-template-rows: 15% 85%;
+    max-height: 100%;
 }
 
 .componente-solo-selector {

@@ -115,7 +115,7 @@ export class VisualizacionProcesadosComponent {
         this.likeButton = "pi pi-thumbs-up";
         this.dislikeButton = "pi pi-thumbs-down";
     }
-    this.procesamientoService.updateFeedbackProcesado(procesado.id_procesado_imagen, procesado.feedback_humano).subscribe();
+    this.procesamientoService.updateFeedbackProcesado(procesado.id, procesado.feedback_humano).subscribe();
   }
 
   inicializa_likeButon(procesado: procesados_imagenes){
