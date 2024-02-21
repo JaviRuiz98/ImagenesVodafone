@@ -7,6 +7,10 @@ import { tienda } from 'src/app/interfaces/tienda';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
 import { DatePipe } from '@angular/common';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
+import { jsPDF } from 'jspdf';
+
+
 
 
 @Component({
@@ -33,7 +37,8 @@ export class GestionDeAuditoriasComponent implements OnInit {
     private publicMethodsService: PublicMethodsService,
     private datePipe: DatePipe,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private localStorageService: LocalStorageService
   ) { }
  
   ngOnInit(): void {
@@ -53,23 +58,23 @@ export class GestionDeAuditoriasComponent implements OnInit {
   }
 
   async nuevaAuditoria() {
-    this.auditoriaService.nuevaAuditoria(this.tiendaSeleccionada?.id_tienda || 0).subscribe(
+    this.auditoriaService.nuevaAuditoria(this.tiendaSeleccionada? this.tiendaSeleccionada.id : 0).subscribe(
       (data)=>{
         this.inicializaAuditorias();
-        this.goToAuditoria(data.id_auditoria);
+        this.goToAuditoria(data.id);
       }
     );
   } 
 
   inicializaAuditorias() {
-    this.auditoriaService.getAuditorias(this.tiendaSeleccionada?.id_tienda || 0).subscribe((data)=>{
+    this.auditoriaService.getAuditorias(this.tiendaSeleccionada!=undefined? this.tiendaSeleccionada.id : 0).subscribe((data)=>{
       this.auditorias = data;
       this.cargando_auditorias = false;
     })
   }
 
   goToAuditoria(id_auditoria: number){
-    this.auditoriaService.id_auditoria_seleccionada = id_auditoria;
+    this.localStorageService.setItem('id_auditoria_seleccionada', id_auditoria);
     this.router.navigate(['/auditoria']);
   }
 
@@ -104,8 +109,26 @@ export class GestionDeAuditoriasComponent implements OnInit {
     });
   }
   enviarInforme(id_auditoria: number) {
-    this.auditoriaService.enviarInforme(id_auditoria).subscribe((response)=>{
-        
-    });
+  }
+
+  descargarInforme(auditoria: auditoria){
+    console.log(auditoria);
+    //const informe = this.generarPDF();
+  }
+  informe(){
+    const informe = this.generarPDF();
+    
+    // const pdfBlob = new Blob([informe.output('blob')], { type: 'application/pdf' });
+    // const formData = new FormData();
+    // formData.append('pdfFile', pdfBlob, 'generated.pdf');
+    // this.auditoriaService.informe(formData).subscribe((response: any) => {
+    // })
+  }
+  generarPDF(){
+    let informe = new jsPDF();
+    informe.setFont("helvetica","bold"); 
+    informe.text('Resumen de la auditoria ', 20, 20);
+    informe.save()
+    return informe;
   }
 }

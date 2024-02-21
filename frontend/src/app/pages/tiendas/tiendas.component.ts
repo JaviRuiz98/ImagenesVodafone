@@ -22,7 +22,7 @@ export class TiendasComponent implements OnInit{
   tiendasMostrar: tienda[] = [];
   nuevaTienda: tienda = {
     sfid: '',
-    id_tienda: 0,
+    id: 0,
     pertenencia_mueble_tienda: [],
     activa: true
   };
@@ -124,13 +124,15 @@ export class TiendasComponent implements OnInit{
     }
   }
   editarTienda(tienda: tienda){
+    const listaMueblesDisponibles = this.eliminarMueblesSeleccionados(this.listaTodosMuebles, this.listaMueblesNuevaTienda)
     this.nuevaTienda = tienda;
     this.crearEditarTienda = 'Editar tienda';
     this.cabeceraNuevaEditarTienda = 'Editar tienda';
     this.sfidInput = tienda.sfid;
     this.comunidadInput = 'prueba';
-    this.MueblesService.getMueblesTiendaByIdTienda(tienda.id_tienda).subscribe((response: muebles[]) => {
-      this.listaMueblesNuevaTienda = response;
+    this.MueblesService.getMueblesTiendaByIdTienda(tienda.id).subscribe((response: muebles[]) => {
+      this.listaMueblesNuevaTienda = this.ordenarListaAlfabeticamente(response, 'nombre');
+      this.listaMueblesMostrar = this.eliminarMueblesSeleccionados(this.listaTodosMuebles, response);
     })
     this.activeIndex = 1;
     this.verFormularioNuevaTienda = true;
@@ -146,6 +148,7 @@ export class TiendasComponent implements OnInit{
   }
 
   confirmarCambio(tienda: tienda) {
+    console.log('entro')
     this.ConfirmationService.confirm({
       message: this.mensajeDialog,
       header: this.mensajeActivarDesactivar,
@@ -154,7 +157,7 @@ export class TiendasComponent implements OnInit{
       rejectLabel: 'No',
       accept: () => {
         this.TiendasService.activarDesactivarTienda(tienda).subscribe((response: tienda) => {
-          const index = this.tiendas.findIndex(t => t.id_tienda === tienda.id_tienda && t.sfid === tienda.sfid);
+          const index = this.tiendas.findIndex(t => t.id === tienda.id && t.sfid === tienda.sfid);
           if (index !== -1) {
             this.tiendas[index].activa = response.activa;
           }
@@ -175,5 +178,10 @@ export class TiendasComponent implements OnInit{
   ordenarListaAlfabeticamente(lista: any[], campo: string) {
     const listaOrdenada = lista.sort((a, b) => a[campo].localeCompare(b[campo]));
     return listaOrdenada;
+  }
+  eliminarMueblesSeleccionados(listaCompleta: muebles[], listaMueblesSeleccionados: muebles[]){
+    const idsLista2 = new Set(listaMueblesSeleccionados.map(mueble => mueble.id));
+    const listaFiltrada = listaCompleta.filter((mueble) => !idsLista2.has(mueble.id));
+    return listaFiltrada;
   }
 }

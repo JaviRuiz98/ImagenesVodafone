@@ -1,0 +1,79 @@
+<p-toast>  </p-toast>
+<p-panel header="Elementos" [style]="{width: '70%', margin: '0 auto'}">
+    <p-toolbar styleClass="mb-4 gap-2">
+        <ng-template pTemplate="left">
+            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="AbrirnuevoElemento()" ></button>
+            <!-- <button pButton pRipple label="Desactivar" icon="pi pi-eye " class="p-button-danger" [style]="{'margin-left': '20px'}" (click)="activarDesactivarelementos()" [disabled]="!elementosSeleccionados|| !elementosSeleccionados.length"></button> -->
+            <span class="p-input-icon-left" style="margin-left: 20px">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" [(ngModel)]="imputSearch" (input)="filterByNombre($event)"    placeholder="Filtrar por nombre" /> 
+            </span>
+
+ 
+            <p-dropdown [options]="categorias_elementos" (onChange)="cambiarOpcionBusqueda($event)" [(ngModel)]="categoriaSeleccionada"  optionLabel="nombre" [showClear]="true" placeholder="Buscar por clase" [style] = "{'margin-left': '20px'}"></p-dropdown>
+            <p-dropdown [options]="opcionesCatalogo" (onChange)="cambiarOpcionBusqueda($event)" [(ngModel)]="opcionCatalogoSeleccionado" optionLabel="estado" [showClear]="true" placeholder="Estado del catalogo" [style] = "{'margin-left': '20px'}" ></p-dropdown>
+            
+        </ng-template>
+    </p-toolbar>
+    <p-table
+        #dt
+        [value]="elementos"  
+        [rows]="20"
+        [paginator]="true"
+        [scrollable]="true"
+        [scrollHeight]="'calc(100vh - 204px)'"
+        [(selection)]="elementosSeleccionados"
+        [rowHover]="true"
+        dataKey="id_elemento"       
+        [style] = "{'width':'100%', 'margin-top': '20px'}"  
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [showCurrentPageReport]="true"
+        [globalFilterFields]="['Nombre', 'ID']"
+    >
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>imagen</th>
+
+                <th *ngIf="categoriaSeleccionada.nombre == 'Carteles'" >Region</th>
+
+                <th></th> 
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-elemento>
+            <!-- *ngIf=" (this.opcionCatalogoSeleccionado.estado == 'Todos') || (this.opcionCatalogoSeleccionado.estado == 'Catalogados' && elemento.activo==1) || (this.opcionCatalogoSeleccionado.estado == 'Descatalogados' && elemento.activo==0) -->
+            <tr >
+
+                <td>{{ elemento.id }}</td>
+
+                <td>{{ elemento.nombre }}</td>
+                <td>
+                    <p-image [src]="url_imagenes_referencias + elemento.imagenes.url" [alt]="elemento.imagenes.url" [width]="'auto'" [height]="'100px'" class="shadow-4" [preview]="true"></p-image>
+                </td>
+                <td *ngIf="categoriaSeleccionada.nombre == 'Carteles'">{{ elemento.regiones.nombre }}</td>
+                <td>
+                    <p-button *ngIf="elemento.activo == 1" (mouseover)="descatalogar.toggle($event)" (click)="activarDesactivarElementos(elemento)" icon="pi pi-eye-slash" [rounded]="true" [text]="true" severity="danger "></p-button>
+                    <p-button *ngIf="elemento.activo == 0" (mouseover)="catalogar.toggle($event)" (click)="activarDesactivarElementos(elemento)" icon="pi pi-eye" [rounded]="true" [text]="true" severity="info "></p-button>
+                    <p-overlayPanel #descatalogar>
+                        Descatalogar
+                    </p-overlayPanel>
+                    <p-overlayPanel #catalogar>
+                        Añadir al catalogo
+                    </p-overlayPanel>
+                </td>
+            </tr>
+        </ng-template> 
+
+    </p-table>
+     
+    <p-dialog [(visible)]="mostrarDialogoNuevoElemento" [style]="{height: '45%', width: '40%'  }" header="Crear un nuevo elemento" [modal]="true" [closable]="true" [draggable]="false"[resizable]="false" styleClass="p-fluid"
+    [closeOnEscape] = "false" (onHide)="onDialogHidden()"> 
+        <app-nuevo-elemento *ngIf="mostrarDialogoNuevoElemento == true"  (mostrarDialogoNuevoElemento)="manejarMostrarDialogo($event)" ></app-nuevo-elemento>        
+    </p-dialog>
+</p-panel>

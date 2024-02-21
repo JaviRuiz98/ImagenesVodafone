@@ -7,13 +7,13 @@ import { regiones } from 'src/app/interfaces/regiones';
 @Injectable({
   providedIn: 'root'
 })
-export class ExpositoresService {
+export class ElementosService {
 
   private API_URI = 'http://localhost:3000';
   
   constructor(private http: HttpClient) { }
   
-  getExpositores(categoria?: number): Observable<elementos[]> {
+  getElementos(categoria?: number): Observable<elementos[]> {
     let url = `${this.API_URI}/elementos`;
     if (categoria) {
       url+=`?categoria=${categoria}`
@@ -22,7 +22,7 @@ export class ExpositoresService {
   }
 
   
-  guardarExpositor(nombre: string, activo: boolean, region: regiones, imageFile: File, categoria: number, ): Observable<elementos> {
+  guardarElemento(nombre: string,  region: regiones, imageFile: File, categoria: number ): Observable<elementos> {
     const formData = new FormData();
 
     formData.append('imagenesReferencia', imageFile);
@@ -31,15 +31,15 @@ export class ExpositoresService {
     formData.append('id_region', region.id.toString());
     formData.append('categoria', categoria.toString());
 
-    return this.http.post<elementos>(`${this.API_URI}/expositor`, formData);
+    return this.http.post<elementos>(`${this.API_URI}/elemento`, formData);
   }
 
-  cambiarActivo(id_expositor: number, activo: boolean){
+  cambiarActivo(id_elemento: number, activo: boolean){
     const body = {
-      id_expositor,
+      id_elemento,
       activo
     };
-    return this.http.post<elementos>(`${this.API_URI}/expositorActivaDesactiva`, body);
+    return this.http.post<elementos>(`${this.API_URI}/elementoActivaDesactiva`, body);
   }
 
 
@@ -47,7 +47,10 @@ export class ExpositoresService {
     return this.http.get<regiones[]>(`${this.API_URI}/regiones`);
   }
 
-
+  getCategorias_elementos(){
+    return this.http.get<regiones[]>(`${this.API_URI}/categorias_elementos`);
+  }
+  
   
 
 }

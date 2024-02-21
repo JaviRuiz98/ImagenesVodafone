@@ -4,17 +4,16 @@ import { auditoria_extended } from '../interfaces/auditoriaExtended';
 import { auditorias } from '@prisma/client';
 import { tiendaService } from '../services/tiendasServices';
 import { pea_extended } from '../interfaces/peaExtended';
+import { muebleConElementos} from '../interfaces/muebleConElementos';
+import { per_ele_aud_extended } from '../interfaces/perEleAudExtended';
 
 export async function getAuditorias(req: Request, res: Response) {
     try {
         const id_tienda = parseInt(req.params.id_tienda as string);
 
-        let auditorias: auditorias[]|null;
-        if(id_tienda == 0) {
-            auditorias = await auditoriaService.getAllAuditorias();
-        } else {
-            auditorias = await auditoriaService.getAuditorias(id_tienda);
-        }
+        
+        const auditorias = await auditoriaService.getAuditorias(id_tienda);
+        
         
         let auditoriasExtended: auditoria_extended[] = [];
 
@@ -71,6 +70,42 @@ async function getAuditoriaExtendedDadoIdAuditoria(auditoria: auditorias): Promi
         console.error("Error al realizar las llamadas concurrentes: ", error);
         throw error;
     }      
+}
+
+
+export async function getElementosProcesadosAuditoria(req: Request, res: Response) {
+    try {
+        const id_auditoria = parseInt(req.params.id_auditoria);
+
+        const per_ele_aud_brutos: any[] = await auditoriaService.getPertenenciasElementosAuditoria(id_auditoria);
+        
+        const per_ele_aud_netos = agruparElementosMueblesAuditorias(per_ele_aud_brutos);
+        res.status(200).json(per_ele_aud_netos);
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    } 
+
+}
+
+function agruparElementosMueblesAuditorias(per_ele_aud_brutos: per_ele_aud_extended[]) {
+
+    const resultado: muebleConElementos[] = per_ele_aud_brutos.reduce((acc: muebleConElementos[], item: per_ele_aud_extended) => {
+        let mueble = acc.find((m: muebleConElementos) => m.id === item.muebles.id);
+        if (!mueble) {
+            mueble = {
+                ...item.muebles,
+                elementos: []
+            };
+            acc.push(mueble);
+        }
+        mueble.elementos.push({
+            ...item.elementos,
+            procesados_imagenes: item.procesados_imagenes
+        });
+        return acc;
+    }, []);
+
+    return resultado;
 }
 
 export async function getBarraProgresoAuditoria(req: Request, res: Response) {

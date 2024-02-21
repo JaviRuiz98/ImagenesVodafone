@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { tienda } from '../../interfaces/tienda';  
-import { elementos } from '../../interfaces/elementos';
 import { muebles } from 'src/app/interfaces/muebles';
-
 
 @Injectable({
   providedIn: 'root'
@@ -29,12 +27,10 @@ export class TiendasService {
   }
 
   editarTienda(tienda: tienda, listaNuevosMuebles: muebles[]): Observable<boolean> {
-    return this.http.post<boolean>(`${this.API_URI}/tiendas/`+tienda.id_tienda, listaNuevosMuebles);
+    return this.http.post<boolean>(`${this.API_URI}/tiendas/` + tienda.id, listaNuevosMuebles);
   }
 
   activarDesactivarTienda(tienda: tienda): Observable<tienda> {
     return this.http.put<tienda>(`${this.API_URI}/tiendas/`, tienda);
   }
-
-  
 }

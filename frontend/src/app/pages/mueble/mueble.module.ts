@@ -17,6 +17,7 @@ import { PanelModule } from 'primeng/panel';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
+import { SelectorImagenesComponent } from 'src/app/componentes/selector-imagenes/selector-imagenes.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 import { FormMuebleComponent } from './components/formMueble/formMueble.component';
@@ -29,7 +30,6 @@ import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { AsignarExpositorComponent } from './components/asignarExpositor/asignarExpositor.component';
-import { NuevoExpositorComponent } from 'src/app/componentes/nuevo-expositor/nuevo-expositor.component';
 
 
 @NgModule({
@@ -53,7 +53,7 @@ import { NuevoExpositorComponent } from 'src/app/componentes/nuevo-expositor/nue
     FormsModule,
 
     IrArribaComponent,
-    NuevoExpositorComponent
+    SelectorImagenesComponent
     
   ],
   declarations: [MuebleComponent, FormMuebleComponent, HistorialExpositoresComponent, AsignarExpositorComponent], 

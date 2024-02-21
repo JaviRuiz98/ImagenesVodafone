@@ -1,34 +1,16 @@
 import db  from "../config/database";
-import { auditorias, elementos } from '@prisma/client';
-import { ExpositorFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
+import { auditorias, elementos, muebles } from '@prisma/client';
 import { mobiliarioService } from "./mobiliarioService";
 
 export const auditoriaService = {
 
-    async getAllAuditorias(): Promise<auditorias[]| null> {
-        try{
-            return db.auditorias.findMany({
-                include: {
-                    estados_auditoria: true,
-                    tiendas: true
-                }, orderBy: {
-                    id: 'desc'
-                }
-            })
-        }catch (error) {
-            console.error('No se pudo obtener el auditoria:', error);
-            throw error;
-        }finally  {
-            await db.$disconnect();
-        }
-    },
-
     async getAuditorias(id_tienda: number): Promise<auditorias[]| null> {
         try{
+
+            const whereClause = id_tienda != 0? { id_tienda: id_tienda } : { };
             return db.auditorias.findMany({
-                where: {
-                    id_tienda: id_tienda,
-                }, include: {
+                where: whereClause, 
+                include: {
                     estados_auditoria: true,
                     tiendas: true
                 }, orderBy: {
@@ -62,11 +44,11 @@ export const auditoriaService = {
         }
     },
 
-    async createPertenenciaExpositorAuditoria(id_auditoria: number, expositor: ExpositorFrontInterfaz, elemento: elementos) {
+    async createPertenenciaExpositorAuditoria(id_auditoria: number, mueble: muebles, elemento: elementos) {
         await db.pertenencia_elementos_auditoria.create({
             data: {
                 id_auditoria: id_auditoria,
-                id_expositor: expositor.id,
+                id_mueble: mueble.id,
                 id_elemento: elemento.id
             }
         });
@@ -105,33 +87,20 @@ export const auditoriaService = {
             })
 
             // Almaceno todos los expositores que posee la auditoria en la tabla de auditoria_expositores
-            const expositores: any[] = await mobiliarioService.getExpositoresAndElementosByIdTienda(id_tienda);
+            const muebles: any[] = await mobiliarioService.getMueblesAndElementosByIdTienda(id_tienda);
             const promises = [];
 
-            for (const expositor of expositores) {
-                for (const atributos_expositores of expositor.atributos_expositores) {
-                    for (const elemento of atributos_expositores.pertenencia_elementos_atributos) {
-                        
-                        promises.push(auditoriaService.createPertenenciaExpositorAuditoria(auditoria.id, expositor, elemento));
+            for (const mueble of muebles) {
+                for(const expositor of mueble.expositores) {
+                    for (const atributos_expositores of expositor.atributos_expositores) {
+                        for (const elemento of atributos_expositores.pertenencia_elementos_atributos) {
+                            
+                            promises.push(auditoriaService.createPertenenciaExpositorAuditoria(auditoria.id, mueble, elemento));
+                        }
                     }
                 }
+                
             }
-            /*
-            const expositores: ({
-                id: number;
-                atributos_expositores: ({
-                    pertenencia_elementos_atributos: ({
-                        elementos: {
-                            id: number;
-                        };
-                    } & {
-                        id: number;
-                        id_atributos_mueble: number;
-                        id_elementos: number;
-                        fecha: Date;
-                    })[];
-                } 
-                */
 
             await Promise.all(promises);
 
@@ -166,7 +135,7 @@ export const auditoriaService = {
         try {
             return db.pertenencia_elementos_auditoria.findMany({
                 where: {
-                    id: id_auditoria
+                    id_auditoria: id_auditoria
                 },
                 include: {
                     procesados_imagenes: {
@@ -176,6 +145,9 @@ export const auditoriaService = {
                         }
                     }, 
                     elementos: true
+                },
+                orderBy: {
+                    id_mueble: 'asc'
                 }
             })
         } catch (error) {
@@ -186,11 +158,37 @@ export const auditoriaService = {
         }
     },
 
-    getNumExpositoresByAuditoria(id_auditoria: number) {
+    async getPertenenciasElementosAuditoria(id_auditoria: number) {
+        try {
+            return db.pertenencia_elementos_auditoria.findMany({
+                where: {
+                    id_auditoria: id_auditoria
+                }, include: {
+                    muebles: true,
+                    elementos: {
+                        include: {
+                            imagenes: true
+                        }
+                    },
+                    procesados_imagenes: true,                
+                },
+                orderBy: {
+                    id_mueble: 'asc'
+                }
+            })
+        } catch (error) {
+            console.error('No se pudo obtener la barra de progreso:', error);
+            throw error;
+        } finally {
+            db.$disconnect();
+        }
+    },
+
+    getNumExpositoresByAuditoria(id_auditoria: number): Promise<number> {
         try {
             return db.pertenencia_elementos_auditoria.count({
                 where: {
-                    id: id_auditoria
+                    id_auditoria: id_auditoria
                 }
             })
         } catch (error) {
@@ -201,11 +199,11 @@ export const auditoriaService = {
         }
     },
     
-    getNumExpositoresProcesadosByAuditoria(id_auditoria: number) {
+    getNumExpositoresProcesadosByAuditoria(id_auditoria: number): Promise<number> {
         try {
             return db.pertenencia_elementos_auditoria.count({
                 where: {
-                    id: id_auditoria,
+                    id_auditoria: id_auditoria,
                     procesados_imagenes: {
                         some: {  }
                     }

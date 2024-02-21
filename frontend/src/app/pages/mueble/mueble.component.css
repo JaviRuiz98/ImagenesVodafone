@@ -24,16 +24,17 @@
 }
 
 
-.elementos-container {
+.expositores-container {
     display: flex;
     flex-direction: row;
+    justify-content: center;
 }
 
 /* h2{
     text-align: center;
 } */
 
-.expositor-item {
+.expositores-item {
     margin-right: 2%; 
 }
 /* 

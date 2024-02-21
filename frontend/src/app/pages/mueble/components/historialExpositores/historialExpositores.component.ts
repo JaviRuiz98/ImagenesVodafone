@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { ExpositoresService } from 'src/app/servicios/expositores/expositores.service';
+import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -19,7 +19,7 @@ export class HistorialExpositoresComponent implements OnInit {
 
 
 
-  constructor(public dialogConfig : DynamicDialogConfig, private expositorService: ExpositoresService,  private datePipe: DatePipe) { }
+  constructor(public dialogConfig : DynamicDialogConfig, private elementosService: ElementosService,  private datePipe: DatePipe) { }
 
   ngOnInit() {
     // if (this.dialogConfig.data) {

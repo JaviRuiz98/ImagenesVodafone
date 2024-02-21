@@ -1,7 +1,7 @@
 import { elementos,  muebles } from "@prisma/client";
 import db  from "../config/database";
 import { getDestination } from "../config/multer";
-import { imagenes, regiones, pertenencia_elementos_auditoria } from "@prisma/client";
+import { imagenes, regiones, pertenencia_elementos_auditoria, categorias_elementos } from "@prisma/client";
 
 
 export const elementosService = {
@@ -11,6 +11,12 @@ export const elementosService = {
             return db.elementos.findUnique({
                 where: {
                   id: id_elemento
+                },
+                include: {
+                  imagenes: true,
+                  regiones: true,
+                  categorias_elementos: true,
+
                 }
             })
         }
@@ -88,7 +94,8 @@ export const elementosService = {
             where:whereClause,
             include: {
               regiones: true,
-              imagenes: true
+              imagenes: true,
+              categorias_elementos: true
             }
           });
         } catch (error) {
@@ -150,6 +157,14 @@ export const elementosService = {
           throw error;
         }
       },
+      async getCategorias(): Promise<categorias_elementos[]>{
+        try{
+          return await db.categorias_elementos.findMany();
+        }catch(error){
+          console.error(`Error al intentar obtener las categorias:`, error);
+          throw error;
+        }
+      }
      
 
 }

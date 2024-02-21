@@ -7,12 +7,16 @@ import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { FormMuebleComponent } from './components/formMueble/formMueble.component';
 import { HistorialExpositoresComponent } from './components/historialExpositores/historialExpositores.component';
 import { PrimeNGConfig } from 'primeng/api';
+import { expositores } from 'src/app/interfaces/expositores';
+import { elementos } from 'src/app/interfaces/elementos';
+import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
 @Component({
   selector: 'app-mueble',
   templateUrl: './mueble.component.html',
   styleUrls: ['./mueble.component.css']
 })
 export class MuebleComponent implements OnInit {
+
 
 
   muebles: muebles[] = [];
@@ -134,6 +138,24 @@ export class MuebleComponent implements OnInit {
       this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
   });
   }
+
+  getImagenModelo(expositor: expositores): string | undefined {
+    const atributoModelo: atributos_expositores | undefined = expositor.atributos_expositores.find((atributo) => atributo.id_categoria === 3);
+
+    
+    if (atributoModelo && atributoModelo.elemento) {
+      return atributoModelo.elemento.imagenes.url;
+    } else {
+      console.log("Hola");
+      return undefined;
+    }
+
+  }
+  tieneModelo(atributos_expositores: atributos_expositores[]): boolean {
+    const atributoModelo: atributos_expositores | undefined = atributos_expositores.find((atributo) => atributo.id_categoria === 3);
+    return atributoModelo !== undefined;
+  }
+ 
 
 
 
