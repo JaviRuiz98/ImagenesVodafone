@@ -49,7 +49,6 @@
   min-width: 350px;
   height: 494px;
   background-color: rgba(210, 209, 209, 0.9);
-  overflow: hidden;
 }
 
 .panelDerecha{
@@ -61,24 +60,12 @@
   background-color: rgba(232, 232, 232, 0.9);
 }
 .anchoAltoFotoReferencia {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-  height: 100%;
+  display: grid;
+  max-height: 806px;
   width: 100%;
-  max-width: 806px;
 }
 
-.imagen {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 800px;
-  max-height: 490px;
-  width: 100%;
-  height: auto;
-}
+
 .floatintPanel {
   position: fixed;
   right: 50px;
