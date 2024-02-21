@@ -61,10 +61,12 @@ export class PaginadorProcesamientoSubidaComponent {
     feedbackButtonOptions: any[] = [{label:'Like', icon: 'pi pi-thumbs-up', value: 'like',  styleClass: "optionColorVodafone" }, {label:'Dislike' ,icon: 'pi pi-thumbs-down', value: 'dislike', styleClass: "optionColorVodafone" }];
 
     constructor(private publicMethodsService: PublicMethodsService, private confirmationService: ConfirmationService, private messageService: MessageService, private procesamientoService: ProcesamientoService) { }
-
+ 
     recibirFile(event: {archivo:File}) {
         const imagenAProcesar = event.archivo;
-        this.archivoSeleccionadoChange.emit({ archivo: imagenAProcesar });
+        this.archivoSeleccionadoChange.emit( { archivo: imagenAProcesar });
         this.cargando_procesamiento = true;
+
+        console.log('evento dentro paginador', event);
     }
 }

@@ -7,7 +7,10 @@ import { tienda } from 'src/app/interfaces/tienda';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
 import { DatePipe } from '@angular/common';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
 import { jsPDF } from 'jspdf';
+
+
 
 
 @Component({
@@ -34,7 +37,8 @@ export class GestionDeAuditoriasComponent implements OnInit {
     private publicMethodsService: PublicMethodsService,
     private datePipe: DatePipe,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private localStorageService: LocalStorageService
   ) { }
  
   ngOnInit(): void {
@@ -70,7 +74,7 @@ export class GestionDeAuditoriasComponent implements OnInit {
   }
 
   goToAuditoria(id_auditoria: number){
-    this.auditoriaService.id_auditoria_seleccionada = id_auditoria;
+    this.localStorageService.setItem('id_auditoria_seleccionada', id_auditoria);
     this.router.navigate(['/auditoria']);
   }
 
