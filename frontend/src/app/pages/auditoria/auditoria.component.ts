@@ -20,7 +20,6 @@ export class AuditoriaComponent implements OnInit{
 
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
-
   muebles: any[] = [];
 
   id_auditoria_seleccionada: number = 0;

@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { BarraDeBarrasComponent } from '../barra-de-barras/barra-de-barras.component';
 import { DialogModule } from 'primeng/dialog';
 import { IrArribaComponent } from '../ir-arriba/ir-arriba.component';
+
 @Component({
   selector: 'app-progreso-auditoria',
   templateUrl: './progreso-auditoria.component.html',
@@ -30,7 +31,6 @@ import { IrArribaComponent } from '../ir-arriba/ir-arriba.component';
 
 })
 export class ProgresoAuditoriaComponent implements OnInit {
-
 
   id_auditoria_seleccionada: number | undefined;
   auditoria_seleccionada: auditoria | undefined;
@@ -53,9 +53,7 @@ export class ProgresoAuditoriaComponent implements OnInit {
     this.auditoriaService.getAuditoriaById(this.auditoriaService.id_auditoria_seleccionada).subscribe(
       auditoria => {
         this.auditoria_seleccionada = auditoria
-        console.log("auditoria_seleccionada", this.auditoria_seleccionada);
         this.getBarraProgresoAuditoria(this.auditoriaService.id_auditoria_seleccionada);
-
       }, error => { 
         console.log(error) 
       }

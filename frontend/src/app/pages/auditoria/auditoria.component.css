@@ -68,10 +68,32 @@
   height: auto;
   width: 100%;
 }
- 
+
+.imagen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 800px;
+  max-height: 490px;
+  width: 100%;
+  height: auto;
+}
+.floatintPanel {
+  position: fixed;
+  right: 50px;
+  bottom: 50px;
+  width: 20%; 
+  height: auto; 
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  z-index: 1;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 8px;
+}
 
 
-
+/* 
 
   .gridVolverFiltro {
     display: grid;
@@ -149,20 +171,7 @@
     height: 100%;
     min-width: 369px;
   }
-  
+   */
 
 
-.floatintPanel {
-  position: fixed;
-  right: 50px;
-  bottom: 50px;
-  width: 20%; 
-  height: auto; 
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-  z-index: 1;
-  padding: 10px;
-  box-sizing: border-box;
-  border-radius: 8px;
-}
 
