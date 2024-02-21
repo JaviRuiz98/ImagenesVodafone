@@ -46,9 +46,7 @@ export class ProgresoAuditoriaComponent implements OnInit {
 
   ngOnInit(): void {
     this.id_auditoria_seleccionada = this.auditoriaService.id_auditoria_seleccionada;
-
     this.actualizarProgresoAuditoria(this.auditoriaService.id_auditoria_seleccionada);
-
   }
 
   public actualizarProgresoAuditoria(id_auditoria: number) {
