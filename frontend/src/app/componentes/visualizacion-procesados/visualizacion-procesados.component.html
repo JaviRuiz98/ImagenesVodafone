@@ -8,7 +8,7 @@
             <span class="comentarios"><strong>Comentarios:</strong> {{this.item.comentarios}}</span>
             <div class="promptBotones">
                 <div class="verPrompt">
-                    <p-button label="{{this.item.prompts.nombre_prompt}}" (click)="showDialog()" [text]="true" severity="danger" [style]="{'padding': '0', 'max-width': '100%'}"></p-button>
+                    <p-button (click)="showDialog()" [text]="true" severity="danger" [style]="{'padding': '0', 'max-width': '100%'}"><strong>{{item.prompts.nombre_prompt}}</strong></p-button>
                     <p-dialog [header]='item.prompts.nombre_prompt' [(visible)]="visiblePrompt" [style]="{width: '50vw'}">
                         <p>
                             {{item.prompts.texto_prompt}}
@@ -34,3 +34,7 @@
         [showPageLinks]="false">
     </p-paginator>
 </div>
+
+        <!--
+       
+        -->

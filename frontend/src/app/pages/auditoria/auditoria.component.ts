@@ -66,7 +66,6 @@ export class AuditoriaComponent implements OnInit{
     async inicializaImagenesReferencia() {
       this.auditoriaService.getMueblesAndExpositoresWithProcesadosByIdAuditoria(this.id_auditoria_seleccionada).subscribe(
         (data: any[]) => {
-          console.log(data)
           this.muebles = data;
         }, (error: Error) => { console.log(error) }
       );

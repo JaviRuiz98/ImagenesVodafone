@@ -57,8 +57,15 @@ export class PaginadorProcesamientoSubidaComponent {
     @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
 
     
-    SelectButtonOptions: any[] = [{label:'Nuevo', icon: 'pi pi-plus-circle', value: 'new',  styleClass: "optionColorVodafone" }, {label:'Historial' ,icon: 'pi pi-history', value: 'historial', styleClass: "optionColorVodafone" }];
-    feedbackButtonOptions: any[] = [{label:'Like', icon: 'pi pi-thumbs-up', value: 'like',  styleClass: "optionColorVodafone" }, {label:'Dislike' ,icon: 'pi pi-thumbs-down', value: 'dislike', styleClass: "optionColorVodafone" }];
+    SelectButtonOptions: any[] = [
+        {label:'Nuevo', icon: 'pi pi-plus-circle', value: 'new',  styleClass: "optionColorVodafone" }, 
+        {label:'Historial' ,icon: 'pi pi-history', value: 'historial', styleClass: "optionColorVodafone" }
+    ];
+
+    feedbackButtonOptions: any[] = [
+        {label:'Like', icon: 'pi pi-thumbs-up', value: 'like',  styleClass: "optionColorVodafone" }, 
+        {label:'Dislike' ,icon: 'pi pi-thumbs-down', value: 'dislike', styleClass: "optionColorVodafone" }
+    ];
 
     constructor(private publicMethodsService: PublicMethodsService, private confirmationService: ConfirmationService, private messageService: MessageService, private procesamientoService: ProcesamientoService) { }
  
@@ -66,7 +73,5 @@ export class PaginadorProcesamientoSubidaComponent {
         const imagenAProcesar = event.archivo;
         this.archivoSeleccionadoChange.emit( { archivo: imagenAProcesar });
         this.cargando_procesamiento = true;
-
-        console.log('evento dentro paginador', event);
     }
 }

@@ -51,6 +51,7 @@ export class VisualizacionProcesadosComponent {
   ) {}
 
   getElementosPaginados(): procesados_imagenes[] | undefined {
+    console.log("procesados",this.procesados.slice(this.indice_paginador, this.indice_paginador + this.items_per_page))
     return this.procesados.slice(this.indice_paginador, this.indice_paginador + this.items_per_page);
   }
 
