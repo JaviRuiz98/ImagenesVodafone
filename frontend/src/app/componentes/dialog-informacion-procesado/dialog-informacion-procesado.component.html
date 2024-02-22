@@ -25,9 +25,9 @@
             {{procesado.dispositivos_contados}}/{{procesado.huecos_esperados}}
         </p-tag>
     </div>
-    <h4>Comentarios: </h4> 
+    <h4>· Comentarios: </h4> 
     <span >{{this.procesado.comentarios}}</span>
     <h4>· IA Utilizada: </h4><span >{{this.procesado.IA_utilizada}}</span>
-    <h4>· Prompt utilizado: </h4><span >{{this.procesado.prompts.nombre_prompt}}</span>
+    <h4>· Prompt utilizado: </h4><span ><p-button [rounded]="true" [text]="true" severity="danger" label="{{this.procesado.prompts.nombre_prompt}}"></p-button></span>
     <h4>· Fecha: </h4><span >{{ this.procesado.fecha | date:'dd-MM-yyyy | HH:mm' }}</span>
 </p-overlayPanel>

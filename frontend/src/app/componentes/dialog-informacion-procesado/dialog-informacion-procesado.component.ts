@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { TagModule } from 'primeng/tag';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
-
+import { ButtonModule } from 'primeng/button';
 @Component({
   selector: 'app-dialog-informacion-procesado',
   templateUrl: './dialog-informacion-procesado.component.html',
@@ -16,7 +16,8 @@ import { PublicMethodsService } from 'src/app/shared/public-methods.service';
     DialogModule,
     CommonModule,
     TagModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    ButtonModule
   ],
 })
 
