@@ -5,7 +5,25 @@
       <app-asignarHuecos [imagen]="imagen"></app-asignarHuecos>
     </div>   
     <div class="flex-1">
-        huecos
+      <p-table [value]="huecos" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Hueco</th>
+                <th>Categoria</th>
+         
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-hueco let index>
+            <tr>
+                <td> index</td>
+                <td> 
+                  <p-dropdown class="ml-2" [options]="categorias_elementos" [(ngModel)]="categoriaSeleccionada"
+                  optionLabel="nombre" [showClear]="true" placeholder="Filtrar por categoría"
+                  [style]="{'margin-left': '20px'}"></p-dropdown>
+                </td> 
+            </tr>
+        </ng-template>
+    </p-table>
     </div>
   </div>
 

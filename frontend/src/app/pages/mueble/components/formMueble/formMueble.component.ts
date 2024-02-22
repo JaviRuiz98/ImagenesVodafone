@@ -38,7 +38,7 @@ export class FormMuebleComponent implements OnInit {
   isValidNextStep: boolean = false;
   rangeArray: number[] = [];
 
-  imagenes_iniciales: string [] | undefined;
+  imagenes: string [] | undefined;
   index_imagen_actual: number = 0;
 
   mueble_existente: muebles = {
@@ -63,14 +63,14 @@ export class FormMuebleComponent implements OnInit {
       this.mueble_existente = mueble;
 
      
-      this.imagenes_iniciales = mueble.expositores.map((expositor :expositores) => {
+      this.imagenes = mueble.expositores.map((expositor :expositores) => {
         if (this.tieneModelo(expositor.atributos_expositores)) {
           return this.url_imagenes_referencias+this.getImagenModelo(expositor);
         }
         return undefined;
       });
 
-      this.step_count = this.imagenes_iniciales.length*2+1;
+      this.step_count = this.imagenes.length*2+1;
       
     }else{
       console.log ("nuevo");
@@ -144,6 +144,7 @@ export class FormMuebleComponent implements OnInit {
   onFormularioPaso1Change($event: FormGroup<any>) {
     console.log("form actualizado: "+ $event.value.nombre);
     this.formularioPaso1 = $event;
+    this.imagenes = this.formularioPaso1.value.imagenes;
     this.step_count = this.formularioPaso1.value.imagenes.length== 0 ? 2 : this.formularioPaso1.value.imagenes.length*2+1;
     this.updateIsValidNextStep();
     this.generateSteps();

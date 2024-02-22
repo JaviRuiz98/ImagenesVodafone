@@ -2,7 +2,7 @@
 <p-scrollPanel [style]="{'height':'calc(100vh - 300px )'}">
 
   <div class="flex flex-column" *ngIf="activeIndex == 0">
-    <app-Paso1Form (formularioPaso1Change)="onFormularioPaso1Change($event)" [imagenesIn]="this.imagenes_iniciales"
+    <app-Paso1Form (formularioPaso1Change)="onFormularioPaso1Change($event)" [imagenesIn]="this.imagenes"
       [nombreIn]="mueble_existente? mueble_existente.nombre: undefined"></app-Paso1Form>
   </div>
 
@@ -10,12 +10,12 @@
   <div *ngIf="activeIndex > 0">
     <!-- Verifica si el paso actual requiere el componente app-PasoHuecosForm -->
     <ng-container *ngIf="!activeIndexIsPair()">
-      <app-PasoHuecosForm [imagen]="imagenes_iniciales[index_imagen_actual]"></app-PasoHuecosForm>
+      <app-PasoHuecosForm [imagen]="imagenes[index_imagen_actual]"></app-PasoHuecosForm>
     </ng-container>
 
     <!-- Verifica si el paso actual requiere el componente app-PasoAsignarElementoForm -->
     <ng-container *ngIf="activeIndexIsPair()">
-      <app-PasoAsignarElementoForm [imagen]="imagenes_iniciales[index_imagen_actual]"></app-PasoAsignarElementoForm>
+      <app-PasoAsignarElementoForm [imagen]="imagenes[index_imagen_actual]"></app-PasoAsignarElementoForm>
     </ng-container>
   </div>
 
