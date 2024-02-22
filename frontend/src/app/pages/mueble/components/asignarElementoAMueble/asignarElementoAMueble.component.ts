@@ -3,6 +3,7 @@ import { atributos_expositores } from 'src/app/interfaces/atributos_expositores'
 import { categorias_elementos } from 'src/app/interfaces/categoria';
 import { elementos } from 'src/app/interfaces/elementos';
 import { expositores } from 'src/app/interfaces/expositores';
+import { imagenes } from 'src/app/interfaces/imagenes';
 import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
 
 @Component({
@@ -15,8 +16,7 @@ export class AsignarElementoAMuebleComponent implements OnInit {
 
   constructor(private elementosService: ElementosService) { }
 
-  @Input () expositor?: expositores;
-  @Output() expositorOuput = new EventEmitter<expositores>();
+  @Input () imagen?: expositores;
 
   all_elementos: elementos[] = [];
   filtered_elementos: elementos[] = [];

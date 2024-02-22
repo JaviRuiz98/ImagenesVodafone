@@ -22,21 +22,19 @@ export class SelectorImagenesComponent implements OnChanges {
 
   archivoSeleccionado: File | null = null;
   mouseSobre: boolean = false;
-  cargando: boolean = false;
-  
+
  
   constructor() {}
  
   ngOnChanges(changes: SimpleChanges): void {
     if (this.cargando_procesado == false) {
       this.archivoSeleccionado = null;
-     
    
     }
   }
 
   isCargando(){
-    return this.cargando_procesado && this.cargando;
+    return this.cargando_procesado && this.archivoSeleccionado !=null;
   }
  
   seleccionarArchivo(event: any) {
@@ -50,11 +48,12 @@ export class SelectorImagenesComponent implements OnChanges {
     const input = this.inputFileRef.nativeElement as HTMLInputElement;
    
     if (input && input.files) {
-      this.cargando = true;
-   
+     
       this.archivoSeleccionado = input.files[0];
       
       this.archivoSeleccionadoChange.emit({ archivo: this.archivoSeleccionado });
+
+      this.archivoSeleccionado = null;
 
     }
   }
