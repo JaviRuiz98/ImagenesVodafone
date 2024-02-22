@@ -48,7 +48,6 @@ export class VisualizacionProcesadosComponent implements OnInit{
   ngOnInit(): void {
   }
   getElementosPaginados(): procesados_imagenes[] | undefined {
-    console.log(this.procesados.slice(this.indice_paginador, this.indice_paginador + this.items_per_page))
     return this.procesados.slice(this.indice_paginador, this.indice_paginador + this.items_per_page);
   }
 
@@ -78,18 +77,16 @@ export class VisualizacionProcesadosComponent implements OnInit{
     });
   }
 
-
   borrarProcesado(procesado: procesados_imagenes){
-      this.procesamientoService.deleteProcesado(procesado).subscribe(
-          (response) => {
-              this.procesados.splice(this.procesados.indexOf(procesado), 1);
-              this.messageService.add({ severity: 'info', life: 3000,summary: 'Cargando', detail: 'La imagen se borro correctamente' });
-          }, (error) => {
-              console.log('error', error);
-              this.messageService.add({ severity: 'error', life: 3000, summary: 'Error', detail: 'No se pudo borrar la imagen' });
-          }
-      );
-      
+    this.procesamientoService.deleteProcesado(procesado).subscribe(
+        (response) => {
+            this.procesados.splice(this.procesados.indexOf(procesado), 1);
+            this.messageService.add({ severity: 'info', life: 3000,summary: 'Cargando', detail: 'La imagen se borro correctamente' });
+        }, (error) => {
+            console.log('error', error);
+            this.messageService.add({ severity: 'error', life: 3000, summary: 'Error', detail: 'No se pudo borrar la imagen' });
+        }
+    );
   }
 
   funcionFeedback(procesado: procesados_imagenes, likeDislike: boolean | null) {
