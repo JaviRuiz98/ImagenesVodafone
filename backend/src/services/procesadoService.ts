@@ -66,7 +66,6 @@ export const procesadoService = {
     },
 
     async feedbackProcesado(id_procesado_imagen: number, feedback_Humano: boolean | null) {
-        
         return await db.procesados_imagenes.update({
             where: {
                 id: id_procesado_imagen

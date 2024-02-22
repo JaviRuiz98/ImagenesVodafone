@@ -19,7 +19,7 @@ import { ConfirmationService, ConfirmEventType } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { VisualizacionProcesadosComponent } from '../visualizacion-procesados/visualizacion-procesados.component';
-
+import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
 @Component({
     selector: 'app-paginador-procesamiento-subida',
     templateUrl: './paginador-procesamiento-subida.html',
@@ -57,16 +57,26 @@ export class PaginadorProcesamientoSubidaComponent {
     @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
 
     
-    SelectButtonOptions: any[] = [{label:'Nuevo', icon: 'pi pi-plus-circle', value: 'new',  styleClass: "optionColorVodafone" }, {label:'Historial' ,icon: 'pi pi-history', value: 'historial', styleClass: "optionColorVodafone" }];
-    feedbackButtonOptions: any[] = [{label:'Like', icon: 'pi pi-thumbs-up', value: 'like',  styleClass: "optionColorVodafone" }, {label:'Dislike' ,icon: 'pi pi-thumbs-down', value: 'dislike', styleClass: "optionColorVodafone" }];
+    SelectButtonOptions: any[] = [
+        {label:'Nuevo', icon: 'pi pi-plus-circle', value: 'new',  styleClass: "optionColorVodafone" }, 
+        {label:'Historial' ,icon: 'pi pi-history', value: 'historial', styleClass: "optionColorVodafone" }
+    ];
 
-    constructor(private publicMethodsService: PublicMethodsService, private confirmationService: ConfirmationService, private messageService: MessageService, private procesamientoService: ProcesamientoService) { }
+    feedbackButtonOptions: any[] = [
+        {label:'Like', icon: 'pi pi-thumbs-up', value: 'like',  styleClass: "optionColorVodafone" }, 
+        {label:'Dislike' ,icon: 'pi pi-thumbs-down', value: 'dislike', styleClass: "optionColorVodafone" }
+    ];
+
+    constructor(private localstorage: LocalStorageService, private publicMethodsService: PublicMethodsService, private confirmationService: ConfirmationService, private messageService: MessageService, private procesamientoService: ProcesamientoService) { }
  
     recibirFile(event: {archivo:File}) {
         const imagenAProcesar = event.archivo;
         this.archivoSeleccionadoChange.emit( { archivo: imagenAProcesar });
         this.cargando_procesamiento = true;
-
-        console.log('evento dentro paginador', event);
+    }
+    recibirEstado(){
+        const auditoria = this.localstorage.getItem('auditoria_seleccionada');
+        const estadoAuditoria = auditoria.estados_auditoria.estado;
+        return estadoAuditoria;
     }
 }

@@ -47,8 +47,9 @@ export class ProgresoAuditoriaComponent implements OnInit {
   ) {}  
 
   ngOnInit(): void {
-    this.id_auditoria_seleccionada = this.localStorageService.getItem('id_auditoria_seleccionada');
-
+    this.auditoria_seleccionada = this.localStorageService.getItem('auditoria_seleccionada');
+    this.id_auditoria_seleccionada = this.auditoria_seleccionada.id;
+    console.log(this.auditoria_seleccionada);
     this.actualizarProgresoAuditoria(this.id_auditoria_seleccionada);
 
   }

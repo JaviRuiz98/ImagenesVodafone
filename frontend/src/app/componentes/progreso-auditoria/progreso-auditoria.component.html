@@ -7,7 +7,7 @@
     </div>
     <div>
         <p-button
-            *ngIf="this.auditoria_seleccionada && this.auditoria_seleccionada.estados_auditoria?.estado === 'en progreso'"
+            *ngIf="this.auditoria_seleccionada && this.auditoria_seleccionada.estados_auditoria.estado === 'en progreso'"
             (click)="terminarAuditoria(this.auditoria_seleccionada)"
             [severity]="'danger'"
             label="Terminar auditoria"
