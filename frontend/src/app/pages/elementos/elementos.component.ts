@@ -49,7 +49,25 @@ export class ElementosComponent implements OnInit{
   tableStateOption: any[] = [{label:'Dispositivos', icon: 'pi pi-mobile', value: 'dispositivos',  styleClass: "optionColorVodafone" }, {label:'Carteles' ,icon: 'pi pi-book', value: 'cartel', styleClass: "optionColorVodafone" }];
   tableSelected:string = 'dispositivos';
 
+
+
+////7
+  verRemarcado: boolean = false;
+
+
   constructor( private elementosService: ElementosService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
+
+
+
+
+  verRemarcadorExpositor(){
+    this.verRemarcado = true;
+  }
+  manejarVerRemarcado(event: Event){
+    this.verRemarcado = false;
+  }
+
+
 
   inicializaElementos() {
     this.elementosService.getElementos().subscribe((elementos: elementos[]) => {
@@ -58,18 +76,7 @@ export class ElementosComponent implements OnInit{
       console.log("elementos", elementos);
  //     this.resetTabla();
     });
-  }
-
-  // resetTabla() {
-  //   this.elementos = this.elementosTodos;
-  //   if(this.tableSelected == "dispositivos"){
-  //     this.elementos = this.elementos.filter(elementos => elementos.categorias_elementos.id == 2);
-      
-  //   }else{
-  //     this.elementos = this.elementos.filter(elementos => elementos.categorias_elementos.id == 1);
-  //   }
-  // }
-
+  } 
  
   AbrirnuevoElemento() {
  

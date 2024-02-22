@@ -30,7 +30,7 @@ import { FormsModule } from '@angular/forms'; // Add this import
 import { NuevoElementoComponent } from 'src/app/componentes/nuevo-elemento/nuevo-elemento.component';
 import { ElementosComponent } from './elementos.component';
 
-
+import { RemarcarExpositorComponent } from 'src/app/componentes/remarcar-expositor/remarcar-expositor.component';
 @NgModule({
   declarations: [
     ElementosComponent
@@ -57,7 +57,8 @@ import { ElementosComponent } from './elementos.component';
     NuevoElementoComponent,
     OverlayPanelModule,
     DropdownModule,
-    SelectButtonModule
+    SelectButtonModule,
+    RemarcarExpositorComponent
 ]
 })
 
