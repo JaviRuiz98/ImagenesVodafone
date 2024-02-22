@@ -14,13 +14,15 @@ export class Paso1FormComponent implements OnInit {
 
   @Input() imagenesIn?: string[];
   @Input() nombreIn?: string;
+  @Input() regionesIn?: string;
+  @Input() objetivo_form: 'crear' | 'editar' = 'crear';
   @Output() formularioPaso1Change = new EventEmitter<FormGroup>();
 
   formularioPaso1:FormGroup = this.fb.group({
     nombre: ['', Validators.required],
     imagenes: [[],], //strings para visualización
     archivos_imagenes: [[]], //Files para creación en la base de datos
-  })
+  });
 
   get nombre() {
     return this.formularioPaso1.controls['nombre'];
@@ -49,6 +51,14 @@ export class Paso1FormComponent implements OnInit {
       this.onSubmit();
     });
 
+
+
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+     if (changes['objetivo_form']) {
+       
+     }
   }
 
   deleteImage(index: number) {

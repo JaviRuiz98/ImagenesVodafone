@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validator, ValidatorFn, Validators } from '@angular/forms';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { muebles } from 'src/app/interfaces/muebles';
@@ -29,7 +29,7 @@ export class FormMuebleComponent implements OnInit {
 
   objetivo_form: 'crear' | 'editar' = 'crear';
 
-  constructor( public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private elementosService: ElementosService, private muebleService: MueblesService) { }
+  constructor( private cdr: ChangeDetectorRef, public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private elementosService: ElementosService, private muebleService: MueblesService) { }
 
   //STEPPER
   step_count: number = 2;
@@ -51,14 +51,12 @@ export class FormMuebleComponent implements OnInit {
   
 
   ngOnInit() {
-   
     if (this.dialogConfig.data) {
       console.log ("editar");
       this.objetivo_form='editar';
 
       const mueble = this.dialogConfig.data.mueble;
 
-      const showing_asignar_expositores_index: number | undefined = this.dialogConfig.data.showing_asignar_expositores_index; //IR DIRECTO AL PASO
 
       this.mueble_existente = mueble;
 
@@ -84,34 +82,41 @@ export class FormMuebleComponent implements OnInit {
      
   }
 
-  
-
   generateSteps() {
     this.steps = [
       {
         label: 'Base'
       }
     ];
-  
-    // Si step_count es exactamente 2, solo agrega "Asignar elementos"
-    if (this.step_count === 2) {
-      this.steps.push({
-        label: 'Asignar elementos'
-      });
-    } else {
-      // Para cualquier otro caso, itera y agrega los pasos necesarios
-      for (let i = 0; i < this.step_count; i += 2) {
-        
-        if (i + 1 < this.step_count) {
-          this.steps.push({
-            label: 'Selección de huecos'
-          });
-          this.steps.push({
-            label: 'Asignar elementos'
-          });
+    
+    if (this.objetivo_form === 'crear') {
+       // Si step_count es exactamente 2, solo agrega "Asignar elementos"
+      if (this.step_count === 2) {
+        this.steps.push({
+          label: 'Asignar elementos'
+        });
+      } else {
+        // Para cualquier otro caso, itera y agrega los pasos necesarios
+        for (let i = 0; i < this.step_count; i += 2) {
+          
+          if (i + 1 < this.step_count) {
+            this.steps.push({
+              label: 'Selección de huecos'
+            });
+            this.steps.push({
+              label: 'Asignar elementos'
+            });
+          }
         }
       }
+    }else { // Si es editar
+      for (let i = 0; i < this.step_count; i++) {
+        this.steps.push({
+          label: 'Asignar elementos'
+        });
+      }
     }
+    this.cdr.detectChanges();
     this.rangeArray= this.generateRangeArray(0,this.step_count-1);
   }
 
@@ -145,7 +150,11 @@ export class FormMuebleComponent implements OnInit {
     console.log("form actualizado: "+ $event.value.nombre);
     this.formularioPaso1 = $event;
     this.imagenes = this.formularioPaso1.value.imagenes;
-    this.step_count = this.formularioPaso1.value.imagenes.length== 0 ? 2 : this.formularioPaso1.value.imagenes.length*2+1;
+    if (this.objetivo_form === 'crear'){
+      this.step_count = this.formularioPaso1.value.imagenes.length== 0 ? 2 : this.formularioPaso1.value.imagenes.length*2+1;
+    } else{
+      this.step_count = this.formularioPaso1.value.imagenes.length;
+    }
     this.updateIsValidNextStep();
     this.generateSteps();
 
@@ -166,13 +175,25 @@ export class FormMuebleComponent implements OnInit {
 
   
 nextStep() {
-  if (this.activeIndex > 0 && this.activeIndexIsPair()) { 
+  //pasaremos a la siguiente imagen siempre y cuando no estemos en el primer paso y el indice sea par o si estamos en editar
+  if ((this.activeIndex > 0 && this.activeIndexIsPair()) || (this.activeIndex > 0 && this.objetivo_form == 'editar')) { 
       this.index_imagen_actual++;
   }
-  if (this.isValidNextStep){
 
+  if (this.isValidNextStep){
     this.activeIndex++;
   }
+}
+
+
+previousStep() {
+ 
+  if ((!this.activeIndexIsPair() && this.objetivo_form == 'crear' ) || (this.objetivo_form == 'editar')) {
+    this.index_imagen_actual = Math.max(this.index_imagen_actual - 1, 0);
+  }
+ if (this.activeIndex > 0) {
+   this.activeIndex--;
+ }
 }
   
 

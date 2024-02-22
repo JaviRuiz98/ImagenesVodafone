@@ -47,28 +47,15 @@
             <tr>
                 <td>{{ mueble.nombre }}</td>
 
-                <td [ngClass]=" mueble.expositores.length > 1 ?  'expositores-container':''">
-                    <div *ngFor="let expositor of mueble.expositores; let i = index;" >
-                        
-                        <p-image  *ngIf="tieneModelo(expositor.atributos_expositores)" class ="imagenSimple" [src]="url_imagenes_referencias + getImagenModelo(expositor)"  height="100vh"  [alt]=" getImagenModelo(expositor)? getImagenModelo(expositor):'No disponible'"  [preview]="true"></p-image>
-                        <div *ngIf="!tieneModelo(expositor.atributos_expositores)" class="flex align-items-center justify-content-center">-</div>
-                        <div> 
-                            <p-button 
-                                [raised]="true"
-                                [text]="true" 
-                                [rounded]="true"
-                                severity="danger" 
-                                label="Elementos" 
-                                icon="pi pi-plus-circle" 
-                                [disabled]="!tieneModelo(expositor.atributos_expositores)"
-                                (onClick)="editMueble(mueble, i)"
-                                class="mr-2 mt-2" >
-                            </p-button>
-                        </div>
+                <td [ngClass]="mueble.expositores.length > 1 ? 'expositores-container' : ''">
+                    <div *ngFor="let expositor of mueble.expositores; let i = index;" class="item-container m-4">
+                      <div *ngIf="tieneModelo(expositor.atributos_expositores)" class="image-button-container">
+                        <p-image class="imagenSimple" [src]="url_imagenes_referencias + getImagenModelo(expositor)" height="200vh" [alt]="getImagenModelo(expositor) ? getImagenModelo(expositor) : 'No disponible'" [preview]="true"></p-image>
+                        <p-button [raised]="true" [text]="true" [rounded]="true" severity="danger" label="Elementos" icon="pi pi-plus-circle" [disabled]="!tieneModelo(expositor.atributos_expositores)" (onClick)="showElementos(expositor)" class="full-width-button"></p-button>
+                      </div>
+                      <div *ngIf="!tieneModelo(expositor.atributos_expositores)" class="flex align-items-center justify-content-center">-</div>
                     </div>
-                </td>
-                
-
+                  </td>
 
                 <td>
                   

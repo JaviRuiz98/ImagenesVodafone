@@ -1,6 +1,6 @@
 <div class="flex">
   <div class="flex-1 m-2">
-    <div *ngIf="imagen != null" class="flex flex-wrap" style="width: 100%">
+    <div *ngIf="imagen != null else expositor" class="flex flex-wrap" style="width: 100%">
       <div>
         <p-image class="flex m-2" 
           [src]="imagen" 
@@ -8,16 +8,25 @@
       </div>
     </div>
 
-  </div>
+    <ng-template #expositor>
+      <div>
+        <p-image class="flex m-2" 
+          [src]="getImagenModelo()" 
+          [preview]="true"></p-image>
+      </div>
+    
+    </ng-template>
 
-  <!-- <p-button severity="danger" [text]="true" [raised]="true" (onClick)="showExpositores(2)" label="Asignar Elemento" ></p-button>
-        <p-button severity="danger" class="ml-2" [text]="true" [raised]="true" (onClick)="createExpositores(2)" label="Crear Elemento" ></p-button> -->
+  </div>
 
 
   <div class="flex-1 m-2">
     <p-toolbar>
 
       <div class="p-toolbar-group-start">
+        
+      <p-button severity="danger" icon="pi pi-plus"></p-button>
+
         <span class="p-input-icon-left" style="margin-left: 20px">
           <i class="pi pi-search"></i>
           <input pInputText type="text" (input)="filterByNombre(filterNameValue)"

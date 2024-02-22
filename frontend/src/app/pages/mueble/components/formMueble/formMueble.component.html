@@ -2,23 +2,34 @@
 <p-scrollPanel [style]="{'height':'calc(100vh - 300px )'}">
 
   <div class="flex flex-column" *ngIf="activeIndex == 0">
-    <app-Paso1Form (formularioPaso1Change)="onFormularioPaso1Change($event)" [imagenesIn]="this.imagenes"
+    <app-Paso1Form [objetivo_form]="objetivo_form" (formularioPaso1Change)="onFormularioPaso1Change($event)" [imagenesIn]="this.imagenes"
       [nombreIn]="mueble_existente? mueble_existente.nombre: undefined"></app-Paso1Form>
   </div>
+  <!-- CREAR -->
+  <div *ngIf="objetivo_form=='crear'; else editar">
+    <!-- Asumiendo que activeIndex determina el paso actual y qué componente mostrar -->
+    <div *ngIf="activeIndex > 0">
+      <!-- Verifica si el paso actual requiere el componente app-PasoHuecosForm -->
+      <ng-container *ngIf="!activeIndexIsPair()">
+        <app-PasoHuecosForm [imagen]="imagenes[index_imagen_actual]"></app-PasoHuecosForm>
+      </ng-container>
 
-  <!-- Asumiendo que activeIndex determina el paso actual y qué componente mostrar -->
-  <div *ngIf="activeIndex > 0">
-    <!-- Verifica si el paso actual requiere el componente app-PasoHuecosForm -->
-    <ng-container *ngIf="!activeIndexIsPair()">
-      <app-PasoHuecosForm [imagen]="imagenes[index_imagen_actual]"></app-PasoHuecosForm>
-    </ng-container>
+      <!-- Verifica si el paso actual requiere el componente app-PasoAsignarElementoForm -->
+      <ng-container *ngIf="activeIndexIsPair()">
+        <app-PasoAsignarElementoForm [imagen]="imagenes[index_imagen_actual]"></app-PasoAsignarElementoForm>
+      </ng-container>
+    </div>
 
-    <!-- Verifica si el paso actual requiere el componente app-PasoAsignarElementoForm -->
-    <ng-container *ngIf="activeIndexIsPair()">
-      <app-PasoAsignarElementoForm [imagen]="imagenes[index_imagen_actual]"></app-PasoAsignarElementoForm>
-    </ng-container>
   </div>
-
+  <!-- EDITAR -->
+  <ng-template #editar>
+    <div *ngIf="activeIndex > 0">
+     
+        <app-PasoAsignarElementoForm [imagen]="imagenes[index_imagen_actual]"></app-PasoAsignarElementoForm>
+   
+    </div>
+  </ng-template>
+ 
 
 </p-scrollPanel>
 
@@ -26,10 +37,10 @@
 <footer>
   <div class="flex align-items-center justify-content-center mt-2">
     <p-button label="volver" icon="pi pi-arrow-left" class="m-2" severity="danger" [disabled]="activeIndex == 0"
-      (onClick)="activeIndex= activeIndex - 1"></p-button>
-    <p-button [label]="activeIndex+1 == step_count ? 'Guardar' : 'siguiente'" icon="pi pi-arrow-right" class="m-2"
+      (onClick)="previousStep()"></p-button>
+    <p-button [label]="activeIndex == step_count ? 'Guardar' : 'siguiente'" icon="pi pi-arrow-right" class="m-2"
       severity="danger" [disabled]="!isValidNextStep"
-      (onClick)="activeIndex+1 == step_count? onSubmit() : nextStep()">
+      (onClick)="activeIndex == step_count? onSubmit() : nextStep()">
     </p-button>
   </div>
 

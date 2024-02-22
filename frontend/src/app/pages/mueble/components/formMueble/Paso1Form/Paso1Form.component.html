@@ -10,19 +10,9 @@
       </p-card>
     </div>
 
-
     <div class="flex align-items-center justify-content-center mt-4">
       <p-card [style]="{'width':'130vh'}" header="Subir modelo">
-
-        <!-- 
-        
-              <small class="text-500 ml-2 ts-1 text-xs font-italic"> Dibuja la posición donde se encontrarán los elementos</small>
-
-              <div class="flex-1 asignar_huecos_container">
-                <app-asignarHuecos [expositor]="selected_expositor"></app-asignarHuecos>
-              </div> -->
-
-        <div class="flex" style="height: 50vh">
+        <div class="flex" style="height: 50vh"  *ngIf="objetivo_form=='crear'; else editar">
 
           <div class="flex-1 m-2" style="height: 50vh">
             <app-selector-imagenes (archivoSeleccionadoChange)="onArchivoSeleccionadoChange($event)"  style="width: 100%; overflow: hidden;"></app-selector-imagenes>
@@ -44,9 +34,23 @@
           </div>
         </div>
 
+        <ng-template #editar>
+
+          <div *ngFor="let imagen of imagenes.value; let i = index"  class="image-container">
+             
+            <img class="flex m-2 default-imagen" 
+              [src]="imagen" height="200vh"
+              [alt]="imagen" />
+
+         
+        </div>
+        </ng-template>
+      
+
     </p-card>
 
   </div>
+
 
 
   </div>
