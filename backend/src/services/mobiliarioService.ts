@@ -224,12 +224,12 @@ export const mobiliarioService = {
         } finally {
             await db.$disconnect();
         }
-    },
+    }
+}
 
-    
-};
+  
 
-// //NO FUNCIONA UTIL POR SI QUEREMOS HACER FILTROS
+// //NO FUNCIONA
 // function mapearResultadoParaFront(mueble: any): MuebleFrontInterfaz {
 
 //     let elementos = [];

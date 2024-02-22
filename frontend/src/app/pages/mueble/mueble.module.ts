@@ -19,19 +19,25 @@ import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
 import { SelectorImagenesComponent } from 'src/app/componentes/selector-imagenes/selector-imagenes.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { StepsModule } from 'primeng/steps';
 
 import { FormMuebleComponent } from './components/formMueble/formMueble.component';
+import { AsignarHuecosComponent } from './components/asignarHuecos/asignarHuecos.component';
+import { HistorialExpositoresComponent } from './components/historialExpositores/historialExpositores.component';
+
 
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { DialogService } from 'primeng/dynamicdialog';
-import { HistorialExpositoresComponent } from './components/historialExpositores/historialExpositores.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { AsignarExpositorComponent } from './components/asignarExpositor/asignarExpositor.component';
-
-
+import { DragDropModule } from 'primeng/dragdrop';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { DividerModule } from 'primeng/divider';
+import { Paso1FormComponent } from './components/formMueble/Paso1Form/Paso1Form.component';
+import { PasoHuecosFormComponent } from './components/formMueble/PasoHuecosForm/PasoHuecosForm.component';
+import { PasoAsignarElementoFormComponent } from './components/formMueble/PasoAsignarElementoForm/PasoAsignarElementoForm.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -48,15 +54,27 @@ import { AsignarExpositorComponent } from './components/asignarExpositor/asignar
     InputNumberModule,
     CardModule,
     DropdownModule,
+    DragDropModule,
+    ScrollPanelModule,
+    DividerModule,
+    StepsModule,
 
     ReactiveFormsModule,
     FormsModule,
 
     IrArribaComponent,
-    SelectorImagenesComponent
+    SelectorImagenesComponent, 
+    
     
   ],
-  declarations: [MuebleComponent, FormMuebleComponent, HistorialExpositoresComponent, AsignarExpositorComponent], 
+  declarations: [MuebleComponent,
+     FormMuebleComponent,
+     HistorialExpositoresComponent,
+     AsignarHuecosComponent,
+     Paso1FormComponent,
+     PasoHuecosFormComponent, 
+     PasoAsignarElementoFormComponent
+    ], 
   providers: [MessageService, DialogService],
 })
 export class MuebleModule { }

@@ -30,6 +30,8 @@ export class MuebleComponent implements OnInit {
 
   ref: DynamicDialogRef | undefined;
 
+  
+
 
   constructor( private muebleService: MueblesService, public dialogService: DialogService, public messageService: MessageService, private config: PrimeNGConfig) { }
 
@@ -83,7 +85,7 @@ export class MuebleComponent implements OnInit {
 
 
 
-  editMueble(mueble: muebles) {
+  editMueble(mueble: muebles, showing_asignar_expositores_index?:number) {
 
     this.ref = this.dialogService.open(FormMuebleComponent, {
       header: 'Editar mueble ' + mueble.nombre ,
@@ -92,7 +94,8 @@ export class MuebleComponent implements OnInit {
       baseZIndex: 10000,
       maximizable: true,
       data: {
-        mueble: mueble
+        mueble: mueble, 
+        showing_asignar_expositores_index: showing_asignar_expositores_index
       }
   });
 
@@ -146,7 +149,6 @@ export class MuebleComponent implements OnInit {
     if (atributoModelo && atributoModelo.elemento) {
       return atributoModelo.elemento.imagenes.url;
     } else {
-      console.log("Hola");
       return undefined;
     }
 

@@ -19,3 +19,8 @@
   background: red;
   border: red;
 }
+
+.p-steps .p-steps-item.p-highlight .p-steps-number {
+  background: #fc6262;
+  color: white
+}

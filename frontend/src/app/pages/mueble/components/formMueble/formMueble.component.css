@@ -12,3 +12,41 @@
 .p-float-label input:focus + label {
     width: auto;
 }
+
+
+.articulo-imagen {
+  width: auto;
+  object-fit: cover; /* Esto asegura que la imagen se recorte para llenar el espacio asignado sin distorsionarse */
+  border-radius: 15%;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.articulo-imagen:hover {
+  transform: scale(1.05); /* Ligeramente más grande al pasar el ratón */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra suave */
+}
+
+
+
+
+
+
+::ng-deep .p-card .p-card-content {
+  padding: 0;
+}
+
+::ng-deep .p-toolbar {
+  padding: 0;
+}
+
+.asignar_huecos_container{
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden;
+}
+
+.asignar_huecos_container app-asignarHuecos{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}

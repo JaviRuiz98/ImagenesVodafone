@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validator, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validator, ValidatorFn, Validators } from '@angular/forms';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { elementos } from 'src/app/interfaces/elementos';
 import { muebles } from 'src/app/interfaces/muebles';
 import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
-import { MuebleCreacion } from '../../interfaces/muebleCreacion';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
+import { expositores } from 'src/app/interfaces/expositores';
+import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
+import { MenuItem } from 'primeng/api';
 
 
 @Component({
@@ -15,54 +16,39 @@ import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 })
 
 
+
+
 export class FormMuebleComponent implements OnInit {
-filtered_elementos: any;
-dragEnd() {
-throw new Error('Method not implemented.');
-}
-dragStart(_t34: any) {
-throw new Error('Method not implemented.');
-}
 
- 
-  
-  constructor( public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private elementosService: ElementosService, private muebleService: MueblesService) { }
-
-  showing_asignar_expositores: boolean = false;
-  all_expositores: elementos[] = [];
-  //showing_crear_expositores: boolean = false;
-
-  
-
-  objetivo_form: 'crear' | 'editar' = 'crear';
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
-  formulario:FormGroup = this.fb.group({
-    nombre_mueble: ['', Validators.required],
-    elementos: [[]]
-    // numero_expositores_dispositivos: [0, [Validators.required, Validators.min(0)]],
-    // numero_expositores_carteles: [0, [Validators.required, Validators.min(0)]],
-  })
+  //FORMULARIOS
+  formularioPaso1: FormGroup | undefined;
+  formularioPasoHuecoForm: FormGroup[] = [];
+  formularioPasoAsignarElementoForm: FormGroup[] = [];
 
+  objetivo_form: 'crear' | 'editar' = 'crear';
 
-  id_mueble_existente?:number;
+  constructor( public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private elementosService: ElementosService, private muebleService: MueblesService) { }
+
+  //STEPPER
+  step_count: number = 2;
+  activeIndex:number = 0;
+  steps: MenuItem [] | undefined;
+  isValidNextStep: boolean = false;
+  rangeArray: number[] = [];
+
+  imagenes: string [] | undefined;
+  index_imagen_actual: number = 0;
+
+  mueble_existente: muebles = {
+    id: 0,
+    nombre: '',
+    expositores: []
+  };
   
 
-  get nombre_mueble() {
-    return this.formulario.controls['nombre_mueble'];
-  }
-  get expositores() {
-    return this.formulario.controls['expositores'];
-  }
-
-
-
-  // get numero_expositores_dispositivos() {
-  //   return this.formulario.controls['numero_expositores_dispositivos'];
-  // } 
-  // get numero_expositores_carteles() {
-  //   return this.formulario.controls['numero_expositores_carteles'];
-  // }
+  
 
   ngOnInit() {
    
@@ -71,114 +57,128 @@ throw new Error('Method not implemented.');
       this.objetivo_form='editar';
 
       const mueble = this.dialogConfig.data.mueble;
-      this.id_mueble_existente = mueble?.id;
 
-  
+      const showing_asignar_expositores_index: number | undefined = this.dialogConfig.data.showing_asignar_expositores_index; //IR DIRECTO AL PASO
 
-      this.formulario.patchValue({
-        nombre_mueble: mueble?.nombre,
-        expositores: mueble?.expositores
+      this.mueble_existente = mueble;
 
-      })
+     
+      this.imagenes = mueble.expositores.map((expositor :expositores) => {
+        if (this.tieneModelo(expositor.atributos_expositores)) {
+          return this.url_imagenes_referencias+this.getImagenModelo(expositor);
+        }
+        return undefined;
+      });
+
+      this.step_count = this.imagenes.length*2+1;
+      
     }else{
       console.log ("nuevo");
       this.objetivo_form='crear';
     }
-  }
 
+     // Genera los pasos iniciales
+     this.generateSteps();
 
-   categoriaValidator(): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-      const categoria = control.value;
-      if (categoria !== 'cartel' && categoria !== 'dispositivos') {
-        return { 'categoriaInvalida': { value: categoria } };
-      }
-      return null;
-    };
-  }
-
-  // createExpositores(categoria: number) {
-  //  this.new_expositor_for_categoria = categoria;
-  //  this.showing_crear_expositores = true;
-  // }
-
-  // showExpositores(categoria: number) {
-    
-   
-  //   this.elementosService.getElementos(categoria).subscribe( (expositores:elementos[]) => {
-  //     this.all_expositores = expositores;
-  //     this.new_expositor_for_categoria = categoria;
-  //     this.showing_asignar_expositores = true;
-
-  //  });
+     this.updateIsValidNextStep();
      
-  // }
-  asignar_expositores(event: elementos | null) {
-    // this.showing_asignar_expositores = false;
-    // if (event != null) {
-    //   // Añadimos el expositor al formulario
-    //   this.formulario.patchValue({
-    //     expositores: this.expositores.value.concat(event)
-    //   });
-  
-    //   // Añadimos el expositor al array correspondiente para mostrarlos
-    //   if (this.new_expositor_for_categoria === 'Carteles') {
-        
-    //     this.expositores_carteles = this.expositores_carteles.concat(event);
-    //   } else {
-        
-    //     this.expositores_dispositivos = this.expositores_dispositivos.concat(event);
-    //   }
-      
-      
-    // }
   }
 
-  deleteExpositor(categoria: 'carteles' | 'dispositivos', expositor: elementos) {
-    // if (categoria === 'carteles') {
-    //   this.expositores_carteles = this.expositores_carteles.filter((e) => e.id !== expositor.id);
-    // }else{
-    //   this.expositores_dispositivos = this.expositores_dispositivos.filter((e) => e.id !== expositor.id);
-    // }
+  
+
+  generateSteps() {
+    this.steps = [
+      {
+        label: 'Base'
+      }
+    ];
+  
+    // Si step_count es exactamente 2, solo agrega "Asignar elementos"
+    if (this.step_count === 2) {
+      this.steps.push({
+        label: 'Asignar elementos'
+      });
+    } else {
+      // Para cualquier otro caso, itera y agrega los pasos necesarios
+      for (let i = 0; i < this.step_count; i += 2) {
+        
+        if (i + 1 < this.step_count) {
+          this.steps.push({
+            label: 'Selección de huecos'
+          });
+          this.steps.push({
+            label: 'Asignar elementos'
+          });
+        }
+      }
+    }
+    this.rangeArray= this.generateRangeArray(0,this.step_count-1);
   }
+
+  generateRangeArray(start: number, end: number): number[] {
+    return Array(end - start + 1).fill(0).map((_, idx) => start + idx);
+  }
+  
+
+  getImagenModelo(expositor: expositores): string | undefined {
+    const atributoModelo: atributos_expositores | undefined = expositor.atributos_expositores.find((atributo) => atributo.id_categoria === 3);
+
+    
+    if (atributoModelo && atributoModelo.elemento) {
+      return atributoModelo.elemento.imagenes.url;
+    } else {
+      return undefined;
+    }
+
+  }
+  tieneModelo(atributos_expositores: atributos_expositores[]): boolean {
+    const atributoModelo: atributos_expositores | undefined = atributos_expositores.find((atributo) => atributo.id_categoria === 3);
+    return atributoModelo !== undefined;
+  }
+
+  activeIndexIsPair(): boolean {
+   return this.activeIndex % 2 === 0;
+  }
+
+  
+  onFormularioPaso1Change($event: FormGroup<any>) {
+    console.log("form actualizado: "+ $event.value.nombre);
+    this.formularioPaso1 = $event;
+    this.imagenes = this.formularioPaso1.value.imagenes;
+    this.step_count = this.formularioPaso1.value.imagenes.length== 0 ? 2 : this.formularioPaso1.value.imagenes.length*2+1;
+    this.updateIsValidNextStep();
+    this.generateSteps();
+
+  }
+ 
+ 
+  updateIsValidNextStep(): void {
+   if (this.activeIndex === 0) {
+    
+    this.isValidNextStep = true;
+    //  this.isValidNextStep = this.formularioPaso1!==undefined && this.formularioPaso1?.valid;
+   }else{
+
+     this.isValidNextStep = false;
+   }
+   
+  }
+
+  
+nextStep() {
+  if (this.activeIndex > 0 && this.activeIndexIsPair()) { 
+      this.index_imagen_actual++;
+  }
+  if (this.isValidNextStep){
+
+    this.activeIndex++;
+  }
+}
   
 
   onSubmit() {
-  
-    // if (this.formulario.invalid) {
-    //   return;
-    
-    // }else{
-     
-      
-    //   const InfoMueble: MuebleCreacion = {
-    //     nombre_mueble: this.formulario.value.nombre_mueble,
-    //     numero_expositores_carteles: this.expositores_carteles_list.length ,
-    //     numero_expositores_dispositivos: this.expositores_dispositivos_list.length,
-    //     expositores: this.expositores.value
-    //   }
-    //   if (this.objetivo_form === 'crear') {
-        
-    //     console.log(InfoMueble);
-    //     this.muebleService.createMueble(InfoMueble).subscribe(
-        
-
-    //     );    
-    //   }else {
-    //     const muebleEdicion: muebles = {
-    //       id: this.id_mueble_existente!,  //no puede ser nulo si está en edición
-    //       ...InfoMueble
-    //     }
-
-    //     console.log(muebleEdicion);
-    //     this.muebleService.updateMueble(muebleEdicion).subscribe();
-    //     //realizar llamada al servicio
-    //   }
-     
-      
-    // }
-  
+    throw new Error('Method not implemented.');
   }
-  
+
 
 }
