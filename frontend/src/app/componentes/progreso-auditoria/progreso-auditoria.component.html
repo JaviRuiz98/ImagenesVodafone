@@ -12,7 +12,13 @@
             [severity]="'danger'"
             label="Terminar auditoria"
         ></p-button>
-        <p-dialog header="Informe" [(visible)]="verDialogInforme" [draggable]="false" [style]="{width: '50vw'}" [ngClass]="verDialogInforme ? 'informe p-component-overlay' : 'informe'">
+        <p-dialog header="Informe" 
+            [(visible)]="verDialogInforme" 
+            [draggable]="false" 
+            [style]="{width: '50vw'}" 
+            (visibleChange)="onDialogVisibilityChange($event)"
+            [ngClass]="verDialogInforme ? 'informe p-component-overlay' : 'informe'">
+
             <div class="p-dialog-title">
                 Seleccione en qué formato desea el informe.
             </div>

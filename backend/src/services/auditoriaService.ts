@@ -1,7 +1,6 @@
 import db  from "../config/database";
 import { auditorias, elementos, muebles } from '@prisma/client';
 import { mobiliarioService } from "./mobiliarioService";
-import { generarInformeAuditoria } from "../controller/informeController";
 
 export const auditoriaService = {
 
@@ -68,10 +67,6 @@ export const auditoriaService = {
             })
 
             if(lastAuditoria?.id_estado == 1) {
-
-                // Creo un informe de la auditoria y cierro la auditoria como caducada
-                await generarInformeAuditoria(lastAuditoria.id);
-
                 await db.auditorias.update({
                     where: {
                         id: lastAuditoria.id

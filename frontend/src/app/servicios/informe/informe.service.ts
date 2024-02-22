@@ -18,6 +18,6 @@ export class InformeService {
   }
 
   descargarInforme(body: { id_auditoria: number }): Observable<any> {
-    return this.http.post<any>(`${this.urlService.api_uri}/generar_informe`, body);
+    return this.http.post<any>(`${this.urlService.api_uri}/descargar_informe`, body);
   }
 }
