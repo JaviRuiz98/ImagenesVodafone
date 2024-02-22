@@ -54,6 +54,8 @@ export class PaginadorProcesamientoSubidaComponent {
     @Input() cargando_procesamiento: boolean = false;
     @Input() valueSelected: string = 'new';
     @Input() id_auditoria: number = 0;
+    @Input() estado_auditoria: string = '';
+
     @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
 
     
@@ -73,10 +75,5 @@ export class PaginadorProcesamientoSubidaComponent {
         const imagenAProcesar = event.archivo;
         this.archivoSeleccionadoChange.emit( { archivo: imagenAProcesar });
         this.cargando_procesamiento = true;
-    }
-    recibirEstado(){
-        const auditoria = this.localstorage.getItem('auditoria_seleccionada');
-        const estadoAuditoria = auditoria.estados_auditoria.estado;
-        return estadoAuditoria;
     }
 }

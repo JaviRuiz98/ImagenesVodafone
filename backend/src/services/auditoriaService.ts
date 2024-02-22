@@ -177,8 +177,12 @@ export const auditoriaService = {
                             categorias_elementos: true,
                             probabilidades_respuesta_carteles: true
                             
+                        },
+                        orderBy: {
+                            fecha: 'desc'
                         }
-                    },                
+                    }, 
+               
                 },
                 orderBy: {
                     id_mueble: 'asc'
