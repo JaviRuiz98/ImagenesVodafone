@@ -22,7 +22,6 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { StepsModule } from 'primeng/steps';
 
 import { FormMuebleComponent } from './components/formMueble/formMueble.component';
-import { AsignarElementoAMuebleComponent } from './components/asignarElementoAMueble/asignarElementoAMueble.component';
 import { AsignarHuecosComponent } from './components/asignarHuecos/asignarHuecos.component';
 import { HistorialExpositoresComponent } from './components/historialExpositores/historialExpositores.component';
 
@@ -71,7 +70,6 @@ import { PasoAsignarElementoFormComponent } from './components/formMueble/PasoAs
   declarations: [MuebleComponent,
      FormMuebleComponent,
      HistorialExpositoresComponent,
-     AsignarElementoAMuebleComponent,
      AsignarHuecosComponent,
      Paso1FormComponent,
      PasoHuecosFormComponent, 

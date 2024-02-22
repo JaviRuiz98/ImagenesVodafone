@@ -5,19 +5,20 @@
     <app-Paso1Form (formularioPaso1Change)="onFormularioPaso1Change($event)" [imagenesIn]="this.imagenes_iniciales"
       [nombreIn]="mueble_existente? mueble_existente.nombre: undefined"></app-Paso1Form>
   </div>
+
+  <!-- Asumiendo que activeIndex determina el paso actual y qué componente mostrar -->
   <div *ngIf="activeIndex > 0">
-    <div *ngFor="let imagen of formularioPaso1.value.imagenes; let i = index">
+    <!-- Verifica si el paso actual requiere el componente app-PasoHuecosForm -->
+    <ng-container *ngIf="!activeIndexIsPair()">
+      <app-PasoHuecosForm [imagen]="imagenes_iniciales[index_imagen_actual]"></app-PasoHuecosForm>
+    </ng-container>
 
-      <div *ngIf="activeIndexIsPair()">
-        <app-PasoHuecosForm [imagen]="imagen"></app-PasoHuecosForm>
-      </div>
-
-      <div *ngIf="!activeIndexIsPair()">
-        <app-PasoAsignarElementoForm [imagen]="imagen"></app-PasoAsignarElementoForm>
-      </div>
-    </div>
-
+    <!-- Verifica si el paso actual requiere el componente app-PasoAsignarElementoForm -->
+    <ng-container *ngIf="activeIndexIsPair()">
+      <app-PasoAsignarElementoForm [imagen]="imagenes_iniciales[index_imagen_actual]"></app-PasoAsignarElementoForm>
+    </ng-container>
   </div>
+
 
 </p-scrollPanel>
 
@@ -27,8 +28,8 @@
     <p-button label="volver" icon="pi pi-arrow-left" class="m-2" severity="danger" [disabled]="activeIndex == 0"
       (onClick)="activeIndex= activeIndex - 1"></p-button>
     <p-button [label]="activeIndex+1 == step_count ? 'Guardar' : 'siguiente'" icon="pi pi-arrow-right" class="m-2"
-      severity="danger" [disabled]="isValidNextStep"
-      (onClick)="activeIndex+1 == step_count? onSubmit() :activeIndex= activeIndex +1">
+      severity="danger" [disabled]="!isValidNextStep"
+      (onClick)="activeIndex+1 == step_count? onSubmit() : nextStep()">
     </p-button>
   </div>
 

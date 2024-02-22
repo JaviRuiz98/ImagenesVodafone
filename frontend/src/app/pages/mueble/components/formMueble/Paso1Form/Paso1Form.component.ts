@@ -40,7 +40,8 @@ export class Paso1FormComponent implements OnInit {
       this.formularioPaso1.patchValue({
         nombre: this.nombreIn,
         imagenes: this.imagenesIn
-      })
+      });
+      this.onSubmit();
     }
 
     this.formularioPaso1.valueChanges.subscribe(() => {

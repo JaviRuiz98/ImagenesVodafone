@@ -16,31 +16,30 @@ import { MenuItem } from 'primeng/api';
 })
 
 
+
+
 export class FormMuebleComponent implements OnInit {
-
-
-
 
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
+  //FORMULARIOS
   formularioPaso1: FormGroup | undefined;
   formularioPasoHuecoForm: FormGroup[] = [];
   formularioPasoAsignarElementoForm: FormGroup[] = [];
 
-  constructor( public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private elementosService: ElementosService, private muebleService: MueblesService) { }
-
-   //STEPPER
-   step_count: number = 2;
-   activeIndex:number = 0;
-   steps: MenuItem [] | undefined;
-   isValidNextStep: boolean = false;
-  
-  //paso 2 showing_asignar_expositores: boolean[] = [];
-
-
   objetivo_form: 'crear' | 'editar' = 'crear';
 
+  constructor( public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private elementosService: ElementosService, private muebleService: MueblesService) { }
+
+  //STEPPER
+  step_count: number = 2;
+  activeIndex:number = 0;
+  steps: MenuItem [] | undefined;
+  isValidNextStep: boolean = false;
+  rangeArray: number[] = [];
+
   imagenes_iniciales: string [] | undefined;
+  index_imagen_actual: number = 0;
 
   mueble_existente: muebles = {
     id: 0,
@@ -80,8 +79,12 @@ export class FormMuebleComponent implements OnInit {
 
      // Genera los pasos iniciales
      this.generateSteps();
+
+     this.updateIsValidNextStep();
      
   }
+
+  
 
   generateSteps() {
     this.steps = [
@@ -109,6 +112,11 @@ export class FormMuebleComponent implements OnInit {
         }
       }
     }
+    this.rangeArray= this.generateRangeArray(0,this.step_count-1);
+  }
+
+  generateRangeArray(start: number, end: number): number[] {
+    return Array(end - start + 1).fill(0).map((_, idx) => start + idx);
   }
   
 
@@ -141,36 +149,12 @@ export class FormMuebleComponent implements OnInit {
     this.generateSteps();
 
   }
-
-
-  // showingExpositoresIsFalse(): boolean {
-  //   return !this.showing_asignar_expositores.includes(true) || this.showing_asignar_expositores.length === 0;
-  // }
-
-  // getExpositorTrue(): expositores | undefined {
-  //   const index = this.showing_asignar_expositores.indexOf(true);
-  //   if (index !== -1) {
-  //     return this.mueble_existente.expositores[index];
-  //   }
-  //   return undefined;
-  // }
-  // showingExpositoresIsIndeedFalse() {
-  //   const expositoresCount = this.mueble_existente.expositores.length;
-  //   this.showing_asignar_expositores = new Array(expositoresCount).fill(false);
-  // }
-  // showAsignarExpositor(expositor: expositores) {
-  //   const index = this.mueble_existente.expositores.indexOf(expositor);
-  //   if (index !== -1) {
-  //     this.showing_asignar_expositores[index] = true;
-  //   }
-  // }
-
  
  
   updateIsValidNextStep(): void {
    if (this.activeIndex === 0) {
     
-    this.isValidNextStep = false;
+    this.isValidNextStep = true;
     //  this.isValidNextStep = this.formularioPaso1!==undefined && this.formularioPaso1?.valid;
    }else{
 
@@ -179,13 +163,21 @@ export class FormMuebleComponent implements OnInit {
    
   }
 
+  
+nextStep() {
+  if (this.activeIndex > 0 && this.activeIndexIsPair()) { 
+      this.index_imagen_actual++;
+  }
+  if (this.isValidNextStep){
+
+    this.activeIndex++;
+  }
+}
+  
+
   onSubmit() {
     throw new Error('Method not implemented.');
   }
 
- 
-    
-    
-  
 
 }
