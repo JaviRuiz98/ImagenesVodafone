@@ -126,26 +126,19 @@ export class GestionDeAuditoriasComponent implements OnInit {
     )
   }
 
-  descargarInforme(auditoria: auditoria){
-    console.log(auditoria);
-    //const informe = this.generarPDF();
+  descargarInforme(id_auditoria: number){
+    console.log(id_auditoria);
+    const body = {
+      id_auditoria: id_auditoria
+    }
+
+    this.informeService.descargarInforme(body).subscribe(
+      (data)=>{
+        console.log(data);
+      }, (error)=>{
+        console.error(error);
+      }
+    )
   }
 
-  informe(){
-    const informe = this.generarPDF();
-    
-    // const pdfBlob = new Blob([informe.output('blob')], { type: 'application/pdf' });
-    // const formData = new FormData();
-    // formData.append('pdfFile', pdfBlob, 'generated.pdf');
-    // this.auditoriaService.informe(formData).subscribe((response: any) => {
-    // })
-  }
-
-  generarPDF(){
-    let informe = new jsPDF();
-    informe.setFont("helvetica","bold"); 
-    informe.text('Resumen de la auditoria ', 20, 20);
-    //informe.save()
-    return informe;
-  }
 }

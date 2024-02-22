@@ -6,6 +6,7 @@ import { tiendaService } from '../services/tiendasServices';
 import { pea_extended } from '../interfaces/peaExtended';
 import { muebleConElementos} from '../interfaces/muebleConElementos';
 import { per_ele_aud_extended } from '../interfaces/perEleAudExtended';
+import { generarInformeAuditoria } from './informeController';
 
 export async function getAuditorias(req: Request, res: Response) {
     try {
@@ -188,6 +189,7 @@ export async function terminarAuditoria(req: Request, res: Response) {
     try {
         const id_auditoria = parseInt(req.body.id_auditoria);
         console.log('actualizando datos de la auditoria:', id_auditoria);
+        //await generarInformeAuditoria(req, res);
         await auditoriaService.terminarAuditoria(id_auditoria);
         res.status(200).json({ message: 'Auditoria terminada' });
     } catch (error) {
