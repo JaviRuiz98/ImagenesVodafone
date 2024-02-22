@@ -23,25 +23,18 @@ export class ProcesamientoService {
     formData.append('id_mueble', id_mueble_selected.toString());
     formData.append('id_auditoria', id_auditoria.toString());
     formData.append('imagenesProcesamiento', imageFile);
-
-    console.log("formData", formData);
-
     return this.http.post<procesados_imagenes>(`${this.API_URI}/procesado`, formData);
   }
 
   deleteProcesado(procesado: procesados_imagenes){
-    return this.http.delete(`${this.API_URI}/borrarProcesado/${procesado.id_procesado_imagen}`);
+    return this.http.delete(`${this.API_URI}/borrarProcesado/${procesado.id}`);
   }
  
-
   updateFeedbackProcesado(id_procesado_imagen: number, feedback: boolean | null): Observable<any> {
     const body = {
-      id_procesado_imagen,
+      id_procesado_imagen: id_procesado_imagen,
       feedback: feedback !== null ? feedback : null
     };
-  
     return this.http.post<any>(`${this.API_URI}/feedbackProcesado`,body);
   }
-
-  
 }

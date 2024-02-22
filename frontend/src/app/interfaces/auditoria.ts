@@ -1,7 +1,7 @@
 import { estados_auditoria } from './estados_auditoria';
 
 export class auditoria {
-    id_auditoria: number ;
+    id: number ;
     id_tienda: number;
     id_mobiliario: number;
     fecha: Date;
@@ -14,7 +14,7 @@ export class auditoria {
     constructor(valor: null){
         this.fecha = new Date();
         this.estado = 'en progreso';
-        this.id_auditoria = 0;
+        this.id = 0;
         this.id_tienda = 0;
         this.id_mobiliario = 0;
         this.num_expositores_procesados = 0;
