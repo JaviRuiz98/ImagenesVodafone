@@ -11,14 +11,14 @@
             ngClass="botonSelectorHistorial">
         </p-selectButton>
     </div>
-    <div class="anchoAltoSelector" *ngIf="valueSelected==='new'"> 
+    <div class="anchoAltoSelector" *ngIf="valueSelected==='new' && estado_auditoria === 'en progreso'"> 
         <app-selector-imagenes 
             *ngIf="valueSelected==='new'"
             (archivoSeleccionadoChange)="recibirFile($event)"
             [cargando_procesado]="cargando_procesamiento">
         </app-selector-imagenes>
     </div>
-    <div *ngIf="valueSelected==='historial'" class="anchoAltoGridFotosPaginador">
+    <div *ngIf="valueSelected==='historial' ||  estado_auditoria !== 'en progreso'" class="anchoAltoGridFotosPaginador">
         <app-visualizacion-procesados
             [procesados]="procesados"
         ></app-visualizacion-procesados>
