@@ -51,9 +51,8 @@ export class AuditoriaComponent implements OnInit{
 
     ngOnInit(): void {
       this.auditoria_seleccionada = this.localStorageService.getItem('auditoria_seleccionada')
-
+      console.log(this.auditoria_seleccionada.estados_auditoria.estado)
       this.url_imagenes = this.urlService.url_en_uso + this.carpeta_imagenes_referencias;
-
       this.auditoriaService.getAuditoriaById(this.auditoria_seleccionada.id).subscribe(
         auditoria => {
           this.auditoria_seleccionada = auditoria
@@ -101,6 +100,5 @@ export class AuditoriaComponent implements OnInit{
         break; 
       }
     }
-    console.log('MUEBLEs', this.muebles)
   }
 }
