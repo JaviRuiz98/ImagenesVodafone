@@ -1,0 +1,16 @@
+<p-dialog header="Header" (onShow)="true" [style]="{width: '50vw'}">
+    <h1>aaaaaaaaaaaaaa</h1>
+    <div style="text-align: center">
+        <h1>{{title}}</h1>
+        <canvas id="canvas" width="800" height="600" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)"></canvas>
+        <br />
+        <button (click)="clearRectangles()">Borrar rectángulos</button>
+        <br />
+        <button (click)="undoLastAction()">Deshacer</button>
+        <br />
+        <img id="target-image" hidden />
+    </div>
+</p-dialog>
+
+
+

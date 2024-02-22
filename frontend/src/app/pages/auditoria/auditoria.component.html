@@ -24,7 +24,8 @@
         <div class="panelDerecha">
           <div *ngFor=" let elemento of mueble.elementos" [style]="{'width': '100%', 'height':'100%'}">              
             <app-paginador-procesamiento-subida 
-              class="anchoAltoPaginador"                 
+              class="anchoAltoPaginador"  
+              [estado_auditoria]="this.auditoria_seleccionada.estados_auditoria.estado"               
               [procesados]="elemento.procesados_imagenes" 
               [cargando_procesamiento]="cargas_procesamiento[elemento.id]"
               [valueSelected]="modos_visualizacion[elemento.id] === 'historial'? 'historial':'new'"
