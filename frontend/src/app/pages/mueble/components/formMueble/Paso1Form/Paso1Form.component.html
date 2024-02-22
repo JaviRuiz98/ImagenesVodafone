@@ -31,13 +31,14 @@
 
           <div class="flex-1 m-2 flex flex-wrap">
 
-            <div *ngFor="let imagen of imagenes.value; let i = index">
+            <div *ngFor="let imagen of imagenes.value; let i = index"  class="image-container">
              
                 <img class="flex m-2 default-imagen" 
                   [src]="imagen" height="200vh"
                   [alt]="imagen" />
-             
 
+                  <p-button icon="pi pi-trash" class="delete-button" severity="danger"  [rounded]="true" (click)="deleteImage(i)"></p-button>
+             
             </div>
 
           </div>
