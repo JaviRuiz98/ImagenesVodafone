@@ -11,6 +11,6 @@ export interface elementos {
     nombre: string;
     activo: boolean;
     categorias_elementos: categorias_elementos;
-    procesados_imagenes: procesados_imagenes[];
+    procesados_imagenes?: procesados_imagenes[];
 }
 
