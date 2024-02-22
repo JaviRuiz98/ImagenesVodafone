@@ -56,13 +56,20 @@
   height: 100%;
   background-color: rgba(232, 232, 232, 0.9);
 }
-.anchoAltoFotoReferencia {
+.anchoAltoFotoReferenciaDosImagenes {
   display: grid;
   grid-template-columns: 50% 50%;
   width: 100%;
   height: 100%;
 }
-.anchoAltoFotoReferencia ::ng-deep .ng-star-inserted{
+.anchoAltoFotoReferenciaDosImagenes ::ng-deep .ng-star-inserted{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.anchoAltoFotoReferenciaUnaImagenes ::ng-deep .ng-star-inserted{
   display: flex;
   align-items: center;
   justify-content: center;

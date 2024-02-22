@@ -14,8 +14,8 @@
         </div>
       </ng-template>
       <div class="panelDerechaIzquierda" *ngIf="mueble.elementos != undefined">
-        <div class="panelIzquierda" >
-          <div class="anchoAltoFotoReferencia">
+        <div class="panelIzquierda">
+          <div [ngClass]="{'anchoAltoFotoReferenciaDosImagenes': mueble.elementos.length === 2, 'anchoAltoFotoReferenciaUnElemento': mueble.elementos.length === 1}">
             <div *ngFor=" let elemento of mueble.elementos">
               <p-image [src]="url_imagenes + elemento.imagenes.url" [alt]="elemento.imagenes.url" [preview]="true" [width]="'100%'" [height]="'100%'"></p-image>
             </div>
