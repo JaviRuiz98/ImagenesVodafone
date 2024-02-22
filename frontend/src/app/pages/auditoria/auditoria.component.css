@@ -8,9 +8,8 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 85%;
-  height: 600px;
-  min-width: 750px;
+  width: 90%;
+  height: 700px;
 }
 .contornoPanel {
   border: 1px solid black;
@@ -18,6 +17,9 @@
   margin-bottom: 20px;
   height: 100%;
   width: 100%;
+}
+.contornoPanel ::ng-deep.p-panel{
+  height: 100%;
 }
 .cabeceraTabla {
   margin-top: 10px;
@@ -34,34 +36,36 @@
 }
 
 .panelDerechaIzquierda{
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 50% 50%;
+  height: 100%;
   width: 100%;
-  margin-top: 0%;
-  min-width: 550px;
-  height: 494px;
-  overflow: hidden;
+  min-height: 600px;
 }
 .panelIzquierda {
   display: flex;
   justify-content: center;
-  width: 50%;
-  min-width: 350px;
-  height: 494px;
+  width: 100%;
+  height: 100%;
   background-color: rgba(210, 209, 209, 0.9);
 }
-
 .panelDerecha{
   display: flex;
   justify-content: center;
-  align-items: center;
-  width: 50%;
-  min-width: 350px;
+  width: 100%;
+  height: 100%;
   background-color: rgba(232, 232, 232, 0.9);
 }
 .anchoAltoFotoReferencia {
   display: grid;
+  grid-template-columns: 50% 50%;
   width: 100%;
+  height: 100%;
+}
+.anchoAltoFotoReferencia ::ng-deep .ng-star-inserted{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 /*
 descomentar para que una imagen se vea bien 1 sola imagen

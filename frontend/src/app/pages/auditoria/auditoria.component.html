@@ -17,11 +17,12 @@
         <div class="panelIzquierda" >
           <div class="anchoAltoFotoReferencia">
             <div *ngFor=" let elemento of mueble.elementos">
-              <p-image [src]="url_imagenes + elemento.imagenes.url" [alt]="elemento.imagenes.url" [preview]="true" [height]="'400px'" class="imagenSimple"></p-image>
+              <p-image [src]="url_imagenes + elemento.imagenes.url" [alt]="elemento.imagenes.url" [preview]="true" [width]="'100%'" [height]="'100%'"></p-image>
             </div>
           </div>
         </div>
         <div class="panelDerecha">
+          <!--
           <div *ngFor=" let elemento of mueble.elementos" [style]="{'width': '100%', 'height':'100%'}">              
             <app-paginador-procesamiento-subida 
               class="anchoAltoPaginador"  
@@ -32,6 +33,7 @@
               (archivoSeleccionadoChange)="procesarImagen($event, elemento.id, mueble.id)">
             </app-paginador-procesamiento-subida>            
           </div>
+        -->
         </div>
       </div>
     </p-panel>
