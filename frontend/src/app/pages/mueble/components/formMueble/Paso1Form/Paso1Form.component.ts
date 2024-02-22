@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class Paso1FormComponent implements OnInit {
 
 
+
   constructor(  private fb: FormBuilder) { }
 
   @Input() imagenesIn?: string[];
@@ -48,6 +49,12 @@ export class Paso1FormComponent implements OnInit {
       this.onSubmit();
     });
 
+  }
+
+  deleteImage(index: number) {
+    this.formularioPaso1.patchValue({
+      imagenes: this.imagenes.value.filter((_, i) => i !== index)
+    })
   }
 
   onArchivoSeleccionadoChange($event: { archivo: File }) {

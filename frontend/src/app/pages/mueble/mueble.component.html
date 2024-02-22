@@ -29,15 +29,15 @@
         <ng-template pTemplate="header">
             <tr>
                 <th pSortableColumn="nombre">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
-                <th> Expositor 
-
-                </th>
-                <th>Opciones</th>
+                <th> Expositor</th>
+                <th>Editar</th>
+                <th>Historial de elementos</th>
             </tr>
             <tr>
                 <th>
                     <p-columnFilter type="text" field="nombre"></p-columnFilter>
                 </th>
+                <th></th>
                 <th></th>
                 <th></th>
             
@@ -50,7 +50,7 @@
                 <td [ngClass]=" mueble.expositores.length > 1 ?  'expositores-container':''">
                     <div *ngFor="let expositor of mueble.expositores; let i = index;" >
                         
-                        <p-image *ngIf="tieneModelo(expositor.atributos_expositores)" class ="imagenSimple" [src]="url_imagenes_referencias + getImagenModelo(expositor)"  height="100vh"  [alt]=" getImagenModelo(expositor)? getImagenModelo(expositor):'No disponible'"  [preview]="true"></p-image>
+                        <p-image  *ngIf="tieneModelo(expositor.atributos_expositores)" class ="imagenSimple" [src]="url_imagenes_referencias + getImagenModelo(expositor)"  height="100vh"  [alt]=" getImagenModelo(expositor)? getImagenModelo(expositor):'No disponible'"  [preview]="true"></p-image>
                         <div *ngIf="!tieneModelo(expositor.atributos_expositores)" class="flex align-items-center justify-content-center">-</div>
                         <div> 
                             <p-button 
@@ -70,9 +70,14 @@
                 
 
 
-                <td class="opciones">
+                <td>
+                  
                     <p-button severity="danger" class="mr-2" [raised]="true" [text]="true" [rounded]="true" label="Editar" icon="pi pi-pencil"  (click)="editMueble(mueble)"></p-button>
-                    <p-button  [raised]="true"  [text]="true" [rounded]="true" severity="danger" label="Historial de elementos" icon="pi pi-history" [disabled]="mueble.expositores.length < 1" (click) ="showHistorial(mueble)"></p-button>
+                </td>
+                <td>
+               
+                    <p-button  [raised]="true"  [text]="true" [rounded]="true" severity="danger" label="Ver historial" icon="pi pi-history" [disabled]="mueble.expositores.length < 1" (click) ="showHistorial(mueble)"></p-button>
+                  
                 </td>
             </tr>
         </ng-template>
