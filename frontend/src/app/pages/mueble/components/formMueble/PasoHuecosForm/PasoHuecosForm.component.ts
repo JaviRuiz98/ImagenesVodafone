@@ -11,12 +11,13 @@ import { ElementosService } from 'src/app/servicios/elementos/elementos.service'
 export class PasoHuecosFormComponent implements OnInit {
 
   @Input() imagen: string;
-  @Output() huecos:huecoCreacion[] = [];
+  @Output() huecosEmitter:huecoCreacion[] = [];
   constructor(private elementosService: ElementosService) { }
 
   categoriaSeleccionada?: string;  
   opcionesCategoria: string[] = [];
   categorias_elementos: categorias_elementos[];
+  huecos: huecoCreacion[] = [];
   
   ngOnInit() {
     console.log(this.imagen);
