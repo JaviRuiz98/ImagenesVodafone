@@ -1,7 +1,7 @@
 <div class="gridHistorial">
     <div *ngFor="let item of getElementosPaginados()" class="imagenProcesadaComentarios">
         <div class="anchoAltoImagenProcesada">
-            <p-image [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" [preview]="true" class="contenedorImagen"></p-image>
+            <p-image [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" [preview]="true" [imageStyle]="{'width': '100%', 'height': '100%'}" ></p-image>
             <app-dialog-informacion-procesado [procesado]="item" class="posicionDialog"></app-dialog-informacion-procesado>
         </div>
         <div class="respuestaProcesado">
@@ -16,8 +16,8 @@
                     </p-dialog>
                 </div>
                 <div class="valoracionBorrar">
-                    <p-button [icon]="inicializa_likeButon(item)" (click)="funcionFeedback(item, true)"  [text]="true" severity="danger"></p-button>
-                    <p-button [icon]="inicializa_dislikeButon(item)" (click)="funcionFeedback(item, false)" [text]="true" severity="danger"></p-button>
+                    <p-button [icon]="(item.feedback_humano === null || item.feedback_humano === false) ? 'pi pi-thumbs-up' : 'pi pi-thumbs-up-fill'" (click)="funcionFeedback(item, true)"  [text]="true" severity="danger"></p-button>
+                    <p-button [icon]="(item.feedback_humano === null || item.feedback_humano === true) ? 'pi pi-thumbs-down' : 'pi pi-thumbs-down-fill'" (click)="funcionFeedback(item, false)" [text]="true" severity="danger"></p-button>
                     <p-button icon="pi pi-trash" (click)="confirmarDelete($event, item)" [rounded]="true" [text]="true" severity="danger" [style]="{'padding': '0'}"></p-button>
                 </div>
             </div>
@@ -34,7 +34,3 @@
         [showPageLinks]="false">
     </p-paginator>
 </div>
-
-        <!--
-       
-        -->
