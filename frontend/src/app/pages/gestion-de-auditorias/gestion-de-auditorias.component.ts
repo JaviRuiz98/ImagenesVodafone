@@ -133,12 +133,18 @@ export class GestionDeAuditoriasComponent implements OnInit {
     }
 
     this.informeService.descargarInforme(body).subscribe(
-      (data)=>{
-        console.log(data);
-      }, (error)=>{
-        console.error(error);
-      }
-    )
+      (blob)=>{
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'informe-auditoria.pdf'; // Nombre de archivo deseado
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }, error => {
+        console.error('Error al descargar el informe:', error);
+      });
   }
 
 }

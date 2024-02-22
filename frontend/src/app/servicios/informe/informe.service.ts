@@ -17,7 +17,9 @@ export class InformeService {
     return this.http.post<any>(`${this.urlService.api_uri}/enviar_informe`, body);
   }
 
-  descargarInforme(body: { id_auditoria: number }): Observable<any> {
-    return this.http.post<any>(`${this.urlService.api_uri}/descargar_informe`, body);
+  descargarInforme(body: { id_auditoria: number }): Observable<Blob> {
+    return this.http.post<Blob>(`${this.urlService.api_uri}/descargar_informe`, body, {
+      responseType: 'blob' as 'json'
+    });
   }
 }
