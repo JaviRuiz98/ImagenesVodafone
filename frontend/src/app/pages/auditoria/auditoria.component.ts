@@ -40,6 +40,8 @@ export class AuditoriaComponent implements OnInit{
     respuestas_carteles: [],
     rangos_cuentas: {min: 0, max: 100}    
   }
+  
+
 
   constructor( 
     private auditoriaService: AuditoriaService ,

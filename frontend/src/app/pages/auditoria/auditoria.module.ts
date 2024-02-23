@@ -13,6 +13,7 @@ import { BadgeModule } from 'primeng/badge';
 import { ImageModule } from 'primeng/image';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ToastModule } from 'primeng/toast';
+import { GalleriaModule } from 'primeng/galleria';
 
  
 import { BarraMenuComponent } from './../../componentes/barra-menu/barra-menu.component';
@@ -21,7 +22,6 @@ import { SelectorImagenesComponent } from './../../componentes/selector-imagenes
 import { PaginadorProcesamientoSubidaComponent } from './../../componentes/paginador-procesamiento-subida/paginador-procesamiento-subida.component'; 
 import { IrArribaComponent } from 'src/app/componentes/ir-arriba/ir-arriba.component';import { FiltroProcesadosComponent } from 'src/app/componentes/filtro-procesados/filtro-procesados.component';
 import { ProgresoAuditoriaComponent } from 'src/app/componentes/progreso-auditoria/progreso-auditoria.component';
-import { VisualizacionProcesadosComponent } from 'src/app/componentes/visualizacion-procesados/visualizacion-procesados.component';
 @NgModule({
   declarations: [
     AuditoriaComponent
@@ -36,7 +36,6 @@ import { VisualizacionProcesadosComponent } from 'src/app/componentes/visualizac
     IrArribaComponent,
     FiltroProcesadosComponent,
     ProgresoAuditoriaComponent,
-    VisualizacionProcesadosComponent,
 
     BrowserAnimationsModule,    
     CardModule,
@@ -46,7 +45,8 @@ import { VisualizacionProcesadosComponent } from 'src/app/componentes/visualizac
     BadgeModule, 
     ImageModule,
     ProgressSpinnerModule,
-    ToastModule
+    ToastModule,
+    GalleriaModule
   ]
 })
 export class AuditoriaModule { }
