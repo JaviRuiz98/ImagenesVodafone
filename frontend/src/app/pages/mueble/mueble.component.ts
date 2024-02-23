@@ -11,6 +11,7 @@ import { expositores } from 'src/app/interfaces/expositores';
 import { elementos } from 'src/app/interfaces/elementos';
 import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
 import { PasoAsignarElementoFormComponent } from './components/formMueble/PasoAsignarElementoForm/PasoAsignarElementoForm.component';
+import { EditarExpositorComponent } from './components/editarExpositor/editarExpositor.component';
 @Component({
   selector: 'app-mueble',
   templateUrl: './mueble.component.html',
@@ -117,9 +118,9 @@ export class MuebleComponent implements OnInit {
     });
   }
 
-  showElementos(expositor:expositores) {
+  showEditarExpositor(expositor:expositores) {
 
-    this.ref = this.dialogService.open(PasoAsignarElementoFormComponent, {
+    this.ref = this.dialogService.open(EditarExpositorComponent, {
       width: '70%',
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,

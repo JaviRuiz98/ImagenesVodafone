@@ -38,6 +38,8 @@ import { DividerModule } from 'primeng/divider';
 import { Paso1FormComponent } from './components/formMueble/Paso1Form/Paso1Form.component';
 import { PasoHuecosFormComponent } from './components/formMueble/PasoHuecosForm/PasoHuecosForm.component';
 import { PasoAsignarElementoFormComponent } from './components/formMueble/PasoAsignarElementoForm/PasoAsignarElementoForm.component';
+import { ArrastrarElementoComponent } from './components/arrastrarElemento/arrastrarElemento.component';
+import { EditarExpositorComponent } from './components/editarExpositor/editarExpositor.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -67,10 +69,13 @@ import { PasoAsignarElementoFormComponent } from './components/formMueble/PasoAs
     
     
   ],
-  declarations: [MuebleComponent,
+  declarations: [
+     MuebleComponent,
      FormMuebleComponent,
      HistorialExpositoresComponent,
      AsignarHuecosComponent,
+     ArrastrarElementoComponent,
+     EditarExpositorComponent,
      Paso1FormComponent,
      PasoHuecosFormComponent, 
      PasoAsignarElementoFormComponent
