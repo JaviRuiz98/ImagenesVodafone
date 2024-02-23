@@ -83,12 +83,12 @@ export const mobiliarioService = {
             await db.$disconnect();
         }
     },
-    async getAllMuebles(): Promise<muebles[]> {
+    async getAllMuebles(): Promise<any> {
         try {
             
             const muebles = await db.muebles.findMany({
-                include: {
-                   
+                include: {   
+                    
                     expositores: {
                         include: {
                             atributos_expositores: {
@@ -119,11 +119,14 @@ export const mobiliarioService = {
                         const elemento = atributo.pertenencia_elementos_atributos.map((pertenencia) => pertenencia.elementos)[0]; //quiero devolver el elemento activo
                         return { ...atributo, elemento }; 
                     });
+                    console.log ("atributos", atributos);
                     return { ...expositor, atributos_expositores: atributos }; 
                 });
                 return { ...mueble, expositores };
             });
             return mueblesMapeados;
+
+        
 
         } catch (error) {
             throw error;

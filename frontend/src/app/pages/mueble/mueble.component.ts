@@ -54,13 +54,11 @@ export class MuebleComponent implements OnInit {
   }
   private loadMuebles() {
    this.muebleService.getAllMuebles().subscribe(muebles => {
+     console.log(muebles);
      this.muebles = muebles; 
    })
   }
 
-  
-  
-  
   editMueble(mueble: muebles, showing_asignar_expositores_index?:number) {
     
     this.ref = this.dialogService.open(FormMuebleComponent, {

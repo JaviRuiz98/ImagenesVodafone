@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { categorias_elementos } from 'src/app/interfaces/categoria';
 import { elementos } from 'src/app/interfaces/elementos';
 import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
@@ -14,6 +14,9 @@ export class ArrastrarElementoComponent implements OnInit {
   constructor(private elementosService: ElementosService) { }
   @Input() mode: 'arrastrar' | 'seleccionar' = 'arrastrar';
   @Input() categoria?: categorias_elementos;
+
+  @Output() onDragStart = new EventEmitter<{ dragEvent: DragEvent, elemento: elementos }>();
+  @Output() onDragEnd = new EventEmitter<{ dragEvent: DragEvent }>();
 
   all_elementos: elementos[] = [];
   selected_elemento?: elementos;
@@ -63,13 +66,15 @@ export class ArrastrarElementoComponent implements OnInit {
       );
     }
   }
-
-  onDragStart( $event: DragEvent, elemento: elementos) {
+  dragStart(event: DragEvent, elemento: elementos) {
     this.dragged_elemento = elemento;
+    this.onDragStart.emit({ dragEvent:event, elemento });
   }
 
-  onDragEnd($event: DragEvent) {
-    console.log("terminar");
+  dragEnd(event: DragEvent) {
+    this.dragged_elemento = undefined;
+    this.onDragEnd.emit({ dragEvent: event });
   }
-  
+
+
 }
