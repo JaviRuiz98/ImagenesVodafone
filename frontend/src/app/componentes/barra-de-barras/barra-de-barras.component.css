@@ -1,5 +1,7 @@
 .bar-container {
-    border: 1px solid #ccc; /* Añade un borde, si es necesario */
-    border-radius: 4px; /* Bordes redondeados */
-  }
+  border: 1px solid #ccc;
+  border-radius: 4px; 
+}
+
+
   
