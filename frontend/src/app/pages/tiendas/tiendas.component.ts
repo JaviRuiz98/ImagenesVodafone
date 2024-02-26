@@ -24,7 +24,7 @@ export class TiendasComponent implements OnInit{
     sfid: '',
     id: 0,
     pertenencia_mueble_tienda: [],
-    activa: true
+    activo: true
   };
   verFormularioNuevaTienda: boolean = false;
   sfidInput: string = '';
@@ -165,10 +165,10 @@ export class TiendasComponent implements OnInit{
         this.TiendasService.activarDesactivarTienda(tienda).subscribe((response: tienda) => {
           const index = this.tiendas.findIndex(t => t.id === tienda.id && t.sfid === tienda.sfid);
           if (index !== -1) {
-            this.tiendas[index].activa = response.activa;
+            this.tiendas[index].activo = response.activo;
           }
         })
-        const mensajeDetalle = tienda.activa ? 'La tienda ha sido desactivada.' : 'La tienda ha sido activada.';
+        const mensajeDetalle = tienda.activo ? 'La tienda ha sido desactivada.' : 'La tienda ha sido activada.';
         this.messageService.add({ severity: 'success', summary: 'Confirmado!', detail: mensajeDetalle });
       },
       reject: (type: ConfirmEventType) => {

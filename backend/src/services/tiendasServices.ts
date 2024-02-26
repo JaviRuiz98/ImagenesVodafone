@@ -70,7 +70,7 @@ export const tiendaService = {
         return await db.tiendas.create({
             data: ({
                 sfid: sfid,
-                activa: true
+                activo: true
             })
         });
     } catch (error) {
@@ -124,7 +124,7 @@ export const tiendaService = {
                     id: tienda.id,
                 },
                 data: {
-                    activa: !tienda.activa
+                    activo: !tienda.activo
                 }
             })
         } catch (error) {
