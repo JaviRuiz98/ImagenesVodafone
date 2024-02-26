@@ -29,7 +29,7 @@ export class TiendasComponent implements OnInit{
   verFormularioNuevaTienda: boolean = false;
   sfidInput: string = '';
   comunidadInput: string = '';
-  parametrosSteps: any; //TIPAR CON LABEL Y ROUTERLINK
+  parametrosSteps: any; 
   activeIndex: number = 0;
   listaTodosMuebles: muebles[] = [];
   listaMueblesNuevaTienda: muebles[] = [];
@@ -42,6 +42,9 @@ export class TiendasComponent implements OnInit{
   nombreFiltroListaTodosMuebles: string = '';
   mensajeActivarDesactivar: string = 'Desactivar';
   mensajeDialog: string = '¿Seguro que desea desactivar la tienda?';
+  cabeceraListaDerecha: string = '';
+  cabeceraListaDerechaNuevaTienda: string = 'Muebles Seleccionados';
+  cabeceraListaDerechaEditarTienda: string = 'Muebles Actuales';
 
 
   constructor(private TiendasService: TiendasService, private MueblesService: MueblesService, private messageService: MessageService, private ConfirmationService: ConfirmationService){}
@@ -51,6 +54,7 @@ export class TiendasComponent implements OnInit{
     this.inicializarSteps();
   }
   iniciarFormularioNuevaTienda(){
+    this.getAllMuebles();
     this.verFormularioNuevaTienda = true;
     this.activeIndex = 0;
     this.listaMueblesNuevaTienda = [];
@@ -59,6 +63,7 @@ export class TiendasComponent implements OnInit{
     this.sfidInput = '';
     this.comunidadInput = '';
     this.cabeceraNuevaEditarTienda = 'Nueva Tienda';
+    this.cabeceraListaDerecha = this.cabeceraListaDerechaNuevaTienda;
   }
   getAllTiendas(){
     this.TiendasService.getAllTiendas().subscribe((response: tienda[]) => {
@@ -126,6 +131,7 @@ export class TiendasComponent implements OnInit{
   editarTienda(tienda: tienda){
     const listaMueblesDisponibles = this.eliminarMueblesSeleccionados(this.listaTodosMuebles, this.listaMueblesNuevaTienda)
     this.nuevaTienda = tienda;
+    this.cabeceraListaDerecha = this.cabeceraListaDerechaEditarTienda;
     this.crearEditarTienda = 'Editar tienda';
     this.cabeceraNuevaEditarTienda = 'Editar tienda';
     this.sfidInput = tienda.sfid;
