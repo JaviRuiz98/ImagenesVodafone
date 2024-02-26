@@ -38,14 +38,17 @@
                 <p-button [icon]="(procesado.feedback_humano === null || procesado.feedback_humano === true) ? 'pi pi-thumbs-down' : 'pi pi-thumbs-down-fill'" (click)="funcionFeedback(procesado, false)" [text]="true" severity="danger"></p-button>
             </div>
             <h4 >· IA Utilizada: </h4><span >{{this.procesado.IA_utilizada}}</span>
-            <h4 [style]="{'margin-bottom': '0'}">· Prompt utilizado: </h4><span ><p-button [rounded]="true" [text]="true" severity="danger" label="{{this.procesado.prompts.nombre_prompt}}" (onClick)="mostrarPrompt()" (onClick)="open.toggle($event)"></p-button></span>
+            <h4 [style]="{'margin-bottom': '0'}">· Prompt utilizado: </h4>
+            <span >
+                <p-button [rounded]="true" [text]="true" severity="danger" label="{{this.procesado.prompts.nombre_prompt}}" (onClick)="mostrarPrompt()"></p-button>
+            </span>
             <h4>· Fecha: </h4><span >{{ this.procesado.fecha | date:'dd-MM-yyyy | HH:mm' }}</span>
         </div>
     </div>
-    <div *ngIf="verResumen === false">
-        <h4>{{this.procesado.prompts.nombre_prompt}}</h4>
-        <p>
-            {{this.procesado.prompts.texto_prompt}}
-        </p>
-    </div>
 </p-overlayPanel>
+<p-dialog header="{{this.procesado.prompts.nombre_prompt}}" [(visible)]="verPrompt" [style]="{ width: '50vw', height: '40vh'}" [draggable]="false">
+    <ng-template pTemplate="header">
+        <h3><p-button [rounded]="true" [text]="true" severity="danger" label="{{this.procesado.prompts.nombre_prompt}}" (onClick)="mostrarResumen()"></p-button></h3>
+    </ng-template>
+    <p>{{this.procesado.prompts.texto_prompt}}</p>
+</p-dialog>

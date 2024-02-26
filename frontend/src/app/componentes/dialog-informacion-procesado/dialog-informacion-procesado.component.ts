@@ -31,7 +31,7 @@ export class DialogInformacionProcesadoComponent {
   @Input() id_procesado: number = 0;
   @Input() procesado: any;
   val: boolean = true;
-
+  verPrompt: boolean = false;
   visible_info_procesamiento: boolean = false;
   visible_info_procesamiento_click: boolean = false;
   likeButton: string = "pi pi-thumbs-up";
@@ -70,6 +70,11 @@ export class DialogInformacionProcesadoComponent {
     this.procesamientoService.updateFeedbackProcesado(procesado.id, procesado.feedback_humano).subscribe();
   }
   mostrarPrompt(){
-    this.verResumen = false;
+    // this.verResumen = false;
+    this.verPrompt = true;
+  }
+  mostrarResumen(){
+    this.verResumen = true;
+    this.verPrompt = false;
   }
 }
