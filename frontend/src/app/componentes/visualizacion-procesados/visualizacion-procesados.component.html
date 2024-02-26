@@ -1,36 +1,15 @@
-<div class="gridHistorial">
-    <div *ngFor="let item of getElementosPaginados()" class="imagenProcesadaComentarios">
+<div class="gridHistorial" *ngFor="let item of getElementosPaginados()">
+    <div  class="imagenProcesadaComentarios">
         <div class="anchoAltoImagenProcesada">
-            <p-image [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" [preview]="true" [imageStyle]="{'width': '100%', 'height': '100%'}" ></p-image>
-            <app-dialog-informacion-procesado [procesado]="item" class="posicionDialog"></app-dialog-informacion-procesado>
-        </div>
-        <div class="respuestaProcesado">
-            <span class="comentarios"><strong>Comentarios:</strong> {{this.item.comentarios}}</span>
-            <div class="promptBotones">
-                <div class="verPrompt">
-                    <p-button (click)="showDialog()" [text]="true" severity="danger" [style]="{'padding': '0', 'max-width': '100%'}"><strong>{{item.prompts.nombre_prompt}}</strong></p-button>
-                    <p-dialog [header]='item.prompts.nombre_prompt' [(visible)]="visiblePrompt" [style]="{width: '50vw'}">
-                        <p>
-                            {{item.prompts.texto_prompt}}
-                        </p>
-                    </p-dialog>
-                </div>
-                <div class="valoracionBorrar">
-                    <p-button [icon]="(item.feedback_humano === null || item.feedback_humano === false) ? 'pi pi-thumbs-up' : 'pi pi-thumbs-up-fill'" (click)="funcionFeedback(item, true)"  [text]="true" severity="danger"></p-button>
-                    <p-button [icon]="(item.feedback_humano === null || item.feedback_humano === true) ? 'pi pi-thumbs-down' : 'pi pi-thumbs-down-fill'" (click)="funcionFeedback(item, false)" [text]="true" severity="danger"></p-button>
-                    <p-button icon="pi pi-trash" (click)="confirmarDelete($event, item)" [rounded]="true" [text]="true" severity="danger" [style]="{'padding': '0'}"></p-button>
-                </div>
-            </div>
+            <p-galleria 
+            [value]="procesados"  [numVisible]="5" [circular]="true" [showItemNavigators]="true" [showThumbnails]="false" [responsiveOptions]="responsiveOptions"
+            [containerStyle]="{'width': '100%', 'height': '100%'}" 
+            [style]="{'width': '100%', 'height': '100%'}">
+                <ng-template pTemplate="item" let-item>
+                    <p-image [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" [preview]="true" [imageStyle]="{'width': '100%', 'height': '100%'}" ></p-image>
+                </ng-template>
+            </p-galleria>
+            <app-dialog-informacion-procesado [procesado]="item" class="posicionDialog"></app-dialog-informacion-procesado> 
         </div>
     </div>
-    <p-paginator 
-        [style]="{'background-color': 'rgba(232, 232, 232, 0.9)', 'width': '100%', 'height': '100%'}"
-        [rows]="items_per_page" 
-        [totalRecords]="procesados.length" 
-        [first]="indice_paginador" 
-        (onPageChange)="onPageChange($event)"
-        [hidden]="procesados.length === 0"
-        [showJumpToPageDropdown]="true" 
-        [showPageLinks]="false">
-    </p-paginator>
 </div>
