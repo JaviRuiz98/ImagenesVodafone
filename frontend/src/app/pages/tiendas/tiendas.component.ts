@@ -20,12 +20,7 @@ export class TiendasComponent implements OnInit{
   tiendas: tienda[] = [];
   tiendasFiltradas: tienda[] = []
   tiendasMostrar: tienda[] = [];
-  nuevaTienda: tienda = {
-    sfid: '',
-    id: 0,
-    pertenencia_mueble_tienda: [],
-    activo: true
-  };
+  nuevaTienda: tienda;
   verFormularioNuevaTienda: boolean = false;
   sfidInput: string = '';
   comunidadInput: string = '';
@@ -68,6 +63,7 @@ export class TiendasComponent implements OnInit{
   getAllTiendas(){
     this.TiendasService.getAllTiendas().subscribe((response: tienda[]) => {
       this.tiendas = response;
+      console.log(this.tiendas)
       this.tiendasMostrar = response;
     })
   }
