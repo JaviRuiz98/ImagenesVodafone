@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
+import { DatePipe } from '@angular/common';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class PublicMethodsService {
 
-  constructor() { }
+  constructor(
+    private datePipe: DatePipe,
+  ) { }
 
   getSeverityCartel(result: string): string {
     switch (result) {
@@ -49,4 +53,8 @@ export class PublicMethodsService {
                 return 'primary';
         }
     }
+
+    formatDate(date: Date): string | null {
+        return this.datePipe.transform(date, 'dd/MM/yyyy HH:mm');
+      }
 }

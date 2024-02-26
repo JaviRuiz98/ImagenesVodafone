@@ -44,6 +44,23 @@ export const auditoriaService = {
         }
     },
 
+    async getAuditoriaAndTienda(id_auditoria: number): Promise<auditorias | null> {
+        try {
+            return db.auditorias.findUnique({
+                where: {
+                    id: id_auditoria
+                }, include: {
+                    tiendas: true
+                }
+            })
+        } catch (error) {
+            console.error('No se pudo obtener el auditoria:', error);
+            throw error;
+        } finally {
+            await db.$disconnect();
+        }
+    },
+
     async createPertenenciaExpositorAuditoria(id_auditoria: number, mueble: muebles, elemento: elementos) {
         await db.pertenencia_elementos_auditoria.create({
             data: {

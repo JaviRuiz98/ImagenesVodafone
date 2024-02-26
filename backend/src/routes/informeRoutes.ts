@@ -1,8 +1,11 @@
 import express from 'express';
-import { enviarInforme } from '../controller/informeController';
+import { generarInformeAuditoria, getDatosInformeAuditoria } from '../controller/informeController';
 
 const router = express.Router();
 
-router.post('/enviar_informe', enviarInforme);
+router.get('/datos_informe/:id_auditoria_cifrada', getDatosInformeAuditoria)
+
+router.post('/descargar_informe', generarInformeAuditoria)
+//router.post('/enviar_informe', enviarInforme);
 
 export default router;
