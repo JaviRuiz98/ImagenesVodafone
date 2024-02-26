@@ -20,7 +20,7 @@ export class TiendasComponent implements OnInit{
   tiendas: tienda[] = [];
   tiendasFiltradas: tienda[] = []
   tiendasMostrar: tienda[] = [];
-  nuevaTienda: tienda;
+  nuevaTienda: tienda = {} as tienda;
   verFormularioNuevaTienda: boolean = false;
   sfidInput: string = '';
   comunidadInput: string = '';
@@ -63,7 +63,6 @@ export class TiendasComponent implements OnInit{
   getAllTiendas(){
     this.TiendasService.getAllTiendas().subscribe((response: tienda[]) => {
       this.tiendas = response;
-      console.log(this.tiendas)
       this.tiendasMostrar = response;
     })
   }
@@ -76,46 +75,54 @@ export class TiendasComponent implements OnInit{
   inicializarSteps(){
     this.parametrosSteps = [
       {
-        label: 'Datos Tienda',
+        label: 'Información Corporativa y de Identificación',
         command: (event: any) => {
           this.activeIndex = 0;
         }
       },
       {
-        label: 'Muebles',
+        label: 'Ubicación Geográfica',
         command: (event: any) => {
           this.activeIndex = 1;
         }
       },
       {
-        label: 'Confirmar',
+        label: 'Tipo, Estado y Servicios Ofrecidos',
         command: (event: any) => {
           this.activeIndex = 2;
+        }
+      },
+      {
+        label: 'Muebles',
+        command: (event: any) => {
+          this.activeIndex = 3;
+        }
+      },
+      {
+        label: 'Confirmar',
+        command: (event: any) => {
+          this.activeIndex = 4;
         }
       }
     ];
   }
 
   botonSiguiente(){
-    if(this.sfidInput === '' || this.comunidadInput === ''){
-      this.messageService.add({severity:'error', summary:'Error!', detail:'Los campos necesarios no estan completos.'});
+    if(this.activeIndex < 2){
+      this.activeIndex++;
     } else{
-      if(this.activeIndex < 2){
-        this.activeIndex++;
-      } else{
-        this.nuevaTienda.sfid = this.sfidInput;
-        this.verFormularioNuevaTienda = false;
-        if(this.crearEditarTienda == 'Crear Tienda'){
-          if(this.listaMueblesNuevaTienda.length > 1){
-            this.listaMueblesNuevaTienda = this.ordenarListaAlfabeticamente(this.listaMueblesNuevaTienda, 'nombre_mueble');
-          }
-          this.TiendasService.newTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
-            this.tiendasMostrar = response;
-          })
-        } else{
-          this.TiendasService.editarTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
-          })
+      this.nuevaTienda.sfid = this.sfidInput;
+      this.verFormularioNuevaTienda = false;
+      if(this.crearEditarTienda == 'Crear Tienda'){
+        if(this.listaMueblesNuevaTienda.length > 1){
+          this.listaMueblesNuevaTienda = this.ordenarListaAlfabeticamente(this.listaMueblesNuevaTienda, 'nombre_mueble');
         }
+        this.TiendasService.newTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
+          this.tiendasMostrar = response;
+        })
+      } else{
+        this.TiendasService.editarTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
+        })
       }
     }
   }

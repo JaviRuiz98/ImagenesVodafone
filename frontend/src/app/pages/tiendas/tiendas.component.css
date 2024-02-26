@@ -55,7 +55,9 @@
     font-size: 100%;
     color: black;
 }
-.formulario {
+.formularioICIUG {
+    display: grid;
+    grid-template-columns: 50% 50%;
     margin: 2%;
 }
 .resumentNuevaTienda{
