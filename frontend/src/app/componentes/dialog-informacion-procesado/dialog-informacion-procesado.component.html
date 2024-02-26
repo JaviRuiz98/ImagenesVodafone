@@ -48,7 +48,7 @@
 </p-overlayPanel>
 <p-dialog header="{{this.procesado.prompts.nombre_prompt}}" [(visible)]="verPrompt" [style]="{ width: '50vw', height: '40vh'}" [draggable]="false">
     <ng-template pTemplate="header">
-        <h3><p-button [rounded]="true" [text]="true" severity="danger" label="{{this.procesado.prompts.nombre_prompt}}" (onClick)="mostrarResumen()"></p-button></h3>
+        <h3>{{this.procesado.prompts.nombre_prompt}}</h3>
     </ng-template>
     <p>{{this.procesado.prompts.texto_prompt}}</p>
 </p-dialog>
