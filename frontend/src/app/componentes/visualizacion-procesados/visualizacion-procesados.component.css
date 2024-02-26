@@ -74,6 +74,8 @@
 
 
 .anchoAltoImagenProcesada ::ng-deep .p-galleria-item-wrapper{
+    display: grid;
+    grid-auto-rows: 90% 10%;
     width: 100%;
     height: 100%;
 }
@@ -93,4 +95,8 @@
     height: auto;
     max-width: 55%;
     max-height: 90%;
+}
+
+::ng-deep .p-galleria .p-galleria-indicators .p-galleria-indicator.p-highlight button {
+    background-color: red;
 }

@@ -84,7 +84,7 @@ export class VisualizacionProcesadosComponent implements OnInit{
     this.verInformacionProcesado = true;
     this.imagenProcesadaSelected = procesado;
   }
-  verFlechasGaleria(): boolean {
+  verFlechasIndicadorGaleria(): boolean {
     return this.procesados.length > 1;
   }
 }
