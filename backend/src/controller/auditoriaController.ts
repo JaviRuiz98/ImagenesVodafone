@@ -116,6 +116,10 @@ export async function getBarraProgresoAuditoria(req: Request, res: Response) {
 
 export async function getNumberArrayProgresoAuditoria(id_auditoria: number): Promise<number[]> {
     try {
+        if (typeof id_auditoria !== 'number') {
+            id_auditoria = parseInt(id_auditoria);
+        }
+
         const expositores_auditoria: pea_extended[] | undefined = await auditoriaService.getBarraProgresoAuditoria(id_auditoria);
 
         if(!expositores_auditoria) {

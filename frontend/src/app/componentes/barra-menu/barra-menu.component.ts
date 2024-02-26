@@ -80,31 +80,30 @@ export class BarraMenuComponent implements OnInit {
         this.iconoBotonVolver = this.volverHomeIcono;    
       break;
       case '/auditoria':
-      case '/templateInforme':
         this.contenidoBotonVolver = 'Volver a gestion de auditorias';
         this.iconoBotonVolver = this.volverHomeIcono;    
+      break;
+      default:
+        this.contenidoBotonVolver = this.volverHome;
+        this.iconoBotonVolver = this.volverHomeIcono;
       break;
     }
   }
 
   volverAtras(){
     const rutaActual = this.router.url;
+    console.log('volverAtras', this.router);
     switch (rutaActual) {
       case '/home':
         this.contenidoBotonVolver = '';
         this.iconoBotonVolver = '';    
-      break;
-      case '/volverHome':
-      case '/gestionAuditorias':
-      case '/tiendas':
-      case '/muebles':
-      case '/elementos':
-        this.router.navigate(['/home']);  
-      break;
+        break;
       case '/auditoria':
-      case '/templateInforme':
         this.router.navigate(['/gestionAuditorias']);
-      break;
+        break;
+      default:
+        this.router.navigate(['/home']);
+        break;
     }
   }
 }

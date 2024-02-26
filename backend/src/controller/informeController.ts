@@ -52,7 +52,9 @@ export async function getDatosInformeAuditoria (req: Request, res: Response): Pr
         console.log('Id auditoria cifrado: ' + id_auditoria_cifrada);
 
         let id_auditoria: number = await descifrarDatos(id_auditoria_cifrada, process.env.CRYPT_SECRET_KEY || '');
-        id_auditoria = id_auditoria
+        if(typeof id_auditoria !== 'number') {
+            id_auditoria = parseInt(id_auditoria);
+        }
         console.log('Id auditoria descifrado: ' + id_auditoria);
 
         const [auditoria, num_expositores, num_expositores_procesados, datos_barra_progreso] = await Promise.all([
@@ -71,6 +73,7 @@ export async function getDatosInformeAuditoria (req: Request, res: Response): Pr
 
         res.status(200).json(auditoria_extended);    
     } catch (error) {
+        console.log
         res.status(500).json({ error: 'Internal server error' });
     }
 }

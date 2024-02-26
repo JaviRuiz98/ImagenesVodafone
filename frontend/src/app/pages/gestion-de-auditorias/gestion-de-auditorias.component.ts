@@ -148,7 +148,7 @@ export class GestionDeAuditoriasComponent implements OnInit {
   navegarTemplateInformeAuditoria(id_auditoria: number){
     this.informeService.getUrlIdAuditoriaCifrada(id_auditoria).subscribe(
     (data)=>{
-      console.log(data);
+      console.log('respuesta url encriptada', data);
       this.router.navigate(['/templateInforme/'+ data]);
     })
   }
