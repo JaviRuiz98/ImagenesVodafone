@@ -7,6 +7,9 @@ export async function createPDF(url: string, id_auditoria: number): Promise<Buff
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   await page.goto(url+texto_cifrado, { waitUntil: 'networkidle0' });
+
+  console.log('Generando informe para la auditoria ' + url+texto_cifrado);
+
   const pdf = await page.pdf({ format: 'A4' });
   await browser.close();
   return pdf;

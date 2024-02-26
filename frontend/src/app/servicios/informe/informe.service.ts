@@ -23,7 +23,7 @@ export class InformeService {
     });
   }
 
-  getDatosInforme(id_auditoria: number): Observable<any> {
-    return this.http.get<any>(`${this.urlService.api_uri}/datos_informe/${id_auditoria}`);
+  getDatosInforme(id_auditoria_cifrada: string): Observable<any> {
+    return this.http.get<any>(`${this.urlService.api_uri}/datos_informe/${id_auditoria_cifrada}`);
   }
 }

@@ -3,7 +3,7 @@ import { generarInformeAuditoria, getDatosInformeAuditoria } from '../controller
 
 const router = express.Router();
 
-router.get('/datos_informe/:id_auditoria', getDatosInformeAuditoria)
+router.get('/datos_informe/:id_auditoria_cifrada', getDatosInformeAuditoria)
 
 router.post('/descargar_informe', generarInformeAuditoria)
 //router.post('/enviar_informe', enviarInforme);

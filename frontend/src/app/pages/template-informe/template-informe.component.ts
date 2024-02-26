@@ -6,6 +6,7 @@ import { InformeService } from 'src/app/servicios/informe/informe.service';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
 import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
 import * as CryptoJS from 'crypto-js';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-template-informe',
@@ -19,6 +20,8 @@ import * as CryptoJS from 'crypto-js';
   ],
 })
 export class TemplateInformeComponent {
+
+  id_auditoria_cifrada: string = '';
 
   informeData = undefined;
 
@@ -35,16 +38,18 @@ export class TemplateInformeComponent {
   constructor(
     private informeService: InformeService,
     public publicMedhodsService: PublicMethodsService,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    const id_auditoria = this.desencriptarIdAuditoriaSeleccionada(,);
-    console.log('id_auditoria', id_auditoria);
+    this.id_auditoria_cifrada = this.route.snapshot.paramMap.get('id_auditoria');
+    console.log('id_auditoria', this.id_auditoria_cifrada);
 
-    this.informeService.getDatosInforme(id_auditoria).subscribe(
+    this.informeService.getDatosInforme(this.id_auditoria_cifrada).subscribe(
       (data) => {
         this.informeData = data;
+        console.log('data', data);
         console.log('informeData', this.informeData);
 
         this.mapearResumenAuditoria();
@@ -57,11 +62,7 @@ export class TemplateInformeComponent {
     )
   }
 
-  desencriptarIdAuditoriaSeleccionada(ciphertext: string, secretKey: string): number {
-    const bytes = CryptoJS.AES.decrypt(ciphertext, secretKey);
-    const datosDescifrados = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
-    return datosDescifrados;
-  }
+
 
   mapearResumenAuditoria() {
     this.resumen_auditoria = [

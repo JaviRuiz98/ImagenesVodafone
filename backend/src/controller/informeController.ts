@@ -11,7 +11,7 @@ export async function  generarInformeAuditoria(req: Request, res: Response) {
         
         // const informeData = await getDatosInformeAuditoria(id_auditoria);
 
-        const direccion_url_template = process.env.URL_FRONTEND + 'templateInforme';
+        const direccion_url_template = process.env.URL_FRONTEND + 'templateInforme/';
         const pdfBuffer = await createPDF(direccion_url_template, id_auditoria);
 
         res.setHeader('Content-Type', 'application/pdf');
@@ -47,7 +47,11 @@ export async function  generarInformeAuditoria(req: Request, res: Response) {
 
 export async function getDatosInformeAuditoria (req: Request, res: Response): Promise<any> {
     try {
-        const id_auditoria = parseInt(req.params.id_auditoria);
+        const id_auditoria_cifrada = req.params.id_auditoria_cifrada;
+
+        const id_auditoria = descifrarDatos(id_auditoria_cifrada, process.env.SECRET_KEY || '');
+
+        console.log('id_auditoria descifrada:', id_auditoria);
 
         const [auditoria, num_expositores, num_expositores_procesados, datos_barra_progreso] = await Promise.all([
             auditoriaService.getAuditoriaAndTienda(id_auditoria),
@@ -68,3 +72,10 @@ export async function getDatosInformeAuditoria (req: Request, res: Response): Pr
         res.status(500).json({ error: 'Internal server error' });
     }
 }
+
+function descifrarDatos(ciphertext: string, secretKey: string): number {
+    if(!ciphertext) throw Error;
+    const bytes = CryptoJS.AES.decrypt(ciphertext, secretKey);
+    const datosDescifrados = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    return datosDescifrados;
+  }
