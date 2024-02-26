@@ -1,5 +1,6 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
 import { elementos } from 'src/app/interfaces/elementos';
@@ -16,7 +17,8 @@ export class EditarExpositorComponent implements OnInit {
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
   imageElement: HTMLImageElement;
 
-  constructor( public dialogConfig : DynamicDialogConfig, private muebleService : MueblesService) { }
+
+  constructor( public dialogConfig : DynamicDialogConfig, private muebleService : MueblesService, public messageService : MessageService) { }
 
   expositor: expositores = {
     id: 0,
@@ -104,11 +106,27 @@ export class EditarExpositorComponent implements OnInit {
     const indiceSoltado = this.expositor.atributos_expositores.findIndex(attr => x >= attr.x_min && x <= attr.x_max && y >= attr.y_min && y <= attr.y_max);
 
     if (indiceSoltado !== -1) {
+      const categoria_hueco = this.expositor.atributos_expositores[indiceSoltado].categorias_elementos;
+      if (categoria_hueco.id!== elemento.categorias_elementos.id) {
+        this.messageService.add({ key: 'edit', severity: 'error', summary: 'Error', detail: 'La categoría permitida para esta posición es ' + categoria_hueco.nombre });
+        this.restaurarEstadoPrevio();
+        return;
+      }
       this.actualizarExpositor(indiceSoltado, elemento);
     } else {
       this.restaurarEstadoPrevio();
     }
 
+  }
+
+  drawDeleteButton(x, y, width, height) {
+    const btnImage = new Image();
+    btnImage.onload = () => {
+      const btnSize = 20; // Tamaño del botón
+      const padding = 5; // Espacio desde la esquina
+      this.ctx.drawImage(btnImage, x + width - btnSize - padding, y + padding, btnSize, btnSize);
+    };
+    btnImage.src = 'path/to/delete-icon.png'; // Ruta al icono de eliminación
   }
 
   
@@ -133,7 +151,7 @@ export class EditarExpositorComponent implements OnInit {
 
 
   private getImagenModelo(): string | undefined {
-    const atributoModelo: atributos_expositores | undefined = this.expositor.atributos_expositores.find((atributo) => atributo.id_categoria === 3);
+    const atributoModelo: atributos_expositores | undefined = this.expositor.atributos_expositores.find((atributo) => atributo.categorias_elementos.id === 3);
     
     if (atributoModelo && atributoModelo.elemento) {
       console.log("imagen: "+atributoModelo.elemento.imagenes.url);
@@ -246,6 +264,9 @@ export class EditarExpositorComponent implements OnInit {
     this.muebleService.updateExpositor(this.expositor).subscribe();
   }
 
+  eliminarImagen (indice: number) {
+    console.log(indice);
+  }
   
   
 

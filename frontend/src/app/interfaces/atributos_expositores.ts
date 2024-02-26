@@ -1,3 +1,4 @@
+import { categorias_elementos } from "./categoria";
 import { elementos } from "./elementos";
 import { expositores } from "./expositores";
 
@@ -8,7 +9,7 @@ export interface atributos_expositores {
     x_max? : number;
     y_min? : number;
     y_max? : number;
-    id_categoria:number;
+    categorias_elementos: categorias_elementos;
     elemento?: elementos; //es el elemento activo del atributo
 
 }

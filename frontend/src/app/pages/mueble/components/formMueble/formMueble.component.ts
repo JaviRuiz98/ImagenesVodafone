@@ -126,7 +126,7 @@ export class FormMuebleComponent implements OnInit {
   
 
   getImagenModelo(expositor: expositores): string | undefined {
-    const atributoModelo: atributos_expositores | undefined = expositor.atributos_expositores.find((atributo) => atributo.id_categoria === 3);
+    const atributoModelo: atributos_expositores | undefined = expositor.atributos_expositores.find((atributo) => atributo.categorias_elementos.id === 3);
 
     
     if (atributoModelo && atributoModelo.elemento) {
@@ -137,7 +137,7 @@ export class FormMuebleComponent implements OnInit {
 
   }
   tieneModelo(atributos_expositores: atributos_expositores[]): boolean {
-    const atributoModelo: atributos_expositores | undefined = atributos_expositores.find((atributo) => atributo.id_categoria === 3);
+    const atributoModelo: atributos_expositores | undefined = atributos_expositores.find((atributo) => atributo.categorias_elementos.id === 3);
     return atributoModelo !== undefined;
   }
 

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { regiones } from 'src/app/interfaces/regiones';
 
 @Component({
   selector: 'app-Paso1Form',
@@ -9,17 +10,21 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class Paso1FormComponent implements OnInit {
 
 
+regionSeleccionada?: regiones;
+regiones: regiones[] = [];
+
 
   constructor(  private fb: FormBuilder) { }
 
   @Input() imagenesIn?: string[];
   @Input() nombreIn?: string;
-  @Input() regionesIn?: string;
   @Input() objetivo_form: 'crear' | 'editar' = 'crear';
+
   @Output() formularioPaso1Change = new EventEmitter<FormGroup>();
 
   formularioPaso1:FormGroup = this.fb.group({
     nombre: ['', Validators.required],
+    region : ['', Validators.required],
     imagenes: [[],], //strings para visualización
     archivos_imagenes: [[]], //Files para creación en la base de datos
   });
@@ -35,6 +40,11 @@ export class Paso1FormComponent implements OnInit {
     return this.formularioPaso1.controls['archivos_imagenes'];
   }
 
+  get region(){
+    return this.formularioPaso1.controls['region'];
+  }
+
+  
 
 
   ngOnInit() {
@@ -79,6 +89,9 @@ export class Paso1FormComponent implements OnInit {
     });
   
   }
+
+  
+  
 
   
 onSubmit() {

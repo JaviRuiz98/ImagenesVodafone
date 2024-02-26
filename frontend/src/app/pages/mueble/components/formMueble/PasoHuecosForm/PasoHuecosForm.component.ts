@@ -2,6 +2,7 @@ import { Component, Input, OnInit, Output } from '@angular/core';
 import { huecoCreacion } from '../../../interfaces/huecoCreacion';
 import { categorias_elementos } from 'src/app/interfaces/categoria';
 import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
+import { EnumService } from 'src/app/servicios/enum.service';
 
 @Component({
   selector: 'app-PasoHuecosForm',
@@ -12,7 +13,7 @@ export class PasoHuecosFormComponent implements OnInit {
 
   @Input() imagen: string;
   @Output() huecosEmitter:huecoCreacion[] = [];
-  constructor(private elementosService: ElementosService) { }
+  constructor(private elementosService: ElementosService, private enumService: EnumService) { }
 
   categoriaSeleccionada?: string;  
   opcionesCategoria: string[] = [];
@@ -24,7 +25,7 @@ export class PasoHuecosFormComponent implements OnInit {
   }
 
   inicializaCategorias_elementos(){
-    this.elementosService.getCategorias_elementos().subscribe((categorias: categorias_elementos[]) => {
+    this.enumService.getCategorias_elementos().subscribe((categorias: categorias_elementos[]) => {
       this.categorias_elementos = categorias; 
       this.opcionesCategoria = categorias.map((elemento) => elemento.nombre);
     })

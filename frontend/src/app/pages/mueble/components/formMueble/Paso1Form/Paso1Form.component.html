@@ -11,6 +11,14 @@
     </div>
 
     <div class="flex align-items-center justify-content-center mt-4">
+      <p-card [style]="{'width':'130vh'}" header="Región">
+        <p-dropdown class="ml-2"  [options]="regiones" formControlName="regionSeleccionada"
+        optionLabel="nombre" [showClear]="true" placeholder="Filtrar por categoría"
+        [style]="{'margin-left': '20px'}"></p-dropdown>
+      </p-card>
+    </div>
+
+    <div class="flex align-items-center justify-content-center mt-4">
       <p-card [style]="{'width':'130vh'}" header="Subir modelo">
         <div class="flex" style="height: 50vh"  *ngIf="objetivo_form=='crear'; else editar">
 
