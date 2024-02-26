@@ -10,6 +10,8 @@ import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
 import { GalleriaModule } from 'primeng/galleria';
+import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
+import { auditoria } from 'src/app/interfaces/auditoria';
 
 @Component({
   selector: 'app-visualizacion-procesados',
@@ -39,7 +41,7 @@ export class VisualizacionProcesadosComponent implements OnInit{
   items_per_page: number = 1;
   indice_paginador: number = 0;
   visiblePrompt: boolean = false;
-
+  auditoria_seleccionada: auditoria = new auditoria(null);
   verInformacionProcesado: boolean = false;
   imagenProcesadaSelected: procesados_imagenes = undefined;
   responsiveOptions: any[] = [
@@ -57,12 +59,14 @@ export class VisualizacionProcesadosComponent implements OnInit{
     }
 ];
   constructor(
+    private LocalStorageService: LocalStorageService,
     private confirmationService: ConfirmationService,
     private procesamientoService: ProcesamientoService,
     private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
+    this.auditoria_seleccionada = this.LocalStorageService.getItem('auditoria_seleccionada');
   }
   getElementosPaginados(): procesados_imagenes[] | undefined {
     return this.procesados.slice(this.indice_paginador, this.indice_paginador + this.items_per_page);
@@ -79,5 +83,8 @@ export class VisualizacionProcesadosComponent implements OnInit{
   mostrarInformacion(procesado: procesados_imagenes){
     this.verInformacionProcesado = true;
     this.imagenProcesadaSelected = procesado;
+  }
+  verFlechasIndicadorGaleria(): boolean {
+    return this.procesados.length > 1;
   }
 }

@@ -1,6 +1,7 @@
 .cursor-pointer ::ng-deep .p-button {
     cursor: pointer;
     height: 30px;
+    margin-top: 20%;
 }
 .evaluacion {
     display: grid;
