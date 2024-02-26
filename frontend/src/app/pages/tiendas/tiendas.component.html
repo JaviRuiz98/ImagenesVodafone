@@ -80,7 +80,7 @@
             <tr>
                 <td>{{ tiendas.sfid }}</td>
                 <td><p-button class="botonNuevaTienda" label="Editar Tienda" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="editarTienda(tiendas)" [style]="{'min-width': '130px'}" [disabled]="!tiendas.activo"></p-button></td>
-                <td><p-button class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendas.activa, 'text-red-500 pi-times-circle': !tiendas.activa }" (click)="confirmarCambio(tiendas)" [style]="{'border': 'none', 'background': 'none', 'cursor': 'pointer', 'padding': '0'}"></p-button></td>
+                <td><p-button class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendas.activo, 'text-red-500 pi-times-circle': !tiendas.activo }" (click)="confirmarCambio(tiendas)" [style]="{'border': 'none', 'background': 'none', 'cursor': 'pointer', 'padding': '0'}"></p-button></td>
             </tr>
         </ng-template>
         </p-table>
