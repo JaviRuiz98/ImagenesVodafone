@@ -1,33 +1,51 @@
-<div (mouseover)="open.toggle($event)" (mouseout)="onMouseOut($event)">
-    <p-tag *ngIf="procesado.id_categoria === 1" 
+<div>
+    <p-button *ngIf="procesado.id_categoria === 1" 
         class = "cursor-pointer "
         icon="pi pi-info-circle" 
-        value="{{procesado.probabilidades_respuesta_carteles.probabilidad}}"
+        label="{{procesado.probabilidades_respuesta_carteles.probabilidad}}"
         [severity]="getSeverityCartel(procesado.probabilidades_respuesta_carteles.probabilidad)" 
-    ></p-tag>
-    <p-tag *ngIf="procesado.id_categoria === 2" 
+        (onClick)="open.toggle($event)"
+    ></p-button>
+    <p-button *ngIf="procesado.id_categoria === 2" 
+        [style]="{'width': '80%'}"
         class = "cursor-pointer "
         icon="pi pi-info-circle"
-        value="{{procesado.dispositivos_contados}}/{{procesado.huecos_esperados}}"
+        label="{{procesado.dispositivos_contados}}/{{procesado.huecos_esperados}}"
         [severity]="getSeverityDispositivos(procesado.dispositivos_contados, procesado.huecos_esperados)" 
-    ></p-tag>     
+        (onClick)="open.toggle($event)"
+    ></p-button>     
 </div>
-<p-overlayPanel #open [showCloseIcon]="false" [style]="{'width': '500px', 'max-height': '500px'}">
-    <div *ngIf="procesado.categoria === 'carteles'">
-        <span style="font-weight: bold;">· Probabilidad: </span>  
-        <p-tag [severity]="getSeverityCartel(procesado.probabilidades_respuesta_carteles.probabilidad)" >
-            {{procesado.probabilidades_respuesta_carteles.probabilidad}}
-        </p-tag>
+<p-overlayPanel #open [showCloseIcon]="false" class="overleyPanel" [style]="{'width': '500px', 'height': '500px'}"  >
+    <div *ngIf="verResumen === true">
+        <div *ngIf="procesado.categoria === 'carteles'">
+            <span style="font-weight: bold;">· Probabilidad: </span>  
+            <p-tag [severity]="getSeverityCartel(procesado.probabilidades_respuesta_carteles.probabilidad)" >
+                {{procesado.probabilidades_respuesta_carteles.probabilidad}}
+            </p-tag>
+        </div>
+        <div *ngIf="procesado.categoria === 'dispositivos'">
+            <span style="font-weight: bold;">· Encontrados: </span>           
+            <p-tag [severity]="getSeverityDispositivos(procesado.dispositivos_contados, procesado.huecos_esperados)" >
+                {{procesado.dispositivos_contados}}/{{procesado.huecos_esperados}}
+            </p-tag>
+        </div>
+        <div class="overleyPanel">
+            <h4>· Comentarios: </h4> 
+            <span >{{this.procesado.comentarios}}</span>
+            <div class="evaluacion">
+                <h4>Evalúe los comentarios:</h4>
+                <p-button [icon]="(procesado.feedback_humano === null || procesado.feedback_humano === false) ? 'pi pi-thumbs-up' : 'pi pi-thumbs-up-fill'" (click)="funcionFeedback(procesado, true)"  [text]="true" severity="danger"></p-button>
+                <p-button [icon]="(procesado.feedback_humano === null || procesado.feedback_humano === true) ? 'pi pi-thumbs-down' : 'pi pi-thumbs-down-fill'" (click)="funcionFeedback(procesado, false)" [text]="true" severity="danger"></p-button>
+            </div>
+            <h4 >· IA Utilizada: </h4><span >{{this.procesado.IA_utilizada}}</span>
+            <h4 [style]="{'margin-bottom': '0'}">· Prompt utilizado: </h4><span ><p-button [rounded]="true" [text]="true" severity="danger" label="{{this.procesado.prompts.nombre_prompt}}" (onClick)="mostrarPrompt()" (onClick)="open.toggle($event)"></p-button></span>
+            <h4>· Fecha: </h4><span >{{ this.procesado.fecha | date:'dd-MM-yyyy | HH:mm' }}</span>
+        </div>
     </div>
-    <div *ngIf="procesado.categoria === 'dispositivos'">
-        <span style="font-weight: bold;">· Encontrados: </span>           
-        <p-tag [severity]="getSeverityDispositivos(procesado.dispositivos_contados, procesado.huecos_esperados)" >
-            {{procesado.dispositivos_contados}}/{{procesado.huecos_esperados}}
-        </p-tag>
+    <div *ngIf="verResumen === false">
+        <h4>{{this.procesado.prompts.nombre_prompt}}</h4>
+        <p>
+            {{this.procesado.prompts.texto_prompt}}
+        </p>
     </div>
-    <h4>Comentarios: </h4> 
-    <span >{{this.procesado.comentarios}}</span>
-    <h4>· IA Utilizada: </h4><span >{{this.procesado.IA_utilizada}}</span>
-    <h4>· Prompt utilizado: </h4><span >{{this.procesado.prompts.nombre_prompt}}</span>
-    <h4>· Fecha: </h4><span >{{ this.procesado.fecha | date:'dd-MM-yyyy | HH:mm' }}</span>
 </p-overlayPanel>

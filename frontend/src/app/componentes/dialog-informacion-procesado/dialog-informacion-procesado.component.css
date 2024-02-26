@@ -1,3 +1,17 @@
-.cursor-pointer {
+.cursor-pointer ::ng-deep .p-button {
     cursor: pointer;
+    height: 30px;
+}
+.evaluacion {
+    display: grid;
+    grid-template-columns: 45% 10% 10%;
+    align-items: center;
+}
+
+.evaluacion ::ng-deep h4 {
+    margin: 0;
+}
+
+.overleyPanel {
+    margin: 0;
 }

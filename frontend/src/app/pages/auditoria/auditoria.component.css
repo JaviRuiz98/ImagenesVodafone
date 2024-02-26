@@ -17,6 +17,7 @@
   margin-bottom: 20px;
   height: 100%;
   width: 100%;
+  overflow: hidden;
 }
 .contornoPanel ::ng-deep.p-panel{
   height: 100%;
@@ -38,9 +39,9 @@
 .panelDerechaIzquierda{
   display: grid;
   grid-template-columns: 50% 50%;
-  height: 100%;
+  height: 590px;
   width: 100%;
-  min-height: 600px;
+  
 }
 .panelIzquierda {
   display: flex;
@@ -56,6 +57,13 @@
   height: 100%;
   background-color: rgba(232, 232, 232, 0.9);
 }
+.anchoAltoFotoReferenciaUnElemento{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
 .anchoAltoFotoReferenciaDosImagenes {
   display: grid;
   grid-template-columns: 50% 50%;
@@ -68,12 +76,18 @@
   justify-content: center;
 }
 
-
-.anchoAltoFotoReferenciaUnaImagenes ::ng-deep .ng-star-inserted{
+.anchoAltoFotoReferenciaUnElemento ::ng-deep .ng-star-inserted{
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
+.anchoAltoPaginador{
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
 /*
 descomentar para que una imagen se vea bien 1 sola imagen
 .imagenSimple{
@@ -166,10 +180,7 @@ descomentar para que una imagen se vea bien 1 sola imagen
     display: flex;
     justify-content: center;
   }
-  .anchoAltoPaginador{
-    height: 100%;
-    width: 100%;
-  }
+ 
   
   .gridDoble{
     display: grid;

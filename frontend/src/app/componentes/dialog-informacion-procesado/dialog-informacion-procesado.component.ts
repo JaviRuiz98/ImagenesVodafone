@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { TagModule } from 'primeng/tag';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
+import { ButtonModule } from 'primeng/button';
+import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
 
 @Component({
   selector: 'app-dialog-informacion-procesado',
@@ -16,7 +18,8 @@ import { PublicMethodsService } from 'src/app/shared/public-methods.service';
     DialogModule,
     CommonModule,
     TagModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    ButtonModule
   ],
 })
 
@@ -27,24 +30,15 @@ export class DialogInformacionProcesadoComponent {
   @Input() procesados_imagenes: procesados_imagenes[] = [];
   @Input() id_procesado: number = 0;
   @Input() procesado: any;
-
   val: boolean = true;
 
   visible_info_procesamiento: boolean = false;
   visible_info_procesamiento_click: boolean = false;
+  likeButton: string = "pi pi-thumbs-up";
+  dislikeButton: string = "pi pi-thumbs-down";
+  verResumen: boolean = true;
 
-  constructor( private publicMethodsService: PublicMethodsService) { }
-
-  onMouseOver(event: MouseEvent) {
-    this.visible_info_procesamiento = true;
-    const tagElement = event.target as HTMLElement;
-    tagElement.classList.add('cursor-zoom');
-  }
-
-  onMouseOut(event: MouseEvent) {
-    this.visible_info_procesamiento = false;
-  }
-  
+  constructor(private procesamientoService: ProcesamientoService, private publicMethodsService: PublicMethodsService) { }
 
   getSeverityCartel(procesado: string): string {
     return this.publicMethodsService.getSeverityCartel(procesado);
@@ -53,5 +47,29 @@ export class DialogInformacionProcesadoComponent {
   getSeverityDispositivos(numero_dispositivos: number, huecos_esperados: number): string {
     return this.publicMethodsService.getSeverityDispositivos(numero_dispositivos, huecos_esperados);
   }
-
+  funcionFeedback(procesado: procesados_imagenes, likeDislike: boolean | null) {
+    if(procesado.feedback_humano == null){
+        procesado.feedback_humano = likeDislike;
+    } else {
+        if(procesado.feedback_humano == likeDislike){
+            procesado.feedback_humano = null;
+        } else {
+            procesado.feedback_humano = likeDislike;
+        }
+    }
+    if(procesado.feedback_humano == true){
+        this.likeButton = "pi pi-thumbs-up-fill";
+        this.dislikeButton = "pi pi-thumbs-down";
+    } else if(procesado.feedback_humano == false){
+        this.likeButton = "pi pi-thumbs-up";
+        this.dislikeButton = "pi pi-thumbs-down-fill";
+    } else if(procesado.feedback_humano == null){
+        this.likeButton = "pi pi-thumbs-up";
+        this.dislikeButton = "pi pi-thumbs-down";
+    }
+    this.procesamientoService.updateFeedbackProcesado(procesado.id, procesado.feedback_humano).subscribe();
+  }
+  mostrarPrompt(){
+    this.verResumen = false;
+  }
 }

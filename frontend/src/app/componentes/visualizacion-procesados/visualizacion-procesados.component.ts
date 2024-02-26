@@ -9,6 +9,7 @@ import { DialogModule } from 'primeng/dialog';
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
+import { GalleriaModule } from 'primeng/galleria';
 
 @Component({
   selector: 'app-visualizacion-procesados',
@@ -22,11 +23,12 @@ import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/p
     ImageModule,
     PaginatorModule,
     DialogModule,
-    CommonModule
+    CommonModule,
+    GalleriaModule,
   ],
   providers: [
     ConfirmationService,
-    MessageService
+    MessageService,
   ]
 })
 export class VisualizacionProcesadosComponent implements OnInit{
@@ -37,8 +39,23 @@ export class VisualizacionProcesadosComponent implements OnInit{
   items_per_page: number = 1;
   indice_paginador: number = 0;
   visiblePrompt: boolean = false;
-  likeButton: string = "pi pi-thumbs-up";
-  dislikeButton: string = "pi pi-thumbs-down";
+
+  verInformacionProcesado: boolean = false;
+  imagenProcesadaSelected: procesados_imagenes = undefined;
+  responsiveOptions: any[] = [
+    {
+        breakpoint: '1024px',
+        numVisible: 5
+    },
+    {
+        breakpoint: '768px',
+        numVisible: 3
+    },
+    {
+        breakpoint: '560px',
+        numVisible: 1
+    }
+];
   constructor(
     private confirmationService: ConfirmationService,
     private procesamientoService: ProcesamientoService,
@@ -59,56 +76,8 @@ export class VisualizacionProcesadosComponent implements OnInit{
     this.indice_paginador = event.first;
   }
 
-  confirmarDelete(event: Event, procesado: procesados_imagenes) {
-    this.confirmationService.confirm({
-        target: event.target as EventTarget,
-        message: 'Estas seguro de eliminar este procesado?',
-        header: 'Confirmation',
-        icon: 'pi pi-exclamation-triangle',
-        acceptIcon:"none",
-        rejectIcon:"none",
-        rejectButtonStyleClass:"p-button-text",
-        accept: () => {
-            this.borrarProcesado(procesado);
-        },
-        reject: () => {
-           this.messageService.add({ severity: 'error', summary: 'Proceso cancelado', detail: '', life: 3000 });
-        }
-    });
-  }
-
-  borrarProcesado(procesado: procesados_imagenes){
-    this.procesamientoService.deleteProcesado(procesado).subscribe(
-        (response) => {
-            this.procesados.splice(this.procesados.indexOf(procesado), 1);
-            this.messageService.add({ severity: 'info', life: 3000,summary: 'Cargando', detail: 'La imagen se borro correctamente' });
-        }, (error) => {
-            console.log('error', error);
-            this.messageService.add({ severity: 'error', life: 3000, summary: 'Error', detail: 'No se pudo borrar la imagen' });
-        }
-    );
-  }
-
-  funcionFeedback(procesado: procesados_imagenes, likeDislike: boolean | null) {
-    if(procesado.feedback_humano == null){
-        procesado.feedback_humano = likeDislike;
-    } else {
-        if(procesado.feedback_humano == likeDislike){
-            procesado.feedback_humano = null;
-        } else {
-            procesado.feedback_humano = likeDislike;
-        }
-    }
-    if(procesado.feedback_humano == true){
-        this.likeButton = "pi pi-thumbs-up-fill";
-        this.dislikeButton = "pi pi-thumbs-down";
-    } else if(procesado.feedback_humano == false){
-        this.likeButton = "pi pi-thumbs-up";
-        this.dislikeButton = "pi pi-thumbs-down-fill";
-    } else if(procesado.feedback_humano == null){
-        this.likeButton = "pi pi-thumbs-up";
-        this.dislikeButton = "pi pi-thumbs-down";
-    }
-    this.procesamientoService.updateFeedbackProcesado(procesado.id, procesado.feedback_humano).subscribe();
+  mostrarInformacion(procesado: procesados_imagenes){
+    this.verInformacionProcesado = true;
+    this.imagenProcesadaSelected = procesado;
   }
 }
