@@ -5,8 +5,8 @@ import { ChartModule } from 'primeng/chart';
 import { InformeService } from 'src/app/servicios/informe/informe.service';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
 import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
-import * as CryptoJS from 'crypto-js';
 import { ActivatedRoute } from '@angular/router';
+import { OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-template-informe',
@@ -19,7 +19,7 @@ import { ActivatedRoute } from '@angular/router';
     ChartModule
   ],
 })
-export class TemplateInformeComponent {
+export class TemplateInformeComponent implements OnInit {
 
   id_auditoria_cifrada: string = '';
 
@@ -43,7 +43,7 @@ export class TemplateInformeComponent {
   ) { }
 
   ngOnInit(): void {
-    this.id_auditoria_cifrada = this.route.snapshot.paramMap.get('id_auditoria');
+    this.id_auditoria_cifrada = this.route.snapshot.paramMap.get('id_auditoria_cifrada');
     console.log('id_auditoria', this.id_auditoria_cifrada);
 
     this.informeService.getDatosInforme(this.id_auditoria_cifrada).subscribe(
@@ -89,6 +89,7 @@ export class TemplateInformeComponent {
     ]
 
     this.porcentaje_procesados = (this.informeData.num_expositores_procesados / this.informeData.num_expositores) * 100;
+    this.porcentaje_procesados = parseFloat(this.porcentaje_procesados.toFixed(2));
     
     console.log(this.resumen_auditoria);
   }
@@ -96,14 +97,14 @@ export class TemplateInformeComponent {
   generarDatosChart() {
     for (const dato of this.informeData.datos_barra_progreso) {
       switch (dato) {
-        case 0:
+        case 1:
           this.chartData[0]++;
           break;
-        case 1:
+        case 2:
           this.chartData[1]++;
           break;
-        case 2:
         case 3:
+        case 4:
           this.chartData[2]++;
           break;
         default:

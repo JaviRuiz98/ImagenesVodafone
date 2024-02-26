@@ -64,24 +64,23 @@ export class BarraMenuComponent implements OnInit {
     }
   }
 
-  private  formatDate(date: Date): string {
-    const day = String(date.getDate()).padStart(2, '0'); 
-    const month = String(date.getMonth() + 1).padStart(2, '0'); 
-    const year = String(date.getFullYear());
-    return `${day}-${month}-${year}`;
-  }
   contenidoBotonVolverAtras() {
-    let rutaActual = this.obtenerRuta();
+    const rutaActual = this.router.url;
     switch (rutaActual) {
       case '/home':
         this.contenidoBotonVolver = '';
         this.iconoBotonVolver = '';    
       break;
       case '/volverHome':
+      case '/gestionAuditorias':
+      case '/tiendas':
+      case '/muebles':
+      case '/elementos':
         this.contenidoBotonVolver = this.volverHome;
         this.iconoBotonVolver = this.volverHomeIcono;    
       break;
       case '/auditoria':
+      case '/templateInforme':
         this.contenidoBotonVolver = 'Volver a gestion de auditorias';
         this.iconoBotonVolver = this.volverHomeIcono;    
       break;
@@ -89,27 +88,23 @@ export class BarraMenuComponent implements OnInit {
   }
 
   volverAtras(){
-    let rutaActual = this.obtenerRuta();
+    const rutaActual = this.router.url;
     switch (rutaActual) {
       case '/home':
         this.contenidoBotonVolver = '';
         this.iconoBotonVolver = '';    
       break;
       case '/volverHome':
+      case '/gestionAuditorias':
+      case '/tiendas':
+      case '/muebles':
+      case '/elementos':
         this.router.navigate(['/home']);  
       break;
       case '/auditoria':
+      case '/templateInforme':
         this.router.navigate(['/gestionAuditorias']);
       break;
     }
-  }
-
-  obtenerRuta(){
-    let rutaActual = this.router.url;
-    this.currentState = rutaActual;
-    if(rutaActual === '/gestionAuditorias' || rutaActual === '/tiendas' || rutaActual === '/muebles' || rutaActual === '/elementos' || rutaActual === '/templateInforme'){
-      rutaActual = '/volverHome';
-    }
-    return rutaActual;
   }
 }

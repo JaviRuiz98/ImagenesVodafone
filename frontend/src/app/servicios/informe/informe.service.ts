@@ -26,4 +26,8 @@ export class InformeService {
   getDatosInforme(id_auditoria_cifrada: string): Observable<any> {
     return this.http.get<any>(`${this.urlService.api_uri}/datos_informe/${id_auditoria_cifrada}`);
   }
+
+  getUrlIdAuditoriaCifrada(id_auditoria: number): Observable<any> {
+    return this.http.get<any>(`${this.urlService.api_uri}/url_template/${id_auditoria}`);
+  }
 }
