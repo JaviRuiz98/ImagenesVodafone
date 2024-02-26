@@ -1,8 +1,10 @@
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
 import { elementos } from 'src/app/interfaces/elementos';
 import { expositores } from 'src/app/interfaces/expositores';
+import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 
 @Component({
   selector: 'app-editarExpositor',
@@ -14,7 +16,7 @@ export class EditarExpositorComponent implements OnInit {
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
   imageElement: HTMLImageElement;
 
-  constructor( public dialogConfig : DynamicDialogConfig) { }
+  constructor( public dialogConfig : DynamicDialogConfig, private muebleService : MueblesService) { }
 
   expositor: expositores = {
     id: 0,
@@ -114,7 +116,8 @@ export class EditarExpositorComponent implements OnInit {
     this.previous_state = this.expositor.atributos_expositores;
     this.expositor.atributos_expositores[indice].elemento = elemento;
     const droppedOn = this.expositor.atributos_expositores[indice];
-   
+
+    this.updateExpositor();
     this.drawImage(droppedOn);
     this.drawRecangles();
   }
@@ -234,12 +237,13 @@ export class EditarExpositorComponent implements OnInit {
   onDragStart(event: {dragEvent: DragEvent, elemento: elementos}) {
    event.dragEvent.dataTransfer.setData("text", JSON.stringify(event.elemento));
    this.dragged_elemento = event.elemento;
+
   }
-  onDragEnd(event:{dragEvent: DragEvent}) {
+  onDragEnd(event:{dragEvent:  CdkDragDrop<string[]>}) {
     console.log("terminar");
   }
   private updateExpositor() {
-    //llamar al back para actualizar
+    this.muebleService.updateExpositor(this.expositor).subscribe();
   }
 
   

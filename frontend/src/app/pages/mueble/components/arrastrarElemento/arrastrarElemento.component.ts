@@ -1,3 +1,4 @@
+import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { categorias_elementos } from 'src/app/interfaces/categoria';
 import { elementos } from 'src/app/interfaces/elementos';
@@ -11,12 +12,16 @@ import { ElementosService } from 'src/app/servicios/elementos/elementos.service'
 export class ArrastrarElementoComponent implements OnInit {
 
 
+
+
   constructor(private elementosService: ElementosService) { }
   @Input() mode: 'arrastrar' | 'seleccionar' = 'arrastrar';
   @Input() categoria?: categorias_elementos;
 
   @Output() onDragStart = new EventEmitter<{ dragEvent: DragEvent, elemento: elementos }>();
-  @Output() onDragEnd = new EventEmitter<{ dragEvent: DragEvent }>();
+  @Output() onDragEnd = new EventEmitter<{ dragEvent: CdkDragDrop<string[]> }>();
+
+  show_crear: boolean = false;
 
   all_elementos: elementos[] = [];
   selected_elemento?: elementos;
@@ -25,9 +30,9 @@ export class ArrastrarElementoComponent implements OnInit {
 
   
   filterNameValue: string="";
-  categoriaSeleccionada?: string;
+  categoriaSeleccionada?: categorias_elementos;
    
-  opcionesCategoria: string[] = [];
+  opcionesCategoria: number[] = [];
   categorias_elementos: categorias_elementos[];
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
 
@@ -53,7 +58,7 @@ export class ArrastrarElementoComponent implements OnInit {
   inicializaCategorias_elementos(){
     this.elementosService.getCategorias_elementos().subscribe((categorias: categorias_elementos[]) => {
       this.categorias_elementos = categorias; 
-      this.opcionesCategoria = categorias.map((elemento) => elemento.nombre);
+      this.opcionesCategoria = categorias.map((elemento) => elemento.id);
     })
   }
 
@@ -66,13 +71,26 @@ export class ArrastrarElementoComponent implements OnInit {
       );
     }
   }
+  filterByCategoria() {
+    if (this.categoriaSeleccionada) {
+      this.filtered_elementos = this.all_elementos.filter(elemento => elemento.categorias_elementos.id === this.categoriaSeleccionada.id);
+    } else {
+      this.filtered_elementos = this.all_elementos;
+    }
+  }
   dragStart(event: DragEvent, elemento: elementos) {
-    this.dragged_elemento = elemento;
+   
     this.onDragStart.emit({ dragEvent:event, elemento });
+    
   }
 
-  dragEnd(event: DragEvent) {
+  dragEnd(event: any) {
     this.dragged_elemento = undefined;
+     // Restablecer la posición del elemento
+    event.source.element.nativeElement.style.transform = 'none';
+
+    // Opcional: restablecer la posición interna del CDK Drag
+    event.source._dragRef.reset();
     this.onDragEnd.emit({ dragEvent: event });
   }
 

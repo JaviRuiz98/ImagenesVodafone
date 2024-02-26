@@ -35,11 +35,15 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { DragDropModule } from 'primeng/dragdrop';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { DividerModule } from 'primeng/divider';
+//import {DragDropModule} from '@angular/cdk/drag-drop'
+
+
 import { Paso1FormComponent } from './components/formMueble/Paso1Form/Paso1Form.component';
 import { PasoHuecosFormComponent } from './components/formMueble/PasoHuecosForm/PasoHuecosForm.component';
 import { PasoAsignarElementoFormComponent } from './components/formMueble/PasoAsignarElementoForm/PasoAsignarElementoForm.component';
 import { ArrastrarElementoComponent } from './components/arrastrarElemento/arrastrarElemento.component';
 import { EditarExpositorComponent } from './components/editarExpositor/editarExpositor.component';
+import { NuevoElementoComponent } from 'src/app/componentes/nuevo-elemento/nuevo-elemento.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -66,6 +70,7 @@ import { EditarExpositorComponent } from './components/editarExpositor/editarExp
 
     IrArribaComponent,
     SelectorImagenesComponent, 
+    NuevoElementoComponent
     
     
   ],
