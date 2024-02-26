@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { regiones } from 'src/app/interfaces/regiones';
+import { EnumService } from 'src/app/servicios/enum.service';
 
 @Component({
   selector: 'app-Paso1Form',
@@ -9,24 +10,24 @@ import { regiones } from 'src/app/interfaces/regiones';
 })
 export class Paso1FormComponent implements OnInit {
 
+  regionSeleccionada?: regiones;
+  regiones: regiones[] = [];
 
-regionSeleccionada?: regiones;
-regiones: regiones[] = [];
 
-
-  constructor(  private fb: FormBuilder) { }
+  constructor(  private fb: FormBuilder, private enumService: EnumService) { }
 
   @Input() imagenesIn?: string[];
   @Input() nombreIn?: string;
+  @Input() regionIn?: regiones;
   @Input() objetivo_form: 'crear' | 'editar' = 'crear';
 
   @Output() formularioPaso1Change = new EventEmitter<FormGroup>();
 
   formularioPaso1:FormGroup = this.fb.group({
     nombre: ['', Validators.required],
-    region : ['', Validators.required],
+    region : ['',],
     imagenes: [[],], //strings para visualización
-    archivos_imagenes: [[]], //Files para creación en la base de datos
+    archivos_imagenes: [[], Validators.max(2)], //Files para creación en la base de datos
   });
 
   get nombre() {
@@ -48,12 +49,18 @@ regiones: regiones[] = [];
 
 
   ngOnInit() {
-
+    this.enumService.getAllRegiones().subscribe((regiones: regiones[]) => {
+      this.regiones = regiones;
+    });
+   
     if (!!this.imagenesIn && !!this.nombreIn) {
+      console.log(this.regionIn);
       this.formularioPaso1.patchValue({
         nombre: this.nombreIn,
-        imagenes: this.imagenesIn
+        imagenes: this.imagenesIn,
+        region: this.regionIn
       });
+    
       this.onSubmit();
     }
 

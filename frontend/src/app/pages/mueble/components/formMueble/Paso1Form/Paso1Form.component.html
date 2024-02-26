@@ -12,8 +12,8 @@
 
     <div class="flex align-items-center justify-content-center mt-4">
       <p-card [style]="{'width':'130vh'}" header="Región">
-        <p-dropdown class="ml-2"  [options]="regiones" formControlName="regionSeleccionada"
-        optionLabel="nombre" [showClear]="true" placeholder="Filtrar por categoría"
+        <p-dropdown class="ml-2"  [options]="regiones" formControlName="region" 
+        optionLabel="nombre" [showClear]="true"  placeholder="Seleccionar una región"
         [style]="{'margin-left': '20px'}"></p-dropdown>
       </p-card>
     </div>
@@ -49,8 +49,6 @@
             <img class="flex m-2 default-imagen" 
               [src]="imagen" height="200vh"
               [alt]="imagen" />
-
-         
         </div>
         </ng-template>
       

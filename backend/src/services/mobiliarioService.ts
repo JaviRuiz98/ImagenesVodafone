@@ -88,11 +88,12 @@ export const mobiliarioService = {
             
             const muebles = await db.muebles.findMany({
                 include: {   
-                    
+                    regiones: true,
                     expositores: {
                         include: {
                             atributos_expositores: {
                                 include: {
+                                    
                                     categorias_elementos:true,
                                     pertenencia_elementos_atributos: {
                                         include: {

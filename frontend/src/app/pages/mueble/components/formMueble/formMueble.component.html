@@ -3,7 +3,7 @@
 
   <div class="flex flex-column" *ngIf="activeIndex == 0">
     <app-Paso1Form [objetivo_form]="objetivo_form" (formularioPaso1Change)="onFormularioPaso1Change($event)" [imagenesIn]="this.imagenes"
-      [nombreIn]="mueble_existente? mueble_existente.nombre: undefined"></app-Paso1Form>
+      [nombreIn]="mueble_existente? mueble_existente.nombre: undefined " [regionIn]="mueble_existente? mueble_existente.regiones: undefined"></app-Paso1Form>
   </div>
   <!-- CREAR -->
   <div *ngIf="objetivo_form=='crear'; else editar">
@@ -21,6 +21,7 @@
     </div>
 
   </div>
+
   <!-- EDITAR -->
   <ng-template #editar>
     <div *ngIf="activeIndex > 0">

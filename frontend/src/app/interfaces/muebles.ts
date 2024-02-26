@@ -4,6 +4,6 @@ import { regiones } from "./regiones";
 export interface muebles {
     id: number;
     nombre: string;
-    regiones?: regiones[];
+    regiones?: regiones;
     expositores: expositores[];
 }

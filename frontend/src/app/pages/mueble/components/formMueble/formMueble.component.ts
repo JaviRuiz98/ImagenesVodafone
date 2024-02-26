@@ -44,6 +44,10 @@ export class FormMuebleComponent implements OnInit {
   mueble_existente: muebles = {
     id: 0,
     nombre: '',
+    regiones: {
+      id: 0,
+      nombre: ''
+    },
     expositores: []
   };
   
@@ -147,7 +151,9 @@ export class FormMuebleComponent implements OnInit {
 
   
   onFormularioPaso1Change($event: FormGroup<any>) {
-    console.log("form actualizado: "+ $event.value.nombre);
+    console.log("form1 actualizado: "+ JSON.stringify($event.value));
+    console.log("validez form1: "+ $event.valid);
+    
     this.formularioPaso1 = $event;
     this.imagenes = this.formularioPaso1.value.imagenes;
     if (this.objetivo_form === 'crear'){
@@ -163,9 +169,7 @@ export class FormMuebleComponent implements OnInit {
  
   updateIsValidNextStep(): void {
    if (this.activeIndex === 0) {
-    
-    this.isValidNextStep = true;
-    //  this.isValidNextStep = this.formularioPaso1!==undefined && this.formularioPaso1?.valid;
+     this.isValidNextStep = this.formularioPaso1!==undefined && this.formularioPaso1?.valid;
    }else{
 
      this.isValidNextStep = false;
