@@ -107,7 +107,7 @@ export class BarraMenuComponent implements OnInit {
   obtenerRuta(){
     let rutaActual = this.router.url;
     this.currentState = rutaActual;
-    if(rutaActual === '/gestionAuditorias' || rutaActual === '/tiendas' || rutaActual === '/muebles' || rutaActual === '/elementos'){
+    if(rutaActual === '/gestionAuditorias' || rutaActual === '/tiendas' || rutaActual === '/muebles' || rutaActual === '/elementos' || rutaActual === '/templateInforme'){
       rutaActual = '/volverHome';
     }
     return rutaActual;

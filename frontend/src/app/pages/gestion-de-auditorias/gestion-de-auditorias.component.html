@@ -60,7 +60,7 @@
             <tr>              
                 <td>{{ auditoria.id }}</td>    
                 <td>{{ auditoria.tiendas.sfid }}</td>            
-                <td>{{ formatDate(auditoria.fecha) }}</td>
+                <td>{{ publicMethodsService.formatDate(auditoria.fecha) }}</td>
                 <td>
                     <p-tag [severity]="getSeverityEstadoAuditoria(auditoria.estados_auditoria.estado)">{{ auditoria.estados_auditoria.estado }}</p-tag>                    
                 </td>               

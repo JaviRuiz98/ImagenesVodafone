@@ -114,7 +114,7 @@ export async function getBarraProgresoAuditoria(req: Request, res: Response) {
     res.status(200).json(await getNumberArrayProgresoAuditoria(id_auditoria));
 }
 
-async function getNumberArrayProgresoAuditoria(id_auditoria: number): Promise<number[]> {
+export async function getNumberArrayProgresoAuditoria(id_auditoria: number): Promise<number[]> {
     try {
         const expositores_auditoria: pea_extended[] | undefined = await auditoriaService.getBarraProgresoAuditoria(id_auditoria);
 

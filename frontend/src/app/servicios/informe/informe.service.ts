@@ -22,4 +22,8 @@ export class InformeService {
       responseType: 'blob' as 'json'
     });
   }
+
+  getDatosInforme(id_auditoria: number): Observable<any> {
+    return this.http.get<any>(`${this.urlService.api_uri}/datos_informe/${id_auditoria}`);
+  }
 }
