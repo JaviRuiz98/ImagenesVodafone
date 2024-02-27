@@ -137,7 +137,7 @@ export class TiendasComponent implements OnInit{
       this.listaMueblesNuevaTienda = this.ordenarListaAlfabeticamente(response, 'nombre');
       this.listaMueblesMostrar = this.eliminarMueblesSeleccionados(this.listaTodosMuebles, response);
     })
-    this.activeIndex = 1;
+    this.activeIndex = 3;
     this.verFormularioNuevaTienda = true;
     this.editarTiendaCreada = true;
   }

@@ -45,7 +45,7 @@
             </div>
             <div class="formularioICIUG" *ngIf="activeIndex === 2">
                 <p><strong>Activo:</strong></p>
-                <td><p-toggleButton [(ngModel)]="nuevaTienda.activo" onLabel="Sí" offLabel="No"></p-toggleButton></td>
+                <td><p-toggleButton [(ngModel)]="nuevaTienda.activo" onLabel="Sí" offLabel="No" ></p-toggleButton></td>
                 <p><strong>Visible:</strong></p>
                 <td><p-toggleButton [(ngModel)]="nuevaTienda.visible" onLabel="Sí" offLabel="No" [style]="{'cursor': 'pointer'}"></p-toggleButton></td>                
                 <p><strong>Vodafone:</strong></p>
@@ -78,7 +78,7 @@
                     <p><strong>Provincia: </strong>{{nuevaTienda.provincia}}</p>
                     <p><strong>Población: </strong>{{nuevaTienda.poblacion}}</p>
                     <p><strong>CP: </strong>{{nuevaTienda.cp}}</p>
-                    <p><strong>Activo: </strong><span class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': nuevaTienda.activo, 'text-red-500 pi-times-circle': !nuevaTienda.activo }" [style]="{'cursor': 'auto'}"></span></p>
+                    <p><strong>Activo: </strong><span class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': nuevaTienda.activo, 'text-red-500 pi-times-circle': !nuevaTienda.activo }" [style]="{'cursor': 'auto'}" ></span></p>
                     <p><strong>Visible: </strong><span class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': nuevaTienda.visible, 'text-red-500 pi-times-circle': !nuevaTienda.visible }" [style]="{'cursor': 'auto'}"></span></p>
                     <p><strong>Vodafone: </strong><span class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': nuevaTienda.vodafone, 'text-red-500 pi-times-circle': !nuevaTienda.vodafone }" [style]="{'cursor': 'auto'}"></span></p>
                     <p><strong>Lowi: </strong><span class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': nuevaTienda.lowi, 'text-red-500 pi-times-circle': !nuevaTienda.lowi }" [style]="{'cursor': 'auto'}"></span></p>
