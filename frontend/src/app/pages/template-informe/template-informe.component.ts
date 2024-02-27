@@ -147,7 +147,7 @@ export class TemplateInformeComponent implements OnInit {
                 documentStyle.getPropertyValue('--yellow-500'),
                 documentStyle.getPropertyValue('--orange-500'),
                 documentStyle.getPropertyValue('--red-500'),
-                documentStyle.getPropertyValue('--grey-200'),
+                documentStyle.getPropertyValue('--bluegray-500'),
               ],
               label: 'My dataset'
           }
