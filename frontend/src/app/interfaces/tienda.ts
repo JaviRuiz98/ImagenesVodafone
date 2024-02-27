@@ -9,7 +9,8 @@ export interface tienda {
     nombre: string;
     activo: boolean;
     visible: boolean;
-    lowing: boolean;
+    vodafone: boolean;
+    lowi: boolean;
     canal: string;
     tipo_pdv: string;
     zona_geografica: string;

@@ -11,6 +11,7 @@ import { StepsModule } from 'primeng/steps';
 import { PickListModule } from 'primeng/picklist';
 import { TableModule } from 'primeng/table';
 import { OrderListModule } from 'primeng/orderlist';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { OrderListModule } from 'primeng/orderlist';
     StepsModule,
     PickListModule,
     TableModule,
-    OrderListModule
+    OrderListModule,
+    ToggleButtonModule
   ]
 })
 export class TiendasModule { }
