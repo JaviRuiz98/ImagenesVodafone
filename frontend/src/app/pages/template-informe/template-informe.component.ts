@@ -5,8 +5,13 @@ import { ChartModule } from 'primeng/chart';
 import { InformeService } from 'src/app/servicios/informe/informe.service';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
 import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
-import * as CryptoJS from 'crypto-js';
 import { ActivatedRoute } from '@angular/router';
+import { OnInit } from '@angular/core';
+import { DataViewModule } from 'primeng/dataview';
+import { UrlService } from 'src/app/servicios/url/url.service';
+import { datos_informe } from 'src/app/interfaces/datos_informe';
+import { TagModule } from 'primeng/tag';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-template-informe',
@@ -16,20 +21,27 @@ import { ActivatedRoute } from '@angular/router';
   imports: [
     TableModule,
     ProgressBarModule,
-    ChartModule
+    ChartModule,
+    TagModule,
+    CommonModule
   ],
 })
-export class TemplateInformeComponent {
+export class TemplateInformeComponent implements OnInit {
 
   id_auditoria_cifrada: string = '';
 
-  informeData = undefined;
+  informeData: datos_informe;
+
+  url_imagenes_procesadas: string = '';
+  url_imagenes_referencia: string = '';
 
   resumen_auditoria: {
     concepto: string,
     detalle: string
   } []
   porcentaje_procesados: number;
+
+  fecha: string = '';
 
   data: any;
   chartData = [0, 0, 0, 0]; //Cantidad de resultados por bueno, notable, medio y malo
@@ -38,18 +50,20 @@ export class TemplateInformeComponent {
   constructor(
     private informeService: InformeService,
     public publicMedhodsService: PublicMethodsService,
-    private localStorageService: LocalStorageService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private urlService: UrlService,
   ) { }
 
   ngOnInit(): void {
-    this.id_auditoria_cifrada = this.route.snapshot.paramMap.get('id_auditoria');
+    this.url_imagenes_procesadas = this.urlService.url_imagenes_procesadas;
+    this.url_imagenes_referencia = this.urlService.url_imagenes_referencia;
+
+    this.id_auditoria_cifrada = this.route.snapshot.paramMap.get('id_auditoria_cifrada');
     console.log('id_auditoria', this.id_auditoria_cifrada);
 
     this.informeService.getDatosInforme(this.id_auditoria_cifrada).subscribe(
       (data) => {
         this.informeData = data;
-        console.log('data', data);
         console.log('informeData', this.informeData);
 
         this.mapearResumenAuditoria();
@@ -61,8 +75,6 @@ export class TemplateInformeComponent {
       }
     )
   }
-
-
 
   mapearResumenAuditoria() {
     this.resumen_auditoria = [
@@ -80,30 +92,39 @@ export class TemplateInformeComponent {
       },
       {
         concepto: 'Total de elementos a procesar',
-        detalle: this.informeData.num_expositores
+        detalle: String(this.informeData.num_expositores)
       },
       {
         concepto: 'Total de elementos procesados',
-        detalle: this.informeData.num_expositores_procesados
+        detalle: String(this.informeData.num_expositores_procesados)
       }
     ]
 
     this.porcentaje_procesados = (this.informeData.num_expositores_procesados / this.informeData.num_expositores) * 100;
+    this.porcentaje_procesados = parseFloat(this.porcentaje_procesados.toFixed(2));
     
     console.log(this.resumen_auditoria);
+  }
+
+  getSeverityCartel(procesado: string): string {
+    return this.publicMedhodsService.getSeverityCartel(procesado);
+  }
+
+  getSeverityDispositivos(numero_dispositivos: number, huecos_esperados: number): string {
+    return this.publicMedhodsService.getSeverityDispositivos(numero_dispositivos, huecos_esperados);
   }
 
   generarDatosChart() {
     for (const dato of this.informeData.datos_barra_progreso) {
       switch (dato) {
-        case 0:
+        case 1:
           this.chartData[0]++;
           break;
-        case 1:
+        case 2:
           this.chartData[1]++;
           break;
-        case 2:
         case 3:
+        case 4:
           this.chartData[2]++;
           break;
         default:
@@ -112,9 +133,10 @@ export class TemplateInformeComponent {
       }
     }
 
+    this.chartData[4] = this.informeData.num_expositores - this.informeData.num_expositores_procesados; // cuenta de elementos no procesados aun
+
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
-    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
     this.data = {
       datasets: [
@@ -125,11 +147,12 @@ export class TemplateInformeComponent {
                 documentStyle.getPropertyValue('--yellow-500'),
                 documentStyle.getPropertyValue('--orange-500'),
                 documentStyle.getPropertyValue('--red-500'),
+                documentStyle.getPropertyValue('--grey-200'),
               ],
               label: 'My dataset'
           }
       ],
-      labels: ['Positivo', 'Notable', 'Medio', 'Negativo']
+      labels: ['Positivo', 'Notable', 'Medio', 'Negativo', 'No procesados']
   };
   
   this.chartOptions = {
@@ -137,13 +160,6 @@ export class TemplateInformeComponent {
           legend: {
               labels: {
                   color: textColor
-              }
-          }
-      },
-      scales: {
-          r: {
-              grid: {
-                  color: surfaceBorder
               }
           }
       }

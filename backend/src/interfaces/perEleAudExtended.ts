@@ -1,5 +1,6 @@
 import { muebles } from "@prisma/client";
 import { elementoExtended } from "./elementoExtended";
+import { procesados_imagenes_extended } from "./procesadosImagenesExtended";
 
 export interface per_ele_aud_extended {
     id: number;
@@ -8,5 +9,5 @@ export interface per_ele_aud_extended {
     id_elemento: number;
     muebles: muebles;
     elementos: elementoExtended;
-    procesados_imagenes: any[]; // Ajusta el tipo de acuerdo a tus datos
+    procesados_imagenes: procesados_imagenes_extended[]; // Ajusta el tipo de acuerdo a tus datos
 }

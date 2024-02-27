@@ -123,7 +123,6 @@ export class GestionDeAuditoriasComponent implements OnInit {
   }
 
   descargarInforme(id_auditoria: number){
-    console.log(id_auditoria);
     const body = {
       id_auditoria: id_auditoria
     }
@@ -144,6 +143,14 @@ export class GestionDeAuditoriasComponent implements OnInit {
         console.error('Error al descargar el informe:', error);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al descargar el informe' });
       });
+  }
+
+  navegarTemplateInformeAuditoria(id_auditoria: number){
+    this.informeService.getUrlIdAuditoriaCifrada(id_auditoria).subscribe(
+    (data)=>{
+      console.log('respuesta url encriptada', data);
+      this.router.navigate(['/templateInforme/'+ data]);
+    })
   }
 
 }

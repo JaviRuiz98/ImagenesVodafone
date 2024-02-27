@@ -1,22 +1,24 @@
 import puppeteer from 'puppeteer';
-import * as CryptoJS from 'crypto-js';
 
-export async function createPDF(url: string, id_auditoria: number): Promise<Buffer> {
-  const texto_cifrado = cifrarDatos(id_auditoria, process.env.CRYPT_SECRET_KEY!);
+export async function createPDF(url: string, texto_cifrado: string): Promise<Buffer> {
 
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  await page.goto(url+texto_cifrado, { waitUntil: 'networkidle0' });
+  await page.goto(url+texto_cifrado, { waitUntil: 'networkidle2' });
 
-  console.log('Generando informe para la auditoria ' + url+texto_cifrado);
-
-  const pdf = await page.pdf({ format: 'A4' });
+  const pdf = await page.pdf({ 
+    path: 'reporte.pdf', // El nombre de tu archivo PDF
+    format: 'A4',
+    printBackground: true, // Imprime el fondo si es necesario
+    margin: {
+      top: '20mm',
+      right: '20mm',
+      bottom: '20mm',
+      left: '20mm'
+    }
+  });
   await browser.close();
   return pdf;
 }
 
-function cifrarDatos(id: number, secretKey: string): string {
-  const datosString = JSON.stringify(id);
-  const texto_cifrado = CryptoJS.AES.encrypt(datosString, secretKey ).toString();
-  return texto_cifrado;
-}
+

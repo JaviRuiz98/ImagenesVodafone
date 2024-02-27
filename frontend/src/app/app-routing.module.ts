@@ -44,8 +44,8 @@ const routes: Routes = [
     data: { stateBarra: 'empty' },
    },
    {
-    path: "templateInforme", component: TemplateInformeComponent, 
-    data: { stateBarra: 'empty' },
+    path: "templateInforme/:id_auditoria_cifrada", component: TemplateInformeComponent, 
+    data: { stateBarra: 'templateAuditorias' },
    },
 
 

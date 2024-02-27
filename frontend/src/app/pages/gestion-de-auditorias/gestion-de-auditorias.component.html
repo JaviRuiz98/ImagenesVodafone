@@ -54,6 +54,7 @@
                 <th>Opciones</th>
                 <th>Enviar informe</th>
                 <th>Descargar informe</th>
+                <th>Previsualizar informe</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-auditoria>            
@@ -76,6 +77,9 @@
                 </td>
                 <td>
                     <p-button label="Descargar" icon="pi pi-download" severity="danger" [text]="true" [raised]="true" [rounded]="true" (click)="descargarInforme(auditoria.id)" [disabled]="auditoria.estados_auditoria.estado === 'en progreso'"></p-button>
+                </td>
+                <td>
+                    <p-button label="Ir template" severity="danger" [text]="true" [raised]="true" [rounded]="true" (click)="navegarTemplateInformeAuditoria(auditoria.id)" [disabled]="auditoria.estados_auditoria.estado === 'en progreso'"></p-button>
                 </td>
             </tr>
         </ng-template>

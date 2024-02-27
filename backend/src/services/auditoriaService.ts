@@ -244,5 +244,33 @@ export const auditoriaService = {
         } finally {
             db.$disconnect();
         }
+    }, 
+
+    getProcesadosByIdAuditoria(id_auditoria: number): Promise<any> {
+        try {
+            return db.pertenencia_elementos_auditoria.findMany({
+                where: {
+                    id_auditoria: id_auditoria
+                }, include: {
+                    procesados_imagenes: {
+                        include: {
+                            imagenes: true,
+                            probabilidades_respuesta_carteles: true,
+                            categorias_elementos: true
+                        }
+                    }, elementos: {
+                        include: {
+                            imagenes: true
+                        }
+                    }
+
+                }
+            })
+        } catch (error) {
+            console.error('No se pudo obtener el numero de procesados por expositor:', error);
+            throw error;
+        } finally {
+            db.$disconnect();
+        }
     }
 }
