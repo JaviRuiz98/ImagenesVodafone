@@ -1,0 +1,21 @@
+.default-imagen{
+    width: auto;
+    display: block;
+    object-fit: cover; 
+    border-radius: 15%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .image-container {
+    position: relative;
+    display: inline-block; /* O flex, dependiendo de tu layout */
+    margin: 2px;
+  }
+  
+
+  .delete-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10; /* Asegura que el botón esté sobre la imagen */
+  }

@@ -27,22 +27,15 @@
 .expositores-container {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    align-items: start;
 }
 
-/* h2{
-    text-align: center;
-} */
 
 .expositores-item {
     margin-right: 2%; 
 }
-/* 
-.opciones {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-} */
+
+
 
 .marginTop{
     margin-top: 10%;
@@ -51,3 +44,43 @@
 ::ng-deep .p-datatable .p-datatable-header{
     padding: 0.75rem 1rem;
 }
+
+.default-imagen{
+    width: auto;
+    object-fit: cover; 
+    border-radius: 15%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+
+  .item-container {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+  }
+  
+  .image-button-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Asegura que el contenedor tome toda la anchura disponible */
+  }
+  
+  .imagenSimple {
+    width: 100%; /* Hace que la imagen se ajuste a la anchura del contenedor */
+    object-fit: cover; /* Ajusta la imagen proporcionalmente */
+    height: auto; /* Ajusta la altura automáticamente basada en la anchura */
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+  }
+  
+  .full-width-button {
+    width: 100%; /* Hace que el botón se ajuste a la anchura del contenedor */
+    margin-top: 2%; /* Espacio entre la imagen y el botón */
+
+  }
+  
+ /* .full-width-button   ::ng-deep .p-button{
+    font-size:10px;  
+    padding: 0.5rem 1rem;
+  }  */

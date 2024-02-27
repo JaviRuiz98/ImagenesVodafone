@@ -1,0 +1,77 @@
+<form [formGroup]="formulario">
+  <div class="flex flex-column">
+
+    <div class="flex align-items-center justify-content-center mt-4">
+      <p-card [style]="{'width':'130vh'}" header="Nombre*">
+        <input type="text" formControlName="nombre_mueble" pInputText class="w-full">
+        <small *ngIf="nombre_mueble.invalid && (nombre_mueble.dirty || nombre_mueble.touched)" class="block p-error">
+          <div *ngIf="nombre_mueble.errors?.['required']">El nombre es obligatorio.</div>
+        </small>
+      </p-card>
+    </div>
+
+    <div class="flex align-items-center justify-content-center mt-4">
+      <p-card [style]="{'width':'130vh'}" header="Región">
+        <div class="mb-4 text-500">
+          <small>
+            Añade una región para el mueble si es necesario
+          </small>
+        </div>
+        <p-dropdown class="mt-2"  [options]="regiones" formControlName="region" 
+        optionLabel="nombre" [showClear]="true"  placeholder="Seleccionar una región"
+        [style]="{'margin-left': '20px'}"></p-dropdown>
+      </p-card>
+    </div>
+
+    <div class="flex align-items-center justify-content-center mt-4">
+      <p-card [style]="{'width':'130vh'}" header="Subir modelo">
+        <div>
+          <small class="text-500"  *ngIf="objetivo_form=='crear'" >
+            Añade si es necesario a lo sumo 2 imagenes que sirvan como modelo para el mueble
+          </small>
+        </div>
+        <div class="flex" style="height: 50vh"  *ngIf="objetivo_form=='crear'; else editar">
+          
+          <div class="flex-1 m-2" style="height: 50vh">
+            <app-selector-imagenes [button_disabled]="imagenes.value.length >= 2" (archivoSeleccionadoChange)="onArchivoSeleccionadoChange($event)"  style="width: 100%; overflow: hidden;"></app-selector-imagenes>
+          </div>
+
+
+          <div class="flex-1 m-2 flex flex-wrap">
+
+           
+            <div *ngFor="let imagen of imagenes.value; let i = index"  class="image-container">
+                <img class="flex m-2 default-imagen" 
+                  [src]="imagen" height="200vh"
+                  [alt]="imagen" />
+
+                  <p-button icon="pi pi-trash" class="delete-button" severity="danger"  [rounded]="true" (click)="deleteImage(i)"></p-button>
+             
+            </div>
+
+          </div>
+        </div>
+
+        <ng-template #editar>
+          <div *ngFor="let imagen of imagenes.value; let i = index"  class="image-container">
+             
+            <img class="flex m-2 default-imagen" 
+              [src]="imagen" height="200vh"
+              [alt]="imagen" />
+        </div>
+        </ng-template>
+      
+
+    </p-card>
+
+  </div>
+
+
+
+  </div>
+
+
+ 
+
+
+</form>

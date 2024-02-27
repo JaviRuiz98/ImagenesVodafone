@@ -1,0 +1,93 @@
+
+  <p-toolbar class="mb-2">
+
+    <div class="p-toolbar-group-start">
+      
+    <p-button severity="danger" [label]="show_crear==true ? 'volver':'' " class="mr-2"  [icon]=" show_crear==true ? 'pi pi-arrow-left' : 'pi pi-plus'" (onClick)="show_crear= !show_crear"></p-button>
+
+      <span class="p-input-icon-left"  style="margin-left: 20px" *ngIf="show_crear==false">
+        <i class="pi pi-search"></i>
+        <input pInputText type="text" (input)="filterByNombre(filterNameValue)"
+          [(ngModel)]="filterNameValue" placeholder="Filtrar por nombre" />
+      </span>
+
+
+      <p-dropdown class="ml-2" *ngIf="show_crear==false" [options]="categorias_elementos" [(ngModel)]="categoriaSeleccionada"
+        optionLabel="nombre" [showClear]="true" placeholder="Filtrar por categoría" (onChange)="filterByCategoria()"
+        [style]="{'margin-left': '20px'}"></p-dropdown>
+    </div>
+    <div class="p-toolbar-group-center">
+       <h3 [hidden]="show_crear!=true">Crear Elemento</h3>
+    </div>
+
+    <div class="p-toolbar-group-end">
+      <p-progressSpinner *ngIf="filtered_elementos.length == 0 || filtered_elementos.length == undefined"
+        fill="var(--surface-ground)" [style]="{'width': '5%', 'height': '5%'}" animationDuration=".6s"
+        class="fadein animation-duration-1000 "></p-progressSpinner>
+    </div>
+  </p-toolbar>
+
+  <div *ngIf="show_crear==true; else seleccionar" class="mt-4">
+    <app-nuevo-elemento></app-nuevo-elemento>
+  </div>
+  <ng-template #seleccionar>
+    <div *ngIf="mode=='arrastrar' else seleccionar">
+      <p-scrollPanel [style]="{ height: '47vh' }">
+        <div *ngFor="let elemento of filtered_elementos" class="example-box" cdkDrag>
+          <div class="flex align-items-center gap-2" pDraggable="elemento"
+            (dragstart)="dragStart($event, elemento)" (cdkDragEnd)="dragEnd($event)" >
+            <img class="border-round" [src]="url_imagenes_referencias + elemento.imagenes.url"
+              alt="{{elemento.imagenes.url}}" style="width: 64px; height: 64px; object-fit: cover;">
+            <div class="flex flex-column flex-1 gap-1">
+              <span class="font-bold">{{ elemento.nombre }}</span>
+              <div class="flex align-items-center gap-1">
+                <i class="pi pi-tag text-sm"></i>
+                <span>{{ elemento.categorias_elementos.nombre }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-scrollPanel>  
+    </div>
+  
+    <ng-template #seleccionar>
+      <p-table
+      #miTabla
+      class="table"
+      [value]="filtered_elementos"
+      [scrollable]="true"
+      [scrollHeight]="'calc(100vh - 300px )'"
+      [showCurrentPageReport]="true"
+      [tableStyle]="{ 'min-width': '50rem' }"
+      selectionMode="single"
+      [(selection)]="selected_elemento"
+      (onRowSelect)="onElementoSeleccionadoChange($event)"
+      
+    >
+      
+     
+      <ng-template pTemplate="body" let-elemento>
+          <tr  [pSelectableRow]="elemento">
+              <td>
+                <img class="border-round" [src]="url_imagenes_referencias + elemento.imagenes.url"
+                alt="{{elemento.imagenes.url}}" style="width: 64px; height: 64px; object-fit: cover;">
+              </td>
+  
+              <td > {{elemento.nombre}} </td>
+  
+          </tr>
+      </ng-template>
+             
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="3">No hay elementos</td>
+            </tr>
+        </ng-template>
+  
+      </p-table>
+  
+    </ng-template>
+  
+   
+  </ng-template>
+  

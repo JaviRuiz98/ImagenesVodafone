@@ -1,14 +1,15 @@
-<div #dropArea 
-    class= 'drop-area' 
-    (dragover)="onDragOver($event)" 
-    (dragleave)="onDragLeave($event)" 
-    (drop)="onDrop($event)"
-    *ngIf="!archivoSeleccionado">
-    <h2 #dragText>Arrastra y suelta imagenes</h2>
-    <span>O</span>
-    <p-button (click)="seleccionarArchivo($event)" [outlined]="true" label="Seleccionar una imagen" severity="danger" ></p-button>
-    <input #inputFile type="file" (change)="listenChange($event)" hidden>
-</div>
-<div *ngIf="archivoSeleccionado && cargando_procesado" class="drop-area ">
-    <img [src]="getImageSrc()" alt="Vista previa de la imagen seleccionada"  class="imagenSimple">
-</div>
+
+    <div #dropArea class="drop-area"   
+        (dragover)="onDragOver($event)" 
+        (dragleave)="onDragLeave($event)"  
+        *ngIf="!archivoSeleccionado">
+        
+        <h2 [class]="button_disabled ? 'font-light text-500' : ''" #dragText>Arrastra y suelta imagenes</h2>
+        <span [class]="button_disabled ? 'font-light text-500' : ''">O</span>
+
+        <p-button  [disabled]="button_disabled" (click)="seleccionarArchivo($event)" [outlined]="true" label="Seleccionar una imagen" severity="danger" ></p-button>
+        <input #inputFile type="file"  (change)="listenChange($event)" hidden>
+    </div>
+    <div *ngIf="isCargando()" class="drop-area ">
+        <p-progressSpinner></p-progressSpinner>
+    </div>
