@@ -1,6 +1,6 @@
  
 import { DialogModule } from 'primeng/dialog';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 import { CommonModule } from '@angular/common';
 import { TagModule } from 'primeng/tag';
@@ -23,13 +23,14 @@ import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/p
   ],
 })
 
-export class DialogInformacionProcesadoComponent {
+export class DialogInformacionProcesadoComponent{
 
   @Input() mostrar_info: boolean = false;
   @Input() visible_info_dispositivos: boolean = false;
   @Input() procesados_imagenes: procesados_imagenes[] = [];
   @Input() id_procesado: number = 0;
   @Input() procesado: any;
+  @Input() posicionGaleria: number = 0;
   val: boolean = true;
   verPrompt: boolean = false;
   visible_info_procesamiento: boolean = false;
@@ -70,11 +71,6 @@ export class DialogInformacionProcesadoComponent {
     this.procesamientoService.updateFeedbackProcesado(procesado.id, procesado.feedback_humano).subscribe();
   }
   mostrarPrompt(){
-    // this.verResumen = false;
     this.verPrompt = true;
-  }
-  mostrarResumen(){
-    this.verResumen = true;
-    this.verPrompt = false;
   }
 }
