@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validator, ValidatorFn, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { muebles } from 'src/app/interfaces/muebles';
 import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
@@ -18,35 +18,83 @@ import { UrlService } from 'src/app/servicios/url/url.service';
 
 export class FormMuebleComponent implements OnInit {
 
-  url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
+
  
+  
+  constructor( private urlService: UrlService, private cdr: ChangeDetectorRef, public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private elementosService: ElementosService, private muebleService: MueblesService) { }
+  
   objetivo_form: 'crear' | 'editar' = 'crear';
 
-  constructor( private urlService: UrlService, private cdr: ChangeDetectorRef, public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private elementosService: ElementosService, private muebleService: MueblesService) { }
+  url_imagenes_referencias: string = this.urlService.url_imagenes_referencia;
 
-  formulario: FormGroup = this.fb.group({
-    nombre_mueble: ['', Validators.required],
-    region: [''],
-    imagenes: [[], Validators.maxLength(2)],
-    archivos_imagenes: [[], Validators.maxLength(2)],
+  formulario = this.fb.group({
+    mueble: this.fb.group({
+      nombre_mueble: ['', Validators.required],
+      region: [''],
+      expositores: this.fb.array([]) // Ahora es un FormArray
+    }),
+    archivos_imagenes: [ [], Validators.maxLength(2)],
   });
+
+  get mueble() {
+    return this.formulario.get('mueble') as FormGroup;
+  }
+  get nombre_mueble() {
+    return this.mueble.get('nombre_mueble');
+  }
+  get region() {
+    return this.mueble.get('region');
+  }
+  
+  get expositores() {
+    return this.mueble.get('expositores') as FormArray;
+  }
+  
+  get archivosImagenes() {
+    return this.formulario.get('archivos_imagenes') as FormArray;
+  }
+  get imagenesExpositores(): string[] {
+    return this.expositores.controls.map((expositor) => {
+      return expositor.get('imagen')?.value || ''; 
+    });
+  }
   
 
-    get nombre_mueble() {
-      return this.formulario.controls['nombre_mueble'];
-    }
-    get imagenes() {
-      return this.formulario.controls['imagenes'];
-    }
 
-    get archivos_imagenes() {
-      return this.formulario.controls['archivos_imagenes'];
+  agregarExpositor(expositor?: expositores) {
+    const expositorGroup = this.fb.group({
+      nombre_expositor: [expositor ? expositor.nombre : '', Validators.required],
+      imagen: [expositor ? this.getImagenModelo(expositor) : ''],
+      atributos_expositores: this.fb.array([])
+    });
+  
+    this.expositores.push(expositorGroup);
+  
+    if (expositor && expositor.atributos_expositores) {
+      const index = this.expositores.length - 1;
+      expositor.atributos_expositores.forEach((atributo) => {
+        this.agregarAtributoAExpositor(index, atributo);
+      });
     }
+  }
 
-    get region(){
-      return this.formulario.controls['region'];
-    }
+  removerExpositor(index: number) {
+    this.expositores.removeAt(index);
+  }
 
+  agregarAtributoAExpositor(expositorIndex: number, atributo?: atributos_expositores) {
+    const atributoExpositorGroup = this.fb.group({
+      elemento: [atributo ? atributo.elemento.id : 0, Validators.maxLength(2)],
+    });
+    const expositor = this.expositores.at(expositorIndex) as FormGroup;
+    (expositor.get('atributos_expositores') as FormArray).push(atributoExpositorGroup);
+  }
+
+  removerAtributoDeExpositor(expositorIndex: number, atributoIndex: number) {
+    const expositor = this.expositores.at(expositorIndex) as FormGroup;
+    (expositor.get('atributos_expositores') as FormArray).removeAt(atributoIndex);
+  }
+    
 
   //STEPPER
   step_count: number = 2;
@@ -55,7 +103,7 @@ export class FormMuebleComponent implements OnInit {
   isValidNextStep: boolean = false;
   rangeArray: number[] = [];
 
-  index_imagen_actual: number = 0;
+  index_expositor_actual: number = 0;
   
   mueble_existente: muebles = {
     id: 0,
@@ -67,43 +115,28 @@ export class FormMuebleComponent implements OnInit {
     expositores: []
   };
   
-
-  
-
   ngOnInit() {
     if (this.dialogConfig.data) {
       console.log ("editar");
       this.objetivo_form='editar';
 
       const mueble = this.dialogConfig.data.mueble;
-      this.mueble_existente = mueble;
 
-     
-      const imagenesIniciales = mueble.expositores.map((expositor :expositores) => {
-        if (this.tieneModelo(expositor.atributos_expositores)) {
-          return  this.url_imagenes_referencias+this.getImagenModelo(expositor);
-        }
-        return null;
-      });
-
-        
-      console.log(imagenesIniciales);
       this.formulario.patchValue({
-        imagenes: imagenesIniciales,
-        nombre_mueble: mueble.nombre,
-        region: mueble.regiones
+        mueble: {
+          nombre_mueble: mueble.nombre,
+          region: mueble.regiones,
+        }
       });
-  
 
-      if (imagenesIniciales) {
-        this.step_count = imagenesIniciales.length * 2 + 1;
-      } else {
-        this.step_count = this.mueble_existente.expositores.length+1;
-      }
+      mueble.expositores.map((expositor :expositores) => {
+        this.agregarExpositor(expositor);
+      });
+
       
-      
-      
-      
+      this.step_count = this.expositores.length;
+
+  
     }else{
       console.log ("nuevo");
       this.objetivo_form='crear';
@@ -169,16 +202,13 @@ export class FormMuebleComponent implements OnInit {
 
     
     if (atributoModelo && atributoModelo.elemento) {
-      return atributoModelo.elemento.imagenes.url;
+      return this.url_imagenes_referencias+atributoModelo.elemento.imagenes.url;
     } else {
       return undefined;
     }
 
   }
-  tieneModelo(atributos_expositores: atributos_expositores[]): boolean {
-    const atributoModelo: atributos_expositores | undefined = atributos_expositores.find((atributo) => atributo.categorias_elementos.id === 3);
-    return atributoModelo !== undefined;
-  }
+
 
   activeIndexIsPair(): boolean {
    return this.activeIndex % 2 === 0;
@@ -187,7 +217,7 @@ export class FormMuebleComponent implements OnInit {
   
   updateIsValidNextStep(): void {
    if (this.activeIndex === 0) {
-     this.isValidNextStep = this.nombre_mueble.valid && this.imagenes.valid && this.region.valid;
+     this.isValidNextStep = this.nombre_mueble.valid &&  this.region.valid;
 
    }else{
 
@@ -199,9 +229,9 @@ export class FormMuebleComponent implements OnInit {
   onFormularioPaso1AddedImage() {
 
     if (this.objetivo_form === 'crear'){
-      this.step_count = this.formulario.value.imagenes.length== 0 ? 2 : this.formulario.value.imagenes.length*2+1;
+      this.step_count = this.imagenesExpositores.length== 0 ? 2 : this.imagenesExpositores.length*2+1;
     } else{
-      this.step_count = this.formulario.value.imagenes.length;
+      this.step_count = this.imagenesExpositores.length;
     }
     this.generateSteps();
  
@@ -211,7 +241,7 @@ export class FormMuebleComponent implements OnInit {
   nextStep() {
     //pasaremos a la siguiente imagen siempre y cuando no estemos en el primer paso y el indice sea par o si estamos en editar
     if ((this.activeIndex > 0 && this.activeIndexIsPair()) || (this.activeIndex > 0 && this.objetivo_form == 'editar')) { 
-        this.index_imagen_actual++;
+        this.index_expositor_actual++;
     }
 
     if (this.isValidNextStep){
@@ -223,7 +253,7 @@ export class FormMuebleComponent implements OnInit {
   previousStep() {
   
     if ((!this.activeIndexIsPair() && this.objetivo_form == 'crear' ) || (this.objetivo_form == 'editar')) {
-      this.index_imagen_actual = Math.max(this.index_imagen_actual - 1, 0);
+      this.index_expositor_actual = Math.max(this.index_expositor_actual - 1, 0);
     }
   if (this.activeIndex > 0) {
     this.activeIndex--;

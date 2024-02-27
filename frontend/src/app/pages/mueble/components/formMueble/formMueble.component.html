@@ -10,16 +10,16 @@
     <div *ngIf="activeIndex > 0">
 
       <!-- En caso de tener imagenes seleccionadas para el modelo -->
-      <div *ngIf="imagenes && imagenes.value && imagenes.value.length > 0; else no_imagenes">
+      <div *ngIf="imagenesExpositores.length > 0; else no_imagenes">
 
           <!-- Verifica si el paso actual requiere el componente app-PasoHuecosForm -->
           <ng-container *ngIf="!activeIndexIsPair()">
-            <app-PasoHuecosForm [imagen]="imagenes[index_imagen_actual]"></app-PasoHuecosForm>
+            <app-PasoHuecosForm ></app-PasoHuecosForm>
           </ng-container>
 
           <!-- Verifica si el paso actual requiere el componente app-PasoAsignarElementoForm -->
           <ng-container *ngIf="activeIndexIsPair()">
-            <app-PasoAsignarElementoForm [imagen]="imagenes[index_imagen_actual]"></app-PasoAsignarElementoForm>
+            <app-PasoAsignarElementoForm [expositorFormulario]="expositores[index_expositor_actual]"></app-PasoAsignarElementoForm>
           </ng-container>
         </div>
 
@@ -37,7 +37,7 @@
   <ng-template #editar>
     <div *ngIf="activeIndex > 0">
      
-        <app-PasoAsignarElementoForm [imagen]="imagenes[index_imagen_actual]"></app-PasoAsignarElementoForm>
+        <app-PasoAsignarElementoForm [expositorFormulario]="expositores[index_expositor_actual]"></app-PasoAsignarElementoForm>
    
     </div>
   </ng-template>

@@ -12,6 +12,7 @@ import { elementos } from 'src/app/interfaces/elementos';
 import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
 import { PasoAsignarElementoFormComponent } from './components/formMueble/PasoAsignarElementoForm/PasoAsignarElementoForm.component';
 import { EditarExpositorComponent } from './components/editarExpositor/editarExpositor.component';
+import { UrlService } from 'src/app/servicios/url/url.service';
 @Component({
   selector: 'app-mueble',
   templateUrl: './mueble.component.html',
@@ -22,9 +23,13 @@ export class MuebleComponent implements OnInit {
 
 
 
+  
+  
+  constructor( private urlService: UrlService, private muebleService: MueblesService, public dialogService: DialogService, public messageService: MessageService, private config: PrimeNGConfig) { }
+  
   muebles: muebles[] = [];
  
-  url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
+  url_imagenes_referencias: string = this.urlService.url_imagenes_referencia;
 
 
   nombreFiltro: string = '';
@@ -34,10 +39,6 @@ export class MuebleComponent implements OnInit {
   ref: DynamicDialogRef | undefined;
 
   
-
-
-  constructor( private muebleService: MueblesService, public dialogService: DialogService, public messageService: MessageService, private config: PrimeNGConfig) { }
-
   ngOnInit() {
     this.config.setTranslation({
       startsWith: 'Empieza con',
