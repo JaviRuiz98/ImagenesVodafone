@@ -44,6 +44,7 @@ export class VisualizacionProcesadosComponent implements OnInit{
   auditoria_seleccionada: auditoria = new auditoria(null);
   verInformacionProcesado: boolean = false;
   imagenProcesadaSelected: procesados_imagenes = undefined;
+  posicionGaleria: number = 0;
   responsiveOptions: any[] = [
     {
         breakpoint: '1024px',
