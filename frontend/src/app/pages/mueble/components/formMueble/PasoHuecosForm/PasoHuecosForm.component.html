@@ -1,10 +1,10 @@
-
+<!-- 
 Pos actual: ({{ this.currentX }} , {{ this.currentY }})
 <br />
 
 Click transformado: {{ this.clickTransformado | json }}  
 <br />
-<!-- esquinas: {{ this.corners | json }} -->
+esquinas: {{ this.corners | json }}
 <br />
 Pos inicio: ({{ this.startX}}. {{ this.startY}})
 <br />
@@ -14,7 +14,7 @@ angulo: {{ this.angulo }}
 <br />
 rotar: {{ this.Rotacion }}
 <br />
-redimensionar: {{ this.redimensionado }}
+redimensionar: {{ this.redimensionado }} -->
 
 <div style="display: flex; flex-direction: row;" >
     <div  style="width:50% ; text-align: center">
@@ -35,28 +35,20 @@ redimensionar: {{ this.redimensionado }}
         
       
     </div>   
-    <div  style="width:50% ; text-align: center">
-      <p-table [value]="atributos_expositor" [tableStyle]="{ 'min-width': '50rem' }">
+    <div  style="width:50%; text-align: center">
+      <p-table [value]="atributos_expositor" >
         <ng-template pTemplate="header">
             <tr>
-                <th>numero</th>
-                <th>Posicion de inicio</th>
-                <th>ancho</th>
-                <th>alto</th>
-                <th>angulo</th>
-                <th>Categoria</th>
-         
+              <th>Numero</th>
+              <th>Categoria</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-hueco>
             <tr>
-                <td> </td>
-                <td> ({{ hueco.x }} , {{ hueco.y }})</td>
-                <td> {{ hueco.ancho }}</td>
-                <td> {{ hueco.alto }}</td>
-                <td> {{ hueco.angulo }}</td>
+                <td>{{ hueco.id }} </td>
+
                 <td> 
-                  <p-dropdown class="ml-2" [options]="categorias_elementos" [(ngModel)]="categoriaSeleccionada"
+                  <p-dropdown class="ml-2" [options]="categorias_elementos" [(ngModel)]="hueco.categoria"
                   optionLabel="nombre" [showClear]="true" placeholder="Filtrar por categoría"
                   [style]="{'margin-left': '20px'}"></p-dropdown>
                 </td> 

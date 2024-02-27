@@ -3,7 +3,7 @@ import { expositores } from "./expositores";
 
 export interface atributos_expositores {
     id?: number; //null para crear
-    expositor : expositores;
+    expositor?: expositores;
     id_categoria:number;
     elemento?: elementos; //es el elemento activo del atributo
 

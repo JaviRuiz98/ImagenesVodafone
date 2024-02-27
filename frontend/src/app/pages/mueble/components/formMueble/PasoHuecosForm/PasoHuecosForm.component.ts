@@ -5,6 +5,7 @@ import { ElementosService } from 'src/app/servicios/elementos/elementos.service'
 
 import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
 import { elementos } from 'src/app/interfaces/elementos';
+import { expositores } from 'src/app/interfaces/expositores';
 
 type Coordenada = {
   x: number;
@@ -19,29 +20,29 @@ type Coordenada = {
 })
 export class PasoHuecosFormComponent implements OnInit {
 
-  @Input() imagen: string;
-  @Output() huecosEmitter:huecoCreacion[] = [];
-
+  @Input() imagen: string; 
 
   categoriaSeleccionada?: string;  
   opcionesCategoria: string[] = [];
   categorias_elementos: categorias_elementos[]; // inicializar
   huecos: huecoCreacion[] = [];
 
-  atributos_expositor: atributos_expositores[];
+  atributos_expositor: atributos_expositores[] = [];
 
-  atributo: atributos_expositores = {
-   ancho: 0,
-   alto: 0,
-   angulo: 0,
-   x_start: 0,
-   y_start: 0,
-   elemento: null,
-   id_categoria: 0,
-   expositor: null
 
-  }
-    ;
+  // atributo: atributos_expositores  = {
+  //   id: 0,
+  //   expositor: null,
+  //   id_categoria: 0,
+  //   elemento: null,
+  //   x_start: 0,
+  //   y_start: 0,
+  //   ancho: 0,
+  //   alto: 0,
+  //   angulo: 0
+
+  // };
+  numero: number = 0;
 
   //
 
@@ -440,7 +441,6 @@ calcularCentroLateralesTransformados(centro: Coordenada, dimensiones: { width: n
 
     // Restaura el estado original del contexto del canvas
     this.ctx.restore(); 
-    this.saveState();
   }
 
 
@@ -470,6 +470,7 @@ calcularCentroLateralesTransformados(centro: Coordenada, dimensiones: { width: n
   undoLastAction(): void {
     if (this.stateHistory.length >= 0) {
       const lastState = this.stateHistory.pop();
+      this.atributos_expositor.pop();
       this.ctx.putImageData(lastState, 0, 0);
     } else {
       console.warn('No more actions to undo');
@@ -493,15 +494,21 @@ calcularCentroLateralesTransformados(centro: Coordenada, dimensiones: { width: n
     
     this.drawRectangle();
 
-    this.atributo = null;
-    this.atributo.alto = this.WidthHeight.height;
-    this.atributo.ancho = this.WidthHeight.width;
-    this.atributo.angulo = this.angulo;
-    this.atributo.x_start = this.startX;
-    this.atributo.y_start = this.startY;
+    const atributo: atributos_expositores  = {
+      id: this.atributos_expositor.length + 1,
+      expositor: null,
+      id_categoria: null,
+      elemento: null,
+      x_start: this.startX,
+      y_start: this.startY,
+      ancho: this.WidthHeight.width,
+      alto: this.WidthHeight.height,
+      angulo: this.angulo
+  
+    };
 
-    this.atributos_expositor.push(this.atributo);
-
+    this.atributos_expositor.push(atributo);
+    this.numero = this.atributos_expositor.length;
 
     this.saveState(); 
     this.resetCoordinates();
@@ -525,13 +532,15 @@ calcularCentroLateralesTransformados(centro: Coordenada, dimensiones: { width: n
   inicializaCategoriasElementos(){
     this.elementosService.getCategorias_elementos().subscribe((categorias: categorias_elementos[]) => {
       this.categorias_elementos = categorias;
+      this.categoriaSeleccionada = this.categorias_elementos[0].nombre;
     })
+
   }
 
 
   ngOnInit() {
     console.log(this.imagen);
-    this.atributos_expositor.push(this.atributo);
+    this.inicializaCategoriasElementos();
   }
  
 }
