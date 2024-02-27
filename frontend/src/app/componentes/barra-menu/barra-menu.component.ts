@@ -27,7 +27,7 @@ export class BarraMenuComponent implements OnInit {
 
   tiendas: tienda[] = [] ;
   tiendaSeleccionada: tienda | undefined;
-  currentState: string = 'home';
+  currentState: string = '/home';
   contenidoBotonVolver: string = '';
   iconoBotonVolver: string = '';
   volverHome: string = 'Volver a inicio';
