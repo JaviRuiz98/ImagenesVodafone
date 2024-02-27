@@ -6,4 +6,7 @@ export interface huecoCreacion {
     y_min: number
     id_categoria?: number
 
+    angulo?: number
+    //
+ 
 }

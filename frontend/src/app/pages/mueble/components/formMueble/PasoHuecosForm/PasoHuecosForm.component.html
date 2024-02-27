@@ -1,33 +1,60 @@
 
-  <div class="flex align-items-center justify-content-center mt-4">
-    <div class="flex-1">
+Pos actual: ({{ this.currentX }} , {{ this.currentY }})
+<br />
 
-      <app-asignarHuecos [imagen]="imagen"></app-asignarHuecos>
+Click transformado: {{ this.clickTransformado | json }}  
+<br />
+<!-- esquinas: {{ this.corners | json }} -->
+<br />
+Pos inicio: ({{ this.startX}}. {{ this.startY}})
+<br />
+Centro: {{ this.centro | json }} 
+<br />
+angulo: {{ this.angulo }}
+<br />
+rotar: {{ this.Rotacion }}
+<br />
+redimensionar: {{ this.redimensionado }}
+
+<div style="display: flex; flex-direction: row;" >
+    <div  style="width:50% ; text-align: center">
+
+      <!-- <app-asignarHuecos [imagen]="imagen"></app-asignarHuecos> -->
  
-      <!-- <canvas id="canvas" width="800" height="600" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)"></canvas>
+      <canvas id="canvas" width="800" height="600" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)"></canvas>
       <br />
-      <button (click)="clearRectangles()">Borrar rectángulos</button>
+      <p-button *ngIf="Validar" label="Validar" [link]="true" [icon]="'pi pi-check'"  (click)="validarRect()"></p-button>
       <br />
-      <button (click)="undoLastAction()">Deshacer</button>
+
+      <p-button label="Empezar de nuevo" [link]="true" [icon]="'pi pi-times-circle'" (onClick)="clearRectangles()" ></p-button>
       <br />
-      <img id="target-image" hidden /> -->
-    
 
-
-
+      <p-button label="Deshacer" [link]="true" [icon]="'pi pi-replay'" (onClick)="undoLastAction()"></p-button>
+      <br />
+      <img id="target-image" hidden />
+        
+      
     </div>   
-    <div class="flex-1 m-2">
-      <p-table [value]="huecos" [tableStyle]="{ 'min-width': '50rem' }">
+    <div  style="width:50% ; text-align: center">
+      <p-table [value]="atributos_expositor" [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header">
             <tr>
-                <th>Hueco</th>
+                <th>numero</th>
+                <th>Posicion de inicio</th>
+                <th>ancho</th>
+                <th>alto</th>
+                <th>angulo</th>
                 <th>Categoria</th>
          
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-hueco let index>
+        <ng-template pTemplate="body" let-hueco>
             <tr>
-                <td> index</td>
+                <td> </td>
+                <td> ({{ hueco.x }} , {{ hueco.y }})</td>
+                <td> {{ hueco.ancho }}</td>
+                <td> {{ hueco.alto }}</td>
+                <td> {{ hueco.angulo }}</td>
                 <td> 
                   <p-dropdown class="ml-2" [options]="categorias_elementos" [(ngModel)]="categoriaSeleccionada"
                   optionLabel="nombre" [showClear]="true" placeholder="Filtrar por categoría"

@@ -1,16 +1,58 @@
-<p-dialog header="Header" (onShow)="true" [style]="{width: '50vw'}">
-    <h1>aaaaaaaaaaaaaa</h1>
-    <div style="text-align: center">
-        <h1>{{title}}</h1>
-        <canvas id="canvas" width="800" height="600" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)"></canvas>
-        <br />
-        <button (click)="clearRectangles()">Borrar rectángulos</button>
-        <br />
-        <button (click)="undoLastAction()">Deshacer</button>
-        <br />
-        <img id="target-image" hidden />
+
+Pos actual: ({{ this.currentX }} , {{ this.currentY }})
+<br />
+
+Click transformado: {{ this.clickTransformado | json }}  
+<br />
+<!-- esquinas: {{ this.corners | json }} -->
+<br />
+Pos inicio: ({{ this.startX}}. {{ this.startY}})
+<br />
+Centro: {{ this.centro | json }} 
+<br />
+angulo: {{ this.angulo }}
+<br />
+rotar: {{ this.Rotacion }}
+<br />
+redimensionar: {{ this.redimensionado }}
+
+<div style="display: flex; flex-direction: row;" >
+    <div  style="width:50% ; text-align: center">
+
+      <!-- <app-asignarHuecos [imagen]="imagen"></app-asignarHuecos> -->
+ 
+      <canvas id="canvas" width="800" height="600" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)"></canvas>
+      <br />
+      <p-button *ngIf="Validar" label="Validar" [link]="true" [icon]="'pi pi-check'"  (click)="validarRect()"></p-button>
+      <br />
+
+      <p-button label="Empezar de nuevo" [link]="true" [icon]="'pi pi-times-circle'" (onClick)="clearRectangles()" ></p-button>
+      <br />
+
+      <p-button label="Deshacer" [link]="true" [icon]="'pi pi-replay'" (onClick)="undoLastAction()"></p-button>
+      <br />
+      <img id="target-image" hidden />
+        
+      
+    </div>   
+    <div  style="width:50% ; text-align: center">
+      <p-table [value]="huecos" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>ancho</th>
+                <th>Categoria</th>
+         
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-hueco let index>
+            <tr>
+                <td> index</td>
+                <td> 
+                  Dropdown
+                </td> 
+            </tr>
+        </ng-template>
+    </p-table>
     </div>
-</p-dialog>
-
-
+  </div>
 
