@@ -12,15 +12,15 @@ import { EnumService } from 'src/app/servicios/enum.service';
 })
 export class ArrastrarElementoComponent implements OnInit {
 
-
-
-
   constructor(private enumService: EnumService, private elementosService: ElementosService) { }
   @Input() mode: 'arrastrar' | 'seleccionar' = 'arrastrar';
   @Input() categoria?: categorias_elementos;
+  
 
   @Output() onDragStart = new EventEmitter<{ dragEvent: DragEvent, elemento: elementos }>();
   @Output() onDragEnd = new EventEmitter<{ dragEvent: CdkDragDrop<string[]> }>();
+
+  @Output() onElementoSeleccionado = new EventEmitter<elementos>();
 
   show_crear: boolean = false;
 
@@ -91,6 +91,10 @@ export class ArrastrarElementoComponent implements OnInit {
     // Opcional: restablecer la posición interna del CDK Drag
     event.source._dragRef.reset();
     this.onDragEnd.emit({ dragEvent: event });
+  }
+
+  onElementoSeleccionadoChange(event:any) {
+    this.onElementoSeleccionado.emit(event.elemento);
   }
 
 

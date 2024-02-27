@@ -15,6 +15,7 @@ export class SelectorImagenesComponent implements OnChanges {
 
  
   @Input() cargando_procesado: boolean = false;
+  @Input() button_disabled?: boolean = false;
   @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
   @ViewChild('dropArea') dropAreaRef!: ElementRef;
   @ViewChild('inputFile') inputFileRef!: ElementRef;
@@ -62,18 +63,23 @@ export class SelectorImagenesComponent implements OnChanges {
  
 
   onDragOver(event: DragEvent) {
-    event.preventDefault();
-    this.dropAreaRef.nativeElement.classList.add('active');
-    event.stopPropagation();
-    this.mouseSobre = true;
+    if (this.button_disabled != true){
+      event.preventDefault();
+      this.dropAreaRef.nativeElement.classList.add('active');
+      event.stopPropagation();
+      this.mouseSobre = true;
+
+    }
   }
  
 
 onDragLeave(event: DragEvent) {
+  if (this.button_disabled != true){
     event.preventDefault();
     event.stopPropagation();
     this.dropAreaRef.nativeElement.classList.remove('active');
     this.mouseSobre = false;
+  }
 }
  
   onDrop(event: DragEvent) {

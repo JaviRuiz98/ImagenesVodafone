@@ -61,6 +61,8 @@
       [tableStyle]="{ 'min-width': '50rem' }"
       selectionMode="single"
       [(selection)]="selected_elemento"
+      (onRowSelect)="onElementoSeleccionadoChange($event)"
+      
     >
       
      

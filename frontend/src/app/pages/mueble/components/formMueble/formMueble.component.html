@@ -2,23 +2,34 @@
 <p-scrollPanel [style]="{'height':'calc(100vh - 300px )'}">
 
   <div class="flex flex-column" *ngIf="activeIndex == 0">
-    <app-Paso1Form [objetivo_form]="objetivo_form" (formularioPaso1Change)="onFormularioPaso1Change($event)" [imagenesIn]="this.imagenes"
-      [nombreIn]="mueble_existente? mueble_existente.nombre: undefined " [regionIn]="mueble_existente? mueble_existente.regiones: undefined"></app-Paso1Form>
+    <app-Paso1Form (formularioPaso1AddedImage)="onFormularioPaso1AddedImage()" [objetivo_form]="objetivo_form" [formulario]="formulario"></app-Paso1Form>
   </div>
   <!-- CREAR -->
   <div *ngIf="objetivo_form=='crear'; else editar">
     <!-- Asumiendo que activeIndex determina el paso actual y qué componente mostrar -->
     <div *ngIf="activeIndex > 0">
-      <!-- Verifica si el paso actual requiere el componente app-PasoHuecosForm -->
-      <ng-container *ngIf="!activeIndexIsPair()">
-        <app-PasoHuecosForm [imagen]="imagenes[index_imagen_actual]"></app-PasoHuecosForm>
-      </ng-container>
 
-      <!-- Verifica si el paso actual requiere el componente app-PasoAsignarElementoForm -->
-      <ng-container *ngIf="activeIndexIsPair()">
-        <app-PasoAsignarElementoForm [imagen]="imagenes[index_imagen_actual]"></app-PasoAsignarElementoForm>
-      </ng-container>
-    </div>
+      <!-- En caso de tener imagenes seleccionadas para el modelo -->
+      <div *ngIf="imagenes && imagenes.value && imagenes.value.length > 0; else no_imagenes">
+
+          <!-- Verifica si el paso actual requiere el componente app-PasoHuecosForm -->
+          <ng-container *ngIf="!activeIndexIsPair()">
+            <app-PasoHuecosForm [imagen]="imagenes[index_imagen_actual]"></app-PasoHuecosForm>
+          </ng-container>
+
+          <!-- Verifica si el paso actual requiere el componente app-PasoAsignarElementoForm -->
+          <ng-container *ngIf="activeIndexIsPair()">
+            <app-PasoAsignarElementoForm [imagen]="imagenes[index_imagen_actual]"></app-PasoAsignarElementoForm>
+          </ng-container>
+        </div>
+
+      </div>
+      <!-- No tengo imágenes, diractemente asigno elemento -->
+      <ng-template #no_imagenes>
+        <app-PasoAsignarElementoForm></app-PasoAsignarElementoForm>
+      </ng-template>
+      
+      
 
   </div>
 

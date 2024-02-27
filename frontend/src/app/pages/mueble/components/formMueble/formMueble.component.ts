@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validator, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validator, ValidatorFn, Validators } from '@angular/forms';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { muebles } from 'src/app/interfaces/muebles';
 import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
@@ -7,6 +7,7 @@ import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { expositores } from 'src/app/interfaces/expositores';
 import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
 import { MenuItem } from 'primeng/api';
+import { UrlService } from 'src/app/servicios/url/url.service';
 
 
 @Component({
@@ -15,21 +16,37 @@ import { MenuItem } from 'primeng/api';
   styleUrls: ['./formMueble.component.css']
 })
 
-
-
-
 export class FormMuebleComponent implements OnInit {
 
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
-
-  //FORMULARIOS
-  formularioPaso1: FormGroup | undefined;
-  formularioPasoHuecoForm: FormGroup[] = [];
-  formularioPasoAsignarElementoForm: FormGroup[] = [];
-
+ 
   objetivo_form: 'crear' | 'editar' = 'crear';
 
-  constructor( private cdr: ChangeDetectorRef, public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private elementosService: ElementosService, private muebleService: MueblesService) { }
+  constructor( private urlService: UrlService, private cdr: ChangeDetectorRef, public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private elementosService: ElementosService, private muebleService: MueblesService) { }
+
+  formulario: FormGroup = this.fb.group({
+    nombre_mueble: ['', Validators.required],
+    region: [''],
+    imagenes: [[], Validators.maxLength(2)],
+    archivos_imagenes: [[], Validators.maxLength(2)],
+  });
+  
+
+    get nombre_mueble() {
+      return this.formulario.controls['nombre_mueble'];
+    }
+    get imagenes() {
+      return this.formulario.controls['imagenes'];
+    }
+
+    get archivos_imagenes() {
+      return this.formulario.controls['archivos_imagenes'];
+    }
+
+    get region(){
+      return this.formulario.controls['region'];
+    }
+
 
   //STEPPER
   step_count: number = 2;
@@ -38,9 +55,8 @@ export class FormMuebleComponent implements OnInit {
   isValidNextStep: boolean = false;
   rangeArray: number[] = [];
 
-  imagenes: string [] | undefined;
   index_imagen_actual: number = 0;
-
+  
   mueble_existente: muebles = {
     id: 0,
     nombre: '',
@@ -60,19 +76,33 @@ export class FormMuebleComponent implements OnInit {
       this.objetivo_form='editar';
 
       const mueble = this.dialogConfig.data.mueble;
-
-
       this.mueble_existente = mueble;
 
      
-      this.imagenes = mueble.expositores.map((expositor :expositores) => {
+      const imagenesIniciales = mueble.expositores.map((expositor :expositores) => {
         if (this.tieneModelo(expositor.atributos_expositores)) {
-          return this.url_imagenes_referencias+this.getImagenModelo(expositor);
+          return  this.url_imagenes_referencias+this.getImagenModelo(expositor);
         }
-        return undefined;
+        return null;
       });
 
-      this.step_count = this.imagenes.length*2+1;
+        
+      console.log(imagenesIniciales);
+      this.formulario.patchValue({
+        imagenes: imagenesIniciales,
+        nombre_mueble: mueble.nombre,
+        region: mueble.regiones
+      });
+  
+
+      if (imagenesIniciales) {
+        this.step_count = imagenesIniciales.length * 2 + 1;
+      } else {
+        this.step_count = this.mueble_existente.expositores.length+1;
+      }
+      
+      
+      
       
     }else{
       console.log ("nuevo");
@@ -81,8 +111,12 @@ export class FormMuebleComponent implements OnInit {
 
      // Genera los pasos iniciales
      this.generateSteps();
-
      this.updateIsValidNextStep();
+
+     this.formulario.valueChanges.subscribe(() => {
+       console.log(this.formulario.value);
+       this.updateIsValidNextStep();
+     })
      
   }
 
@@ -120,6 +154,7 @@ export class FormMuebleComponent implements OnInit {
         });
       }
     }
+ 
     this.cdr.detectChanges();
     this.rangeArray= this.generateRangeArray(0,this.step_count-1);
   }
@@ -150,59 +185,62 @@ export class FormMuebleComponent implements OnInit {
   }
 
   
-  onFormularioPaso1Change($event: FormGroup<any>) {
-    console.log("form1 actualizado: "+ JSON.stringify($event.value));
-    console.log("validez form1: "+ $event.valid);
-    
-    this.formularioPaso1 = $event;
-    this.imagenes = this.formularioPaso1.value.imagenes;
-    if (this.objetivo_form === 'crear'){
-      this.step_count = this.formularioPaso1.value.imagenes.length== 0 ? 2 : this.formularioPaso1.value.imagenes.length*2+1;
-    } else{
-      this.step_count = this.formularioPaso1.value.imagenes.length;
-    }
-    this.updateIsValidNextStep();
-    this.generateSteps();
-
-  }
- 
- 
   updateIsValidNextStep(): void {
    if (this.activeIndex === 0) {
-     this.isValidNextStep = this.formularioPaso1!==undefined && this.formularioPaso1?.valid;
+     this.isValidNextStep = this.nombre_mueble.valid && this.imagenes.valid && this.region.valid;
+
    }else{
 
      this.isValidNextStep = false;
    }
    
   }
-
   
-nextStep() {
-  //pasaremos a la siguiente imagen siempre y cuando no estemos en el primer paso y el indice sea par o si estamos en editar
-  if ((this.activeIndex > 0 && this.activeIndexIsPair()) || (this.activeIndex > 0 && this.objetivo_form == 'editar')) { 
-      this.index_imagen_actual++;
-  }
+  onFormularioPaso1AddedImage() {
 
-  if (this.isValidNextStep){
-    this.activeIndex++;
-  }
-}
-
-
-previousStep() {
+    if (this.objetivo_form === 'crear'){
+      this.step_count = this.formulario.value.imagenes.length== 0 ? 2 : this.formulario.value.imagenes.length*2+1;
+    } else{
+      this.step_count = this.formulario.value.imagenes.length;
+    }
+    this.generateSteps();
  
-  if ((!this.activeIndexIsPair() && this.objetivo_form == 'crear' ) || (this.objetivo_form == 'editar')) {
-    this.index_imagen_actual = Math.max(this.index_imagen_actual - 1, 0);
   }
- if (this.activeIndex > 0) {
-   this.activeIndex--;
- }
-}
+
   
+  nextStep() {
+    //pasaremos a la siguiente imagen siempre y cuando no estemos en el primer paso y el indice sea par o si estamos en editar
+    if ((this.activeIndex > 0 && this.activeIndexIsPair()) || (this.activeIndex > 0 && this.objetivo_form == 'editar')) { 
+        this.index_imagen_actual++;
+    }
+
+    if (this.isValidNextStep){
+      this.activeIndex++;
+    }
+  }
+
+
+  previousStep() {
+  
+    if ((!this.activeIndexIsPair() && this.objetivo_form == 'crear' ) || (this.objetivo_form == 'editar')) {
+      this.index_imagen_actual = Math.max(this.index_imagen_actual - 1, 0);
+    }
+  if (this.activeIndex > 0) {
+    this.activeIndex--;
+  }
+  }
+    
 
   onSubmit() {
-    throw new Error('Method not implemented.');
+    // const atributos: atributos_expositores[];
+    // for (let i = 0; i < this.formularioPaso1.value.archivo.length; i++) {
+      
+    // }
+
+    // const expositor : expositores = {
+    //   nombre: 'expositor de '+ this.formularioPaso1.value.nombre,
+    //   atributos_expositores: atributos;
+    // }
   }
 
 

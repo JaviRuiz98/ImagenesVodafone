@@ -3,10 +3,12 @@
         (dragover)="onDragOver($event)" 
         (dragleave)="onDragLeave($event)"  
         *ngIf="!archivoSeleccionado">
-        <h2  #dragText>Arrastra y suelta imagenes</h2>
-        <span>O</span>
-        <p-button  (click)="seleccionarArchivo($event)" [outlined]="true" label="Seleccionar una imagen" severity="danger" ></p-button>
-        <input #inputFile type="file" (change)="listenChange($event)" hidden>
+        
+        <h2 [class]="button_disabled ? 'font-light text-500' : ''" #dragText>Arrastra y suelta imagenes</h2>
+        <span [class]="button_disabled ? 'font-light text-500' : ''">O</span>
+
+        <p-button  [disabled]="button_disabled" (click)="seleccionarArchivo($event)" [outlined]="true" label="Seleccionar una imagen" severity="danger" ></p-button>
+        <input #inputFile type="file"  (change)="listenChange($event)" hidden>
     </div>
     <div *ngIf="isCargando()" class="drop-area ">
         <p-progressSpinner></p-progressSpinner>

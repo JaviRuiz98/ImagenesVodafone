@@ -16,70 +16,39 @@ export class Paso1FormComponent implements OnInit {
 
   constructor(  private fb: FormBuilder, private enumService: EnumService) { }
 
-  @Input() imagenesIn?: string[];
-  @Input() nombreIn?: string;
-  @Input() regionIn?: regiones;
+  @Input () formulario : FormGroup;
   @Input() objetivo_form: 'crear' | 'editar' = 'crear';
 
-  @Output() formularioPaso1Change = new EventEmitter<FormGroup>();
+  @Output() formularioPaso1AddedImage = new EventEmitter();
 
-  formularioPaso1:FormGroup = this.fb.group({
-    nombre: ['', Validators.required],
-    region : ['',],
-    imagenes: [[],], //strings para visualización
-    archivos_imagenes: [[], Validators.max(2)], //Files para creación en la base de datos
-  });
 
-  get nombre() {
-    return this.formularioPaso1.controls['nombre'];
+  get nombre_mueble() {
+    return this.formulario.controls['nombre_mueble'];
   }
   get imagenes() {
-    return this.formularioPaso1.controls['imagenes'];
+    return this.formulario.controls['imagenes'];
   }
 
   get archivos_imagenes() {
-    return this.formularioPaso1.controls['archivos_imagenes'];
+    return this.formulario.controls['archivos_imagenes'];
   }
 
   get region(){
-    return this.formularioPaso1.controls['region'];
+    return this.formulario.controls['region'];
   }
-
-  
-
 
   ngOnInit() {
     this.enumService.getAllRegiones().subscribe((regiones: regiones[]) => {
       this.regiones = regiones;
     });
    
-    if (!!this.imagenesIn && !!this.nombreIn) {
-      console.log(this.regionIn);
-      this.formularioPaso1.patchValue({
-        nombre: this.nombreIn,
-        imagenes: this.imagenesIn,
-        region: this.regionIn
-      });
-    
-      this.onSubmit();
-    }
-
-    this.formularioPaso1.valueChanges.subscribe(() => {
-      this.onSubmit();
-    });
-
 
 
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-     if (changes['objetivo_form']) {
-       
-     }
-  }
-
+ 
   deleteImage(index: number) {
-    this.formularioPaso1.patchValue({
+    this.formulario.patchValue({
       imagenes: this.imagenes.value.filter((_, i) => i !== index)
     })
   }
@@ -87,28 +56,17 @@ export class Paso1FormComponent implements OnInit {
   onArchivoSeleccionadoChange($event: { archivo: File }) {
     const url = URL.createObjectURL($event.archivo);
     const imagenesUpdated = [...this.imagenes.value, url];
-    const archivosImagenesUpdated = [...this.archivos_imagenes.value, $event.archivo];
+    const archivosImagenesUpdated = [...this.archivos_imagenes.value, ];
   
    
-    this.formularioPaso1.patchValue({
-      imagenes: imagenesUpdated,
-      archivos_imagenes: archivosImagenesUpdated,
+    this.formulario.patchValue({
+        imagenes:imagenesUpdated,
+        archivos_imagenes:archivosImagenesUpdated
     });
-  
+
+    this.formularioPaso1AddedImage.emit();
+
   }
 
-  
-  
-
-  
-onSubmit() {
-  this.formularioPaso1Change.emit(this.formularioPaso1);  
-}
-  
-  
-
-
-  
-  
 
 }

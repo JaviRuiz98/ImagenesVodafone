@@ -4,7 +4,7 @@ import { expositores } from "./expositores";
 
 export interface atributos_expositores {
     id?: number; //null para crear
-    expositor : expositores;
+    expositor? : expositores; //null para crear
     x_min? : number;
     x_max? : number;
     y_min? : number;
