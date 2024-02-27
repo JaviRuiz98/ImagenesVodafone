@@ -3,7 +3,7 @@ import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
 import { elementos } from 'src/app/interfaces/elementos';
-import { regiones } from 'src/app/interfaces/regiones';
+// import { regiones } from 'src/app/interfaces/regiones';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { categorias_elementos } from 'src/app/interfaces/categoria';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -44,7 +44,7 @@ export class ElementosComponent implements OnInit{
   opcionesCatalogo!: any[];
   opcionCatalogoSeleccionado = {estado: 'Todos'};
 
-  regiones!: regiones[];
+  // regiones!: regiones[];
   mostrar: boolean = false;
 
   tableStateOption: any[] = [{label:'Dispositivos', icon: 'pi pi-mobile', value: 'dispositivos',  styleClass: "optionColorVodafone" }, {label:'Carteles' ,icon: 'pi pi-book', value: 'cartel', styleClass: "optionColorVodafone" }];
@@ -210,9 +210,9 @@ export class ElementosComponent implements OnInit{
     this.inicializaElementos();
     this.inicializaCategorias_elementos();
 
-    this.enumService.getAllRegiones().subscribe((regiones: regiones[]) => {
-      this.regiones = regiones;
-    });
+    // this.enumService.getAllRegiones().subscribe((regiones: regiones[]) => {
+    //   this.regiones = regiones;
+    // });
 
 
     this.opcionesCatalogo = [
