@@ -7,7 +7,6 @@ import { categorias_elementos } from "./categoria";
 export interface elementos {
     id?: number; //null para crear
     imagenes: imagenes;
-    region: regiones;
     nombre: string;
     activo: boolean;
     categorias_elementos: categorias_elementos;

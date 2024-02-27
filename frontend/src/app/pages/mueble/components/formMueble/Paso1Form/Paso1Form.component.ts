@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { regiones } from 'src/app/interfaces/regiones';
 import { EnumService } from 'src/app/servicios/enum.service';
 
@@ -19,7 +19,7 @@ export class Paso1FormComponent implements OnInit {
   @Input () formulario : FormGroup;
   @Input() objetivo_form: 'crear' | 'editar' = 'crear';
 
-  @Output() formularioPaso1AddedImage = new EventEmitter();
+  @Output() formularioPaso1AddedImage = new EventEmitter< { imagenes: string, archivos_imagenes: File }>();
 
 
   get nombre_mueble() {
@@ -36,6 +36,16 @@ export class Paso1FormComponent implements OnInit {
   get region(){
     return this.formulario.controls['region'];
   }
+  get expositores() {
+    return this.formulario.get('expositores') as FormArray;
+  }
+  
+  get imagenesExpositores(): string[] {
+    return this.expositores.controls.map((expositor) => {
+      return expositor.get('imagen')?.value || ''; 
+    });
+  }
+  
 
   ngOnInit() {
     this.enumService.getAllRegiones().subscribe((regiones: regiones[]) => {
@@ -55,16 +65,11 @@ export class Paso1FormComponent implements OnInit {
 
   onArchivoSeleccionadoChange($event: { archivo: File }) {
     const url = URL.createObjectURL($event.archivo);
-    const imagenesUpdated = [...this.imagenes.value, url];
-    const archivosImagenesUpdated = [...this.archivos_imagenes.value, ];
-  
-   
-    this.formulario.patchValue({
-        imagenes:imagenesUpdated,
-        archivos_imagenes:archivosImagenesUpdated
+ 
+    this.formularioPaso1AddedImage.emit({
+      imagenes: url,
+      archivos_imagenes: $event.archivo
     });
-
-    this.formularioPaso1AddedImage.emit();
 
   }
 
