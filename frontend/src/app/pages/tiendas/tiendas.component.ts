@@ -107,7 +107,7 @@ export class TiendasComponent implements OnInit{
   }
 
   botonSiguiente(){
-    if(this.activeIndex < 5){
+    if(this.activeIndex < 4){
       this.activeIndex++;
     } else{
       if(this.botonCrearEditarTienda == 'Crear Tienda'){
@@ -119,6 +119,7 @@ export class TiendasComponent implements OnInit{
         })
       } else{
         this.TiendasService.editarTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
+          this.verFormularioNuevaTienda = false;
         })
       }
     }
