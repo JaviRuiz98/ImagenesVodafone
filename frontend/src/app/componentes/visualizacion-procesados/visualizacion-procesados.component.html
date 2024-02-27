@@ -2,7 +2,9 @@
     <div class="imagenProcesadaGaleria">
         <div class="anchoAltoImagenProcesada">
             <p-galleria 
-            [value]="procesados"  [numVisible]="5" [circular]="true" [showItemNavigators]="verFlechasIndicadorGaleria()" [showThumbnails]="false" [responsiveOptions]="responsiveOptions"
+            [value]="procesados"  [numVisible]="5" [circular]="true" [showItemNavigators]="verFlechasIndicadorGaleria()" [showThumbnails]="false" 
+            [responsiveOptions]="responsiveOptions"
+            [(activeIndex)]="posicionGaleria"
             [containerStyle]="{'width': '100%', 'height': '100%'}" 
             [style]="{'width': '100%', 'height': '100%'}"
             [showIndicators]="verFlechasIndicadorGaleria()"
@@ -11,7 +13,7 @@
                     <p-image [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" [preview]="true" [imageStyle]="{'width': '100%', 'height': '100%'}" class="imagenProcesadaDentroGaleria"></p-image>
                 </ng-template>
             </p-galleria>
-            <app-dialog-informacion-procesado [procesado]="item" class="posicionDialog"></app-dialog-informacion-procesado> 
+            <app-dialog-informacion-procesado [procesado]="procesados" [posicionGaleria]="posicionGaleria" class="posicionDialog"></app-dialog-informacion-procesado> 
         </div>
     </div>
 </div>

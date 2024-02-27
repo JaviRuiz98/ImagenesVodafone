@@ -19,8 +19,9 @@ export class TiendasComponent implements OnInit{
 
   tiendas: tienda[] = [];
   tiendasFiltradas: tienda[] = []
-  tiendasMostrar: tienda[] = [];
+  tiendasListaTodosLosMuebles: tienda[] = [];
   nuevaTienda: tienda = {} as tienda;
+
   verFormularioNuevaTienda: boolean = false;
   sfidInput: string = '';
   comunidadInput: string = '';
@@ -32,7 +33,7 @@ export class TiendasComponent implements OnInit{
   listaMueblesFiltrar: muebles[] = [];
   cabeceraNuevaEditarTienda: string = 'Nueva Tienda';
   editarTiendaCreada: boolean = false;
-  crearEditarTienda: string = 'Crear Tienda';
+  botonCrearEditarTienda: string = 'Crear Tienda';
   nombreFiltro: string = '';
   nombreFiltroListaTodosMuebles: string = '';
   mensajeActivarDesactivar: string = 'Desactivar';
@@ -54,16 +55,15 @@ export class TiendasComponent implements OnInit{
     this.activeIndex = 0;
     this.listaMueblesNuevaTienda = [];
     this.editarTiendaCreada = false;
-    this.crearEditarTienda = 'Crear Tienda';
-    this.sfidInput = '';
-    this.comunidadInput = '';
+    this.botonCrearEditarTienda = 'Crear Tienda';
+    this.nuevaTienda = {} as tienda;
     this.cabeceraNuevaEditarTienda = 'Nueva Tienda';
     this.cabeceraListaDerecha = this.cabeceraListaDerechaNuevaTienda;
   }
   getAllTiendas(){
     this.TiendasService.getAllTiendas().subscribe((response: tienda[]) => {
       this.tiendas = response;
-      this.tiendasMostrar = response;
+      this.tiendasListaTodosLosMuebles = response;
     })
   }
   getAllMuebles(){
@@ -113,12 +113,12 @@ export class TiendasComponent implements OnInit{
     } else{
       this.nuevaTienda.sfid = this.sfidInput;
       this.verFormularioNuevaTienda = false;
-      if(this.crearEditarTienda == 'Crear Tienda'){
+      if(this.botonCrearEditarTienda == 'Crear Tienda'){
         if(this.listaMueblesNuevaTienda.length > 1){
           this.listaMueblesNuevaTienda = this.ordenarListaAlfabeticamente(this.listaMueblesNuevaTienda, 'nombre_mueble');
         }
         this.TiendasService.newTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
-          this.tiendasMostrar = response;
+          this.tiendasListaTodosLosMuebles = response;
         })
       } else{
         this.TiendasService.editarTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
@@ -135,7 +135,7 @@ export class TiendasComponent implements OnInit{
     const listaMueblesDisponibles = this.eliminarMueblesSeleccionados(this.listaTodosMuebles, this.listaMueblesNuevaTienda)
     this.nuevaTienda = tienda;
     this.cabeceraListaDerecha = this.cabeceraListaDerechaEditarTienda;
-    this.crearEditarTienda = 'Editar tienda';
+    this.botonCrearEditarTienda = 'Editar tienda';
     this.cabeceraNuevaEditarTienda = 'Editar tienda';
     this.sfidInput = tienda.sfid;
     this.comunidadInput = 'prueba';
@@ -150,7 +150,7 @@ export class TiendasComponent implements OnInit{
 
   filtrarPorSfid() {
     this.tiendasFiltradas = this.filterByNombre(this.tiendas);
-    this.tiendasMostrar = this.tiendasFiltradas;
+    this.tiendasListaTodosLosMuebles = this.tiendasFiltradas;
   }
   filterByNombre(tiendas: tienda[]): tienda[] {
     return tiendas.filter(tiendas => tiendas.sfid.toLowerCase().includes(this.nombreFiltro.toLowerCase()));
