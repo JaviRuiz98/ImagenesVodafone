@@ -3,21 +3,21 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 
-import { AsignarExpositorComponent } from './asignarExpositor.component';
+import { AsignarHuecosComponent } from './asignarHuecos.component';
 
-describe('AsignarExpositorComponent', () => {
-  let component: AsignarExpositorComponent;
-  let fixture: ComponentFixture<AsignarExpositorComponent>;
+describe('AsignarHuecosComponent', () => {
+  let component: AsignarHuecosComponent;
+  let fixture: ComponentFixture<AsignarHuecosComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AsignarExpositorComponent ]
+      declarations: [ AsignarHuecosComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AsignarExpositorComponent);
+    fixture = TestBed.createComponent(AsignarHuecosComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

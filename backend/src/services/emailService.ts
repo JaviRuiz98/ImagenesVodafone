@@ -15,15 +15,24 @@ transporter.verify().then(() => {
 });
 
 // Funcion para enviar correos electronicos
-export const sendEmail = async (to: string, subject: string, text: string) => {
+export const sendEmail = async (to: string, subject: string, text: string, pdfBuffer?: Buffer, nombre_archivo?: string) => {
     try {
-      await transporter.sendMail({
+      let mailOptions = {
         from: process.env.MY_EMAIL,
         to,
         subject,
         text,
-      });
-      console.log("Email sent successfully");
+        attachments: [
+          {
+            filename: nombre_archivo,
+            content: pdfBuffer,
+            contentType: 'application/pdf'
+          }
+        ]
+      }
+
+      let info = await transporter.sendMail(mailOptions);
+      console.log("Message sent: %s", info.messageId);
     } catch (error) {
       console.error("Error sending email:", error);
     }

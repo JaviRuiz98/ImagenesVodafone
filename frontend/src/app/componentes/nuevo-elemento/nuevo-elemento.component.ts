@@ -16,6 +16,7 @@ import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormControl, 
 import { categorias_elementos } from 'src/app/interfaces/categoria';
 
 import { regiones } from 'src/app/interfaces/regiones';
+import { EnumService } from 'src/app/servicios/enum.service';
 
 
 @Component({
@@ -72,7 +73,7 @@ export class NuevoElementoComponent implements OnInit {
   categorias_elementos: categorias_elementos[] = [];
   Dropdown_categorias: string[] = [];
   categoriaSeleccionada = 'Carteles';
-  constructor(private formBuilder: FormBuilder, private elementosService: ElementosService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
+  constructor(private formBuilder: FormBuilder, private elementosService: ElementosService, private messageService: MessageService, private enumService: EnumService, private confirmationService: ConfirmationService) { }
 
   AbrirnuevoElemento() {
     if(this.categoriaPredefinida != 0) {
@@ -132,14 +133,14 @@ export class NuevoElementoComponent implements OnInit {
 
 
   inicializaDropDownZonas(){
-    this.elementosService.getAllRegiones().subscribe((regiones)=>{
+    this.enumService.getAllRegiones().subscribe((regiones)=>{
       this.regiones = regiones;
   //    this.Dropdown_regiones = regiones.map((region) => region.nombre);
     })
   }
 
   inicializaCategorias_elementos(){
-    this.elementosService.getCategorias_elementos().subscribe((categorias: categorias_elementos[])=>{
+    this.enumService.getCategorias_elementos().subscribe((categorias: categorias_elementos[])=>{
      // this.Dropdown_categorias = categorias.map((categorias) => categorias.nombre);
       this.categorias_elementos = categorias
     })

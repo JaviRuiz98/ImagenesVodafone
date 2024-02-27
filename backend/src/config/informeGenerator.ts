@@ -1,51 +1,24 @@
-import PDFDocument from 'pdfkit';
-import { PassThrough } from 'stream';
+import puppeteer from 'puppeteer';
 
-export function createPDF(): Promise<Buffer> {
-  return new Promise((resolve, reject) => {
-    // Crear un documento PDF
-    const doc = new PDFDocument();
+export async function createPDF(url: string, texto_cifrado: string): Promise<Buffer> {
 
-    const stream = new PassThrough();
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.goto(url+texto_cifrado, { waitUntil: 'networkidle2' });
 
-    // Título
-    doc.fontSize(25).text('Auditoría para la tienda - SFID', {
-      align: 'center'
-    });
-
-    // Espaciado después del título
-    doc.moveDown(2);
-
-    // Lista de conceptos (modificar según sea necesario)
-    const conceptos = [
-      'Concepto 1',
-      'Concepto 2',
-      'Concepto 3',
-    ];
-
-    // Añadir conceptos con espacio para rellenar
-    conceptos.forEach(concepto => {
-      doc.fontSize(12).text(`${concepto}:`, {
-        continued: true,
-        align: 'left'
-      }).text(' ________________________', {
-        align: 'right',
-        continued: false
-      });
-
-      doc.moveDown(0.5);
-    });
-
-    // Finalizar PDF
-    doc.end();
-
-    // Recolectar los datos del stream en un Buffer
-    let buffers: Buffer[] = [];
-    stream.on('data', (data) => buffers.push(data));
-    stream.on('end', () => resolve(Buffer.concat(buffers)));
-    stream.on('error', (error) => reject(error));
-
-    // Es importante conectar el doc a stream DESPUÉS de configurar los manejadores de eventos
-    doc.pipe(stream);
+  const pdf = await page.pdf({ 
+    path: 'reporte.pdf', // El nombre de tu archivo PDF
+    format: 'A4',
+    printBackground: true, // Imprime el fondo si es necesario
+    margin: {
+      top: '20mm',
+      right: '20mm',
+      bottom: '20mm',
+      left: '20mm'
+    }
   });
+  await browser.close();
+  return pdf;
 }
+
+

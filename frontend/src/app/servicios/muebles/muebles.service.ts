@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { muebles } from '../../interfaces/muebles';
 import { filtro_procesados } from 'src/app/interfaces/filtro_procesados';
 import { MuebleCreacion } from 'src/app/pages/mueble/interfaces/muebleCreacion';
+import { expositores } from 'src/app/interfaces/expositores';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class MueblesService {
   constructor(private http: HttpClient) { }
 
   API_URI = 'http://localhost:3000/muebles/';
+  API_URI_EXPOSITORES = 'http://localhost:3000/expositores/';
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -54,6 +56,14 @@ export class MueblesService {
 
   updateMueble(mueble: muebles): Observable<muebles> {
     return this.http.put<muebles>(this.API_URI + mueble.id, mueble, this.options);
+  }
+
+  updateExpositor(expositor: expositores): Observable<expositores> {
+    const data = {
+      nombre: expositor.nombre,
+      atributos_expositores: expositor.atributos_expositores
+    }
+    return this.http.put<expositores>(this.API_URI_EXPOSITORES  + expositor.id, data, this.options);
   }
 }
 

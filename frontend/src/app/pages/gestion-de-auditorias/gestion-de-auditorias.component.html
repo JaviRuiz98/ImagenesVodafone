@@ -54,13 +54,14 @@
                 <th>Opciones</th>
                 <th>Enviar informe</th>
                 <th>Descargar informe</th>
+                <th>Previsualizar informe</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-auditoria>            
             <tr>              
                 <td>{{ auditoria.id }}</td>    
                 <td>{{ auditoria.tiendas.sfid }}</td>            
-                <td>{{ formatDate(auditoria.fecha) }}</td>
+                <td>{{ publicMethodsService.formatDate(auditoria.fecha) }}</td>
                 <td>
                     <p-tag [severity]="getSeverityEstadoAuditoria(auditoria.estados_auditoria.estado)">{{ auditoria.estados_auditoria.estado }}</p-tag>                    
                 </td>               
@@ -75,7 +76,10 @@
                     <p-button label="Enviar" icon="pi pi-envelope" severity="danger" [text]="true" [raised]="true" [rounded]="true" (click)="enviarInforme(auditoria.id)" [disabled]="auditoria.estados_auditoria.estado === 'en progreso'"></p-button>
                 </td>
                 <td>
-                    <p-button label="Descargar" icon="pi pi-download" severity="danger" [text]="true" [raised]="true" [rounded]="true" (click)="descargarInforme(auditoria.id_auditoria)" [disabled]="auditoria.estados_auditoria.estado === 'en progreso'"></p-button>
+                    <p-button label="Descargar" icon="pi pi-download" severity="danger" [text]="true" [raised]="true" [rounded]="true" (click)="descargarInforme(auditoria.id)" [disabled]="auditoria.estados_auditoria.estado === 'en progreso'"></p-button>
+                </td>
+                <td>
+                    <p-button label="Ir template" severity="danger" [text]="true" [raised]="true" [rounded]="true" (click)="navegarTemplateInformeAuditoria(auditoria.id)" [disabled]="auditoria.estados_auditoria.estado === 'en progreso'"></p-button>
                 </td>
             </tr>
         </ng-template>

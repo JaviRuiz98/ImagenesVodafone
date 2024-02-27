@@ -5,12 +5,9 @@ import { AuditoriaService } from 'src/app/servicios/auditoria/auditoria.service'
 import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { tienda } from 'src/app/interfaces/tienda';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
-import { DatePipe } from '@angular/common';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
-import { jsPDF } from 'jspdf';
 import { InformeService } from 'src/app/servicios/informe/informe.service';
-
 
 
 @Component({
@@ -34,12 +31,12 @@ export class GestionDeAuditoriasComponent implements OnInit {
     private auditoriaService: AuditoriaService , 
     private router: Router,
     private tiendasService: TiendasService,
-    private publicMethodsService: PublicMethodsService,
-    private datePipe: DatePipe,
+    public publicMethodsService: PublicMethodsService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private localStorageService: LocalStorageService,
-    private informeService: InformeService
+    private informeService: InformeService,
+
   ) { }
  
   ngOnInit(): void {
@@ -83,10 +80,6 @@ export class GestionDeAuditoriasComponent implements OnInit {
     return this.publicMethodsService.getSeverityEstadoAuditoria(estado);
   }
 
-  formatDate(date: Date): string | null {
-    return this.datePipe.transform(date, 'dd/MM/yyyy HH:mm');
-  }
-
   crearAuditoriaGlobal() {
     this.confirmationService.confirm({
       message: '¿Seguro de que quieres crear una auditoría global y marcar como caducadas todas las que estén en progreso?',
@@ -116,29 +109,48 @@ export class GestionDeAuditoriasComponent implements OnInit {
       id_auditoria: id_auditoria
     }
 
+    this.messageService.add({ severity: 'info', summary: 'Enviando informe', detail: 'Enviando informe...' });
 
     this.informeService.enviarInforme(body).subscribe(
       (data)=>{
+        this.messageService.add({ severity: 'success', summary: 'Enviado', detail: 'Informe enviado correctamente ' });
         console.log(data);
       }, (error)=>{
         console.error(error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al enviar el informe' });
       }
     )
   }
 
   descargarInforme(id_auditoria: number){
-    console.log(id_auditoria);
     const body = {
       id_auditoria: id_auditoria
     }
 
+    this.messageService.add({ severity: 'info', summary: 'Descargando informe', detail: 'Descargando informe...' });
+
     this.informeService.descargarInforme(body).subscribe(
-      (data)=>{
-        console.log(data);
-      }, (error)=>{
-        console.error(error);
-      }
-    )
+      (blob)=>{
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'informe-auditoria.pdf'; // Nombre de archivo deseado
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }, error => {
+        console.error('Error al descargar el informe:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al descargar el informe' });
+      });
+  }
+
+  navegarTemplateInformeAuditoria(id_auditoria: number){
+    this.informeService.getUrlIdAuditoriaCifrada(id_auditoria).subscribe(
+    (data)=>{
+      console.log('respuesta url encriptada', data);
+      this.router.navigate(['/templateInforme/'+ data]);
+    })
   }
 
 }

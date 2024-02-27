@@ -1,0 +1,12 @@
+
+.delete-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10; /* Asegura que el botón esté sobre la imagen */
+  }
+
+ .delete-button ::ng-deep.p-button.p-button-icon-only {
+    width: 02rem;
+    padding: 0.15rem 0;
+}

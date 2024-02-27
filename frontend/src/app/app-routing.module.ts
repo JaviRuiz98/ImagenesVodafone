@@ -8,6 +8,7 @@ import { AuditoriaComponent } from './pages/auditoria/auditoria.component';
 import { MuebleComponent } from './pages/mueble/mueble.component';
  import { TiendasComponent } from './pages/tiendas/tiendas.component';
 import { ElementosComponent } from './pages/elementos/elementos.component';
+import { TemplateInformeComponent } from './pages/template-informe/template-informe.component';
 
 
 const routes: Routes = [
@@ -41,6 +42,10 @@ const routes: Routes = [
   },
    { path: 'muebles', component: MuebleComponent , 
     data: { stateBarra: 'empty' },
+   },
+   {
+    path: "templateInforme/:id_auditoria_cifrada", component: TemplateInformeComponent, 
+    data: { stateBarra: 'templateAuditorias' },
    },
 
 

@@ -8,6 +8,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { categorias_elementos } from 'src/app/interfaces/categoria';
 import { FormControl, FormGroup } from '@angular/forms';
 import { timeout } from 'rxjs';
+import { EnumService } from 'src/app/servicios/enum.service';
 
 @Component({
   selector: 'app-elementos',
@@ -55,7 +56,7 @@ export class ElementosComponent implements OnInit{
   verRemarcado: boolean = false;
 
 
-  constructor( private elementosService: ElementosService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
+  constructor( private elementosService: ElementosService, private enumService: EnumService, private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
 
 
@@ -88,10 +89,7 @@ export class ElementosComponent implements OnInit{
         url:"",
         id_imagen: 0
       },
-      region: {
-        id: 0,
-        nombre: ''
-      },
+     
       nombre: '',
       activo: true,
       categorias_elementos: {
@@ -200,7 +198,7 @@ export class ElementosComponent implements OnInit{
   // this.Dropdown_regiones = regiones.map((region) => region.nombre);
  
   inicializaCategorias_elementos(){
-    this.elementosService.getCategorias_elementos().subscribe((elementos: categorias_elementos[]) => {
+    this.enumService.getCategorias_elementos().subscribe((elementos: categorias_elementos[]) => {
       this.categorias_elementos = elementos; 
       this.categoriaSeleccionada = this.categorias_elementos[0];
     })
@@ -212,7 +210,7 @@ export class ElementosComponent implements OnInit{
     this.inicializaElementos();
     this.inicializaCategorias_elementos();
 
-    this.elementosService.getAllRegiones().subscribe((regiones: regiones[]) => {
+    this.enumService.getAllRegiones().subscribe((regiones: regiones[]) => {
       this.regiones = regiones;
     });
 
