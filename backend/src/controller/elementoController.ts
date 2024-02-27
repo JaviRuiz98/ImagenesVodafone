@@ -61,7 +61,7 @@ export async function guardarElemento(req: Request, res: Response) {
         const nombre = req.body.nombre; 
         const activo = req.body.activo === 'true';
         const imagenExpositor = req.file;//(files['imagenesprocesado'] as Express.Multer.File[]).map(file => file.path)[0];
-        const region = parseInt(req.body.id_region);
+
         const categoria = parseInt(req.body.categoria);
 
 
@@ -73,7 +73,7 @@ export async function guardarElemento(req: Request, res: Response) {
         const [nuevaImagen]  = await Promise.all([
             imagenService.create(imagenExpositor.filename, imagenExpositor.originalname),
         ]);    
-        const row = await elementosService.guardarElemento(nombre, activo, nuevaImagen.id, region, categoria);
+        const row = await elementosService.guardarElemento(nombre, activo, nuevaImagen.id, categoria);
         res.status(200).json(row);
     }catch(error){
         res.status(500).json({ error: 'Error interno del servidor' });        
