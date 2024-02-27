@@ -23,7 +23,7 @@ import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/p
   ],
 })
 
-export class DialogInformacionProcesadoComponent{
+export class DialogInformacionProcesadoComponent implements OnInit{
 
   @Input() mostrar_info: boolean = false;
   @Input() visible_info_dispositivos: boolean = false;
@@ -41,6 +41,9 @@ export class DialogInformacionProcesadoComponent{
 
   constructor(private procesamientoService: ProcesamientoService, private publicMethodsService: PublicMethodsService) { }
 
+  ngOnInit(): void {
+    console.log(this.procesado[this.posicionGaleria])
+  }
   getSeverityCartel(procesado: string): string {
     return this.publicMethodsService.getSeverityCartel(procesado);
   }

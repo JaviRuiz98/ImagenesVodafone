@@ -31,24 +31,24 @@
         </div>
         <div class="overleyPanel">
             <h4>· Comentarios: </h4> 
-            <span >{{this.procesado.comentarios}}</span>
+            <span >{{this.procesado[posicionGaleria].comentarios}}</span>
             <div class="evaluacion">
                 <h4>Evalúe los comentarios:</h4>
-                <p-button [icon]="(procesado.feedback_humano === null || procesado.feedback_humano === false) ? 'pi pi-thumbs-up' : 'pi pi-thumbs-up-fill'" (click)="funcionFeedback(procesado, true)"  [text]="true" severity="danger"></p-button>
-                <p-button [icon]="(procesado.feedback_humano === null || procesado.feedback_humano === true) ? 'pi pi-thumbs-down' : 'pi pi-thumbs-down-fill'" (click)="funcionFeedback(procesado, false)" [text]="true" severity="danger"></p-button>
+                <p-button [icon]="(procesado[posicionGaleria].feedback_humano === null || procesado[posicionGaleria].feedback_humano === false) ? 'pi pi-thumbs-up' : 'pi pi-thumbs-up-fill'" (click)="funcionFeedback(procesado[posicionGaleria], true)"  [text]="true" severity="danger"></p-button>
+                <p-button [icon]="(procesado[posicionGaleria].feedback_humano === null || procesado[posicionGaleria].feedback_humano === true) ? 'pi pi-thumbs-down' : 'pi pi-thumbs-down-fill'" (click)="funcionFeedback(procesado[posicionGaleria], false)" [text]="true" severity="danger"></p-button>
             </div>
-            <h4 >· IA Utilizada: </h4><span >{{this.procesado.IA_utilizada}}</span>
+            <h4 >· IA Utilizada: </h4><span >{{this.procesado[posicionGaleria].IA_utilizada}}</span>
             <h4 [style]="{'margin-bottom': '0'}">· Prompt utilizado: </h4>
             <span >
-                <p-button [rounded]="true" [text]="true" severity="danger" label="{{this.procesado}}" (onClick)="mostrarPrompt()"></p-button>
+                <p-button [rounded]="true" [text]="true" severity="danger" label="{{this.procesado[posicionGaleria].prompts.nombre_prompt}}" (onClick)="mostrarPrompt()"></p-button>
             </span>
-            <h4>· Fecha: </h4><span >{{ this.procesado.fecha | date:'dd-MM-yyyy | HH:mm' }}</span>
+            <h4>· Fecha: </h4><span >{{ this.procesado[posicionGaleria].fecha | date:'dd-MM-yyyy | HH:mm' }}</span>
         </div>
     </div>
 </p-overlayPanel>
-<!-- <p-dialog header="{{this.procesado.prompts.nombre_prompt}}" [(visible)]="verPrompt" [style]="{ width: '50vw', height: '40vh'}" [draggable]="false">
+<p-dialog header="{{this.procesado[posicionGaleria].prompts.nombre_prompt}}" [(visible)]="verPrompt" [style]="{ width: '50vw', height: '40vh'}" [draggable]="false">
     <ng-template pTemplate="header">
-        <h3>{{this.procesado.prompts.nombre_prompt}}</h3>
+        <h3>{{this.procesado[posicionGaleria].prompts.nombre_prompt}}</h3>
     </ng-template>
-    <p>{{this.procesado.prompts.texto_prompt}}</p>
-</p-dialog> -->
+    <p>{{this.procesado[posicionGaleria].prompts.texto_prompt}}</p>
+</p-dialog>
