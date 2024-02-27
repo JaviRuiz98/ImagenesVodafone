@@ -111,6 +111,7 @@ descomentar para que una imagen se vea bien 1 sola imagen
   padding: 10px;
   box-sizing: border-box;
   border-radius: 8px;
+  z-index: 2;
 }
 
 
