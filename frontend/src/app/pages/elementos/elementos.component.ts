@@ -89,10 +89,7 @@ export class ElementosComponent implements OnInit{
         url:"",
         id_imagen: 0
       },
-      region: {
-        id: 0,
-        nombre: ''
-      },
+     
       nombre: '',
       activo: true,
       categorias_elementos: {

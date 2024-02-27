@@ -2,7 +2,7 @@
 <p-scrollPanel [style]="{'height':'calc(100vh - 300px )'}">
 
   <div class="flex flex-column" *ngIf="activeIndex == 0">
-    <app-Paso1Form (formularioPaso1AddedImage)="onFormularioPaso1AddedImage()" [objetivo_form]="objetivo_form" [formulario]="formulario"></app-Paso1Form>
+    <app-Paso1Form (formularioPaso1AddedImage)="onFormularioPaso1AddedImage($event)" [objetivo_form]="objetivo_form" [formulario]="mueble"></app-Paso1Form>
   </div>
   <!-- CREAR -->
   <div *ngIf="objetivo_form=='crear'; else editar">

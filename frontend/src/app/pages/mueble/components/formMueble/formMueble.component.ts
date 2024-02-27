@@ -199,8 +199,6 @@ export class FormMuebleComponent implements OnInit {
 
   getImagenModelo(expositor: expositores): string | undefined {
     const atributoModelo: atributos_expositores | undefined = expositor.atributos_expositores.find((atributo) => atributo.categorias_elementos.id === 3);
-
-    
     if (atributoModelo && atributoModelo.elemento) {
       return this.url_imagenes_referencias+atributoModelo.elemento.imagenes.url;
     } else {
@@ -226,8 +224,28 @@ export class FormMuebleComponent implements OnInit {
    
   }
   
-  onFormularioPaso1AddedImage() {
+  onFormularioPaso1AddedImage( $event: { imagenes: string, archivos_imagenes: File }) {
 
+    this.archivosImagenes.push(this.fb.control($event.archivos_imagenes));
+    const newExpositor: expositores = {
+      nombre: 'modelo del mueble' + this.nombre_mueble.value,
+      atributos_expositores: [{
+        categorias_elementos: {
+          id: 3,
+        },
+        elemento: {
+          imagenes: {
+            id_imagen: 0,
+            url: $event.imagenes
+          },
+          nombre: 'elemento '+$event.archivos_imagenes.name,
+          activo: false,
+          categorias_elementos: undefined
+        }
+        
+      }]
+    };
+    this.agregarExpositor(newExpositor);
     if (this.objetivo_form === 'crear'){
       this.step_count = this.imagenesExpositores.length== 0 ? 2 : this.imagenesExpositores.length*2+1;
     } else{
