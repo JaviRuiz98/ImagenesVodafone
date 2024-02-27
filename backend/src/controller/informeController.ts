@@ -57,18 +57,20 @@ export async function getDatosInformeAuditoria (req: Request, res: Response): Pr
         }
         console.log('Id auditoria descifrado: ' + id_auditoria);
 
-        const [auditoria, num_expositores, num_expositores_procesados, datos_barra_progreso] = await Promise.all([
+        const [auditoria, num_expositores, num_expositores_procesados, datos_barra_progreso, procesados_auditoria] = await Promise.all([
             auditoriaService.getAuditoriaAndTienda(id_auditoria),
             auditoriaService.getNumExpositoresByAuditoria(id_auditoria),
             auditoriaService.getNumExpositoresProcesadosByAuditoria(id_auditoria),
-            getNumberArrayProgresoAuditoria(id_auditoria)
+            getNumberArrayProgresoAuditoria(id_auditoria),
+            auditoriaService.getProcesadosByIdAuditoria(id_auditoria)
         ]);
     
         const auditoria_extended: any = {
             ...auditoria,
             num_expositores_procesados: num_expositores_procesados,
             num_expositores: num_expositores,
-            datos_barra_progreso: datos_barra_progreso                     
+            datos_barra_progreso: datos_barra_progreso,
+            procesados_auditoria: procesados_auditoria                 
         }
 
         res.status(200).json(auditoria_extended);    

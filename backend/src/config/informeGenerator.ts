@@ -4,15 +4,19 @@ export async function createPDF(url: string, texto_cifrado: string): Promise<Buf
 
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
-  await page.goto(url+texto_cifrado, { waitUntil: 'networkidle0' });
+  await page.goto(url+texto_cifrado, { waitUntil: 'networkidle2' });
 
-  await page.evaluate(() => { // espero un segundo para que la pagina se cargue
-    return new Promise(resolve => {
-      setTimeout(resolve, 1000); // Espera 1000 ms
-    });
+  const pdf = await page.pdf({ 
+    path: 'reporte.pdf', // El nombre de tu archivo PDF
+    format: 'A4',
+    printBackground: true, // Imprime el fondo si es necesario
+    margin: {
+      top: '20mm',
+      right: '20mm',
+      bottom: '20mm',
+      left: '20mm'
+    }
   });
-
-  const pdf = await page.pdf({ format: 'A4' });
   await browser.close();
   return pdf;
 }

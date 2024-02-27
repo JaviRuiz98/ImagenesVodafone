@@ -7,6 +7,8 @@ import { PublicMethodsService } from 'src/app/shared/public-methods.service';
 import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
 import { ActivatedRoute } from '@angular/router';
 import { OnInit } from '@angular/core';
+import { DataViewModule } from 'primeng/dataview';
+import { UrlService } from 'src/app/servicios/url/url.service';
 
 @Component({
   selector: 'app-template-informe',
@@ -16,7 +18,8 @@ import { OnInit } from '@angular/core';
   imports: [
     TableModule,
     ProgressBarModule,
-    ChartModule
+    ChartModule,
+    DataViewModule
   ],
 })
 export class TemplateInformeComponent implements OnInit {
@@ -25,11 +28,16 @@ export class TemplateInformeComponent implements OnInit {
 
   informeData = undefined;
 
+  url_imagenes_procesadas: string = '';
+  url_imagenes_referencia: string = '';
+
   resumen_auditoria: {
     concepto: string,
     detalle: string
   } []
   porcentaje_procesados: number;
+
+  fecha: string = '';
 
   data: any;
   chartData = [0, 0, 0, 0]; //Cantidad de resultados por bueno, notable, medio y malo
@@ -39,10 +47,15 @@ export class TemplateInformeComponent implements OnInit {
     private informeService: InformeService,
     public publicMedhodsService: PublicMethodsService,
     private localStorageService: LocalStorageService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private urlService: UrlService,
+    private publicMethodsService: PublicMethodsService
   ) { }
 
   ngOnInit(): void {
+    this.url_imagenes_procesadas = this.urlService.url_imagenes_procesadas;
+    this.url_imagenes_referencia = this.urlService.url_imagenes_referencia;
+
     this.id_auditoria_cifrada = this.route.snapshot.paramMap.get('id_auditoria_cifrada');
     console.log('id_auditoria', this.id_auditoria_cifrada);
 
@@ -50,6 +63,14 @@ export class TemplateInformeComponent implements OnInit {
       (data) => {
         this.informeData = data;
         console.log('data', data);
+        
+
+        this.informeData = this.informeData.map((element) => {
+          element.procesados_imagenes.map ((procesado) => {
+            procesado.fecha = this.publicMedhodsService.formatDate(procesado.fecha);
+          })
+        })
+
         console.log('informeData', this.informeData);
 
         this.mapearResumenAuditoria();

@@ -15,13 +15,44 @@
     </ng-template>
 </p-table>
 
-<div style="display: flex">
-    <div style ="justify-content: center; margin-right: 10%">
+<div style="justify-content: center; display: flex; margin-top: 5%">
+    <!-- <div style ="justify-content: center; margin-right: 10%">
         <h3>Porcentaje de procesados en la auditoría:</h3>
         <p-progressBar [value]="porcentaje_procesados"></p-progressBar>
-    </div>
-    <div style ="justify-content: center;">
-        <h3>Resumen resultados:</h3>
-        <p-chart type="polarArea" [data]="data" [options]="chartOptions"></p-chart>
-    </div>
+    </div> -->
+    <h3>Resumen resultados:</h3>
+    <p-chart type="polarArea" [data]="data" [options]="chartOptions"></p-chart>
 </div>
+
+<p-table [value]="informeData.procesados_auditoria">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Imagen Referencia</th>
+            <th>Imagen Procesada</th>
+            <th>Detalles</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-procesado>
+        <tr>
+            <td>
+                <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block mx-auto border-round" 
+                     [src]="url_imagenes_referencia + procesado.elementos.imagenes.url" 
+                     [alt]="procesado.elementos.imagenes.url" />
+            </td>
+            <td>
+                <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block mx-auto border-round" 
+                     [src]="url_imagenes_procesadas + procesado.procesados_imagenes[0].imagenes.url" 
+                     [alt]="procesado.procesados_imagenes[0].imagenes.url"/>
+            </td>
+            <td>
+                
+                <div>
+                    <strong>Fecha:</strong> {{ procesado.procesados_imagenes[0].fecha }}
+                </div>
+                <div>
+                    <strong>Comentarios:</strong> {{ procesado.procesados_imagenes[0].comentarios }}
+                </div>                
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
