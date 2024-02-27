@@ -27,7 +27,7 @@ export class BarraMenuComponent implements OnInit {
 
   tiendas: tienda[] = [] ;
   tiendaSeleccionada: tienda | undefined;
-  currentState: string = 'home';
+  currentState: string = '/home';
   contenidoBotonVolver: string = '';
   iconoBotonVolver: string = '';
   volverHome: string = 'Volver a inicio';
@@ -64,20 +64,18 @@ export class BarraMenuComponent implements OnInit {
     }
   }
 
-  private  formatDate(date: Date): string {
-    const day = String(date.getDate()).padStart(2, '0'); 
-    const month = String(date.getMonth() + 1).padStart(2, '0'); 
-    const year = String(date.getFullYear());
-    return `${day}-${month}-${year}`;
-  }
   contenidoBotonVolverAtras() {
-    let rutaActual = this.obtenerRuta();
+    const rutaActual = this.router.url;
     switch (rutaActual) {
       case '/home':
         this.contenidoBotonVolver = '';
         this.iconoBotonVolver = '';    
       break;
       case '/volverHome':
+      case '/gestionAuditorias':
+      case '/tiendas':
+      case '/muebles':
+      case '/elementos':
         this.contenidoBotonVolver = this.volverHome;
         this.iconoBotonVolver = this.volverHomeIcono;    
       break;
@@ -85,31 +83,27 @@ export class BarraMenuComponent implements OnInit {
         this.contenidoBotonVolver = 'Volver a gestion de auditorias';
         this.iconoBotonVolver = this.volverHomeIcono;    
       break;
+      default:
+        this.contenidoBotonVolver = this.volverHome;
+        this.iconoBotonVolver = this.volverHomeIcono;
+      break;
     }
   }
 
   volverAtras(){
-    let rutaActual = this.obtenerRuta();
+    const rutaActual = this.router.url;
+    console.log('volverAtras', this.router);
     switch (rutaActual) {
       case '/home':
         this.contenidoBotonVolver = '';
         this.iconoBotonVolver = '';    
-      break;
-      case '/volverHome':
-        this.router.navigate(['/home']);  
-      break;
+        break;
       case '/auditoria':
         this.router.navigate(['/gestionAuditorias']);
-      break;
+        break;
+      default:
+        this.router.navigate(['/home']);
+        break;
     }
-  }
-
-  obtenerRuta(){
-    let rutaActual = this.router.url;
-    this.currentState = rutaActual;
-    if(rutaActual === '/gestionAuditorias' || rutaActual === '/tiendas' || rutaActual === '/muebles' || rutaActual === '/expositor'){
-      rutaActual = '/volverHome';
-    }
-    return rutaActual;
   }
 }

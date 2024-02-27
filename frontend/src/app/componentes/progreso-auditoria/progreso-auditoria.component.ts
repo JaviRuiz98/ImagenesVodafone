@@ -49,9 +49,7 @@ export class ProgresoAuditoriaComponent implements OnInit {
   ngOnInit(): void {
     this.auditoria_seleccionada = this.localStorageService.getItem('auditoria_seleccionada');
     this.id_auditoria_seleccionada = this.auditoria_seleccionada.id;
-    console.log(this.auditoria_seleccionada);
     this.actualizarProgresoAuditoria(this.id_auditoria_seleccionada);
-
   }
 
   public actualizarProgresoAuditoria(id_auditoria: number) {
@@ -82,12 +80,13 @@ export class ProgresoAuditoriaComponent implements OnInit {
   }
   
   terminarAuditoria(auditoria: auditoria) {
-    if(auditoria.estado !== 'finalizado'){
+    if(auditoria.num_expositores !== auditoria.num_expositores_procesados) {
       const mensaje = '¿Seguro que quieres terminar esta auditoría? Te faltan ' + (auditoria.num_expositores-auditoria.num_expositores_procesados) + ' expositores por procesar.';
       this.dialogoConfirmacionTerminarAuditoria(mensaje);
     } else {
       this.verDialogInforme = true;
-    }
+      this.marcarAuditoriaComoFinalizada(auditoria.id);
+    }    
   }
   
   dialogoConfirmacionTerminarAuditoria(mensaje: string){
@@ -96,6 +95,7 @@ export class ProgresoAuditoriaComponent implements OnInit {
       header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
+        this.marcarAuditoriaComoFinalizada(this.auditoria_seleccionada.id);
         this.verDialogInforme = true;
       },
       reject: () => {
@@ -105,6 +105,22 @@ export class ProgresoAuditoriaComponent implements OnInit {
       rejectButtonStyleClass: 'p-button-danger'
     });
   }
+
+  async marcarAuditoriaComoFinalizada(id_auditoria: number){
+    this.auditoriaService.terminarAuditoria(id_auditoria).subscribe(
+      (data) => {
+        console.log('Auditoría marcada como finalizada')
+      }, (error) => { console.error(error) }
+    )
+  }
+
+  onDialogVisibilityChange(visible: boolean): void {
+    if (!visible) {
+      // El diálogo se cerró, realiza el enrutamiento
+      this.router.navigate(['/gestionAuditorias']);
+    }
+  }
+
   enviarInforme(){
     if(this.auditoria_seleccionada !== undefined){
 

@@ -91,7 +91,7 @@ export const elementosService = {
           const whereClause = categoria!= null? { id_categoria: categoria } : {};
           return await db.elementos.findMany({
             where:whereClause,
-            include: { 
+            include: {
               imagenes: true,
               categorias_elementos: true
             }
@@ -109,9 +109,9 @@ export const elementosService = {
         }
       },
 
-      async guardarElemento(nombre: string, activo: boolean, id_imagen: number, categoria: number): Promise<elementos> {
+      async guardarElemento(nombre: string, activo: boolean, id_imagen: number,  categoria: number): Promise<elementos> {
         try {
-          return await db.elementos.create({ data: { nombre: nombre, activo: activo, id_imagen: id_imagen, id_categoria: categoria } });
+          return await db.elementos.create({ data: { nombre: nombre, activo: activo, id_imagen: id_imagen,  id_categoria: categoria } });
           
         }catch (error) {
           console.log(error)

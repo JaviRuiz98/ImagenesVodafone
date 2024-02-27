@@ -1,6 +1,6 @@
 .paginaTiendaCompleta {
     display: grid;
-    grid-template-rows: 20% 80%;
+    grid-template-rows: 15% 85%;
     height: 80vh; 
     width: 100vw;
 }
@@ -17,9 +17,9 @@
 
 .cabeceraAñadirTienda{
     display: grid;
-    grid-template-columns:20% 80% ;
-    width: 80%;
-    height: 50%;
+    grid-template-columns: 20% 80% ;
+    width: 97%;
+    height: 80%;
     justify-content: center;
     align-items: center;
     border: 1px solid #dee2e6;
@@ -30,10 +30,20 @@
     height: 100%;
     min-height: 50px;
     max-height: 80px;
-    margin-left: 2%;
     font-size: 100%;
     display: flex;
     align-items: center;
+}
+:host ::ng-deep .p-dialog-header {
+    padding: 0;
+    padding-top: 1%;
+    padding-right: 1%;
+}
+
+:host ::ng-deep .p-togglebutton.p-button.p-highlight{
+    background-color: red;
+    background: red;
+    border-color: red;
 }
 .contenedorHistorialTiendas {
     display: flex;
@@ -55,7 +65,9 @@
     font-size: 100%;
     color: black;
 }
-.formulario {
+.formularioICIUG {
+    display: grid;
+    grid-template-columns: 50% 50%;
     margin: 2%;
 }
 .resumentNuevaTienda{

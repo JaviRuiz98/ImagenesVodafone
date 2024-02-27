@@ -3,7 +3,6 @@ import { auditoriaService } from '../services/auditoriaService';
 import { auditoria_extended } from '../interfaces/auditoriaExtended';
 import { auditorias } from '@prisma/client';
 import { tiendaService } from '../services/tiendasServices';
-import { pea_extended } from '../interfaces/peaExtended';
 import { muebleConElementos} from '../interfaces/muebleConElementos';
 import { per_ele_aud_extended } from '../interfaces/perEleAudExtended';
 
@@ -114,9 +113,13 @@ export async function getBarraProgresoAuditoria(req: Request, res: Response) {
     res.status(200).json(await getNumberArrayProgresoAuditoria(id_auditoria));
 }
 
-async function getNumberArrayProgresoAuditoria(id_auditoria: number): Promise<number[]> {
+export async function getNumberArrayProgresoAuditoria(id_auditoria: number): Promise<number[]> {
     try {
-        const expositores_auditoria: pea_extended[] | undefined = await auditoriaService.getBarraProgresoAuditoria(id_auditoria);
+        if (typeof id_auditoria !== 'number') {
+            id_auditoria = parseInt(id_auditoria);
+        }
+
+        const expositores_auditoria: per_ele_aud_extended[] | undefined = await auditoriaService.getBarraProgresoAuditoria(id_auditoria);
 
         if(!expositores_auditoria) {
             return [];

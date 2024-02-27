@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { regiones } from 'src/app/interfaces/regiones';
+import { EnumService } from 'src/app/servicios/enum.service';
 
 @Component({
   selector: 'app-Paso1Form',
@@ -8,77 +10,68 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class Paso1FormComponent implements OnInit {
 
+  regionSeleccionada?: regiones;
+  regiones: regiones[] = [];
 
 
-  constructor(  private fb: FormBuilder) { }
+  constructor(  private fb: FormBuilder, private enumService: EnumService) { }
 
-  @Input() imagenesIn?: string[];
-  @Input() nombreIn?: string;
-  @Output() formularioPaso1Change = new EventEmitter<FormGroup>();
+  @Input () formulario : FormGroup;
+  @Input() objetivo_form: 'crear' | 'editar' = 'crear';
 
-  formularioPaso1:FormGroup = this.fb.group({
-    nombre: ['', Validators.required],
-    imagenes: [[],], //strings para visualización
-    archivos_imagenes: [[]], //Files para creación en la base de datos
-  })
+  @Output() formularioPaso1AddedImage = new EventEmitter< { imagenes: string, archivos_imagenes: File }>();
 
-  get nombre() {
-    return this.formularioPaso1.controls['nombre'];
+
+  get nombre_mueble() {
+    return this.formulario.controls['nombre_mueble'];
   }
   get imagenes() {
-    return this.formularioPaso1.controls['imagenes'];
+    return this.formulario.controls['imagenes'];
   }
 
   get archivos_imagenes() {
-    return this.formularioPaso1.controls['archivos_imagenes'];
+    return this.formulario.controls['archivos_imagenes'];
   }
 
-
+  get region(){
+    return this.formulario.controls['region'];
+  }
+  get expositores() {
+    return this.formulario.get('expositores') as FormArray;
+  }
+  
+  get imagenesExpositores(): string[] {
+    return this.expositores.controls.map((expositor) => {
+      return expositor.get('imagen')?.value || ''; 
+    });
+  }
+  
 
   ngOnInit() {
-
-    if (!!this.imagenesIn && !!this.nombreIn) {
-      this.formularioPaso1.patchValue({
-        nombre: this.nombreIn,
-        imagenes: this.imagenesIn
-      });
-      this.onSubmit();
-    }
-
-    this.formularioPaso1.valueChanges.subscribe(() => {
-      this.onSubmit();
+    this.enumService.getAllRegiones().subscribe((regiones: regiones[]) => {
+      this.regiones = regiones;
     });
+   
+
 
   }
 
+ 
   deleteImage(index: number) {
-    this.formularioPaso1.patchValue({
+    this.formulario.patchValue({
       imagenes: this.imagenes.value.filter((_, i) => i !== index)
     })
   }
 
   onArchivoSeleccionadoChange($event: { archivo: File }) {
     const url = URL.createObjectURL($event.archivo);
-    const imagenesUpdated = [...this.imagenes.value, url];
-    const archivosImagenesUpdated = [...this.archivos_imagenes.value, $event.archivo];
-  
-   
-    this.formularioPaso1.patchValue({
-      imagenes: imagenesUpdated,
-      archivos_imagenes: archivosImagenesUpdated,
+ 
+    this.formularioPaso1AddedImage.emit({
+      imagenes: url,
+      archivos_imagenes: $event.archivo
     });
-  
+
   }
 
-  
-onSubmit() {
-  this.formularioPaso1Change.emit(this.formularioPaso1);  
-}
-  
-  
-
-
-  
-  
 
 }

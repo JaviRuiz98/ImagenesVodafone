@@ -44,7 +44,7 @@
                 <th>Nombre</th>
                 <th>imagen</th>
 
-                <th *ngIf="categoriaSeleccionada?.nombre == 'Carteles'" >Region</th>
+                <!-- <th *ngIf="categoriaSeleccionada?.nombre == 'Carteles'" >Region</th> -->
 
                 <th></th> 
             </tr>
@@ -59,7 +59,7 @@
                 <td>
                     <p-image [src]="url_imagenes_referencias + elemento.imagenes.url" [alt]="elemento.imagenes.url" [width]="'auto'" [height]="'100px'" class="shadow-4" [preview]="true"></p-image>
                 </td>
-                <td *ngIf="categoriaSeleccionada?.nombre == 'Carteles'">{{ elemento.regiones.nombre }}</td>
+                <!-- <td *ngIf="categoriaSeleccionada?.nombre == 'Carteles'">{{ elemento.regiones.nombre }}</td> -->
                 <td>
                     <p-button *ngIf="elemento.activo == 1" (mouseover)="descatalogar.toggle($event)" (click)="activarDesactivarElementos(elemento)" icon="pi pi-eye-slash" [rounded]="true" [text]="true" severity="danger "></p-button>
                     <p-button *ngIf="elemento.activo == 0" (mouseover)="catalogar.toggle($event)" (click)="activarDesactivarElementos(elemento)" icon="pi pi-eye" [rounded]="true" [text]="true" severity="info "></p-button>

@@ -10,6 +10,9 @@ import { PrimeNGConfig } from 'primeng/api';
 import { expositores } from 'src/app/interfaces/expositores';
 import { elementos } from 'src/app/interfaces/elementos';
 import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
+import { PasoAsignarElementoFormComponent } from './components/formMueble/PasoAsignarElementoForm/PasoAsignarElementoForm.component';
+import { EditarExpositorComponent } from './components/editarExpositor/editarExpositor.component';
+import { UrlService } from 'src/app/servicios/url/url.service';
 @Component({
   selector: 'app-mueble',
   templateUrl: './mueble.component.html',
@@ -19,9 +22,14 @@ export class MuebleComponent implements OnInit {
 
 
 
+
+  
+  
+  constructor( private urlService: UrlService, private muebleService: MueblesService, public dialogService: DialogService, public messageService: MessageService, private config: PrimeNGConfig) { }
+  
   muebles: muebles[] = [];
  
-  url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
+  url_imagenes_referencias: string = this.urlService.url_imagenes_referencia;
 
 
   nombreFiltro: string = '';
@@ -31,10 +39,6 @@ export class MuebleComponent implements OnInit {
   ref: DynamicDialogRef | undefined;
 
   
-
-
-  constructor( private muebleService: MueblesService, public dialogService: DialogService, public messageService: MessageService, private config: PrimeNGConfig) { }
-
   ngOnInit() {
     this.config.setTranslation({
       startsWith: 'Empieza con',
@@ -51,42 +55,13 @@ export class MuebleComponent implements OnInit {
   }
   private loadMuebles() {
    this.muebleService.getAllMuebles().subscribe(muebles => {
-     
+     console.log(muebles);
      this.muebles = muebles; 
-     console.log(this.muebles);
-    
-   
    })
   }
 
-  // separarExpositoresSegúnCategoria(muebles:muebles[]): mueblesVisualizacion[] {
-  //    return  muebles.map(mueble => {
-
-  //     const expositoresCarteles = mueble.expositores.filter(expositor => expositor.categoria === 'Carteles');
-
-  //     const expositoresDispositivos = mueble.expositores.filter(expositor => expositor.categoria === 'Dispositivos');
-
-  //     return {
-  //       id: mueble.id,
-  //       nombre_mueble: mueble.nombre_mueble,
-  //       expositores: mueble.expositores,
-  //       numero_expositores_carteles: expositoresCarteles.length,
-  //       numero_expositores_dispositivos: expositoresDispositivos.length,
-  //       expositores_carteles: expositoresCarteles,
-  //       expositores_dispositivos: expositoresDispositivos
-  //     };
-  //   });
-    
-  // }
-
-  // resetTabla() {
-  //   this.miTabla.reset();
-  // }
-
-
-
   editMueble(mueble: muebles, showing_asignar_expositores_index?:number) {
-
+    
     this.ref = this.dialogService.open(FormMuebleComponent, {
       header: 'Editar mueble ' + mueble.nombre ,
       width: '70%',
@@ -97,17 +72,17 @@ export class MuebleComponent implements OnInit {
         mueble: mueble, 
         showing_asignar_expositores_index: showing_asignar_expositores_index
       }
-  });
-
-  this.ref.onClose.subscribe(() => {
-    this.loadMuebles();
-  })
-
-  this.ref.onMaximize.subscribe((value) => {
+    });
+    
+    this.ref.onClose.subscribe(() => {
+      this.loadMuebles();
+    })
+    
+    this.ref.onMaximize.subscribe((value) => {
       this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
-  });
+    });
   }
-
+  
   nuevoMueble() {
     this.ref = this.dialogService.open(FormMuebleComponent, {
       header: 'Crea un nuevo mueble',
@@ -115,17 +90,17 @@ export class MuebleComponent implements OnInit {
       contentStyle: { overflow: 'auto' },
       baseZIndex: 10000,
       maximizable: true
-  });
-
-  this.ref.onClose.subscribe(() => {
-    this.loadMuebles();
-  })
-
-  this.ref.onMaximize.subscribe((value) => {
+    });
+    
+    this.ref.onClose.subscribe(() => {
+      this.loadMuebles();
+    })
+    
+    this.ref.onMaximize.subscribe((value) => {
       this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
-  });
+    });
   }
-
+  
   showHistorial(mueble: muebles) {
     this.ref = this.dialogService.open(HistorialExpositoresComponent, {
       header: 'Historial de expositores de ' + mueble.nombre,
@@ -139,26 +114,64 @@ export class MuebleComponent implements OnInit {
     })
     this.ref.onMaximize.subscribe((value) => {
       this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
-  });
+    });
   }
 
-  getImagenModelo(expositor: expositores): string | undefined {
-    const atributoModelo: atributos_expositores | undefined = expositor.atributos_expositores.find((atributo) => atributo.id_categoria === 3);
+  showEditarExpositor(expositor:expositores) {
 
+    this.ref = this.dialogService.open(EditarExpositorComponent, {
+      width: '70%',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 10000,
+      maximizable: true,
+      data: {
+        expositor: expositor
+      }
+    })
+    this.ref.onMaximize.subscribe((value) => {
+      this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
+    });
+  }
+  
+  getImagenModelo(expositor: expositores): string | undefined {
+    const atributoModelo: atributos_expositores | undefined = expositor.atributos_expositores.find((atributo) => atributo.categorias_elementos.id === 3);
+    
     
     if (atributoModelo && atributoModelo.elemento) {
       return atributoModelo.elemento.imagenes.url;
     } else {
       return undefined;
     }
-
+    
   }
   tieneModelo(atributos_expositores: atributos_expositores[]): boolean {
-    const atributoModelo: atributos_expositores | undefined = atributos_expositores.find((atributo) => atributo.id_categoria === 3);
+    const atributoModelo: atributos_expositores | undefined = atributos_expositores.find((atributo) => atributo.categorias_elementos.id === 3);
     return atributoModelo !== undefined;
   }
- 
-
-
-
+  
 }
+
+
+// separarExpositoresSegúnCategoria(muebles:muebles[]): mueblesVisualizacion[] {
+//    return  muebles.map(mueble => {
+
+//     const expositoresCarteles = mueble.expositores.filter(expositor => expositor.categoria === 'Carteles');
+
+//     const expositoresDispositivos = mueble.expositores.filter(expositor => expositor.categoria === 'Dispositivos');
+
+//     return {
+//       id: mueble.id,
+//       nombre_mueble: mueble.nombre_mueble,
+//       expositores: mueble.expositores,
+//       numero_expositores_carteles: expositoresCarteles.length,
+//       numero_expositores_dispositivos: expositoresDispositivos.length,
+//       expositores_carteles: expositoresCarteles,
+//       expositores_dispositivos: expositoresDispositivos
+//     };
+//   });
+  
+// }
+
+// resetTabla() {
+//   this.miTabla.reset();
+// }

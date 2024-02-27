@@ -12,12 +12,18 @@
             [severity]="'danger'"
             label="Terminar auditoria"
         ></p-button>
-        <p-dialog header="Informe" [(visible)]="verDialogInforme" [draggable]="false" [style]="{width: '50vw'}" [ngClass]="verDialogInforme ? 'informe p-component-overlay' : 'informe'">
+        <p-dialog header="Informe" 
+            [(visible)]="verDialogInforme" 
+            [draggable]="false" 
+            [style]="{width: '50vw'}" 
+            (visibleChange)="onDialogVisibilityChange($event)"
+            [ngClass]="verDialogInforme ? 'informe p-component-overlay' : 'informe'">
+
             <div class="p-dialog-title">
                 Seleccione en qué formato desea el informe.
             </div>
             <div class="p-dialog-footer" style="padding: 0;">
-                <p-button (click)="enviarInforme()" [severity]="'danger'" label="Enviar por correo" icon="pi pi-envelope" [style]="{'cursor': 'pointer'}"></p-button>
+                <p-button (click)="enviarInforme()" [severity]="'danger'" label="Enviar por correo" icon="pi pi-envelope" [style]="{'cursor': 'pointer'}" [disabled]="this.auditoria_seleccionada.estados_auditoria.estado === 'en progreso'"></p-button>
                 <p-button (click)="descargarInforme()" [severity]="'danger'" label="Descargar" icon="pi pi-download" [style]="{'cursor': 'pointer'}"></p-button>
             </div>
         </p-dialog>

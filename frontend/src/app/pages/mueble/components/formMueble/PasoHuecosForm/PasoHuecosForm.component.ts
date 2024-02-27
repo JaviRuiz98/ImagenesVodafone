@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, Output,EventEmitter,ElementRef} from '@angular/core';
-import { huecoCreacion } from '../../../interfaces/huecoCreacion';
 import { categorias_elementos } from 'src/app/interfaces/categoria';
 import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
 
@@ -25,7 +24,6 @@ export class PasoHuecosFormComponent implements OnInit {
   categoriaSeleccionada?: string;  
   opcionesCategoria: string[] = [];
   categorias_elementos: categorias_elementos[]; // inicializar
-  huecos: huecoCreacion[] = [];
 
   atributos_expositor: atributos_expositores[] = [];
 
@@ -497,7 +495,7 @@ calcularCentroLateralesTransformados(centro: Coordenada, dimensiones: { width: n
     const atributo: atributos_expositores  = {
       id: this.atributos_expositor.length + 1,
       expositor: null,
-      id_categoria: null,
+      categorias_elementos: null,
       elemento: null,
       x_start: this.startX,
       y_start: this.startY,

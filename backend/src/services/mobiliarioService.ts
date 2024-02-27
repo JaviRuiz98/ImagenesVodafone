@@ -1,4 +1,4 @@
-import { muebles } from "@prisma/client";
+import { expositores, muebles } from "@prisma/client";
 import db from "../config/database";
 
 // import { ExpositorFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
@@ -83,15 +83,18 @@ export const mobiliarioService = {
             await db.$disconnect();
         }
     },
-    async getAllMuebles(): Promise<muebles[]> {
+    async getAllMuebles(): Promise<any> {
         try {
             
             const muebles = await db.muebles.findMany({
-                include: {
+                include: {   
+                    regiones: true,
                     expositores: {
                         include: {
                             atributos_expositores: {
                                 include: {
+                                    
+                                    categorias_elementos:true,
                                     pertenencia_elementos_atributos: {
                                         include: {
                                             elementos: {
@@ -106,6 +109,7 @@ export const mobiliarioService = {
                                         take: 1,
                                     },
                                 },
+                                
                             },
                         },
                     },
@@ -123,6 +127,8 @@ export const mobiliarioService = {
                 return { ...mueble, expositores };
             });
             return mueblesMapeados;
+
+        
 
         } catch (error) {
             throw error;
@@ -219,6 +225,41 @@ export const mobiliarioService = {
             //    const mapeoPromises = muebles.map(mapearExpositoresParaFront);
             //    const mueblesFront = await Promise.all(mapeoPromises);
             return muebles;
+        } catch (error) {
+            throw error;
+        } finally {
+            await db.$disconnect();
+        }
+    }
+}
+
+export const expositorService = {
+    async updateExpositor(id_expositor: number, nombre:string, atributos_expositores: 
+        {
+            id?: number;
+            elemento?: {
+                id?: number;
+            }; 
+        } []
+    ): Promise<expositores | null> {
+        try {
+            const expositor = await db.expositores.update({ 
+                 where: { id: id_expositor },
+                 data: { nombre:nombre }
+            });
+
+            for (const atributo of atributos_expositores) {
+                if (atributo.id && atributo.elemento?.id) { 
+                    await db.pertenencia_elementos_atributos.create({
+                        data: {
+                            id_atributos_expositores: atributo.id,
+                            id_elementos: atributo.elemento.id
+                        }
+                    })
+                }
+            }
+            return expositor;
+
         } catch (error) {
             throw error;
         } finally {

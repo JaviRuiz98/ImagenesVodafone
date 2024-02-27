@@ -44,10 +44,9 @@ export class AuditoriaService {
     return this.http.get<muebles[]>(`${this.API_URI}/auditoria_elementos_procesados/${id_auditoria}`);
   }
 
-  terminarAuditoria(id_auditoria: number, enviar_informe: boolean): Observable<any> {
+  terminarAuditoria(id_auditoria: number): Observable<any> {
     const putData = {
       id_auditoria: id_auditoria,
-      enviar_informe: enviar_informe
     }
     return this.http.put<any>(`${this.API_URI}/terminar_auditoria`, putData);
   }

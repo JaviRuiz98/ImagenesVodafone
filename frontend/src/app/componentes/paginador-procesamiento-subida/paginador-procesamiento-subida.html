@@ -1,5 +1,5 @@
-<div [ngClass]="{'componente-completo': procesados.length > 0, 'componente-solo-selector': procesados.length === 0}">
-    <div *ngIf="recibirEstado() === 'en progreso'">
+<div [ngClass]="{'componente-completo': procesados.length > 0 && estado_auditoria === 'en progreso', 'componente-solo-selector': procesados.length === 0}" style="height: 100%; width: 100%;">
+    <div *ngIf="estado_auditoria === 'en progreso'">
         <p-selectButton
             class="botonNuevoHistorial"
             [options]="SelectButtonOptions" 
@@ -11,15 +11,16 @@
             ngClass="botonSelectorHistorial">
         </p-selectButton>
     </div>
-    <div class="anchoAltoSelector" *ngIf="valueSelected==='new'"> 
+    <div class="anchoAltoSelector" *ngIf="valueSelected==='new' && estado_auditoria === 'en progreso'"> 
         <app-selector-imagenes 
             *ngIf="valueSelected==='new'"
             (archivoSeleccionadoChange)="recibirFile($event)"
             [cargando_procesado]="cargando_procesamiento">
         </app-selector-imagenes>
     </div>
-    <div *ngIf="valueSelected==='historial'" class="anchoAltoGridFotosPaginador">
+    <div *ngIf="valueSelected==='historial' ||  estado_auditoria !== 'en progreso'" class="anchoAltoGridFotosPaginador">
         <app-visualizacion-procesados
+            [style]="{'display':'flex', 'width':'100%','height':'100%'}"
             [procesados]="procesados"
         ></app-visualizacion-procesados>
     </div>

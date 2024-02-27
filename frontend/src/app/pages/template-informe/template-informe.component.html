@@ -1,0 +1,67 @@
+<h1>Auditoría para la tienda - {{informeData.tiendas.sfid}}</h1>
+
+<p-table [value]="resumen_auditoria">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Concepto</th>
+            <th>Detalle</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-concepto>
+        <tr>
+            <td>{{concepto.concepto}}</td>
+            <td>{{concepto.detalle}}</td>
+        </tr>
+    </ng-template>
+</p-table>
+
+<div style="justify-content: center; display: flex; margin-top: 5%">
+    <h3>Resumen resultados:</h3>
+    <p-chart type="pie" [data]="data" [options]="chartOptions"></p-chart>
+</div>
+
+<p-table [value]="informeData.procesados_auditoria">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Imagen Referencia</th>
+            <th>Imagen Procesada</th>
+            <th>Detalles</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-procesado>
+        <tr>
+            <td>
+                <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block mx-auto border-round" 
+                     [src]="url_imagenes_referencia + procesado.elementos.imagenes.url" 
+                     [alt]="procesado.elementos.imagenes.url" />
+            </td>
+            <td>
+                <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block mx-auto border-round" 
+                     [src]="url_imagenes_procesadas + procesado.procesados_imagenes[0].imagenes.url" 
+                     [alt]="procesado.procesados_imagenes[0].imagenes.url"/>
+            </td>
+            <td>
+                <div display="flex">                    
+                    <div *ngIf="procesado.procesados_imagenes[0].id_categoria === 1">
+                        <strong>Resultados: </strong>
+                        <p-tag [severity]="getSeverityCartel(procesado.procesados_imagenes[0].probabilidades_respuesta_carteles.probabilidad)">
+                            {{procesado.procesados_imagenes[0].probabilidades_respuesta_carteles.probabilidad}}
+                        </p-tag>
+                    </div>
+                    <div *ngIf="procesado.procesados_imagenes[0].id_categoria === 2">
+                        <strong>Resultados: </strong>
+                        <p-tag [severity]="getSeverityDispositivos(procesado.procesados_imagenes[0].dispositivos_contados, procesado.procesados_imagenes[0].huecos_esperados)">
+                            {{procesado.procesados_imagenes[0].dispositivos_contados}}/{{procesado.procesados_imagenes[0].huecos_esperados}}
+                        </p-tag>
+                    </div>                    
+                </div>
+                <div style="margin-top: 10px">
+                    <strong>Fecha:</strong> {{ this.publicMedhodsService.formatDate(procesado.procesados_imagenes[0].fecha) }}
+                </div>
+                <div style="margin-top: 10px">
+                    <strong>Comentarios:</strong> {{ procesado.procesados_imagenes[0].comentarios }}
+                </div>                
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

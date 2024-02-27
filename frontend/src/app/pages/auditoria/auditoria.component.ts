@@ -40,6 +40,8 @@ export class AuditoriaComponent implements OnInit{
     respuestas_carteles: [],
     rangos_cuentas: {min: 0, max: 100}    
   }
+  
+
 
   constructor( 
     private auditoriaService: AuditoriaService ,
@@ -51,9 +53,7 @@ export class AuditoriaComponent implements OnInit{
 
     ngOnInit(): void {
       this.auditoria_seleccionada = this.localStorageService.getItem('auditoria_seleccionada')
-
       this.url_imagenes = this.urlService.url_en_uso + this.carpeta_imagenes_referencias;
-
       this.auditoriaService.getAuditoriaById(this.auditoria_seleccionada.id).subscribe(
         auditoria => {
           this.auditoria_seleccionada = auditoria
@@ -63,10 +63,10 @@ export class AuditoriaComponent implements OnInit{
     }
 
     async inicializaImagenesReferencia() {
-      this.auditoriaService.getMueblesAndExpositoresWithProcesadosByIdAuditoria(this.auditoria_seleccionada.id).subscribe(
-        (data: any[]) => {
+      this.auditoriaService.getMueblesAndExpositoresWithProcesadosByIdAuditoria(this.auditoria_seleccionada.id).subscribe((data: any[]) => {
           this.muebles = data;
-        }, (error: Error) => { console.log(error) }
+        }, 
+        (error: Error) => { console.log(error) }
       );
     }
 
@@ -74,36 +74,33 @@ export class AuditoriaComponent implements OnInit{
       this.inicializaImagenesReferencia();  
     }
 
-    async procesarImagen(event: {archivo:File}, id_elemento_selected: number, id_mueble_selected: number) {
-      console.log("id_elemento_selected", id_elemento_selected, "id_mueble_selected", id_mueble_selected);
+    async procesarImagen(event: {archivo: File}, id_elemento_selected: number, id_mueble_selected: number) {
       this.imagenAProcesar = event.archivo;
-      this.cargas_procesamiento[id_elemento_selected]= true;   
+      this.cargas_procesamiento[id_elemento_selected] = true;   
       this.messageService.add({ severity: 'info', summary: 'Cargando', detail: 'La imagen se está procesando' });
-      this.procesamientoService.postProcesamientoImagenes(id_elemento_selected, id_mueble_selected, this.auditoria_seleccionada.id, this.imagenAProcesar).subscribe( 
-        ( response: procesados_imagenes ) => {
-          this.cargas_procesamiento[id_elemento_selected] = false;
-          this.modos_visualizacion[id_elemento_selected] = 'historial';        
-          this.actualizarProcesamientoEnMueble(id_elemento_selected, response);
-          this.messageService.add({ severity: 'success', summary: 'Exito', detail: 'Imagen procesada correctamente' });
-          this.progresoAuditoria.actualizarProgresoAuditoria(this.auditoria_seleccionada.id);
-        }, ( error: any ) => {
-          console.log("error", error);
-          this.cargas_procesamiento[id_elemento_selected] = false;
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error procesando imagen' });
-      })
-    }
-
-    //refactorizar a nueva bbd
-
-    actualizarProcesamientoEnMueble(id_expositor_selected: number, response: procesados_imagenes) {
-      // for (const mueble of this.muebles) {
-      //   const expositorIndex = mueble.elementos.findIndex((elementos) => elementos.id === id_expositor_selected);
-      //   if (expositorIndex !== -1) {
-      //     mueble.elementos[expositorIndex].procesados_imagenes.unshift(response);
-      //     break; 
-      //   }
-      // }
+    
+      try {
+        const response: procesados_imagenes = await this.procesamientoService.postProcesamientoImagenes(id_elemento_selected, id_mueble_selected, this.auditoria_seleccionada.id, this.imagenAProcesar).toPromise();
+        this.cargas_procesamiento[id_elemento_selected] = false;
+        await this.actualizarProcesamientoEnMueble(id_elemento_selected, response);
+        this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Imagen procesada correctamente' });
+        this.progresoAuditoria.actualizarProgresoAuditoria(this.auditoria_seleccionada.id);
+        this.modos_visualizacion[id_elemento_selected] = 'historial';
+      } catch (error) {
+        console.log("error", error);
+        this.cargas_procesamiento[id_elemento_selected] = false;
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error procesando imagen' });
+      }
     }
     
-      
+    async actualizarProcesamientoEnMueble(id_expositor_selected: number, response: procesados_imagenes) {
+      for (const mueble of this.muebles) {
+        const expositorIndex = mueble.elementos.findIndex((elementos) => elementos.id === id_expositor_selected);
+        if (expositorIndex !== -1) {
+          mueble.elementos[expositorIndex].procesados_imagenes.unshift(response);
+          break; 
+        }
+      }
+    }
+    
 }

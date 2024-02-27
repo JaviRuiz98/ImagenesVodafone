@@ -1,15 +1,26 @@
 .gridHistorial {
     width: 100%;
     height: 100%;
-    display: grid;
+    max-height: 501px;
+    display: flex;
     align-content: center;
-    grid-template-rows: 85% 15%;
+    justify-content: center;
 }
-.imagenProcesadaComentarios {
-    display: grid;
-    grid-template-rows: 70% 30%;
+.gridHistorialFinalizado {
     width: 100%;
     height: 100%;
+    max-height: 590px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+.imagenProcesadaGaleria {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin: auto;
 }
 .anchoAltoImagenProcesada {
     display: flex;
@@ -31,14 +42,13 @@
     margin-right: 5%;
 }
 .respuestaProcesado{
-    display: grid;
-    grid-template-rows: 70% 30%;
-    margin-left: 2%;
-}
-.comentariosRespuesta{
-    width: 100%;
     height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 2%;
 }
+
 .promptBotones{
     display: grid;
     grid-template-columns: 60% 40%;
@@ -49,14 +59,44 @@
     display: flex;
     justify-content: center;
 }
-::ng-deep .p-image-preview-container>img {
+
+.anchoAltoImagenProcesada ::ng-deep .p-galleria-content {
+    width: 100%;
+    height: 100%;
+}
+.anchoAltoImagenProcesada ::ng-deep p-galleriaitem {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
     width: 100%;
+    height: 100%;
 }
-::ng-deep .p-image {
-    height: 90%;
+
+
+.anchoAltoImagenProcesada ::ng-deep .p-galleria-item-wrapper{
+    display: grid;
+    grid-auto-rows: 90% 10%;
+    width: 100%;
+    height: 100%;
+}
+
+.anchoAltoImagenProcesada ::ng-deep .p-galleria .p-galleria-item-nav{
+    color: red;
+}
+.anchoAltoImagenProcesada ::ng-deep .p-galleria .p-galleria-item-nav:not(.p-disabled):hover {
+    background: rgb(251 0 0 / 20%);
+    color: #ff0000;
+}
+
+.imagenProcesadaDentroGaleria {
+    display: flex;
+    justify-content: center;
     width: auto;
+    height: auto;
+    max-width: 55%;
+    max-height: 90%;
+}
+
+::ng-deep .p-galleria .p-galleria-indicators .p-galleria-indicator.p-highlight button {
+    background-color: red;
 }

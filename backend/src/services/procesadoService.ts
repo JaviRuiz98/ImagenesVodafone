@@ -52,7 +52,8 @@ export const procesadoService = {
             },
             include: {
                 imagenes: true,
-                prompts: true
+                prompts: true,
+                probabilidades_respuesta_carteles: true
             }
         })
     },
