@@ -29,6 +29,7 @@ export class TiendasComponent implements OnInit{
 
   verFormularioNuevaTienda: boolean = false;
   editarTiendaCreada: boolean = false;
+  vistaCrearMueble: boolean = false;
   parametrosSteps: any; 
   activeIndex: number = 0;
 
@@ -187,4 +188,5 @@ export class TiendasComponent implements OnInit{
     const listaFiltrada = listaCompleta.filter((mueble) => !idsLista2.has(mueble.id));
     return listaFiltrada;
   }
+
 }
