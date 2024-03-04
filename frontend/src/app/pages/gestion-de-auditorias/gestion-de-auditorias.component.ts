@@ -21,6 +21,8 @@ export class GestionDeAuditoriasComponent implements OnInit {
 
   @Input() id_tienda: any;
 
+  usuario: string = 'usuario_prueba';
+
   tiendas: tienda[] = [];
   tiendaSeleccionada: tienda | undefined;
   auditorias: auditoria[] = [];
@@ -106,7 +108,8 @@ export class GestionDeAuditoriasComponent implements OnInit {
 
     console.log(id_auditoria);
     const body = {
-      id_auditoria: id_auditoria
+      id_auditoria: id_auditoria,
+      usuario: this.usuario
     }
 
     this.messageService.add({ severity: 'info', summary: 'Enviando informe', detail: 'Enviando informe...' });
@@ -124,7 +127,8 @@ export class GestionDeAuditoriasComponent implements OnInit {
 
   descargarInforme(id_auditoria: number){
     const body = {
-      id_auditoria: id_auditoria
+      id_auditoria: id_auditoria,
+      usuario: this.usuario
     }
 
     this.messageService.add({ severity: 'info', summary: 'Descargando informe', detail: 'Descargando informe...' });

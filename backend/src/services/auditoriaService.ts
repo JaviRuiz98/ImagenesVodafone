@@ -162,7 +162,7 @@ export const auditoriaService = {
                         orderBy: {
                             fecha: 'desc'
                         }
-                    }, 
+                    },
                     elementos: true
                 },
                 orderBy: {
