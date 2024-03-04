@@ -84,7 +84,7 @@ export class PasoAsignarElementoFormComponent implements OnInit {
     return undefined;
    
   }
-  get indexFirstElementoSinModeloExpositor(): number | undefined {
+  get indexAtributoFirstElementoSinModeloExpositor(): number | undefined {
     if (!!this.atributos_expositores) {
       for (let i = 0; i < this.atributos_expositores.controls.length; i++) {
         const atributoExpositor = this.atributos_expositores.controls[i];
@@ -105,10 +105,8 @@ export class PasoAsignarElementoFormComponent implements OnInit {
       categorias_elementos: $event.categorias_elementos, // por defecto será la del elemento
       elemento: $event,
     };
-    if (this.indexFirstElementoSinModeloExpositor != -1){
-      this.formularioPasoAsignarAtributoSinHuecos.emit( {index:this.indexFirstElementoSinModeloExpositor,  atributo:atributo}); 
-      console.log(  this.firstElementoSinModeloExpositor );
-   
+    if (this.indexAtributoFirstElementoSinModeloExpositor != -1){
+      this.formularioPasoAsignarAtributoSinHuecos.emit( {index:this.indexAtributoFirstElementoSinModeloExpositor,  atributo:atributo}); 
     }
   
 

@@ -41,8 +41,6 @@ export class FormMuebleComponent implements OnInit {
 
   index_expositor_actual: number = 0;
 
-  
-  
 
   objetivo_form: 'crear' | 'editar' = 'crear';
 
@@ -174,35 +172,41 @@ export class FormMuebleComponent implements OnInit {
   
 
   agregarAtributoAExpositor(expositorIndex: number, atributo_index?:number, atributo?: atributos_expositores, ) {
-    if  (atributo_index) {
+
+    // si me pasan el index de la posicion del atributo, se actualiza
+    if  (atributo_index!= undefined ) {
       this.actualizarAtributoExpositor(expositorIndex, atributo_index, atributo);
+   
+      // si no me pasan el index de la posicion del atributo, se crea un nuevo atributo_expositor y se inserta
+    }else {
+      //creo formGroup para el atributoExpositor
+      const atributoExpositorGroup = this.crearGrupoAtributoExpositor(atributo);
+      //Obtengo el expositor correspondiente
+      let expositor = this.expositores.at(expositorIndex) as FormGroup; 
+      //En caso de que no exista lo creo, debería existir siempre según la lógica, pero por si acaso 
+      if (!expositor) {
+        this.crearExpositor(false,atributo?.elemento?.categorias_elementos.id);
+        expositor = this.expositores.at(expositorIndex) as FormGroup;
+      }
+      //Obtengo los atributos expositores, por definición no debería ser nulo, pero por si acaso en caso de que no exista, lo creo
+      let atributosExpositores = expositor.get('atributos_expositores') as FormArray;
+      if (!atributosExpositores) {
+        atributosExpositores = new FormArray([]);
+        expositor.setControl('atributos_expositores', atributosExpositores);
+      }
+      //inserto el atributo en el array
+      atributosExpositores.push(atributoExpositorGroup);
     }
-    //creo formGroup para el atributoExpositor
-    const atributoExpositorGroup = this.crearGrupoAtributoExpositor(atributo);
-    //Obtengo el expositor correspondiente
-    let expositor = this.expositores.at(expositorIndex) as FormGroup; 
-    //En caso de que no exista lo creo, debería existir siempre según la lógica
-    if (!expositor) {
-      this.crearExpositor(false,atributo?.elemento?.categorias_elementos.id);
-      expositor = this.expositores.at(expositorIndex) as FormGroup;
-    }
-    //Obtengo los atributos expositores, por definición no debería ser nulo  en caso de que no exista, lo creo
-    let atributosExpositores = expositor.get('atributos_expositores') as FormArray;
-    if (!atributosExpositores) {
-      atributosExpositores = new FormArray([]);
-      expositor.setControl('atributos_expositores', atributosExpositores);
-    }
-    //inserto el atributo en el array
-    atributosExpositores.push(atributoExpositorGroup);
+   
 
   }
 
   actualizarAtributoExpositor(expositorIndex: number, atributoIndex: number, atributo: atributos_expositores) {
-    const expositor = this.expositores.at(expositorIndex) as FormGroup;
-    const atributos = expositor.get('atributos_expositores') as FormArray;
+    const expositor = this.expositores.at(expositorIndex) as FormGroup; //obtengo el expositor
+    const atributos = expositor.get('atributos_expositores') as FormArray; //obtengo sus atributos
     
-    const grupoAtributo = this.crearGrupoAtributoExpositor(atributo);
-    atributos.at(atributoIndex).patchValue(grupoAtributo.value);
+    const grupoAtributo = this.crearGrupoAtributoExpositor(atributo); // creo el grupo para el atributo
+    atributos.at(atributoIndex).patchValue(grupoAtributo.value); // actualizo el atributo
   }  
 
   removerAtributoDeExpositor(expositorIndex: number, atributoIndex: number) {
@@ -232,6 +236,7 @@ export class FormMuebleComponent implements OnInit {
 
       
       this.step_count = this.expositores.length;
+      console.log(this.mueble.value);
   
     }else{
       console.log ("nuevo");
@@ -349,7 +354,6 @@ export class FormMuebleComponent implements OnInit {
 
 
   onCrearAtributoExpositor($event:{index:number, atributo: atributos_expositores}) {
-    
     this.agregarAtributoAExpositor(this.index_expositor_actual , $event.index, $event.atributo, );
   }
 
