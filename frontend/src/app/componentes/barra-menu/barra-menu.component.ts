@@ -70,6 +70,7 @@ export class BarraMenuComponent implements OnInit {
     this.currentState = rutaActual;
     switch (rutaActual) {
       case '/home':
+      case '/login':
         this.contenidoBotonVolver = '';
         this.iconoBotonVolver = '';    
       break;
