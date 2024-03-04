@@ -1,10 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormArray, FormGroup } from '@angular/forms';
 
-import { elementos } from 'src/app/interfaces/elementos';
-import { expositores } from 'src/app/interfaces/expositores';
 
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
+import { elementos } from 'src/app/interfaces/elementos';
 import { UrlService } from 'src/app/servicios/url/url.service';
 
 
@@ -16,28 +16,40 @@ import { UrlService } from 'src/app/servicios/url/url.service';
 export class PasoAsignarElementoFormComponent implements OnInit {
 
 
-  constructor(private urlService: UrlService, public dialogConfig : DynamicDialogConfig, private fb: FormBuilder) { }
+  constructor(private urlService: UrlService, public dialogConfig : DynamicDialogConfig) { }
 
 
-  @Input () expositorFormulario: FormGroup; 
+  @Input () expositorFormulario: FormGroup|undefined; 
+  @Output () formularioPasoAsignarEditarAtributo = new EventEmitter<{index:number, atributo: atributos_expositores} >();
+  @Output () formularioPasoAsignarCrearAtributo = new EventEmitter<atributos_expositores>();
 
 
   get nombre_expositor() {
-    return this.expositorFormulario.controls['nombre_expositor'];
+    return this.expositorFormulario? this.expositorFormulario.get('nombre_expositor'): undefined;
   }
 
-  get imagen_expositor() {
-    return this.expositorFormulario.controls['imagen'];
-  }
 
   get atributos_expositores() {
-    return this.expositorFormulario.controls['atributos_expositores'] as FormArray;
+    return this.expositorFormulario?this.expositorFormulario.get('atributos_expositores') as FormArray : undefined;
   }
-  
 
 
+  onEditElementosSeleccionados($event: atributos_expositores ) {
+    this.formularioPasoAsignarEditarAtributo.emit({index:0, atributo: $event});
+  }
 
+  onCreateElementoSeleccionadoSinHuecos($event: elementos){
+    
+    const atributo: atributos_expositores = {
+      categorias_elementos: $event.categorias_elementos, // por defecto será la del elemento
+      elemento: $event,
+    };
+   this.formularioPasoAsignarCrearAtributo.emit(atributo);
+  }
+
+ 
   ngOnInit() {
+  
     console.log(this.expositorFormulario);
   }
 

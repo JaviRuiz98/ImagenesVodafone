@@ -1,13 +1,13 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { muebles } from 'src/app/interfaces/muebles';
 import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { expositores } from 'src/app/interfaces/expositores';
 import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
 import { MenuItem } from 'primeng/api';
 import { UrlService } from 'src/app/servicios/url/url.service';
+import { elementoCreacion } from '../../interfaces/elementoCreacion';
 
 
 @Component({
@@ -18,11 +18,23 @@ import { UrlService } from 'src/app/servicios/url/url.service';
 
 export class FormMuebleComponent implements OnInit {
 
-
  
   
   constructor( private urlService: UrlService, private cdr: ChangeDetectorRef, public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private elementosService: ElementosService, private muebleService: MueblesService) { }
   
+  
+  //STEPPER
+  step_count: number = 2;
+  activeIndex:number = 0;
+  steps: MenuItem [] | undefined;
+  isValidNextStep: boolean = false;
+  rangeArray: number[] = [];
+
+  index_expositor_actual: number = 0;
+
+  
+  
+
   objetivo_form: 'crear' | 'editar' = 'crear';
 
   url_imagenes_referencias: string = this.urlService.url_imagenes_referencia;
@@ -33,7 +45,7 @@ export class FormMuebleComponent implements OnInit {
       region: [''],
       expositores: this.fb.array([]) // Ahora es un FormArray
     }),
-    archivos_imagenes: [ [], Validators.maxLength(2)],
+   
   });
 
   get mueble() {
@@ -50,21 +62,62 @@ export class FormMuebleComponent implements OnInit {
     return this.mueble.get('expositores') as FormArray;
   }
   
-  get archivosImagenes() {
-    return this.formulario.get('archivos_imagenes') as FormArray;
-  }
+ 
   get imagenesExpositores(): string[] {
-    return this.expositores.controls.map((expositor) => {
-      return expositor.get('imagen')?.value || ''; 
+    let imagenes: string[] = [];
+  
+    this.expositores.controls.forEach((expositor) => {
+      const atributosExpositores = expositor.get('atributos_expositores') as FormArray;
+  
+      atributosExpositores.controls.forEach((atributoExpositor) => {
+        
+        const elemento = atributoExpositor.get('elemento') as FormGroup;
+        const categoria: number = elemento.get('categorias_elementos')?.value;
+        const imagen = elemento.get('imagen')?.value;
+        if (imagen && categoria === 3) {
+          imagenes.push(imagen);
+        }
+      });
     });
+  
+    const imagenesUnicas = [...new Set(imagenes)];
+    return imagenesUnicas;
   }
   
 
-
+  crearExpositor(datos?: { imagenes: string, archivos_imagenes: File }){
+    let newExpositor: expositores = {
+      nombre: 'modelo del mueble ' + this.nombre_mueble.value,
+      atributos_expositores: [] //en caso de no tener datos, no tendrá modelo
+    };
+        
+    if (datos){
+       const  atributos_expositores: atributos_expositores []=  [{
+          categorias_elementos: {
+            id: 3,
+          },
+          elemento:  {
+            imagenes: {
+              id_imagen: 0,
+              url: datos.imagenes
+            },
+            archivo_imagen: datos.archivos_imagenes,
+            nombre: 'elemento '+datos.archivos_imagenes.name,
+            activo: false,
+            categorias_elementos: {
+              id:3,
+            }
+          }
+          
+        }];
+        newExpositor.atributos_expositores = atributos_expositores;
+      }
+   
+    this.agregarExpositor(newExpositor);
+  }
   agregarExpositor(expositor?: expositores) {
     const expositorGroup = this.fb.group({
       nombre_expositor: [expositor ? expositor.nombre : '', Validators.required],
-      imagen: [expositor ? this.getImagenModelo(expositor) : ''],
       atributos_expositores: this.fb.array([])
     });
   
@@ -82,13 +135,60 @@ export class FormMuebleComponent implements OnInit {
     this.expositores.removeAt(index);
   }
 
-  agregarAtributoAExpositor(expositorIndex: number, atributo?: atributos_expositores) {
-    const atributoExpositorGroup = this.fb.group({
-      elemento: [atributo ? atributo.elemento.id : 0, Validators.maxLength(2)],
+  crearGrupoAtributoExpositor(atributo: atributos_expositores): FormGroup {
+    let imagen:string ='';
+    let archivo: File | undefined;
+    
+    // Verificar y preparar la imagen y el archivo si el atributo viene con un elemento
+    if (atributo && atributo.elemento) {
+      // Si no hay archivo, se podría necesitar ajustar la lógica según cómo manejes las URLs de las imágenes
+      if (!(atributo.elemento as elementoCreacion).archivo_imagen) {
+        imagen += this.url_imagenes_referencias; // Asegúrate de que `this.url_imagenes_referencias` esté definido y sea correcto
+      } else {
+        archivo = (atributo.elemento as elementoCreacion).archivo_imagen;
+      }
+      
+      // Asume que `atributo.elemento.imagenes.url` es la propiedad correcta; ajusta según tu modelo
+      imagen += atributo.elemento.imagenes.url;
+    }
+    
+
+    // Crear el FormGroup para el atributo del expositor
+    return this.fb.group({
+      elemento: this.fb.group({
+        id: [atributo && atributo.elemento ? atributo.elemento.id : 0],
+        imagen: [imagen, Validators.required],
+        archivos_imagenes: [archivo, Validators.maxLength(2)],
+        categoria_elementos: [atributo && atributo.elemento ? atributo.elemento.categorias_elementos.id : null],
+      })
     });
-    const expositor = this.expositores.at(expositorIndex) as FormGroup;
-    (expositor.get('atributos_expositores') as FormArray).push(atributoExpositorGroup);
   }
+  
+
+  agregarAtributoAExpositor(expositorIndex: number, atributo?: atributos_expositores) {
+    const atributoExpositorGroup = this.crearGrupoAtributoExpositor(atributo);
+    let expositor = this.expositores.at(expositorIndex) as FormGroup;
+    if (!expositor) {
+      this.crearExpositor();
+      expositor = this.expositores.at(expositorIndex) as FormGroup;
+    }
+ 
+    let atributosExpositores = expositor.get('atributos_expositores') as FormArray;
+    if (!atributosExpositores) {
+      atributosExpositores = new FormArray([]);
+      expositor.setControl('atributos_expositores', atributosExpositores);
+    }
+    atributosExpositores.push(atributoExpositorGroup);
+
+  }
+
+  actualizarAtributoExpositor(expositorIndex: number, atributoIndex: number, atributo: atributos_expositores) {
+    const expositor = this.expositores.at(expositorIndex) as FormGroup;
+    const atributos = expositor.get('atributos_expositores') as FormArray;
+    
+    const grupoAtributo = this.crearGrupoAtributoExpositor(atributo);
+    atributos.at(atributoIndex).patchValue(grupoAtributo.value);
+  }  
 
   removerAtributoDeExpositor(expositorIndex: number, atributoIndex: number) {
     const expositor = this.expositores.at(expositorIndex) as FormGroup;
@@ -96,25 +196,6 @@ export class FormMuebleComponent implements OnInit {
   }
     
 
-  //STEPPER
-  step_count: number = 2;
-  activeIndex:number = 0;
-  steps: MenuItem [] | undefined;
-  isValidNextStep: boolean = false;
-  rangeArray: number[] = [];
-
-  index_expositor_actual: number = 0;
-  
-  mueble_existente: muebles = {
-    id: 0,
-    nombre: '',
-    regiones: {
-      id: 0,
-      nombre: ''
-    },
-    expositores: []
-  };
-  
   ngOnInit() {
     if (this.dialogConfig.data) {
       console.log ("editar");
@@ -130,12 +211,12 @@ export class FormMuebleComponent implements OnInit {
       });
 
       mueble.expositores.map((expositor :expositores) => {
+        
         this.agregarExpositor(expositor);
       });
 
       
       this.step_count = this.expositores.length;
-
   
     }else{
       console.log ("nuevo");
@@ -195,67 +276,84 @@ export class FormMuebleComponent implements OnInit {
   generateRangeArray(start: number, end: number): number[] {
     return Array(end - start + 1).fill(0).map((_, idx) => start + idx);
   }
-  
 
-  getImagenModelo(expositor: expositores): string | undefined {
-    const atributoModelo: atributos_expositores | undefined = expositor.atributos_expositores.find((atributo) => atributo.categorias_elementos.id === 3);
-    if (atributoModelo && atributoModelo.elemento) {
-      return this.url_imagenes_referencias+atributoModelo.elemento.imagenes.url;
-    } else {
-      return undefined;
-    }
-
-  }
-
+ 
 
   activeIndexIsPair(): boolean {
    return this.activeIndex % 2 === 0;
   }
 
+  updateIsValidNextStepForAsignarElementos(): void {
+    const atributo = this.expositores[this.activeIndex].get('atributos_expositores');
+    !!atributo && atributo.valid   ? this.isValidNextStep = true : this.isValidNextStep = false;
+  }
   
   updateIsValidNextStep(): void {
+  //EN EL PRIMER PASO
    if (this.activeIndex === 0) {
      this.isValidNextStep = this.nombre_mueble.valid &&  this.region.valid;
-
+    //PARA EL RESTO DE LOS PASOS
    }else{
 
-     this.isValidNextStep = false;
+     //SI ESTOY CREANDO
+     if (this.objetivo_form === 'crear') {
+        //SI TENGO MODELOS
+      if (this.imagenesExpositores.length > 0) {
+        if (this.activeIndexIsPair()) {
+         
+        } else {
+        
+          this.updateIsValidNextStepForAsignarElementos();
+        }
+ 
+         //SI NO TENGO MODELOS
+      }else{
+        this.updateIsValidNextStepForAsignarElementos();
+      }
+    //SI ESTOY EDITANDO
+     }else {
+      this.updateIsValidNextStepForAsignarElementos();
+     }
    }
    
   }
   
+ 
   onFormularioPaso1AddedImage( $event: { imagenes: string, archivos_imagenes: File }) {
+    this.crearExpositor($event);
+    this.updateStepCount();
+    this.generateSteps();
+  }
+ 
+  onFormularioPaso1DeletedExpositor($event: number) {
+    this.removerExpositor($event);
+    this.updateStepCount();
+    this.generateSteps();
 
-    this.archivosImagenes.push(this.fb.control($event.archivos_imagenes));
-    const newExpositor: expositores = {
-      nombre: 'modelo del mueble' + this.nombre_mueble.value,
-      atributos_expositores: [{
-        categorias_elementos: {
-          id: 3,
-        },
-        elemento: {
-          imagenes: {
-            id_imagen: 0,
-            url: $event.imagenes
-          },
-          nombre: 'elemento '+$event.archivos_imagenes.name,
-          activo: false,
-          categorias_elementos: undefined
-        }
-        
-      }]
-    };
-    this.agregarExpositor(newExpositor);
+  }
+
+
+  onCrearAtributoExpositor(atributo: atributos_expositores) {
+    console.log(atributo);
+
+    this.agregarAtributoAExpositor(this.index_expositor_actual, atributo);
+  }
+
+
+  onEditarAtributoExpositor(index: number, atributo: atributos_expositores) {
+    this.actualizarAtributoExpositor(this.index_expositor_actual, index, atributo);
+  }
+
+ 
+  
+  updateStepCount(){
     if (this.objetivo_form === 'crear'){
       this.step_count = this.imagenesExpositores.length== 0 ? 2 : this.imagenesExpositores.length*2+1;
     } else{
       this.step_count = this.imagenesExpositores.length;
     }
-    this.generateSteps();
- 
   }
 
-  
   nextStep() {
     //pasaremos a la siguiente imagen siempre y cuando no estemos en el primer paso y el indice sea par o si estamos en editar
     if ((this.activeIndex > 0 && this.activeIndexIsPair()) || (this.activeIndex > 0 && this.objetivo_form == 'editar')) { 
@@ -267,7 +365,6 @@ export class FormMuebleComponent implements OnInit {
     }
   }
 
-
   previousStep() {
   
     if ((!this.activeIndexIsPair() && this.objetivo_form == 'crear' ) || (this.objetivo_form == 'editar')) {
@@ -278,17 +375,8 @@ export class FormMuebleComponent implements OnInit {
   }
   }
     
-
   onSubmit() {
-    // const atributos: atributos_expositores[];
-    // for (let i = 0; i < this.formularioPaso1.value.archivo.length; i++) {
-      
-    // }
-
-    // const expositor : expositores = {
-    //   nombre: 'expositor de '+ this.formularioPaso1.value.nombre,
-    //   atributos_expositores: atributos;
-    // }
+    console.log("guardar",this.formulario.value);
   }
 
 

@@ -1,3 +1,4 @@
+import { elementoCreacion } from "../pages/mueble/interfaces/elementoCreacion";
 import { categorias_elementos } from "./categoria";
 import { elementos } from "./elementos";
 import { expositores } from "./expositores";
@@ -10,6 +11,6 @@ export interface atributos_expositores {
     y_min? : number;
     y_max? : number;
     categorias_elementos: categorias_elementos;
-    elemento?: elementos; //es el elemento activo del atributo
+    elemento?: elementos | elementoCreacion; //es el elemento activo del atributo
 
 }
