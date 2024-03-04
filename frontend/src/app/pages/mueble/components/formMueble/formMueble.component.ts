@@ -72,7 +72,7 @@ export class FormMuebleComponent implements OnInit {
       atributosExpositores.controls.forEach((atributoExpositor) => {
         
         const elemento = atributoExpositor.get('elemento') as FormGroup;
-        const categoria: number = elemento.get('categorias_elementos')?.value;
+        const categoria: number = elemento.get('categoria_elementos')?.value;
         const imagen = elemento.get('imagen')?.value;
         if (imagen && categoria === 3) {
           imagenes.push(imagen);
@@ -103,7 +103,7 @@ export class FormMuebleComponent implements OnInit {
             },
             archivo_imagen: datos.archivos_imagenes,
             nombre: 'elemento '+datos.archivos_imagenes.name,
-            activo: false,
+            activo: true,
             categorias_elementos: {
               id:3,
             }
@@ -141,17 +141,16 @@ export class FormMuebleComponent implements OnInit {
     
     // Verificar y preparar la imagen y el archivo si el atributo viene con un elemento
     if (atributo && atributo.elemento) {
-      // Si no hay archivo, se podría necesitar ajustar la lógica según cómo manejes las URLs de las imágenes
       if (!(atributo.elemento as elementoCreacion).archivo_imagen) {
-        imagen += this.url_imagenes_referencias; // Asegúrate de que `this.url_imagenes_referencias` esté definido y sea correcto
+        imagen += this.url_imagenes_referencias; 
       } else {
         archivo = (atributo.elemento as elementoCreacion).archivo_imagen;
       }
       
-      // Asume que `atributo.elemento.imagenes.url` es la propiedad correcta; ajusta según tu modelo
       imagen += atributo.elemento.imagenes.url;
     }
     
+    console.log("imagen: "+ atributo && atributo.elemento ? atributo.elemento.categorias_elementos.id : 0);
 
     // Crear el FormGroup para el atributo del expositor
     return this.fb.group({
@@ -363,6 +362,8 @@ export class FormMuebleComponent implements OnInit {
     if (this.isValidNextStep){
       this.activeIndex++;
     }
+    console.log("activeIndex: ",this.activeIndex);
+    console.log("expositorIndiex: ",this.index_expositor_actual);
   }
 
   previousStep() {
@@ -370,9 +371,13 @@ export class FormMuebleComponent implements OnInit {
     if ((!this.activeIndexIsPair() && this.objetivo_form == 'crear' ) || (this.objetivo_form == 'editar')) {
       this.index_expositor_actual = Math.max(this.index_expositor_actual - 1, 0);
     }
-  if (this.activeIndex > 0) {
-    this.activeIndex--;
-  }
+    if (this.activeIndex > 0) {
+      this.activeIndex--;
+    }
+    console.log("activeIndex: ",this.activeIndex);
+    console.log("expositorIndiex: ",this.index_expositor_actual);
+
+
   }
     
   onSubmit() {

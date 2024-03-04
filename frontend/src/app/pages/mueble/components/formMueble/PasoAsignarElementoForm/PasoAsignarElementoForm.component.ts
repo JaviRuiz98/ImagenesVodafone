@@ -50,7 +50,7 @@ export class PasoAsignarElementoFormComponent implements OnInit {
  
   ngOnInit() {
   
-    console.log(this.expositorFormulario);
+    console.log("expositor: ",this.expositorFormulario);
   }
 
   
