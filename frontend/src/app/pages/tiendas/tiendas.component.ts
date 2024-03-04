@@ -43,7 +43,6 @@ export class TiendasComponent implements OnInit{
   cabeceraListaDerechaNuevaTienda: string = 'Muebles Seleccionados';
   cabeceraListaDerechaEditarTienda: string = 'Muebles Actuales';
 
-
   constructor(private TiendasService: TiendasService, private MueblesService: MueblesService, private messageService: MessageService, private ConfirmationService: ConfirmationService){}
   ngOnInit(): void {
     this.getAllTiendas();
