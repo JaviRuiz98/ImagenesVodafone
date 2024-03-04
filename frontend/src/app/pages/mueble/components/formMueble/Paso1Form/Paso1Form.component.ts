@@ -20,19 +20,13 @@ export class Paso1FormComponent implements OnInit {
   @Input() objetivo_form: 'crear' | 'editar' = 'crear';
 
   @Output() formularioPaso1AddedImage = new EventEmitter< { imagenes: string, archivos_imagenes: File }>();
+  @Output() formularioPaso1DeletedExpositor = new EventEmitter<number>();
 
 
   get nombre_mueble() {
     return this.formulario.controls['nombre_mueble'];
   }
-  get imagenes() {
-    return this.formulario.controls['imagenes'];
-  }
-
-  get archivos_imagenes() {
-    return this.formulario.controls['archivos_imagenes'];
-  }
-
+ 
   get region(){
     return this.formulario.controls['region'];
   }
@@ -41,10 +35,25 @@ export class Paso1FormComponent implements OnInit {
   }
   
   get imagenesExpositores(): string[] {
-    return this.expositores.controls.map((expositor) => {
-      return expositor.get('imagen')?.value || ''; 
+  let imagenes: string[] = [];
+
+  this.expositores.controls.forEach((expositor) => {
+    const atributosExpositores = expositor.get('atributos_expositores') as FormArray;
+
+    atributosExpositores.controls.forEach((atributoExpositor) => {
+      const elemento = atributoExpositor.get('elemento') as FormGroup;
+      const imagen = elemento.get('imagen')?.value;
+      if (imagen) {
+        imagenes.push(imagen);
+      }
     });
-  }
+  });
+
+  // Utiliza un Set para eliminar duplicados y luego conviértelo nuevamente en un arreglo.
+  const imagenesUnicas = [...new Set(imagenes)];
+  return imagenesUnicas;
+}
+
   
 
   ngOnInit() {
@@ -58,9 +67,7 @@ export class Paso1FormComponent implements OnInit {
 
  
   deleteImage(index: number) {
-    this.formulario.patchValue({
-      imagenes: this.imagenes.value.filter((_, i) => i !== index)
-    })
+    this.formularioPaso1DeletedExpositor.emit(index);
   }
 
   onArchivoSeleccionadoChange($event: { archivo: File }) {

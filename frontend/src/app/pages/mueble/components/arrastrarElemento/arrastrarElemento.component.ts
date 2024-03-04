@@ -94,7 +94,7 @@ export class ArrastrarElementoComponent implements OnInit {
   }
 
   onElementoSeleccionadoChange(event:any) {
-    this.onElementoSeleccionado.emit(event.elemento);
+    this.onElementoSeleccionado.emit(event.data);
   }
 
 

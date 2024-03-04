@@ -2,7 +2,7 @@
 <p-scrollPanel [style]="{'height':'calc(100vh - 300px )'}">
 
   <div class="flex flex-column" *ngIf="activeIndex == 0">
-    <app-Paso1Form (formularioPaso1AddedImage)="onFormularioPaso1AddedImage($event)" [objetivo_form]="objetivo_form" [formulario]="mueble"></app-Paso1Form>
+    <app-Paso1Form (formularioPaso1AddedImage)="onFormularioPaso1AddedImage($event)" (formularioPaso1DeletedExpositor)="onFormularioPaso1DeletedExpositor($event)" [objetivo_form]="objetivo_form" [formulario]="mueble"></app-Paso1Form>
   </div>
   <!-- CREAR -->
   <div *ngIf="objetivo_form=='crear'; else editar">
@@ -19,14 +19,21 @@
 
           <!-- Verifica si el paso actual requiere el componente app-PasoAsignarElementoForm -->
           <ng-container *ngIf="activeIndexIsPair()">
-            <app-PasoAsignarElementoForm [expositorFormulario]="expositores[index_expositor_actual]"></app-PasoAsignarElementoForm>
+            <app-PasoAsignarElementoForm 
+            (formularioPasoAsignarCrearAtributo)="onCrearAtributoExpositor($event)" 
+            (formularioPasoAsignarEditarAtributo)="onEditarAtributoExpositor($event.index, $event.atributo)"
+            [expositorFormulario]="expositores[index_expositor_actual]"
+            ></app-PasoAsignarElementoForm>
           </ng-container>
         </div>
 
       </div>
       <!-- No tengo imágenes, diractemente asigno elemento -->
       <ng-template #no_imagenes>
-        <app-PasoAsignarElementoForm></app-PasoAsignarElementoForm>
+        <app-PasoAsignarElementoForm 
+        (formularioPasoAsignarCrearAtributo)="onCrearAtributoExpositor($event)" 
+        (formularioPasoAsignarEditarAtributo)="onEditarAtributoExpositor($event.index, $event.atributo)" 
+        [expositorFormulario]="expositores[index_expositor_actual]"></app-PasoAsignarElementoForm>
       </ng-template>
       
       
@@ -48,11 +55,11 @@
 
 <footer>
   <div class="flex align-items-center justify-content-center mt-2">
-    <p-button label="volver" icon="pi pi-arrow-left" class="m-2" severity="danger" [disabled]="activeIndex == 0"
+    <p-button label="Volver" icon="pi pi-arrow-left" class="m-2" severity="danger" [disabled]="activeIndex == 0"
       (onClick)="previousStep()"></p-button>
-    <p-button [label]="activeIndex == step_count ? 'Guardar' : 'siguiente'" icon="pi pi-arrow-right" class="m-2"
+    <p-button [label]="activeIndex == step_count-1 ? 'Guardar' : 'Siguiente'" icon="pi pi-arrow-right" class="m-2"
       severity="danger" [disabled]="!isValidNextStep"
-      (onClick)="activeIndex == step_count? onSubmit() : nextStep()">
+      (onClick)="activeIndex == step_count-1? onSubmit() : nextStep()">
     </p-button>
   </div>
 

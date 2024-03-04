@@ -100,6 +100,7 @@ export const mobiliarioService = {
                                             elementos: {
                                                 include: {
                                                     imagenes: true,
+                                                    categorias_elementos: true
                                                 },
                                             },
                                         },

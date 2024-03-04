@@ -21,10 +21,6 @@ import { UrlService } from 'src/app/servicios/url/url.service';
 export class MuebleComponent implements OnInit {
 
 
-
-
-  
-  
   constructor( private urlService: UrlService, private muebleService: MueblesService, public dialogService: DialogService, public messageService: MessageService, private config: PrimeNGConfig) { }
   
   muebles: muebles[] = [];
@@ -151,27 +147,3 @@ export class MuebleComponent implements OnInit {
   
 }
 
-
-// separarExpositoresSegúnCategoria(muebles:muebles[]): mueblesVisualizacion[] {
-//    return  muebles.map(mueble => {
-
-//     const expositoresCarteles = mueble.expositores.filter(expositor => expositor.categoria === 'Carteles');
-
-//     const expositoresDispositivos = mueble.expositores.filter(expositor => expositor.categoria === 'Dispositivos');
-
-//     return {
-//       id: mueble.id,
-//       nombre_mueble: mueble.nombre_mueble,
-//       expositores: mueble.expositores,
-//       numero_expositores_carteles: expositoresCarteles.length,
-//       numero_expositores_dispositivos: expositoresDispositivos.length,
-//       expositores_carteles: expositoresCarteles,
-//       expositores_dispositivos: expositoresDispositivos
-//     };
-//   });
-  
-// }
-
-// resetTabla() {
-//   this.miTabla.reset();
-// }
