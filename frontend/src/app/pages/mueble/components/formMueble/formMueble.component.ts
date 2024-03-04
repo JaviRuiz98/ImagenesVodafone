@@ -87,14 +87,16 @@ export class FormMuebleComponent implements OnInit {
     });
   
     const imagenesUnicas = [...new Set(imagenes)];
-    console.log()
+   
     return imagenesUnicas;
   }
   
 
-  crearExpositor(datos?: { imagenes: string, archivos_imagenes: File }){
+  crearExpositor(modelo: boolean = true, categoria: number, datos?: { imagenes: string, archivos_imagenes: File}) {
+    const categoriaID: number = modelo? categoria: 3; // 3 es de modelo, me gustaría no tenerlo harcodeado
+    
     let newExpositor: expositores = {
-      nombre: 'modelo del mueble ' + this.nombre_mueble.value,
+      nombre: (!!modelo ? 'modelo' : 'elemento') +' del mueble ' + this.nombre_mueble.value,
       atributos_expositores: [] //en caso de no tener datos, no tendrá modelo
     };
         
@@ -128,15 +130,13 @@ export class FormMuebleComponent implements OnInit {
       atributos_expositores: this.fb.array([])
     });
    
-    console.log("expositores1: ", this.expositores.value);
     this.expositores.push(expositorGroup);
-    console.log("expositores2: ", this.expositores.value);
    
   
     if (expositor && expositor.atributos_expositores) {
       const index = this.expositores.length - 1;
       expositor.atributos_expositores.forEach((atributo) => {
-        this.agregarAtributoAExpositor(index, atributo);
+        this.agregarAtributoAExpositor(index, undefined, atributo);
       });
     }
   }
@@ -160,7 +160,6 @@ export class FormMuebleComponent implements OnInit {
       imagen += atributo.elemento.imagenes.url;
     }
     
-    console.log("imagen: "+ atributo && atributo.elemento ? atributo.elemento.categorias_elementos.id : 0);
 
     // Crear el FormGroup para el atributo del expositor
     return this.fb.group({
@@ -174,20 +173,26 @@ export class FormMuebleComponent implements OnInit {
   }
   
 
-  agregarAtributoAExpositor(expositorIndex: number, atributo?: atributos_expositores) {
+  agregarAtributoAExpositor(expositorIndex: number, atributo_index?:number, atributo?: atributos_expositores, ) {
+    if  (atributo_index) {
+      this.actualizarAtributoExpositor(expositorIndex, atributo_index, atributo);
+    }
+    //creo formGroup para el atributoExpositor
     const atributoExpositorGroup = this.crearGrupoAtributoExpositor(atributo);
-    let expositor = this.expositores.at(expositorIndex) as FormGroup;
+    //Obtengo el expositor correspondiente
+    let expositor = this.expositores.at(expositorIndex) as FormGroup; 
+    //En caso de que no exista lo creo, debería existir siempre según la lógica
     if (!expositor) {
-      this.crearExpositor();
+      this.crearExpositor(false,atributo?.elemento?.categorias_elementos.id);
       expositor = this.expositores.at(expositorIndex) as FormGroup;
     }
- 
+    //Obtengo los atributos expositores, por definición no debería ser nulo  en caso de que no exista, lo creo
     let atributosExpositores = expositor.get('atributos_expositores') as FormArray;
     if (!atributosExpositores) {
       atributosExpositores = new FormArray([]);
       expositor.setControl('atributos_expositores', atributosExpositores);
     }
-
+    //inserto el atributo en el array
     atributosExpositores.push(atributoExpositorGroup);
 
   }
@@ -294,7 +299,7 @@ export class FormMuebleComponent implements OnInit {
   }
 
   updateIsValidNextStepForAsignarElementos(): void {
-    const atributo = this.expositores[this.activeIndex].get('atributos_expositores');
+    const atributo = this.expositores[this.activeIndex]? this.expositores[this.activeIndex].get('atributos_expositores') : null;
     !!atributo && atributo.valid   ? this.isValidNextStep = true : this.isValidNextStep = false;
   }
   
@@ -330,7 +335,7 @@ export class FormMuebleComponent implements OnInit {
   
  
   onFormularioPaso1AddedImage( $event: { imagenes: string, archivos_imagenes: File }) {
-    this.crearExpositor($event);
+    this.crearExpositor(true,3, $event);
     this.updateStepCount();
     this.generateSteps();
   }
@@ -343,18 +348,11 @@ export class FormMuebleComponent implements OnInit {
   }
 
 
-  onCrearAtributoExpositor(atributo: atributos_expositores) {
-    console.log(atributo);
-
-    this.agregarAtributoAExpositor(this.index_expositor_actual, atributo);
+  onCrearAtributoExpositor($event:{index:number, atributo: atributos_expositores}) {
+    
+    this.agregarAtributoAExpositor(this.index_expositor_actual , $event.index, $event.atributo, );
   }
 
-
-  onEditarAtributoExpositor(index: number, atributo: atributos_expositores) {
-    this.actualizarAtributoExpositor(this.index_expositor_actual, index, atributo);
-  }
-
- 
   
   updateStepCount(){
     if (this.objetivo_form === 'crear'){
@@ -363,7 +361,41 @@ export class FormMuebleComponent implements OnInit {
       this.step_count = this.imagenesExpositores.length;
     }
   }
+  checkFormularioisNotNull(){
+    if (this.activeIndex > 0){
+      //asignar elementos
+      if (this.objetivo_form === 'editar' || (this.objetivo_form === 'crear' && !this.activeIndexIsPair())) {
+        if (this.getExpositorFormGroup() == null){
+          //creo un formgrupo de expositor vacio
+          this.crearExpositor(false,0);
+          const expositor = this.expositores.at(0) as FormGroup; //obtengo el formgroup recien creado
 
+
+          //le inserto un formgroup de atributo_expositor vacio
+          const atributoExpositor : atributos_expositores = {
+            categorias_elementos: {
+              id: 0,
+              nombre: ""
+            }
+          }
+          const formAtributoExpositor = this.crearGrupoAtributoExpositor(atributoExpositor); 
+
+          // se ha creado el formgroup, me falta insertarlo
+
+          const atributosExpositores = new FormArray([]);
+          expositor.setControl('atributos_expositores', atributosExpositores);
+
+          atributosExpositores.push(formAtributoExpositor);
+          
+          console.log("mueble", this.mueble.value);
+        }
+
+      //seleccion de huecos  
+      }else{
+
+      }
+    }
+  }
   nextStep() {
     //pasaremos a la siguiente imagen siempre y cuando no estemos en el primer paso y el indice sea par o si estamos en editar
     if ((this.activeIndex > 0 && this.activeIndexIsPair()) || (this.activeIndex > 0 && this.objetivo_form == 'editar')) { 
@@ -372,6 +404,7 @@ export class FormMuebleComponent implements OnInit {
 
     if (this.isValidNextStep){
       this.activeIndex++;
+      this.checkFormularioisNotNull()
     }
     console.log("activeIndex: ",this.activeIndex);
     console.log("expositorIndiex: ",this.index_expositor_actual);

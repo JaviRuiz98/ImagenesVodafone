@@ -1,14 +1,24 @@
 <div class="flex">
   <div class="flex-1 m-2">
+    <div *ngIf="imagenesModeloExpositores && imagenesModeloExpositores.length > 0; else sinModelo">
+      <app-arrastrarElemento 
+        [mode]="'arrastrar'" 
+        (onElementoSeleccionado)="onSeleccionadoSinHuecos($event)">
+      </app-arrastrarElemento>
+    </div>
 
-    <div *ngIf=" expositorFormulario != undefined; else sinImagen" class="flex flex-wrap" style="width: 100%">
-    
+    <ng-template #sinModelo>
+      <div class="flex align-items-center justify-content-center" >
+          <app-arrastrarElemento 
+          [mode]="'seleccionar'" 
+          [selected_elemento]="firstElementoSinModeloExpositor"
+          (onElementoSeleccionado)="onSeleccionadoSinHuecos($event)">
+        </app-arrastrarElemento>
+      </div>
+
         
-    </div> 
-
-    <ng-template #sinImagen>
-        <app-arrastrarElemento [mode]="'seleccionar'" (onElementoSeleccionado)="onCreateElementoSeleccionadoSinHuecos($event)"></app-arrastrarElemento>
     </ng-template>
+  
 
 
   </div>

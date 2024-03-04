@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
-
+import { ChangeDetectorRef } from '@angular/core';
 
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
@@ -14,13 +14,12 @@ import { elementos } from 'src/app/interfaces/elementos';
 })
 export class PasoAsignarElementoFormComponent implements OnInit {
 
+  constructor( public dialogConfig : DynamicDialogConfig, private cdr: ChangeDetectorRef) { }
 
-  constructor( public dialogConfig : DynamicDialogConfig) { }
 
+  @Input () expositorFormulario: FormGroup; 
+  @Output () formularioPasoAsignarAtributoSinHuecos = new EventEmitter<{index:number, atributo: atributos_expositores} >();
 
-  @Input () expositorFormulario: FormGroup|undefined; 
-  @Output () formularioPasoAsignarEditarAtributo = new EventEmitter<{index:number, atributo: atributos_expositores} >();
-  @Output () formularioPasoAsignarCrearAtributo = new EventEmitter<atributos_expositores>();
 
 
   get nombre_expositor() {
@@ -32,24 +31,95 @@ export class PasoAsignarElementoFormComponent implements OnInit {
     return this.expositorFormulario?this.expositorFormulario.get('atributos_expositores') as FormArray : undefined;
   }
 
+  get imagenesModeloExpositores(): string | undefined {
+    
+    this.atributos_expositores? this.atributos_expositores.controls.forEach((atributoExpositor) => {
+        
+        const elemento = atributoExpositor.get('elemento') as FormGroup;
+        const categoria: number = elemento.get('categoria_elementos')?.value;
+        const imagen = elemento.get('imagen')?.value;
+        if (imagen && categoria === 3) {
+          return imagen;
+        }
+      }): undefined;
 
-  onEditElementosSeleccionados($event: atributos_expositores ) {
-    this.formularioPasoAsignarEditarAtributo.emit({index:0, atributo: $event});
+    return undefined;
+   
   }
 
-  onCreateElementoSeleccionadoSinHuecos($event: elementos){
+  get elementosNoModelosExpositores(): FormArray | undefined {
+    const otrosElementosArray: FormGroup[] = [];
+    
+    this.atributos_expositores? this.atributos_expositores.controls.forEach((atributoExpositor) => {
+      const elemento = atributoExpositor.get('elemento') as FormGroup;
+      const categoria: number = elemento.get('categoria_elementos')?.value;
+      
+      if (categoria !== 3 && categoria !== 0) {
+        otrosElementosArray.push(elemento);
+      }
+    }): undefined;
+  
+    if (otrosElementosArray.length > 0) {
+      const formArray = new FormArray(otrosElementosArray);
+      return formArray;
+    } else {
+      return undefined;
+    }
+  }
+
+  get firstElementoSinModeloExpositor(): elementos | undefined {
+  
+    if (!!this.atributos_expositores) {
+      for (let i = 0; i < this.atributos_expositores.controls.length; i++) {
+        const atributoExpositor = this.atributos_expositores.controls[i];
+        const elemento = atributoExpositor.get('elemento') as FormGroup;
+        const categoria: number = elemento.get('categoria_elementos')?.value;
+        
+        if (categoria !== 3 && categoria !== 0) {
+          return elemento.value ;
+        }
+      }
+      
+    }
+    return undefined;
+   
+  }
+  get indexFirstElementoSinModeloExpositor(): number | undefined {
+    if (!!this.atributos_expositores) {
+      for (let i = 0; i < this.atributos_expositores.controls.length; i++) {
+        const atributoExpositor = this.atributos_expositores.controls[i];
+        const elemento = atributoExpositor.get('elemento') as FormGroup;
+        const categoria: number = elemento.get('categoria_elementos')?.value;
+        if (categoria !== 3) {
+          return i;
+        }
+      }
+    }
+    return -1;
+  }
+  
+ 
+  onSeleccionadoSinHuecos($event: elementos){
     
     const atributo: atributos_expositores = {
       categorias_elementos: $event.categorias_elementos, // por defecto será la del elemento
       elemento: $event,
     };
-   this.formularioPasoAsignarCrearAtributo.emit(atributo);
+    if (this.indexFirstElementoSinModeloExpositor != -1){
+      this.formularioPasoAsignarAtributoSinHuecos.emit( {index:this.indexFirstElementoSinModeloExpositor,  atributo:atributo}); 
+      console.log(  this.firstElementoSinModeloExpositor );
+   
+    }
+  
+
   }
 
  
   ngOnInit() {
-  
-    console.log("expositor: ",this.expositorFormulario);
+    console.log("expositor: ",this.expositorFormulario? this.expositorFormulario.value : "error");
+
+    
+    
   }
 
   
