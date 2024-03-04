@@ -27,11 +27,12 @@ export class BarraMenuComponent implements OnInit {
 
   tiendas: tienda[] = [] ;
   tiendaSeleccionada: tienda | undefined;
-  currentState: string = 'home';
+  currentState: string = '/home';
   contenidoBotonVolver: string = '';
   iconoBotonVolver: string = '';
   volverHome: string = 'Volver a inicio';
   volverHomeIcono: string = 'pi pi-home';
+  volverAtrasIcono: string = 'pi pi-arrow-left';
 
 
   constructor(
@@ -66,12 +67,12 @@ export class BarraMenuComponent implements OnInit {
 
   contenidoBotonVolverAtras() {
     const rutaActual = this.router.url;
+    this.currentState = rutaActual;
     switch (rutaActual) {
       case '/home':
         this.contenidoBotonVolver = '';
         this.iconoBotonVolver = '';    
       break;
-      case '/volverHome':
       case '/gestionAuditorias':
       case '/tiendas':
       case '/muebles':
@@ -81,7 +82,7 @@ export class BarraMenuComponent implements OnInit {
       break;
       case '/auditoria':
         this.contenidoBotonVolver = 'Volver a gestion de auditorias';
-        this.iconoBotonVolver = this.volverHomeIcono;    
+        this.iconoBotonVolver = this.volverAtrasIcono;    
       break;
       default:
         this.contenidoBotonVolver = this.volverHome;
@@ -92,7 +93,6 @@ export class BarraMenuComponent implements OnInit {
 
   volverAtras(){
     const rutaActual = this.router.url;
-    console.log('volverAtras', this.router);
     switch (rutaActual) {
       case '/home':
         this.contenidoBotonVolver = '';

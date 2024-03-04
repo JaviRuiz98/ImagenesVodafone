@@ -34,6 +34,17 @@
     display: flex;
     align-items: center;
 }
+:host ::ng-deep .p-dialog-header {
+    padding: 0;
+    padding-top: 1%;
+    padding-right: 1%;
+}
+
+:host ::ng-deep .p-togglebutton.p-button.p-highlight{
+    background-color: red;
+    background: red;
+    border-color: red;
+}
 .contenedorHistorialTiendas {
     display: flex;
     flex-direction: column;
