@@ -7,6 +7,9 @@ import { elementos } from 'src/app/interfaces/elementos';
 import { expositores } from 'src/app/interfaces/expositores';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 
+
+type Punto = { x: number; y: number };
+
 @Component({
   selector: 'app-editarExpositor',
   templateUrl: './editarExpositor.component.html',
@@ -87,6 +90,32 @@ export class EditarExpositorComponent implements OnInit {
       this.drawCross(attr);
     });
   }
+
+  puntoDentroRectangulo(punto: Punto, rectStart: Punto, width: number, height: number,angle: number): boolean {
+    // Calcula el centro del rectángulo
+    const centerX = rectStart.x + width / 2;
+    const centerY = rectStart.y + height / 2;
+
+    // Traslada el punto al origen para la rotación
+    const translatedX = punto.x - centerX;
+    const translatedY = punto.y - centerY;
+
+    // Aplica la rotación inversa
+    const cosAngle = Math.cos(-angle);
+    const sinAngle = Math.sin(-angle);
+
+    const rotatedX = translatedX * cosAngle - translatedY * sinAngle;
+    const rotatedY = translatedX * sinAngle + translatedY * cosAngle;
+
+    // Verifica si el punto está dentro del rectángulo
+    const halfWidth = width / 2;
+    const halfHeight = height / 2;
+
+    return rotatedX >= -halfWidth && rotatedX <= halfWidth &&
+           rotatedY >= -halfHeight && rotatedY <= halfHeight;
+}
+
+
   handleCanvasDrop(event: DragEvent) {
     event.preventDefault();
     if (!this.canvasRef || !this.ctx) return;
@@ -103,7 +132,17 @@ export class EditarExpositorComponent implements OnInit {
       return;
     }
 
-    const indiceSoltado = this.expositor.atributos_expositores.findIndex(attr => x >= attr.x_min && x <= attr.x_max && y >= attr.y_min && y <= attr.y_max);
+
+    // --  pacolino
+    const currentX = event.offsetX;
+    const currentY = event.offsetY;
+    const puntoSoltado = { x: currentX, y: currentY };
+
+
+
+    //const indiceSoltado = this.expositor.atributos_expositores.findIndex(attr => x >= attr.x_start && x <= attr.x_max && y >= attr.y_min && y <= attr.y_max);
+    const indiceSoltado = this.expositor.atributos_expositores.findIndex(attr => this.puntoDentroRectangulo( puntoSoltado, {x: attr.x_start, y: attr.y_start}, attr.ancho, attr.alto, attr.angulo  ));  //punto: Punto, rectStart: Punto, width: number, height: number,angle: number): boolean {
+    // -- linopaco
 
     if (indiceSoltado !== -1) {
       const categoria_hueco = this.expositor.atributos_expositores[indiceSoltado].categorias_elementos;
@@ -166,9 +205,9 @@ export class EditarExpositorComponent implements OnInit {
      this.ctx.strokeStyle = 'rgba(0, 0, 0)';
      this.ctx.lineWidth = 1;
      this.ctx.setLineDash([0,0]); 
-     const centerX = (state.x_min + state.x_max) / 2; 
-     const centerY = (state.y_min + state.y_max) / 2; 
-     const crossSize = 0.1*Math.min(state.x_max - state.x_min, state.y_max - state.y_min);
+     const centerX = state.x_start + ((state.ancho )/ 2); 
+     const centerY = state.y_start + ((state.alto )/ 2); 
+     const crossSize = 0.1*Math.min(state.alto, state.ancho);
      this.ctx.beginPath();
 
      this.ctx.moveTo(centerX - crossSize, centerY); // Mueve a la izquierda del centro
@@ -188,10 +227,10 @@ export class EditarExpositorComponent implements OnInit {
       this.ctx.lineWidth = 3;
       this.ctx.setLineDash([5, 5]); // Define el patrón de trazo discontinuo
   
-      const xMin = state.x_min;
-      const yMin = state.y_min; 
-      const width = state.x_max - state.x_min; 
-      const height = state.y_max - state.y_min;
+      const xMin = state.x_start;
+      const yMin = state.y_start; 
+      const width = state.ancho
+      const height = state.alto;
   
   
       this.ctx.beginPath();
@@ -212,9 +251,9 @@ export class EditarExpositorComponent implements OnInit {
     const imageElement = new Image();
 
       imageElement.onload = () => {
-            const width = state.x_max - state.x_min;
-            const height = state.y_max - state.y_min;
-            this.ctx.drawImage(imageElement, state.x_min, state.y_min, width, height);
+            const width = state.ancho;
+            const height = state.alto;
+            this.ctx.drawImage(imageElement, state.x_start, state.y_start, width, height);
           };
       imageElement.src = this.url_imagenes_referencias + state.elemento.imagenes.url;
   }
@@ -240,7 +279,8 @@ export class EditarExpositorComponent implements OnInit {
  
     
     const state = this.expositor.atributos_expositores.find(state => {
-      return x >= state.x_min && x <= state.x_max && y >= state.y_min && y <= state.y_max;
+      //return x >= state.x_min && x <= state.x_max && y >= state.y_min && y <= state.y_max;
+      return this.puntoDentroRectangulo({x: x, y: y}, {x: state.x_start, y: state.y_start}, state.ancho, state.alto, state.angulo);
     });
 
       if (state) {

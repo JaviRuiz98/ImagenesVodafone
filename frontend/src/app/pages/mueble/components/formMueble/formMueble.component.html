@@ -14,7 +14,7 @@
 
           <!-- Verifica si el paso actual requiere el componente app-PasoHuecosForm -->
           <ng-container *ngIf="!activeIndexIsPair()">
-            <app-PasoHuecosForm ></app-PasoHuecosForm>
+            <app-PasoHuecosForm [expositorFormulario]="getExpositorFormGroup()"></app-PasoHuecosForm>
           </ng-container>
 
           <!-- Verifica si el paso actual requiere el componente app-PasoAsignarElementoForm -->

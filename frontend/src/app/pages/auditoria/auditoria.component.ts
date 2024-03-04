@@ -81,8 +81,6 @@ export class AuditoriaComponent implements OnInit{
     
       try {
         const response: procesados_imagenes = await this.procesamientoService.postProcesamientoImagenes(id_elemento_selected, id_mueble_selected, this.auditoria_seleccionada.id, this.imagenAProcesar).toPromise();
-    
-        console.log('response', response);
         this.cargas_procesamiento[id_elemento_selected] = false;
         await this.actualizarProcesamientoEnMueble(id_elemento_selected, response);
         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Imagen procesada correctamente' });
