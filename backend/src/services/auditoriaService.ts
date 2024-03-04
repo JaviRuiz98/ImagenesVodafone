@@ -89,7 +89,8 @@ export const auditoriaService = {
                         id: lastAuditoria.id
                     },
                     data: {
-                        id_estado: 3
+                        id_estado: 3,
+                        fecha_fin: new Date()
                     }
                 })
                 
@@ -111,7 +112,7 @@ export const auditoriaService = {
                 for(const expositor of mueble.expositores) {
                     for (const atributos_expositores of expositor.atributos_expositores) {
                         for (const elemento of atributos_expositores.pertenencia_elementos_atributos) {
-                            
+                            console.log('elemento:', elemento);
                             promises.push(auditoriaService.createPertenenciaExpositorAuditoria(auditoria.id, mueble, elemento));
                         }
                     }
@@ -137,7 +138,8 @@ export const auditoriaService = {
                     id: id_auditoria
                 },
                 data: {
-                    id_estado: 2
+                    id_estado: 2,
+                    fecha_fin: new Date()
                 }
             })
         } catch (error) {
@@ -160,7 +162,7 @@ export const auditoriaService = {
                         orderBy: {
                             fecha: 'desc'
                         }
-                    }, 
+                    },
                     elementos: true
                 },
                 orderBy: {
@@ -257,6 +259,9 @@ export const auditoriaService = {
                             imagenes: true,
                             probabilidades_respuesta_carteles: true,
                             categorias_elementos: true
+                        },
+                        orderBy: {
+                            fecha: 'desc'
                         }
                     }, elementos: {
                         include: {
