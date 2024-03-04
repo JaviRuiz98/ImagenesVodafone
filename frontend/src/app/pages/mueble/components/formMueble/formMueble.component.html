@@ -20,8 +20,7 @@
           <!-- Verifica si el paso actual requiere el componente app-PasoAsignarElementoForm -->
           <ng-container *ngIf="activeIndexIsPair()">
             <app-PasoAsignarElementoForm 
-            (formularioPasoAsignarCrearAtributo)="onCrearAtributoExpositor($event)" 
-            (formularioPasoAsignarEditarAtributo)="onEditarAtributoExpositor($event.index, $event.atributo)"
+            (formularioPasoAsignarAtributoSinHuecos)="onCrearAtributoExpositor($event)" 
             [expositorFormulario]="getExpositorFormGroup()"
             ></app-PasoAsignarElementoForm>
           </ng-container>
@@ -31,8 +30,7 @@
       <!-- No tengo imágenes, diractemente asigno elemento -->
       <ng-template #no_imagenes>
         <app-PasoAsignarElementoForm 
-        (formularioPasoAsignarCrearAtributo)="onCrearAtributoExpositor($event)" 
-        (formularioPasoAsignarEditarAtributo)="onEditarAtributoExpositor($event.index, $event.atributo)" 
+        (formularioPasoAsignarAtributoSinHuecos)="onCrearAtributoExpositor($event)" 
         [expositorFormulario]="getExpositorFormGroup()"></app-PasoAsignarElementoForm>
       </ng-template>
       

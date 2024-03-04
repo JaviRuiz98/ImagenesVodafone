@@ -16,6 +16,8 @@ export class ArrastrarElementoComponent implements OnInit {
   @Input() mode: 'arrastrar' | 'seleccionar' = 'arrastrar';
   @Input() categoria?: categorias_elementos;
   
+  @Input () selected_elemento?: elementos;
+  
 
   @Output() onDragStart = new EventEmitter<{ dragEvent: DragEvent, elemento: elementos }>();
   @Output() onDragEnd = new EventEmitter<{ dragEvent: CdkDragDrop<string[]> }>();
@@ -25,7 +27,6 @@ export class ArrastrarElementoComponent implements OnInit {
   show_crear: boolean = false;
 
   all_elementos: elementos[] = [];
-  selected_elemento?: elementos;
   filtered_elementos: elementos[] = [];
   dragged_elemento?: elementos;
 
