@@ -93,10 +93,17 @@ export class BarraMenuComponent implements OnInit {
   }
 
   volverAtras(iconoVodafonePulsado: boolean){
-    if(iconoVodafonePulsado){
-      this.router.navigate(['/home']);
+    const rutaActual = this.router.url;
+    if(iconoVodafonePulsado)
+    switch (rutaActual) {   
+      case '/gestionAuditorias':
+      case '/tiendas':
+      case '/muebles':
+      case '/elementos':
+      case '/auditoria':
+        this.router.navigate(['/home']);    
+      break;
     } else {
-      const rutaActual = this.router.url;
       switch (rutaActual) {
         case '/home':
           this.contenidoBotonVolver = '';
