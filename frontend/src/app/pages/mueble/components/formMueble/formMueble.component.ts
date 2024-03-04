@@ -355,6 +355,7 @@ export class FormMuebleComponent implements OnInit {
 
   onCrearAtributoExpositor($event:{index:number, atributo: atributos_expositores}) {
     this.agregarAtributoAExpositor(this.index_expositor_actual , $event.index, $event.atributo, );
+    this.updateIsValidNextStep();
   }
 
   
@@ -421,6 +422,7 @@ export class FormMuebleComponent implements OnInit {
     }
     if (this.activeIndex > 0) {
       this.activeIndex--;
+      this.updateIsValidNextStep();
     }
     console.log("activeIndex: ",this.activeIndex);
     console.log("expositorIndiex: ",this.index_expositor_actual);
