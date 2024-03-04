@@ -1,7 +1,11 @@
 <div class="paginaTiendaCompleta">
     <div class="contenedorBotonNuevaTienda">
         <div class="cabeceraAñadirTienda">
-            <p-button class="botonNuevaTienda" label="+ Añadir Tienda" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="iniciarFormularioNuevaTienda()" [style]="{'cursor': 'pointer', 'max-height': '40px', 'margin-left': '2%'}"></p-button>
+            <p-button class="botonNuevaTienda" label="+ Añadir Tienda" 
+                [text]="true" [raised]="true" severity="danger" [rounded]="true" 
+                (onClick)="verFormularioNuevaTienda = !verFormularioNuevaTienda" 
+                [style]="{'cursor': 'pointer', 'max-height': '40px', 'margin-left': '2%'}">
+            </p-button>
             <div class="filtro">
                 <span class="p-input-icon-left">
                     <i class="pi pi-search"></i>
@@ -9,112 +13,15 @@
                 </span> 
             </div>
         </div>
-        <p-dialog [header]="" [(visible)]="verFormularioNuevaTienda" [style]="{'width': '80vw', 'max-height': '100vh'}" [draggable]="false">
-            <div class="formularioICIUG" *ngIf="activeIndex === 0">
-                <div>
-                    <p><strong>CIF:</strong></p>
-                    <input type="text" pInputText [(ngModel)]="this.nuevaTienda.cif" [disabled]="editarTiendaCreada"/>
-                    <p><strong>Razón Social:</strong></p>
-                    <input type="text" pInputText [(ngModel)]="this.nuevaTienda.razon_social" [disabled]="editarTiendaCreada"/>
-                    <p><strong>Tipo Distribuidor:</strong></p>
-                    <input type="text" pInputText [(ngModel)]="this.nuevaTienda.tipo_distribuidor" [disabled]="editarTiendaCreada"/>
-                </div>
-                <div>
-                    <p><strong>SFID:</strong></p>
-                    <input type="text" pInputText [(ngModel)]="this.nuevaTienda.sfid" [disabled]="editarTiendaCreada"/>
-                    <p><strong>Nombre:</strong></p>
-                    <input type="text" pInputText [(ngModel)]="this.nuevaTienda.nombre" [disabled]="editarTiendaCreada"/>
-                    <p><strong>Tipo PDV:</strong></p>
-                    <input type="text" pInputText [(ngModel)]="this.nuevaTienda.tipo_pdv" [disabled]="editarTiendaCreada"/>
-                </div>
-            </div>
-            <div class="formularioICIUG" *ngIf="activeIndex === 1">
-                <div>
-
-                    <p><strong>Zona Geográfica:</strong></p>
-                    <input type="text" pInputText [(ngModel)]="this.nuevaTienda.zona_geografica" [disabled]="editarTiendaCreada"/>
-                    <p><strong>Provincia:</strong></p>
-                    <input type="text" pInputText [(ngModel)]="this.nuevaTienda.provincia" [disabled]="editarTiendaCreada"/>
-                </div>
-                <div>
-                    <p><strong>Población:</strong></p>
-                    <input type="text" pInputText [(ngModel)]="this.nuevaTienda.poblacion" [disabled]="editarTiendaCreada"/>
-                    <p><strong>CP:</strong></p>
-                    <input type="text" pInputText [(ngModel)]="this.nuevaTienda.cp" [disabled]="editarTiendaCreada"/>
-                </div>
-            </div>
-            <div class="formularioICIUG" *ngIf="activeIndex === 2">
-                <p><strong>Activo:</strong></p>
-                <td><p-toggleButton [(ngModel)]="nuevaTienda.activo" onLabel="Sí" offLabel="No" ></p-toggleButton></td>
-                <p><strong>Visible:</strong></p>
-                <td><p-toggleButton [(ngModel)]="nuevaTienda.visible" onLabel="Sí" offLabel="No" [style]="{'cursor': 'pointer'}"></p-toggleButton></td>                
-                <p><strong>Vodafone:</strong></p>
-                <td><p-toggleButton [(ngModel)]="nuevaTienda.vodafone" onLabel="Sí" offLabel="No"></p-toggleButton></td> 
-                <p><strong>Lowi:</strong></p>
-                <td><p-toggleButton [(ngModel)]="nuevaTienda.lowi" onLabel="Sí" offLabel="No"></p-toggleButton></td>            
-            </div>
-            <div *ngIf="activeIndex === 3">
-                <div *ngIf="!vistaCrearMueble">
-                    <p-pickList [source]="listaMueblesMostrar" [target]="listaMueblesNuevaTienda" [targetHeader]="cabeceraListaDerecha" 
-                    filterBy="nombre" sourceFilterPlaceholder="Buscar por nombre" targetFilterPlaceholder="Buscar por nombre" [dragdrop]="true" [responsive]="true"
-                    [showSourceControls] = "false" [showTargetControls] = "false">
-                        <ng-template let-mueble pTemplate="item">
-                            <div class="contenedorMuebleArrastras">
-                                <div class="anchoAltoDescripcionFotoReferencia">
-                                    <span class="letrasCaracteristicasMueble"><strong>{{ mueble.nombre }}</strong></span>
-                                </div>
-                            </div>
-                        </ng-template>
-                        <ng-template pTemplate="sourceHeader" >
-                            <div class="flex align-items-center justify-content-between">
-                                <p style="font-weight: 700;"> Muebles Disponibles</p>
-                                <p-button severity="danger" label="Crear Mueble" icon="pi pi-plus" (onClick)="vistaCrearMueble = !vistaCrearMueble"></p-button>
-                            </div>
-                        </ng-template>
-                    </p-pickList>
-                </div>
-                <div *ngIf="vistaCrearMueble">
-                    <p-button icon="pi pi-arrow-left" (onClick)="vistaCrearMueble = !vistaCrearMueble" label="Volver a la lista de muebles" [text]="true" severity="danger"></p-button>
-                </div>
-            </div>
-            <div class="resumentNuevaTienda" *ngIf="activeIndex === 4">
-                <div>
-                    <p><strong>Resumen de la tienda:</strong></p>
-                    <p><strong>Nombre: </strong>{{nuevaTienda.nombre}}</p>
-                    <p><strong>CIF: </strong>{{nuevaTienda.cif}}</p>
-                    <p><strong>SFID: </strong>{{nuevaTienda.sfid}}</p>
-                    <p><strong>Razón Social: </strong>{{nuevaTienda.razon_social}}</p>
-                    <p><strong>Tipo PDV: </strong>{{nuevaTienda.tipo_pdv}}</p>
-                    <p><strong>Zona Geográfica: </strong>{{nuevaTienda.zona_geografica}}</p>
-                    <p><strong>Provincia: </strong>{{nuevaTienda.provincia}}</p>
-                    <p><strong>Población: </strong>{{nuevaTienda.poblacion}}</p>
-                    <p><strong>CP: </strong>{{nuevaTienda.cp}}</p>
-                    <p><strong>Activo: </strong><span class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': nuevaTienda.activo, 'text-red-500 pi-times-circle': !nuevaTienda.activo }" [style]="{'cursor': 'auto'}" ></span></p>
-                    <p><strong>Visible: </strong><span class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': nuevaTienda.visible, 'text-red-500 pi-times-circle': !nuevaTienda.visible }" [style]="{'cursor': 'auto'}"></span></p>
-                    <p><strong>Vodafone: </strong><span class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': nuevaTienda.vodafone, 'text-red-500 pi-times-circle': !nuevaTienda.vodafone }" [style]="{'cursor': 'auto'}"></span></p>
-                    <p><strong>Lowi: </strong><span class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': nuevaTienda.lowi, 'text-red-500 pi-times-circle': !nuevaTienda.lowi }" [style]="{'cursor': 'auto'}"></span></p>
-                </div>
-                <div>
-                    <p-orderList [value]="listaMueblesNuevaTienda" [listStyle]="{ height: '20rem' }" header="Muebles Seleccionados" >
-                        <ng-template let-mueble pTemplate="item">
-                            <div class="contenedorMuebleArrastras">
-                                <div class="anchoAltoDescripcionFotoReferencia">
-                                    <span class="letrasCaracteristicasMueble"><strong>{{ mueble.nombre }}</strong></span>
-                                </div>
-                            </div>
-                        </ng-template>
-                    </p-orderList>
-                </div>
-            </div>
-            <div *ngIf="!vistaCrearMueble">
-                <p-steps [model]="parametrosSteps" [readonly]="true" [activeIndex]="activeIndex" [style]="{'margin-top': '5%'}"></p-steps>
-                <div class="botonesAtrasSiguiente">
-                    <p-button (click)="botonAtras()" class="botonSiguienteAtras" label="Atrás" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px'}" [disabled]="activeIndex === 0"></p-button>
-                    <p-button (click)="botonSiguiente()" class="botonSiguienteAtras" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px', 'justify-content': 'center'}"
-                    [label]="(activeIndex === 4) ? botonCrearEditarTienda: 'Siguiente'"></p-button>
-                </div>
-            </div>
-        </p-dialog>
+        <app-dialog-nueva-tienda 
+            [verFormularioNuevaTienda]="verFormularioNuevaTienda"
+            [verFormularioEditarTienda]="verFormularioNuevaTienda"
+            (verFormularioNuevaTiendaChange)="verFormularioNuevaTienda = false"
+            (verFormularioEditarTiendaChange)="verFormularioEditarTienda = false"
+            [tiendaSelected]="tiendaSelected"
+            (actualizarListadoTiendasChange)="getAllTiendas()"
+            [vistaCrearMueble]="vistaCrearMueble"
+        ></app-dialog-nueva-tienda>
     </div>
     <div class="contenedorHistorialTiendas">
         <p-table
@@ -160,7 +67,7 @@
                 <td>{{ tiendas.provincia }}</td>
                 <td>{{ tiendas.poblacion }}</td>
                 <td>{{ tiendas.cp }}</td>
-                <td style="padding: 0.4rem;"><p-button class="botonNuevaTienda" label="Editar Tienda" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="editarTienda(tiendas)" [style]="{'min-width': '130px'}" [disabled]="!tiendas.activo" ></p-button></td>
+                <td style="padding: 0.4rem;"><p-button class="botonNuevaTienda" label="Editar Tienda" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="this.tiendaSelected = tiendas" [style]="{'min-width': '130px'}" [disabled]="!tiendas.activo" ></p-button></td>
                 <td><p-button class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendas.activo, 'text-red-500 pi-times-circle': !tiendas.activo }" (click)="confirmarCambio(tiendas)" [style]="{'border': 'none', 'background': 'none', 'cursor': 'pointer', 'padding': '0'}"></p-button></td>
                 <td><p-button class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendas.visible, 'text-red-500 pi-times-circle': !tiendas.visible }" (click)="confirmarCambio(tiendas)" [style]="{'border': 'none', 'background': 'none', 'cursor': 'pointer', 'padding': '0'}"></p-button></td>
                 <td><p-button class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendas.vodafone, 'text-red-500 pi-times-circle': !tiendas.vodafone }" (click)="confirmarCambio(tiendas)" [style]="{'border': 'none', 'background': 'none', 'cursor': 'pointer', 'padding': '0'}"></p-button></td>

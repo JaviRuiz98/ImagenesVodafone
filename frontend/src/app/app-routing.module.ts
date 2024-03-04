@@ -53,7 +53,7 @@ const routes: Routes = [
     data: { stateBarra: 'templateAuditorias' },
    },
   {
-    path: '', redirectTo: '/login', pathMatch: 'full' 
+    path: '', redirectTo: '/tiendas', pathMatch: 'full' 
   }
 ];
 
