@@ -1,10 +1,12 @@
 import { Component, Input, OnInit, Output,EventEmitter,ElementRef} from '@angular/core';
 import { categorias_elementos } from 'src/app/interfaces/categoria';
 import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
-
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
 import { elementos } from 'src/app/interfaces/elementos';
 import { expositores } from 'src/app/interfaces/expositores';
+import { Form } from '@angular/forms';
+import { FormsModule } from '@angular/forms'; // Add this import 
 
 type Coordenada = {
   x: number;
@@ -19,7 +21,9 @@ type Coordenada = {
 })
 export class PasoHuecosFormComponent implements OnInit {
 
-  @Input() imagen: string; 
+  @Input() expositorFormulario: FormGroup; 
+
+  @Output() atributos_expositores = new EventEmitter<atributos_expositores[]>();
 
   categoriaSeleccionada?: string;  
   opcionesCategoria: string[] = [];
@@ -28,18 +32,6 @@ export class PasoHuecosFormComponent implements OnInit {
   atributos_expositor: atributos_expositores[] = [];
 
 
-  // atributo: atributos_expositores  = {
-  //   id: 0,
-  //   expositor: null,
-  //   id_categoria: 0,
-  //   elemento: null,
-  //   x_start: 0,
-  //   y_start: 0,
-  //   ancho: 0,
-  //   alto: 0,
-  //   angulo: 0
-
-  // };
   numero: number = 0;
 
   //
@@ -75,7 +67,7 @@ export class PasoHuecosFormComponent implements OnInit {
 
 
 
-  constructor(private elementosService: ElementosService) { }
+  constructor(private elementosService: ElementosService, private fb: FormBuilder ) { }
 
 
 
@@ -537,8 +529,10 @@ calcularCentroLateralesTransformados(centro: Coordenada, dimensiones: { width: n
 
 
   ngOnInit() {
-    console.log(this.imagen);
+    console.log(this.expositorFormulario);
     this.inicializaCategoriasElementos();
+
+
   }
  
 }
