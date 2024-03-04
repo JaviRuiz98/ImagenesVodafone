@@ -22,7 +22,7 @@
             <app-PasoAsignarElementoForm 
             (formularioPasoAsignarCrearAtributo)="onCrearAtributoExpositor($event)" 
             (formularioPasoAsignarEditarAtributo)="onEditarAtributoExpositor($event.index, $event.atributo)"
-            [expositorFormulario]="expositores[index_expositor_actual]"
+            [expositorFormulario]="getExpositorFormGroup()"
             ></app-PasoAsignarElementoForm>
           </ng-container>
         </div>
@@ -33,7 +33,7 @@
         <app-PasoAsignarElementoForm 
         (formularioPasoAsignarCrearAtributo)="onCrearAtributoExpositor($event)" 
         (formularioPasoAsignarEditarAtributo)="onEditarAtributoExpositor($event.index, $event.atributo)" 
-        [expositorFormulario]="expositores[index_expositor_actual]"></app-PasoAsignarElementoForm>
+        [expositorFormulario]="getExpositorFormGroup()"></app-PasoAsignarElementoForm>
       </ng-template>
       
       

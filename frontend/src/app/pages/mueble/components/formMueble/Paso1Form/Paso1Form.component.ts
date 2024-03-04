@@ -35,25 +35,27 @@ export class Paso1FormComponent implements OnInit {
   }
   
   get imagenesExpositores(): string[] {
-  let imagenes: string[] = [];
-
-  this.expositores.controls.forEach((expositor) => {
-    const atributosExpositores = expositor.get('atributos_expositores') as FormArray;
-
-    atributosExpositores.controls.forEach((atributoExpositor) => {
-      const elemento = atributoExpositor.get('elemento') as FormGroup;
-      const imagen = elemento.get('imagen')?.value;
-      if (imagen) {
-        imagenes.push(imagen);
-      }
+    let imagenes: string[] = [];
+  
+    this.expositores.controls.forEach((expositor) => {
+      const atributosExpositores = expositor.get('atributos_expositores') as FormArray;
+  
+      atributosExpositores.controls.forEach((atributoExpositor) => {
+        
+        const elemento = atributoExpositor.get('elemento') as FormGroup;
+        const categoria: number = elemento.get('categoria_elementos')?.value;
+        const imagen = elemento.get('imagen')?.value;
+        if (imagen && categoria === 3) {
+          imagenes.push(imagen);
+        }
+      });
     });
-  });
-
-  // Utiliza un Set para eliminar duplicados y luego conviértelo nuevamente en un arreglo.
-  const imagenesUnicas = [...new Set(imagenes)];
-  return imagenesUnicas;
-}
-
+  
+    const imagenesUnicas = [...new Set(imagenes)];
+    console.log()
+    return imagenesUnicas;
+  }
+  
   
 
   ngOnInit() {

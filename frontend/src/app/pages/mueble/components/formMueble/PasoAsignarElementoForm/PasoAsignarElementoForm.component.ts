@@ -5,7 +5,6 @@ import { FormArray, FormGroup } from '@angular/forms';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
 import { elementos } from 'src/app/interfaces/elementos';
-import { UrlService } from 'src/app/servicios/url/url.service';
 
 
 @Component({
@@ -16,7 +15,7 @@ import { UrlService } from 'src/app/servicios/url/url.service';
 export class PasoAsignarElementoFormComponent implements OnInit {
 
 
-  constructor(private urlService: UrlService, public dialogConfig : DynamicDialogConfig) { }
+  constructor( public dialogConfig : DynamicDialogConfig) { }
 
 
   @Input () expositorFormulario: FormGroup|undefined; 

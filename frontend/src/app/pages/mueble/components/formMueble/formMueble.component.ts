@@ -18,9 +18,18 @@ import { elementoCreacion } from '../../interfaces/elementoCreacion';
 
 export class FormMuebleComponent implements OnInit {
 
- 
+  formulario: FormGroup;
   
-  constructor( private urlService: UrlService, private cdr: ChangeDetectorRef, public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private elementosService: ElementosService, private muebleService: MueblesService) { }
+  constructor( private urlService: UrlService, private cdr: ChangeDetectorRef, public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private elementosService: ElementosService, private muebleService: MueblesService) {
+    this.formulario = this.fb.group({
+      mueble: this.fb.group({
+        nombre_mueble: ['', Validators.required],
+        region: [''],
+        expositores: this.fb.array([]) // Ahora es un FormArray
+      }),
+     
+    });
+   }
   
   
   //STEPPER
@@ -39,14 +48,11 @@ export class FormMuebleComponent implements OnInit {
 
   url_imagenes_referencias: string = this.urlService.url_imagenes_referencia;
 
-  formulario = this.fb.group({
-    mueble: this.fb.group({
-      nombre_mueble: ['', Validators.required],
-      region: [''],
-      expositores: this.fb.array([]) // Ahora es un FormArray
-    }),
-   
-  });
+  getExpositorFormGroup(): any {
+    return this.expositores.at(this.index_expositor_actual) as FormGroup;
+    
+  }
+  
 
   get mueble() {
     return this.formulario.get('mueble') as FormGroup;
@@ -81,6 +87,7 @@ export class FormMuebleComponent implements OnInit {
     });
   
     const imagenesUnicas = [...new Set(imagenes)];
+    console.log()
     return imagenesUnicas;
   }
   
@@ -120,8 +127,11 @@ export class FormMuebleComponent implements OnInit {
       nombre_expositor: [expositor ? expositor.nombre : '', Validators.required],
       atributos_expositores: this.fb.array([])
     });
-  
+   
+    console.log("expositores1: ", this.expositores.value);
     this.expositores.push(expositorGroup);
+    console.log("expositores2: ", this.expositores.value);
+   
   
     if (expositor && expositor.atributos_expositores) {
       const index = this.expositores.length - 1;
@@ -177,6 +187,7 @@ export class FormMuebleComponent implements OnInit {
       atributosExpositores = new FormArray([]);
       expositor.setControl('atributos_expositores', atributosExpositores);
     }
+
     atributosExpositores.push(atributoExpositorGroup);
 
   }
