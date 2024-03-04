@@ -91,19 +91,23 @@ export class BarraMenuComponent implements OnInit {
     }
   }
 
-  volverAtras(){
-    const rutaActual = this.router.url;
-    switch (rutaActual) {
-      case '/home':
-        this.contenidoBotonVolver = '';
-        this.iconoBotonVolver = '';    
-        break;
-      case '/auditoria':
-        this.router.navigate(['/gestionAuditorias']);
-        break;
-      default:
-        this.router.navigate(['/home']);
-        break;
+  volverAtras(iconoVodafonePulsado: boolean){
+    if(iconoVodafonePulsado){
+      this.router.navigate(['/home']);
+    } else {
+      const rutaActual = this.router.url;
+      switch (rutaActual) {
+        case '/home':
+          this.contenidoBotonVolver = '';
+          this.iconoBotonVolver = '';    
+          break;
+        case '/auditoria':
+          this.router.navigate(['/gestionAuditorias']);
+          break;
+        default:
+          this.router.navigate(['/home']);
+          break;
+      }
     }
   }
 }

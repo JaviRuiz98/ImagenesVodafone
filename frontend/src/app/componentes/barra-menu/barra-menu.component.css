@@ -23,6 +23,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  border: red;
+  background-color: red;
+  cursor: pointer;
 }
 
 .image-container img {

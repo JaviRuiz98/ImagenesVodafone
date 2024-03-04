@@ -1,8 +1,8 @@
 <div class="barraCompletaBotonVolver">
   <div class="barraCompleta">
-    <div class="image-container">
+    <button class="image-container" (click)="volverAtras(true)">
       <img src="../../../assets/images/icono.png" alt="icono">
-    </div>
+    </button>
     <div>
       <h1 class="titulo">
         Validación de Imagenes Vodafone 
@@ -14,7 +14,7 @@
     </div> 
   </div>
   <div *ngIf="currentState != '/home'">
-    <p-button [label]="contenidoBotonVolver" [icon]="iconoBotonVolver" (click)="volverAtras()" [text]="true" severity="danger"></p-button>
+    <p-button [label]="contenidoBotonVolver" [icon]="iconoBotonVolver" (click)="volverAtras(false)" [text]="true" severity="danger"></p-button>
   </div>
 </div>
 
