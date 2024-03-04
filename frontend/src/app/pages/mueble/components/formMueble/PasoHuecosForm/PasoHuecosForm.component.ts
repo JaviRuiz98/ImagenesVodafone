@@ -23,7 +23,6 @@ export class PasoHuecosFormComponent implements OnInit {
 
   @Input() expositorFormulario: FormGroup; 
 
-  @Output() atributos_expositores = new EventEmitter<atributos_expositores[]>();
 
   categoriaSeleccionada?: string;  
   opcionesCategoria: string[] = [];
@@ -31,12 +30,11 @@ export class PasoHuecosFormComponent implements OnInit {
 
   atributos_expositor: atributos_expositores[] = [];
 
-
   numero: number = 0;
-
+  
   //
 
-  title = 'rectangleDrawingExample';
+  src: string = '';
   canvasRef: any;
   ctx: any;
   startX: number | null = null;
@@ -65,13 +63,8 @@ export class PasoHuecosFormComponent implements OnInit {
     
 // Definición de un tipo para las coordenadas
 
-
-
   constructor(private elementosService: ElementosService, private fb: FormBuilder ) { }
 
-
-
-  
 
   ngAfterViewInit(): void {
 
@@ -80,11 +73,9 @@ export class PasoHuecosFormComponent implements OnInit {
     const imageElement = document.getElementById('target-image') as HTMLImageElement;
     this.loadImage(imageElement);
   }
-
-
   loadImage(imageElement: HTMLImageElement): void {
     //imageElement.src = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/' + '11.jpg';
-    imageElement.src = '../../../assets/images/Captura.PNG';
+    imageElement.src = this.src; //'../../../assets/images/Captura.PNG';
     imageElement.onload = () => {
       const canvasElement = document.getElementById('canvas') as HTMLCanvasElement;
       canvasElement.width = imageElement.naturalWidth;
@@ -92,9 +83,6 @@ export class PasoHuecosFormComponent implements OnInit {
       this.ctx.drawImage(imageElement, 0, 0);
     };
   }
-
-
-
 // Ajustando la función para usar el tipo Coordenada
 calcularEsquinasTransformadas(centro: Coordenada, dimensiones: { width: number, height: number }, angulo: number): { [corner: string]: Coordenada } {
   // Esquinas relativas al centro como si estuviera en el origen
@@ -117,7 +105,6 @@ calcularEsquinasTransformadas(centro: Coordenada, dimensiones: { width: number, 
       y: yRotado + centro.y
     };
   });
-
   // Mapear de vuelta a un objeto para fácil acceso
   return {
     topLeft: esquinasTransformadas[0],
@@ -126,9 +113,6 @@ calcularEsquinasTransformadas(centro: Coordenada, dimensiones: { width: number, 
     bottomRight: esquinasTransformadas[3]
   };
 }
-
-
-
 calcularCentroLateralesTransformados(centro: Coordenada, dimensiones: { width: number, height: number }, angulo: number): { [corner: string]: Coordenada } {
   // Esquinas relativas al centro como si estuviera en el origen
   const lateral: Coordenada[]= [
@@ -161,21 +145,6 @@ calcularCentroLateralesTransformados(centro: Coordenada, dimensiones: { width: n
 }
 
 
-  // transformarCoordenadas(x: number, y: number, centro: { x: number, y: number }, angulo: number): { x: number, y: number } {
-  //   // Desplazar al origen
-  //   let dx = x - centro.x;
-  //   let dy = y - centro.y;
-    
-  //   // Rotar
-  //   let xRotado = dx * Math.cos(angulo) - dy * Math.sin(angulo);
-  //   let yRotado = dx * Math.sin(angulo) + dy * Math.cos(angulo);
-    
-  //   // Desplazar de vuelta
-  //   return { x: xRotado + centro.x, y: yRotado + centro.y };
-  // }
-
-  clickTransformado: any = {};
-  corners: any = {};
   onMouseDown(event: MouseEvent): void {
     
     this.currentX = event.offsetX;
@@ -241,7 +210,7 @@ calcularCentroLateralesTransformados(centro: Coordenada, dimensiones: { width: n
         this.redimensionarRect();
 
       }else{
-        // Primero, redibujar todo 
+        // Primero, dibujar todo 
         setTimeout(() => {
                   // dibujar el nuevo rectángulo parcial
           this.ctx .strokeStyle = 'rgba(255, 255, 0, 0.4)';
@@ -274,30 +243,26 @@ calcularCentroLateralesTransformados(centro: Coordenada, dimensiones: { width: n
       document.addEventListener('mousemove', this.onMouseMove);
     }
 
-
-  // this.drawRectangle();
-  // this.saveState();
-  // Limpiar las coordenadas al finalizar el dibujo
-  // this.resetCoordinates();
+ 
   }
 
+
+  
+
   girarRect(){
+
     setTimeout(() => { 
-    this.centro= this.obtenerCentro(this.startX, this.startY, this.endX, this.endY);        
     this.WidthHeight = this.obtenerWithHeight(this.startX, this.startY, this.endX, this.endY);
-    this.ctx .strokeStyle = '(255, 255, 0, 0.4)';
+    this.centro= this.obtenerCentro(this.startX, this.startY, this.endX, this.endY);        
+
     this.ctx.lineWidth = 3;
- 
-
-    console.log(this.deltaX, this.deltaY)
-
+    this.ctx .strokeStyle = '(255, 255, 0, 0.4)';
     // Calcula la distancia recorrida desde el punto inicial
     const deltaX = this.currentX - this.startX;
     const deltaY = this.currentY - this.startY;
 
       // ángulo basado en el movimiento del ratón
     this.angulo= Math.atan2(deltaY, deltaX);
-
    
     // Guardar el estado actual del contexto antes de aplicar transformaciones
     this.ctx.save();
@@ -364,41 +329,7 @@ calcularCentroLateralesTransformados(centro: Coordenada, dimensiones: { width: n
       
     },100)
   }
-
-//   dibujarFlechaDeRedimension(startX, startY, width, height) {
-//        this.ctx.translate(this.endX,this.endY)   
-//     // Calcula la posición de la esquina inferior derecha
-//        const x = startX + width;
-//        const y = startY + height;
-   
-//        // Configura el estilo de la flecha
-//        this.ctx.fillStyle = 'black'; // Color de la flecha
-//        this.ctx.beginPath();
-   
-//        // Ajusta estos valores para cambiar el tamaño de la flecha
-//        const tamanoFlecha = 20; // Tamaño de la flecha (largo de las líneas)
-//        const grosorFlecha = 5; // Ancho de la punta de la flecha
-   
-//        // Dibuja la flecha apuntando hacia abajo y hacia la derecha
-//        // Punto inicial de la línea
-//        this.ctx.moveTo(x - tamanoFlecha, y - tamanoFlecha / 2);
-//        // Línea hacia la derecha
-//        this.ctx.lineTo(x, y - tamanoFlecha / 2);
-//        // Línea hacia abajo
-//        this.ctx.lineTo(x, y);
-//        // Crea la punta de la flecha
-//        this.ctx.lineTo(x - grosorFlecha, y - grosorFlecha);
-//        this.ctx.lineTo(x - tamanoFlecha, y - grosorFlecha);
-//        this.ctx.closePath();
-//        this.ctx.fill();
-   
-//        // Dibuja un pequeño cuadrado en la esquina para mejorar la indicación visual
-//        this.ctx.beginPath();
-//        this.ctx.rect(x - tamanoFlecha, y - tamanoFlecha, tamanoFlecha - grosorFlecha, tamanoFlecha - grosorFlecha);
-//        this.ctx.fillStyle = 'rgba(255, 165, 0, 0.7)'; // Naranja semi-transparente
-//        this.ctx.fill();
-//        this.ctx.closePath();
-// }
+ 
 
 
 
@@ -434,13 +365,16 @@ calcularCentroLateralesTransformados(centro: Coordenada, dimensiones: { width: n
   }
 
 
+
   clearRectangles(): void {
     this.stateHistory = [];
-    const canvasElement = document.getElementById('canvas') as HTMLCanvasElement;
-    const imageElement = document.getElementById('target-image') as HTMLImageElement;
-    this.ctx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-    this.ctx.drawImage(imageElement, 0, 0);
-    this.resetCoordinates();
+    this.ngAfterViewInit();
+    this.atributos_expositor = [];
+    setTimeout(() => {
+      for (const state of this.stateHistory) {
+        this.ctx.putImageData(state, 0, 0);
+      }
+    }, 20);
   }
 
   resetCoordinates(): void {
@@ -454,7 +388,7 @@ calcularCentroLateralesTransformados(centro: Coordenada, dimensiones: { width: n
 
   saveState(): void {
     this.stateHistory.push(this.ctx.getImageData(0, 0, this.ctx.canvas.width, this.ctx.canvas.height));
-    
+
   }
 
   undoLastAction(): void {
@@ -498,12 +432,25 @@ calcularCentroLateralesTransformados(centro: Coordenada, dimensiones: { width: n
     };
 
     this.atributos_expositor.push(atributo);
+
+    this.add_atributo_expositor(atributo);
+    console.log(this.expositorFormulario)
+
     this.numero = this.atributos_expositor.length;
 
     this.saveState(); 
     this.resetCoordinates();
   }
-  
+
+  onSelectElemento(atributo: atributos_expositores) {
+    const control = <FormArray>this.expositorFormulario.get('atributos_expositores') as FormArray;
+    for (const group of control.controls) {
+      if (group?.value.id === atributo.id) { 
+        this.atributo_expositor?.setValue(atributo);
+        console.log(atributo);
+      }
+    }
+  }
 
   obtenerCentro(xStart: number, yStart: number, xEnd: number, yEnd: number): {x: number, y: number} {
     return{
@@ -524,15 +471,53 @@ calcularCentroLateralesTransformados(centro: Coordenada, dimensiones: { width: n
       this.categorias_elementos = categorias;
       this.categoriaSeleccionada = this.categorias_elementos[0].nombre;
     })
+  }
 
+                                    //////////////////////////////////////////////////////////////////
+
+  ngOnInit() {                                     
+    console.log(this.expositorFormulario);
+    this.src = this.imagenExpositor;
+
+    this.inicializaCategoriasElementos();
+  }
+
+  get nombre_expositor() {
+    return this.expositorFormulario? this.expositorFormulario.get('nombre_expositor'): undefined;
   }
 
 
-  ngOnInit() {
-    console.log(this.expositorFormulario);
-    this.inicializaCategoriasElementos();
+  get atributos_expositores() {
+    return this.expositorFormulario?this.expositorFormulario.get('atributos_expositores') as FormArray : undefined;
+  }
+
+  get atributo_expositor() {
+    const atributo = this.expositorFormulario?this.expositorFormulario.get('atributos_expositores') : undefined;
+    return atributo;
+  }
+
+  add_atributo_expositor(atributo: atributos_expositores): void {
+    const control = <FormArray>this.expositorFormulario.controls['atributos_expositores'];
+    control.push(this.fb.group({ id: atributo.id, expositor: atributo.expositor, categorias_elementos: atributo.categorias_elementos, elemento: atributo.elemento, 
+    x_start: atributo.x_start, y_start: atributo.y_start, ancho: atributo.ancho, alto: atributo.alto, angulo: atributo.angulo }));
+  }
 
 
+ 
+  get imagenExpositor(): string {
+    let imagenes: string[] = [];
+  
+    this.atributos_expositores.controls.forEach((atributoExpositor) => {
+      const elemento = atributoExpositor.get('elemento') as FormGroup;
+      const categoria: number = elemento.get('categoria_elementos')?.value;
+      const imagen = elemento.get('imagen')?.value;
+      if (imagen && categoria === 3) {
+        imagenes.push(imagen);
+      }
+    });
+  
+    const imagenesUnicas = [...new Set(imagenes)];
+    return imagenesUnicas[0]; // Retorna solamente la primera imagen
   }
  
 }

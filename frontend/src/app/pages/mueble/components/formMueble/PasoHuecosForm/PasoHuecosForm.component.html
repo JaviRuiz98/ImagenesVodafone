@@ -50,7 +50,7 @@ redimensionar: {{ this.redimensionado }} -->
                 <td> 
                   <p-dropdown class="ml-2" [options]="categorias_elementos" [(ngModel)]="hueco.categoria"
                   optionLabel="nombre" [showClear]="true" placeholder="Filtrar por categoría"
-                  [style]="{'margin-left': '20px'}"></p-dropdown>
+                  [style]="{'margin-left': '20px'}" (onChange)="onSelectElemento(hueco)"></p-dropdown>
                 </td> 
             </tr>
         </ng-template>
