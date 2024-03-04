@@ -54,17 +54,28 @@
                 <td><p-toggleButton [(ngModel)]="nuevaTienda.lowi" onLabel="Sí" offLabel="No"></p-toggleButton></td>            
             </div>
             <div *ngIf="activeIndex === 3">
-                <p-pickList [source]="listaMueblesMostrar" [target]="listaMueblesNuevaTienda" sourceHeader="Muebles Disponibles"  [targetHeader]="cabeceraListaDerecha" 
-                filterBy="nombre" sourceFilterPlaceholder="Buscar por nombre" targetFilterPlaceholder="Buscar por nombre" [dragdrop]="true" [responsive]="true"
-                [showSourceControls] = "false" [showTargetControls] = "false">
-                    <ng-template let-mueble pTemplate="item">
-                        <div class="contenedorMuebleArrastras">
-                            <div class="anchoAltoDescripcionFotoReferencia">
-                                <span class="letrasCaracteristicasMueble"><strong>{{ mueble.nombre }}</strong></span>
+                <div *ngIf="!vistaCrearMueble">
+                    <p-pickList [source]="listaMueblesMostrar" [target]="listaMueblesNuevaTienda" [targetHeader]="cabeceraListaDerecha" 
+                    filterBy="nombre" sourceFilterPlaceholder="Buscar por nombre" targetFilterPlaceholder="Buscar por nombre" [dragdrop]="true" [responsive]="true"
+                    [showSourceControls] = "false" [showTargetControls] = "false">
+                        <ng-template let-mueble pTemplate="item">
+                            <div class="contenedorMuebleArrastras">
+                                <div class="anchoAltoDescripcionFotoReferencia">
+                                    <span class="letrasCaracteristicasMueble"><strong>{{ mueble.nombre }}</strong></span>
+                                </div>
                             </div>
-                        </div>
-                    </ng-template>
-                </p-pickList>
+                        </ng-template>
+                        <ng-template pTemplate="sourceHeader" >
+                            <div class="flex align-items-center justify-content-between">
+                                <p style="font-weight: 700;"> Muebles Disponibles</p>
+                                <p-button severity="danger" label="Crear Mueble" icon="pi pi-plus" (onClick)="vistaCrearMueble = !vistaCrearMueble"></p-button>
+                            </div>
+                        </ng-template>
+                    </p-pickList>
+                </div>
+                <div *ngIf="vistaCrearMueble">
+                    <p-button icon="pi pi-arrow-left" (onClick)="vistaCrearMueble = !vistaCrearMueble" label="Volver a la lista de muebles" [text]="true" severity="danger"></p-button>
+                </div>
             </div>
             <div class="resumentNuevaTienda" *ngIf="activeIndex === 4">
                 <div>
@@ -95,11 +106,13 @@
                     </p-orderList>
                 </div>
             </div>
-            <p-steps [model]="parametrosSteps" [readonly]="true" [activeIndex]="activeIndex" [style]="{'margin-top': '5%'}"></p-steps>
-            <div class="botonesAtrasSiguiente">
-                <p-button (click)="botonAtras()" class="botonSiguienteAtras" label="Atrás" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px'}" [disabled]="activeIndex === 0"></p-button>
-                <p-button (click)="botonSiguiente()" class="botonSiguienteAtras" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px', 'justify-content': 'center'}"
-                [label]="(activeIndex === 4) ? botonCrearEditarTienda: 'Siguiente'"></p-button>
+            <div *ngIf="!vistaCrearMueble">
+                <p-steps [model]="parametrosSteps" [readonly]="true" [activeIndex]="activeIndex" [style]="{'margin-top': '5%'}"></p-steps>
+                <div class="botonesAtrasSiguiente">
+                    <p-button (click)="botonAtras()" class="botonSiguienteAtras" label="Atrás" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px'}" [disabled]="activeIndex === 0"></p-button>
+                    <p-button (click)="botonSiguiente()" class="botonSiguienteAtras" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px', 'justify-content': 'center'}"
+                    [label]="(activeIndex === 4) ? botonCrearEditarTienda: 'Siguiente'"></p-button>
+                </div>
             </div>
         </p-dialog>
     </div>

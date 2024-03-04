@@ -28,7 +28,7 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
     PickListModule,
     TableModule,
     OrderListModule,
-    ToggleButtonModule
+    ToggleButtonModule,
   ]
 })
 export class TiendasModule { }
