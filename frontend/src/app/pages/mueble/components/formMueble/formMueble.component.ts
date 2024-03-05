@@ -32,7 +32,9 @@ export class FormMuebleComponent implements OnInit {
     });
    }
   
-  
+  //CATEGORIA MODELO
+  categoriaID: number = 3;
+
   //STEPPER
   step_count: number = 2;
   activeIndex:number = 0;
@@ -79,7 +81,7 @@ export class FormMuebleComponent implements OnInit {
         const elemento = atributoExpositor.get('elemento') as FormGroup;
         const categoria = elemento.get('categoria_elementos')?.value;
         const imagen = elemento.get('imagen')?.value;
-        if (imagen && categoria.id === 3) {
+        if (imagen && categoria.id === this.categoriaID) {
           imagenes.push(imagen);
         }
       });
@@ -92,7 +94,7 @@ export class FormMuebleComponent implements OnInit {
   
 
   crearExpositor(modelo: boolean = true, categoria: number, datos?: { imagenes: string, archivos_imagenes: File}) {
-    const categoriaID: number = modelo? categoria: 3; // 3 es de modelo, me gustaría no tenerlo harcodeado
+    const categoriaID: number = modelo? categoria: this.categoriaID; 
     
     let newExpositor: expositores = {
       nombre: (!!modelo ? 'modelo' : 'elemento') +' del mueble ' + this.nombre_mueble.value,
@@ -102,7 +104,7 @@ export class FormMuebleComponent implements OnInit {
     if (datos){
        const  atributos_expositores: atributos_expositores []=  [{
           categorias_elementos: {
-            id: 3,
+            id: categoriaID,
           },
           elemento:  {
             imagenes: {
@@ -113,7 +115,7 @@ export class FormMuebleComponent implements OnInit {
             nombre: 'elemento '+datos.archivos_imagenes.name,
             activo: true,
             categorias_elementos: {
-              id:3,
+              id:categoriaID,
             }
           }
           
@@ -304,9 +306,13 @@ export class FormMuebleComponent implements OnInit {
   }
 
   updateIsValidNextStepForAsignarElementos(): void {
-    const atributo = this.expositores[this.activeIndex]? this.expositores[this.activeIndex].get('atributos_expositores') : null;
-    !!atributo && atributo.valid   ? this.isValidNextStep = true : this.isValidNextStep = false;
-  }
+    const controlExpositor = this.expositores.at(this.index_expositor_actual);
+    const atributo = controlExpositor ? controlExpositor.get('atributos_expositores') : null;
+    console.log(atributo);
+    
+    this.isValidNextStep = !!atributo && atributo.valid;
+}
+
   
   updateIsValidNextStep(): void {
   //EN EL PRIMER PASO
@@ -321,7 +327,9 @@ export class FormMuebleComponent implements OnInit {
       if (this.imagenesExpositores.length > 0) {
         //Asignar huecos
         if (this.activeIndexIsPair()) {
-          
+          const atributos = this.expositores.at(this.index_expositor_actual).get('atributos_expositores');
+          const numero_huecos = atributos.value.filter(atributo => atributo.alto != null && atributo.ancho != null && atributo.x_start != null && atributo.y_start != null).length;
+          this.isValidNextStep = numero_huecos > 0;
         } else { 
         
           this.updateIsValidNextStepForAsignarElementos();
@@ -341,7 +349,7 @@ export class FormMuebleComponent implements OnInit {
   
  
   onFormularioPaso1AddedImage( $event: { imagenes: string, archivos_imagenes: File }) {
-    this.crearExpositor(true,3, $event);
+    this.crearExpositor(true,this.categoriaID, $event);
     this.updateStepCount();
     this.generateSteps();
   }
@@ -356,7 +364,6 @@ export class FormMuebleComponent implements OnInit {
 
   onCrearAtributoExpositor($event:{index:number, atributo: atributos_expositores}) {
     this.agregarAtributoAExpositor(this.index_expositor_actual , $event.index, $event.atributo, );
-    this.updateIsValidNextStep();
   }
 
   
@@ -414,6 +421,7 @@ export class FormMuebleComponent implements OnInit {
     }
     console.log("activeIndex: ",this.activeIndex);
     console.log("expositorIndiex: ",this.index_expositor_actual);
+    
   }
 
   previousStep() {
@@ -427,6 +435,7 @@ export class FormMuebleComponent implements OnInit {
     }
     console.log("activeIndex: ",this.activeIndex);
     console.log("expositorIndiex: ",this.index_expositor_actual);
+
 
 
   }
