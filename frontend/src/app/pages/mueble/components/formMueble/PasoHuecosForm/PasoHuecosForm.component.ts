@@ -446,7 +446,9 @@ calcularCentroLateralesTransformados(centro: Coordenada, dimensiones: { width: n
     const control = <FormArray>this.expositorFormulario.get('atributos_expositores') as FormArray;
     for (const group of control.controls) {
       if (group?.value.id === atributo.id) { 
-        this.atributo_expositor?.setValue(atributo);
+     
+        group.patchValue({categorias_elementos: atributo.categorias_elementos});
+
         console.log(atributo);
       }
     }
@@ -472,6 +474,18 @@ calcularCentroLateralesTransformados(centro: Coordenada, dimensiones: { width: n
       this.categoriaSeleccionada = this.categorias_elementos[0].nombre;
     })
   }
+
+  eliminarElemento(atributo: atributos_expositores){
+    const control = <FormArray>this.expositorFormulario.get('atributos_expositores') as FormArray;
+    for (const group of control.controls) {
+      if (group?.value.id === atributo.id) {
+        control.removeAt(control.controls.indexOf(group));
+        this.atributos_expositor = this.atributos_expositor.filter((element) => element !== atributo);
+      }
+    }
+  }
+
+
 
                                     //////////////////////////////////////////////////////////////////
 
