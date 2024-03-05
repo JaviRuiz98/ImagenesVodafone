@@ -75,7 +75,7 @@ export class PasoAsignarElementoFormComponent implements OnInit {
         const elemento = atributoExpositor.get('elemento') as FormGroup;
         const categoria: number = elemento.get('categoria_elementos')?.value;
         
-        if (categoria !== 3 && categoria !== 0) {
+        if (categoria !== 3 && categoria !== 0 && categoria !== undefined && categoria !== null) {
           return elemento.value ;
         }
       }
@@ -114,10 +114,6 @@ export class PasoAsignarElementoFormComponent implements OnInit {
 
  
   ngOnInit() {
-    console.log("expositor: ",this.expositorFormulario? this.expositorFormulario.value : "error");
-
-    
-    
   }
 
   

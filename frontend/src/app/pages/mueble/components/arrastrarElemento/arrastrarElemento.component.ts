@@ -16,7 +16,7 @@ export class ArrastrarElementoComponent implements OnInit {
   @Input() mode: 'arrastrar' | 'seleccionar' = 'arrastrar';
   @Input() categoria?: categorias_elementos;
   
-  @Input () selected_elemento?: elementos;
+  @Input () initialSelectedElemento?: elementos;
   
 
   @Output() onDragStart = new EventEmitter<{ dragEvent: DragEvent, elemento: elementos }>();
@@ -29,7 +29,7 @@ export class ArrastrarElementoComponent implements OnInit {
   all_elementos: elementos[] = [];
   filtered_elementos: elementos[] = [];
   dragged_elemento?: elementos;
-
+  selected_elemento?: elementos;
   
   filterNameValue: string="";
 
@@ -41,7 +41,7 @@ export class ArrastrarElementoComponent implements OnInit {
   ngOnInit() {
     this.inicializarElementos();
     this.inicializaCategorias_elementos();
-    
+   
   }
 
   
@@ -53,7 +53,14 @@ export class ArrastrarElementoComponent implements OnInit {
         this.all_elementos = this.all_elementos.filter((elemento) => elemento.categorias_elementos.id === this.categoria.id);
       }
       this.filtered_elementos=this.all_elementos;
+      this.inicializarElementoSeleccionado();
     });
+  }
+  inicializarElementoSeleccionado(){
+    if (this.initialSelectedElemento != null && this.initialSelectedElemento != undefined) {
+      this.selected_elemento = this.all_elementos.filter((elemento) => elemento.id === this.initialSelectedElemento.id)[0];
+ 
+    }
   }
 
   inicializaCategorias_elementos(){

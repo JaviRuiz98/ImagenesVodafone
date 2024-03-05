@@ -476,7 +476,7 @@ calcularCentroLateralesTransformados(centro: Coordenada, dimensiones: { width: n
                                     //////////////////////////////////////////////////////////////////
 
   ngOnInit() {                                     
-    console.log(this.expositorFormulario);
+    console.log(this.expositorFormulario.value);
     this.src = this.imagenExpositor;
 
     this.inicializaCategoriasElementos();
@@ -500,6 +500,8 @@ calcularCentroLateralesTransformados(centro: Coordenada, dimensiones: { width: n
     const control = <FormArray>this.expositorFormulario.controls['atributos_expositores'];
     control.push(this.fb.group({ id: atributo.id, expositor: atributo.expositor, categorias_elementos: atributo.categorias_elementos, elemento: atributo.elemento, 
     x_start: atributo.x_start, y_start: atributo.y_start, ancho: atributo.ancho, alto: atributo.alto, angulo: atributo.angulo }));
+
+    console.log(this.expositorFormulario.value);
   }
 
 
