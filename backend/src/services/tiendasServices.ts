@@ -65,12 +65,25 @@ export const tiendaService = {
       }
   },
       
-  async newTienda(sfid: string): Promise<tiendas> {
+  async newTienda(parametros: tiendas): Promise<tiendas> {
     try{
         return await db.tiendas.create({
             data: ({
-                sfid: sfid,
-                activo: true
+                cif: parametros.cif,
+                razon_social: parametros.razon_social,
+                tipo_distribuidor: parametros.tipo_distribuidor,
+                sfid: parametros.sfid,
+                nombre: parametros.nombre,
+                activo: parametros.activo,
+                visible: parametros.visible,
+                lowi: parametros.lowi,
+                vodafone: parametros.vodafone,
+                canal: parametros.canal,
+                tipo_pdv: parametros.tipo_pdv,
+                zona_geografica: parametros.zona_geografica,
+                provincia: parametros.provincia,
+                poblacion: parametros.poblacion,
+                cp: parametros.cp
             })
         });
     } catch (error) {

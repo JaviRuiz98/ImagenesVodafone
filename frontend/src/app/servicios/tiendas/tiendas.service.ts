@@ -20,7 +20,7 @@ export class TiendasService {
 
   newTienda(nuevaTienda: tienda, listaNuevosMuebles: muebles[]): Observable<boolean> {
     const datosNuevaTienda = {
-      sfid: nuevaTienda.sfid,
+      parametros: nuevaTienda,
       listaNuevosMuebles: listaNuevosMuebles
     }
     return this.http.post<boolean>(`${this.API_URI}/tiendas`, datosNuevaTienda);

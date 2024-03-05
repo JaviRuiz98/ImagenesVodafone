@@ -1,7 +1,7 @@
 <p-dialog 
     [header]="" 
     [(visible)]="verFormularioNuevaTienda"
-    (onHide)="verFormularioNuevaTiendaChange.emit(false)" 
+    (onHide)="verFormularioNuevaTiendaChange.emit(false)"
     [style]="{'width': '80vw', 'max-height': '100vh'}" 
     [draggable]="false">
     <div class="formularioICIUG" *ngIf="activeIndex === 0">
@@ -12,6 +12,8 @@
             <input type="text" pInputText [(ngModel)]="this.nuevaTienda.razon_social" [disabled]="editarTiendaCreada"/>
             <p><strong>Tipo Distribuidor:</strong></p>
             <input type="text" pInputText [(ngModel)]="this.nuevaTienda.tipo_distribuidor" [disabled]="editarTiendaCreada"/>
+            <p><strong>Canal:</strong></p>
+            <input type="text" pInputText [(ngModel)]="this.nuevaTienda.canal" [disabled]="editarTiendaCreada"/>
         </div>
         <div>
             <p><strong>SFID:</strong></p>

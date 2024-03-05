@@ -103,6 +103,7 @@ export class DialogNuevaTiendaComponent{
       if(this.contenidoBotonCrearEditarTienda == 'Crear Tienda'){
         this.TiendasService.newTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
           this.actualizarListadoTiendasChange.emit();
+          this.verFormularioNuevaTienda = false;
         })
       } else{
         this.TiendasService.editarTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {

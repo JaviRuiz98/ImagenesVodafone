@@ -16,7 +16,7 @@ export async function getAllTiendas(req: Request, res: Response) {
 
 export async function newTienda(req: Request, res: Response) {
     try{     
-        const tienda: tiendas = await tiendaService.newTienda(req.body.sfid);
+        const tienda: tiendas = await tiendaService.newTienda(req.body.parametros);
         const listaIdMuebles = req.body.listaNuevosMuebles.map((mueble: muebles) => mueble.id);
         await tiendaService.asignarPertenenciaMuebleTienda(tienda.id, listaIdMuebles);
         getAllTiendas(req, res);
