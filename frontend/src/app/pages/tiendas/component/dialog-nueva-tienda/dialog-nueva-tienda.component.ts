@@ -26,6 +26,7 @@ export class DialogNuevaTiendaComponent{
   activeIndex: number = 0;
   contenidoBotonCrearEditarTienda: string = 'Siguiente';
   editarTiendaCreada: boolean = false;
+  crearTienda: boolean = false;
 
   nuevaTienda: tienda = {} as tienda;
   

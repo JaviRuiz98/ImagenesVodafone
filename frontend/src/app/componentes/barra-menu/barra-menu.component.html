@@ -1,4 +1,4 @@
-<div class="barraCompletaBotonVolver">
+<div class="barraCompletaBotonVolver" *ngIf="currentState !== '/login'">
   <div class="barraCompleta">
     <button class="image-container" (click)="volverAtras(true)">
       <img src="../../../assets/images/icono.png" alt="icono">
@@ -13,7 +13,7 @@
       <app-sidebar></app-sidebar>
     </div> 
   </div>
-  <div *ngIf="currentState != '/home'">
+  <div *ngIf="currentState !== '/home' && currentState !== '/login'">
     <p-button [label]="contenidoBotonVolver" [icon]="iconoBotonVolver" (click)="volverAtras(false)" [text]="true" severity="danger"></p-button>
   </div>
 </div>

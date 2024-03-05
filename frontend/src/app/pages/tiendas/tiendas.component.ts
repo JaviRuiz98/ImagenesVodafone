@@ -73,4 +73,8 @@ export class TiendasComponent implements OnInit{
       },
     });
   }
+  editarTienda(tienda: tienda){
+    this.tiendaSelected = tienda;
+    this.verFormularioEditarTienda = true;
+  }
 }
