@@ -37,9 +37,9 @@ export class PasoAsignarElementoFormComponent implements OnInit {
     this.atributos_expositores? this.atributos_expositores.controls.forEach((atributoExpositor) => {
         
         const elemento = atributoExpositor.get('elemento') as FormGroup;
-        const categoria: number = elemento.get('categoria_elementos')?.value;
+        const categoria = elemento.get('categoria_elementos')?.value;
         const imagen = elemento.get('imagen')?.value;
-        if (imagen && categoria === 3) {
+        if (imagen && categoria.id === 3) {
           return imagen;
         }
       }): undefined;
@@ -53,9 +53,9 @@ export class PasoAsignarElementoFormComponent implements OnInit {
     
     this.atributos_expositores? this.atributos_expositores.controls.forEach((atributoExpositor) => {
       const elemento = atributoExpositor.get('elemento') as FormGroup;
-      const categoria: number = elemento.get('categoria_elementos')?.value;
+      const categoria = elemento.get('categoria_elementos')?.value;
       
-      if (categoria !== 3 && categoria !== 0) {
+      if (categoria.id !== 3 && categoria.id !== 0) {
         otrosElementosArray.push(elemento);
       }
     }): undefined;
@@ -74,9 +74,9 @@ export class PasoAsignarElementoFormComponent implements OnInit {
       for (let i = 0; i < this.atributos_expositores.controls.length; i++) {
         const atributoExpositor = this.atributos_expositores.controls[i];
         const elemento = atributoExpositor.get('elemento') as FormGroup;
-        const categoria: categorias_elementos = elemento.get('categoria_elementos')?.value;
+        const categoria = elemento.get('categoria_elementos')?.value;
         
-        if (categoria.id !== 3 && categoria.id !== 0 && categoria !== undefined && categoria !== null) {
+        if (categoria !== undefined && categoria !== null &&categoria.id !== 3 && categoria.id !== 0 ) {
           return elemento.value ;
         }
       }

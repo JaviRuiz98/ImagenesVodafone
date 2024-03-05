@@ -77,7 +77,7 @@ export class FormMuebleComponent implements OnInit {
       atributosExpositores.controls.forEach((atributoExpositor) => {
         
         const elemento = atributoExpositor.get('elemento') as FormGroup;
-        const categoria: categorias_elementos = elemento.get('categoria_elementos')?.value;
+        const categoria = elemento.get('categoria_elementos')?.value;
         const imagen = elemento.get('imagen')?.value;
         if (imagen && categoria.id === 3) {
           imagenes.push(imagen);
