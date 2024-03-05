@@ -319,9 +319,10 @@ export class FormMuebleComponent implements OnInit {
      if (this.objetivo_form === 'crear') {
         //SI TENGO MODELOS
       if (this.imagenesExpositores.length > 0) {
+        //Asignar huecos
         if (this.activeIndexIsPair()) {
-         
-        } else {
+          
+        } else { 
         
           this.updateIsValidNextStepForAsignarElementos();
         }
