@@ -8,8 +8,6 @@ import { atributos_expositores } from 'src/app/interfaces/atributos_expositores'
 import { MenuItem } from 'primeng/api';
 import { UrlService } from 'src/app/servicios/url/url.service';
 import { elementoCreacion } from '../../interfaces/elementoCreacion';
-import { categorias_elementos } from 'src/app/interfaces/categoria';
-
 
 @Component({
   selector: 'app-formMueble',
@@ -275,7 +273,7 @@ export class FormMuebleComponent implements OnInit {
           
           if (i + 1 < this.step_count) {
             this.steps.push({
-              label: 'Selección de huecos'
+              label: 'Selección de posiciones'
             });
             this.steps.push({
               label: 'Asignar elementos'
@@ -323,7 +321,6 @@ export class FormMuebleComponent implements OnInit {
       if (this.imagenesExpositores.length > 0) {
         //Asignar huecos
         if (!this.activeIndexIsPair()) {
-          console.log("hola hola");
           const atributos = this.expositores.at(this.index_expositor_actual).get('atributos_expositores');
           const numero_huecos = atributos.value.filter(atributo => atributo.alto != null && atributo.ancho != null && atributo.x_start != null && atributo.y_start != null).length;
           this.isValidNextStep = numero_huecos > 0;
@@ -434,8 +431,6 @@ export class FormMuebleComponent implements OnInit {
     }
     console.log("activeIndex: ",this.activeIndex);
     console.log("expositorIndiex: ",this.index_expositor_actual);
-
-
 
   }
     

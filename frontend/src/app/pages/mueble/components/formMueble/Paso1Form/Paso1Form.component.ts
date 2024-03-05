@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { regiones } from 'src/app/interfaces/regiones';
 import { EnumService } from 'src/app/servicios/enum.service';
 
