@@ -1,0 +1,10 @@
+#container canvas{
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100vw !important; /* O un tamaño específico */
+    height: 400vw !important; /* O la altura que desees */
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  

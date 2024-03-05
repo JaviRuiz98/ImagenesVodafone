@@ -1,0 +1,14 @@
+<div style="display: flex;">
+    <canvas id="canvas_plano"></canvas>
+    <div>
+        <div>
+            <p-button (click)="anadirRectangulo()" label="Añadir mueble" severity="danger"></p-button>
+            <p-button (click)="abrirVista3D()" label="Vista 3D"></p-button>
+        </div>        
+        <div class="resumen-muebles" *ngFor="let mueble of muebles">
+            <p>{{ mueble.descripcion }}: Posición ({{ mueble.left | number:'1.0-0' }}, {{ mueble.top | number:'1.0-0' }}), Tamaño ({{ mueble.width | number:'1.0-0' }}x{{ mueble.height | number:'1.0-0' }}), Ángulo: {{ mueble.angle | number:'1.0-0' }}°</p>
+        </div>
+    </div>
+  </div>
+  
+  

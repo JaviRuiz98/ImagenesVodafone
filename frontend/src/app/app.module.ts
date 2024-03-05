@@ -18,6 +18,7 @@ import { AuditoriaModule } from './pages/auditoria/auditoria.module';
 import { DatePipe } from '@angular/common';
 import { ElementosModule } from './pages/elementos/elementos.modules';
 import { RemarcarExpositorComponent } from './componentes/remarcar-expositor/remarcar-expositor.component';
+import { PlanoTienda3DComponent } from './componentes/plano-tienda-3d/plano-tienda-3d.component';
 
 @NgModule({
   declarations: [
