@@ -16,7 +16,7 @@ rotar: {{ this.Rotacion }}
 <br />
 redimensionar: {{ this.redimensionado }} -->
 
-<div style="display: flex; flex-direction: row;" >
+<div style="display: flex; flex-direction: row; margin-top: 50px;" >
     <div  style="width:50% ; text-align: center">
 
       <!-- <app-asignarHuecos [imagen]="imagen"></app-asignarHuecos> -->
@@ -41,6 +41,7 @@ redimensionar: {{ this.redimensionado }} -->
             <tr>
               <th>Numero</th>
               <th>Categoria</th>
+              <th></th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-hueco>
@@ -48,10 +49,11 @@ redimensionar: {{ this.redimensionado }} -->
                 <td>{{ hueco.id }} </td>
 
                 <td> 
-                  <p-dropdown class="ml-2" [options]="categorias_elementos" [(ngModel)]="hueco.categoria"
+                  <p-dropdown class="ml-2" [options]="categorias_elementos" [(ngModel)]="hueco.categorias_elementos"
                   optionLabel="nombre" [showClear]="true" placeholder="Filtrar por categoría"
                   [style]="{'margin-left': '20px'}" (onChange)="onSelectElemento(hueco)"></p-dropdown>
                 </td> 
+                <td> <p-button label="Eliminar" [link]="true" [icon]="'pi pi-trash'" (onClick)="eliminarElemento(hueco)"></p-button></td>
             </tr>
         </ng-template>
     </p-table>
