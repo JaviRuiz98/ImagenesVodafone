@@ -15,7 +15,7 @@ transporter.verify().then(() => {
 });
 
 // Funcion para enviar correos electronicos
-export const sendEmail = async (to: string, subject: string, text: string, pdfBuffer?: Buffer, nombre_archivo?: string) => {
+export const sendEmail = async (to: string, subject: string, text: string, pdfBuffer: Buffer, nombre_archivo?: string) => {
     try {
       let mailOptions = {
         from: process.env.MY_EMAIL,

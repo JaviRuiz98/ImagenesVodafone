@@ -6,7 +6,6 @@ export async function cifrarDatos(id: string, secretKey: string): Promise<string
   // Convertir a base64 URL-safe
   const base64 = texto_cifrado.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
 
-  console.log('Id auditoria cifrado y seguro para URL: ' + base64);
   return base64;  
 }
 

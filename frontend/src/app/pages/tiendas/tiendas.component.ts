@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
 import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
+import { Router } from '@angular/router';
 
 import { tienda } from 'src/app/interfaces/tienda';
 import { muebles } from 'src/app/interfaces/muebles';
@@ -29,6 +30,7 @@ export class TiendasComponent implements OnInit{
 
   verFormularioNuevaTienda: boolean = false;
   editarTiendaCreada: boolean = false;
+  vistaCrearMueble: boolean = false;
   parametrosSteps: any; 
   activeIndex: number = 0;
 
@@ -43,7 +45,13 @@ export class TiendasComponent implements OnInit{
   cabeceraListaDerechaEditarTienda: string = 'Muebles Actuales';
 
 
-  constructor(private TiendasService: TiendasService, private MueblesService: MueblesService, private messageService: MessageService, private ConfirmationService: ConfirmationService){}
+  constructor(
+    private TiendasService: TiendasService, 
+    private MueblesService: MueblesService, 
+    private messageService: MessageService, 
+    private ConfirmationService: ConfirmationService,
+    private router: Router
+  ){}
   ngOnInit(): void {
     this.getAllTiendas();
     this.getAllMuebles();
@@ -187,4 +195,9 @@ export class TiendasComponent implements OnInit{
     const listaFiltrada = listaCompleta.filter((mueble) => !idsLista2.has(mueble.id));
     return listaFiltrada;
   }
+
+  abrirPlanoTienda(){
+    this.router.navigate(['/plano_tienda']);
+  }
+
 }
