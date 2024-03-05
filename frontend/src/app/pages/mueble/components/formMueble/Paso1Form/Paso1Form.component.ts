@@ -45,7 +45,7 @@ export class Paso1FormComponent implements OnInit {
         const elemento = atributoExpositor.get('elemento') as FormGroup;
         const categoria = elemento.get('categoria_elementos')?.value;
         const imagen = elemento.get('imagen')?.value;
-        if (imagen && categoria.id === 3) {
+        if (imagen && categoria.id === 3) { //refactorizar
           imagenes.push(imagen);
         }
       });
@@ -56,6 +56,7 @@ export class Paso1FormComponent implements OnInit {
     return imagenesUnicas;
   }
   
+ 
   
 
   ngOnInit() {

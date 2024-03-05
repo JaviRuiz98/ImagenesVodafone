@@ -496,6 +496,7 @@ calcularCentroLateralesTransformados(centro: Coordenada, dimensiones: { width: n
     this.inicializaCategoriasElementos();
   }
 
+ 
   get nombre_expositor() {
     return this.expositorFormulario? this.expositorFormulario.get('nombre_expositor'): undefined;
   }
@@ -521,19 +522,23 @@ calcularCentroLateralesTransformados(centro: Coordenada, dimensiones: { width: n
 
  
   get imagenExpositor(): string {
-    let imagenes: string[] = [];
   
-    this.atributos_expositores.controls.forEach((atributoExpositor) => {
-      const elemento = atributoExpositor.get('elemento') as FormGroup;
-      const categoria: number = elemento.get('categoria_elementos')?.value;
-      const imagen = elemento.get('imagen')?.value;
-      if (imagen && categoria === 3) {
-        imagenes.push(imagen);
+  
+   
+    if (!!this.atributos_expositores) {
+      for (let i = 0; i < this.atributos_expositores.controls.length; i++) {
+        const atributoExpositor = this.atributos_expositores.controls[i];
+        const elemento = atributoExpositor.get('elemento') as FormGroup;
+        const categoria = elemento.get('categoria_elementos')?.value;
+        
+        if (categoria !== undefined && categoria !== null &&categoria.id === 3  ) {
+          return elemento.value.imagen ;
+        }
       }
-    });
-  
-    const imagenesUnicas = [...new Set(imagenes)];
-    return imagenesUnicas[0]; // Retorna solamente la primera imagen
+      
+    }
+    return undefined;
+   
   }
  
 }
