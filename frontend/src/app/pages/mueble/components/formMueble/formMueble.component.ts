@@ -292,12 +292,8 @@ export class FormMuebleComponent implements OnInit {
     }
  
     this.cdr.detectChanges();
-    // this.rangeArray= this.generateRangeArray(0,this.step_count-1);
   }
 
-  // generateRangeArray(start: number, end: number): number[] {
-  //   return Array(end - start + 1).fill(0).map((_, idx) => start + idx);
-  // }
 
  
 
@@ -326,10 +322,12 @@ export class FormMuebleComponent implements OnInit {
         //SI TENGO MODELOS
       if (this.imagenesExpositores.length > 0) {
         //Asignar huecos
-        if (this.activeIndexIsPair()) {
+        if (!this.activeIndexIsPair()) {
+          console.log("hola hola");
           const atributos = this.expositores.at(this.index_expositor_actual).get('atributos_expositores');
           const numero_huecos = atributos.value.filter(atributo => atributo.alto != null && atributo.ancho != null && atributo.x_start != null && atributo.y_start != null).length;
           this.isValidNextStep = numero_huecos > 0;
+          
         } else { 
         
           this.updateIsValidNextStepForAsignarElementos();
@@ -412,12 +410,13 @@ export class FormMuebleComponent implements OnInit {
   nextStep() {
     //pasaremos a la siguiente imagen siempre y cuando no estemos en el primer paso y el indice sea par o si estamos en editar
     if ((this.activeIndex > 0 && this.activeIndexIsPair()) || (this.activeIndex > 0 && this.objetivo_form == 'editar')) { 
-        this.index_expositor_actual++;
+      this.index_expositor_actual++;
     }
 
     if (this.isValidNextStep){
       this.activeIndex++;
-      this.checkFormularioisNotNull()
+      this.checkFormularioisNotNull();
+      this.updateIsValidNextStep();
     }
     console.log("activeIndex: ",this.activeIndex);
     console.log("expositorIndiex: ",this.index_expositor_actual);
