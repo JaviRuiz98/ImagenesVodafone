@@ -1,7 +1,8 @@
-import { Component, OnInit, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, AfterViewInit } from '@angular/core';
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { GLTFLoader, GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js';
 
 @Component({
   selector: 'app-plano-tienda-3d',
@@ -9,64 +10,65 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
   styleUrls: ['./plano-tienda-3d.component.css']
 })
 export class PlanoTienda3DComponent implements OnInit, AfterViewInit {
-  @ViewChild('container') elementRef: ElementRef;
-  private container: HTMLElement;
+  @ViewChild('canvas') canvas: ElementRef;
 
-  private scene: THREE.Scene;
-  private camera: THREE.PerspectiveCamera;
-  private renderer: THREE.WebGLRenderer;
+  scene: THREE.Scene;
+  loaderGLTF: GLTFLoader;
+  model: THREE.Object3D;
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
+    
   }
 
   ngAfterViewInit(): void {
-    this.initThree();
+    this.createScene();
   }
-
-  private initThree(): void {
-    this.container = this.elementRef.nativeElement;
-
+  
+  private createScene() {
+    // Scene
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    this.renderer = new THREE.WebGLRenderer();
-    this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
-    this.container.appendChild(this.renderer.domElement);
+    this.scene.background = new THREE.Color(0xd4d4d8);
 
-    // Aquí puedes empezar a añadir tus objetos 3D, luces, etc.
-    // Por ejemplo, añadir un cubo simple:
-    const geometry = new THREE.BoxGeometry();
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-    const cube = new THREE.Mesh(geometry, material);
-    this.scene.add(cube);
+    this.loaderGLTF = new GLTFLoader();
 
-    this.camera.position.z = 5;
-
-    this.animate();
-
-    // Cargar el modelo 3D
-    const loader = new GLTFLoader();
-    loader.load('assets/3d_models/modelo2.glb', function(gltf) {
-      gltf.scene.scale.set(0.5, 0.5, 0.5); // Ajusta la escala si es necesario
-      gltf.scene.position.set(0, 0, 0); // Ajusta la posición si es necesario
-      this.scene.add(gltf.scene);
-    }.bind(this), undefined, function(error) {
+    this.loaderGLTF.load('assets/3d_models/modelo2.glb', (gltf: GLTF) => {
+      this.model = gltf.scene.children[0];
+      console.log(this.model);
+      var box = new THREE.Box3().setFromObject(this.model);
+      box.getCenter(this.model.position); // this re-sets the mesh position
+      this.model.position.multiplyScalar(-1);
+      this.scene.add(this.model);
+    }, undefined, function (error) {
       console.error(error);
-    });  
+    });
 
-    const light = new THREE.AmbientLight(0x404040); // Luz suave
-    this.scene.add(light);
+    // Renderer
+    const renderer = new THREE.WebGLRenderer({
+      canvas: this.canvas.nativeElement,
+      alpha: true // set to transparent background
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
 
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1); // Luz más intensa
-    directionalLight.position.set(0, 1, 1);
-    this.scene.add(directionalLight);
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
+    camera.position.set(16, 20, 5); 
 
-  }
+    //Controles
+    const controls = new OrbitControls(camera, renderer.domElement);
+    const animate = () => {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(this.scene, camera);
+    }
 
-  private animate(): void {
-    requestAnimationFrame(() => this.animate());
-    // Actualizar lógica de la escena, como la rotación del cubo
-    this.renderer.render(this.scene, this.camera);
+    animate();
   }
 }
