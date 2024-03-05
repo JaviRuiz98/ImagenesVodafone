@@ -1,11 +1,12 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
 import { elementos } from 'src/app/interfaces/elementos';
 import { expositores } from 'src/app/interfaces/expositores';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
+import { UrlService } from 'src/app/servicios/url/url.service';
 
 
 type Punto = { x: number; y: number };
@@ -17,11 +18,15 @@ type Punto = { x: number; y: number };
 })
 export class EditarExpositorComponent implements OnInit {
 
-  url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
   imageElement: HTMLImageElement;
 
 
-  constructor( public dialogConfig : DynamicDialogConfig, private muebleService : MueblesService, public messageService : MessageService) { }
+  constructor(private urlService : UrlService, public dialogConfig : DynamicDialogConfig, private muebleService : MueblesService, public messageService : MessageService) { }
+
+  url_imagenes_referencias = this.urlService.url_imagenes_referencia;
+  
+  @Input () expositorToEdit?: expositores;
+  @Output() onUpdate: EventEmitter<expositores> = new EventEmitter();
 
   expositor: expositores = {
     id: 0,
@@ -43,8 +48,10 @@ export class EditarExpositorComponent implements OnInit {
 
   inicializarComponente(){
     if (this.dialogConfig.data) {
-      this.expositor = this.dialogConfig.data.expositor;
-
+      this.expositor = this.dialogConfig.data.expositor; 
+    }else{
+      
+    }
       this.canvasRef = document.getElementById('canvas') as HTMLCanvasElement;
       this.ctx = this.canvasRef.getContext('2d');
       this.previous_state = this.expositor.atributos_expositores;
@@ -53,7 +60,7 @@ export class EditarExpositorComponent implements OnInit {
       this.loadImage(imageElement);
 
       this.configurarEventosCanvas();
-    }
+    
   }
   configurarEventosCanvas(){
     if (!this.canvasRef) return;
@@ -158,15 +165,15 @@ export class EditarExpositorComponent implements OnInit {
 
   }
 
-  drawDeleteButton(x, y, width, height) {
-    const btnImage = new Image();
-    btnImage.onload = () => {
-      const btnSize = 20; // Tamaño del botón
-      const padding = 5; // Espacio desde la esquina
-      this.ctx.drawImage(btnImage, x + width - btnSize - padding, y + padding, btnSize, btnSize);
-    };
-    btnImage.src = 'path/to/delete-icon.png'; // Ruta al icono de eliminación
-  }
+  // drawDeleteButton(x, y, width, height) {
+  //   const btnImage = new Image();
+  //   btnImage.onload = () => {
+  //     const btnSize = 20; // Tamaño del botón
+  //     const padding = 5; // Espacio desde la esquina
+  //     this.ctx.drawImage(btnImage, x + width - btnSize - padding, y + padding, btnSize, btnSize);
+  //   };
+  //   btnImage.src = 'path/to/delete-icon.png'; // Ruta al icono de eliminación
+  // }
 
   
   actualizarExpositor(indice: number, elemento: elementos) {
@@ -301,7 +308,8 @@ export class EditarExpositorComponent implements OnInit {
     console.log("terminar");
   }
   private updateExpositor() {
-    this.muebleService.updateExpositor(this.expositor).subscribe();
+    this.onUpdate.emit(this.expositor);
+    //this.muebleService.updateExpositor(this.expositor).subscribe();
   }
 
   eliminarImagen (indice: number) {

@@ -65,7 +65,7 @@ export class ArrastrarElementoComponent implements OnInit {
 
   inicializaCategorias_elementos(){
     this.enumService.getCategorias_elementos().subscribe((categorias: categorias_elementos[]) => {
-      this.categorias_elementos = categorias; 
+      this.categorias_elementos = categorias.filter((categoria) => categoria.id !== 3); //ME GUSTARIA NO TENERLO HARCODEADO 
     })
   }
 

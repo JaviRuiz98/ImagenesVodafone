@@ -8,6 +8,7 @@ import { atributos_expositores } from 'src/app/interfaces/atributos_expositores'
 import { MenuItem } from 'primeng/api';
 import { UrlService } from 'src/app/servicios/url/url.service';
 import { elementoCreacion } from '../../interfaces/elementoCreacion';
+import { categorias_elementos } from 'src/app/interfaces/categoria';
 
 
 @Component({
@@ -37,7 +38,7 @@ export class FormMuebleComponent implements OnInit {
   activeIndex:number = 0;
   steps: MenuItem [] | undefined;
   isValidNextStep: boolean = false;
-  rangeArray: number[] = [];
+  // rangeArray: number[] = [];
 
   index_expositor_actual: number = 0;
 
@@ -76,9 +77,9 @@ export class FormMuebleComponent implements OnInit {
       atributosExpositores.controls.forEach((atributoExpositor) => {
         
         const elemento = atributoExpositor.get('elemento') as FormGroup;
-        const categoria: number = elemento.get('categoria_elementos')?.value;
+        const categoria: categorias_elementos = elemento.get('categoria_elementos')?.value;
         const imagen = elemento.get('imagen')?.value;
-        if (imagen && categoria === 3) {
+        if (imagen && categoria.id === 3) {
           imagenes.push(imagen);
         }
       });
@@ -165,7 +166,7 @@ export class FormMuebleComponent implements OnInit {
         id: [atributo && atributo.elemento ? atributo.elemento.id : 0],
         imagen: [imagen, Validators.required],
         archivos_imagenes: [archivo, Validators.maxLength(2)],
-        categoria_elementos: [atributo && atributo.elemento ? atributo.elemento.categorias_elementos.id : null],
+        categoria_elementos: [atributo && atributo.elemento ? atributo.elemento.categorias_elementos : null],
       })
     });
   }
@@ -235,7 +236,7 @@ export class FormMuebleComponent implements OnInit {
       });
 
       
-      this.step_count = this.expositores.length;
+      this.step_count = this.expositores.length+1;
       console.log(this.mueble.value);
   
     }else{
@@ -282,7 +283,7 @@ export class FormMuebleComponent implements OnInit {
         }
       }
     }else { // Si es editar
-      for (let i = 0; i < this.step_count; i++) {
+      for (let i = 0; i < this.step_count-1; i++) {
         this.steps.push({
           label: 'Asignar elementos'
         });
@@ -290,12 +291,12 @@ export class FormMuebleComponent implements OnInit {
     }
  
     this.cdr.detectChanges();
-    this.rangeArray= this.generateRangeArray(0,this.step_count-1);
+    // this.rangeArray= this.generateRangeArray(0,this.step_count-1);
   }
 
-  generateRangeArray(start: number, end: number): number[] {
-    return Array(end - start + 1).fill(0).map((_, idx) => start + idx);
-  }
+  // generateRangeArray(start: number, end: number): number[] {
+  //   return Array(end - start + 1).fill(0).map((_, idx) => start + idx);
+  // }
 
  
 

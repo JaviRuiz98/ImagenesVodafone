@@ -5,6 +5,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
 import { elementos } from 'src/app/interfaces/elementos';
+import { categorias_elementos } from 'src/app/interfaces/categoria';
 
 
 @Component({
@@ -73,9 +74,9 @@ export class PasoAsignarElementoFormComponent implements OnInit {
       for (let i = 0; i < this.atributos_expositores.controls.length; i++) {
         const atributoExpositor = this.atributos_expositores.controls[i];
         const elemento = atributoExpositor.get('elemento') as FormGroup;
-        const categoria: number = elemento.get('categoria_elementos')?.value;
+        const categoria: categorias_elementos = elemento.get('categoria_elementos')?.value;
         
-        if (categoria !== 3 && categoria !== 0 && categoria !== undefined && categoria !== null) {
+        if (categoria.id !== 3 && categoria.id !== 0 && categoria !== undefined && categoria !== null) {
           return elemento.value ;
         }
       }
