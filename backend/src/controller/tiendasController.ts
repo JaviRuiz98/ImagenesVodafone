@@ -57,10 +57,9 @@ export async function desactivarMueblesTienda(id_tienda: number) {
     }
 }
 
-export async function activarDesactivarTienda(req: Request, res: Response) {
+export async function activarDesactivarBooleanoTienda(req: Request, res: Response) {
     try{     
-        const tienda = await tiendaService.activarDesactivarTienda(req.body);
-
+        const tienda = await tiendaService.activarDesactivarBooleanoTienda(req.body.tienda, req.body.parametro);
         res.status(200).json(tienda);
     }catch (error) {
         console.error('Error al crear tienda:', error);

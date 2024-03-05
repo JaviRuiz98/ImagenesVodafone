@@ -1,0 +1,75 @@
+<p-dialog 
+    [header]="" 
+    [(visible)]="verFormularioEditarTienda"
+    (onHide)="verFormularioEditarTiendaChange.emit(false)"
+    [style]="{'width': '80vw', 'max-height': '100vh'}" 
+    [draggable]="false">
+    <div *ngIf="verFormularioEditarTienda === true">
+        <div class="formularioICIUG" *ngIf="activeIndex === 0">
+            <p><strong>Activo:</strong></p>
+            <td><p-toggleButton [(ngModel)]="tiendaSelected.activo" onLabel="Sí" offLabel="No" ></p-toggleButton></td>
+            <p><strong>Visible:</strong></p>
+            <td><p-toggleButton [(ngModel)]="tiendaSelected.visible" onLabel="Sí" offLabel="No" [style]="{'cursor': 'pointer'}"></p-toggleButton></td>                
+            <p><strong>Vodafone:</strong></p>
+            <td><p-toggleButton [(ngModel)]="tiendaSelected.vodafone" onLabel="Sí" offLabel="No"></p-toggleButton></td> 
+            <p><strong>Lowi:</strong></p>
+            <td><p-toggleButton [(ngModel)]="tiendaSelected.lowi" onLabel="Sí" offLabel="No"></p-toggleButton></td>  
+        </div>
+        <div *ngIf="activeIndex === 1">
+            <p-pickList [source]="listaMueblesMostrarTablaIzquierda" [target]="listaMueblesTiendaTablaDerecha" [targetHeader]="cabeceraListaDerecha" 
+                filterBy="nombre" sourceFilterPlaceholder="Buscar por nombre" targetFilterPlaceholder="Buscar por nombre" [dragdrop]="true" [responsive]="true"
+                [showSourceControls] = "false" [showTargetControls] = "false">
+                <ng-template let-mueble pTemplate="item">
+                    <div class="contenedorMuebleArrastras">
+                        <div class="anchoAltoDescripcionFotoReferencia">
+                            <span class="letrasCaracteristicasMueble"><strong>{{ mueble.nombre }}</strong></span>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="sourceHeader" >
+                    <div class="flex align-items-center justify-content-between">
+                        <p style="font-weight: 700;"> Muebles Disponibles</p>
+                        <p-button severity="danger" label="Crear Mueble" icon="pi pi-plus"></p-button>
+                    </div>
+                    </ng-template>
+                </p-pickList>
+        </div>
+        <div class="resumentNuevaTienda" *ngIf="activeIndex === 2">
+            <div>
+                <p><strong>Resumen de la tienda:</strong></p>
+                <p><strong>Nombre: </strong>{{tiendaSelected.nombre}}</p>
+                <p><strong>CIF: </strong>{{tiendaSelected.cif}}</p>
+                <p><strong>SFID: </strong>{{tiendaSelected.sfid}}</p>
+                <p><strong>Razón Social: </strong>{{tiendaSelected.razon_social}}</p>
+                <p><strong>Tipo PDV: </strong>{{tiendaSelected.tipo_pdv}}</p>
+                <p><strong>Zona Geográfica: </strong>{{tiendaSelected.zona_geografica}}</p>
+                <p><strong>Provincia: </strong>{{tiendaSelected.provincia}}</p>
+                <p><strong>Población: </strong>{{tiendaSelected.poblacion}}</p>
+                <p><strong>CP: </strong>{{tiendaSelected.cp}}</p>
+                <p><strong>Activo: </strong><span class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendaSelected.activo, 'text-red-500 pi-times-circle': !tiendaSelected.activo }" [style]="{'cursor': 'auto'}" ></span></p>
+                <p><strong>Visible: </strong><span class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendaSelected.visible, 'text-red-500 pi-times-circle': !tiendaSelected.visible }" [style]="{'cursor': 'auto'}"></span></p>
+                <p><strong>Vodafone: </strong><span class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendaSelected.vodafone, 'text-red-500 pi-times-circle': !tiendaSelected.vodafone }" [style]="{'cursor': 'auto'}"></span></p>
+                <p><strong>Lowi: </strong><span class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendaSelected.lowi, 'text-red-500 pi-times-circle': !tiendaSelected.lowi }" [style]="{'cursor': 'auto'}"></span></p>
+            </div>
+            <div>
+                <p-orderList [value]="listaMueblesTiendaTablaDerecha" [listStyle]="{ height: '20rem' }" header="Muebles Seleccionados" >
+                    <ng-template let-mueble pTemplate="item">
+                        <div class="contenedorMuebleArrastras">
+                            <div class="anchoAltoDescripcionFotoReferencia">
+                                <span class="letrasCaracteristicasMueble"><strong>{{ mueble.nombre }}</strong></span>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-orderList>
+            </div>     
+        </div>
+    </div>
+    <div>
+        <p-steps [model]="parametrosSteps" [readonly]="true" [activeIndex]="activeIndex" [style]="{'margin-top': '5%'}"></p-steps>
+        <div class="botonesAtrasSiguiente">
+            <p-button (click)="activeIndex = (activeIndex > 0) ? activeIndex - 1 : activeIndex" label="Atrás" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px'}" [disabled]="activeIndex === 0"></p-button>
+            <p-button (click)="botonSiguiente()" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px', 'justify-content': 'center'}"
+            [label]="(activeIndex === 2) ? contenidoBotonCrearEditarTienda: 'Siguiente'"></p-button>
+        </div>
+    </div>
+</p-dialog>

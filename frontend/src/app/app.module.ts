@@ -19,6 +19,7 @@ import { DatePipe } from '@angular/common';
 import { ElementosModule } from './pages/elementos/elementos.modules';
 import { RemarcarExpositorComponent } from './componentes/remarcar-expositor/remarcar-expositor.component';
 import { LoginModule } from './pages/login/login.module';
+
 @NgModule({
   declarations: [
     AppComponent,

@@ -14,11 +14,9 @@ import { muebles } from 'src/app/interfaces/muebles';
 export class DialogNuevaTiendaComponent{
 
   @Input() verFormularioNuevaTienda: boolean = false;
-  @Input() verFormularioEditarTienda: boolean = false;
   @Input() vistaCrearMueble: boolean = false;
   @Input() tiendaSelected: tienda = {} as tienda;
 
-  @Output() verFormularioEditarTiendaChange = new EventEmitter<boolean>();
   @Output() verFormularioNuevaTiendaChange = new EventEmitter<boolean>();
   @Output() actualizarListadoTiendasChange: EventEmitter<void> = new EventEmitter<void>();
 
@@ -121,17 +119,5 @@ export class DialogNuevaTiendaComponent{
     const idsLista2 = new Set(listaMueblesSeleccionados.map(mueble => mueble.id));
     const listaFiltrada = listaCompleta.filter((mueble) => !idsLista2.has(mueble.id));
     return listaFiltrada;
-  }
-  editarTienda(tienda: tienda){
-
-    // const listaMueblesDisponibles = this.eliminarMueblesSeleccionados(this.listaTodosMuebles, this.listaMueblesNuevaTienda)
-    // this.nuevaTienda = tienda;
-    // this.cabeceraListaDerecha = this.cabeceraListaDerechaEditarTienda;
-    // this.contenidoBotonCrearEditarTienda = 'Editar tienda';
-    // this.MueblesService.getMueblesTiendaByIdTienda(tienda.id).subscribe((response: muebles[]) => {
-    //   this.listaMueblesNuevaTienda = this.ordenarListaAlfabeticamente(response, 'nombre');
-    //   this.listaMueblesMostrar = this.eliminarMueblesSeleccionados(this.listaTodosMuebles, response);
-    // })
-    // this.verFormularioNuevaTienda = true;
   }
 }

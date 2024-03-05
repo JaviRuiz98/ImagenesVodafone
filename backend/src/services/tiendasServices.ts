@@ -130,15 +130,28 @@ export const tiendaService = {
         }
     },
 
-    async activarDesactivarTienda(tienda: tiendas): Promise<any> {
+    async activarDesactivarBooleanoTienda(tienda: tiendas, parametro: string): Promise<any> {
         try {
+            let data_clause = {};
+            switch (parametro) {
+                case 'activo':
+                    data_clause = { activo: !tienda.activo };
+                    break;
+                case 'visible':
+                    data_clause = { visible: !tienda.visible };
+                    break;
+                case 'lowi':
+                    data_clause = { lowi: !tienda.lowi };
+                    break;
+                case 'vodafone':
+                    data_clause = { vodafone: !tienda.vodafone };
+                    break;
+            }
             return await db.tiendas.update({
                 where: {
                     id: tienda.id,
                 },
-                data: {
-                    activo: !tienda.activo
-                }
+                data: data_clause
             })
         } catch (error) {
             console.error(error);

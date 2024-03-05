@@ -4,57 +4,94 @@
     (onHide)="verFormularioNuevaTiendaChange.emit(false)"
     [style]="{'width': '80vw', 'max-height': '100vh'}" 
     [draggable]="false">
-    <div *ngIf="verFormularioEditarTienda === true">
-        <div class="formularioICIUG" *ngIf="activeIndex === 0">
-            <div>
-                <p><strong>CIF:</strong></p>
-                <input type="text" pInputText [(ngModel)]="this.nuevaTienda.cif"/>
-                <p><strong>Razón Social:</strong></p>
-                <input type="text" pInputText [(ngModel)]="this.nuevaTienda.razon_social"/>
-                <p><strong>Tipo Distribuidor:</strong></p>
-                <input type="text" pInputText [(ngModel)]="this.nuevaTienda.tipo_distribuidor"/>
-                <p><strong>Canal:</strong></p>
-                <input type="text" pInputText [(ngModel)]="this.nuevaTienda.canal"/>
-            </div>
-            <div>
-                <p><strong>SFID:</strong></p>
-                <input type="text" pInputText [(ngModel)]="this.nuevaTienda.sfid"/>
-                <p><strong>Nombre:</strong></p>
-                <input type="text" pInputText [(ngModel)]="this.nuevaTienda.nombre"/>
-                <p><strong>Tipo PDV:</strong></p>
-                <input type="text" pInputText [(ngModel)]="this.nuevaTienda.tipo_pdv"/>
-            </div>
+    <div class="formularioICIUG" *ngIf="activeIndex === 0">
+        <div>
+            <p><strong>CIF:</strong></p>
+            <input type="text" pInputText [(ngModel)]="this.nuevaTienda.cif"/>
+            <p><strong>Razón Social:</strong></p>
+            <input type="text" pInputText [(ngModel)]="this.nuevaTienda.razon_social"/>
+            <p><strong>Tipo Distribuidor:</strong></p>
+            <input type="text" pInputText [(ngModel)]="this.nuevaTienda.tipo_distribuidor"/>
+            <p><strong>Canal:</strong></p>
+            <input type="text" pInputText [(ngModel)]="this.nuevaTienda.canal"/>
         </div>
-        <div class="formularioICIUG" *ngIf="activeIndex === 1">
-            <div>
-    
-                <p><strong>Zona Geográfica:</strong></p>
-                <input type="text" pInputText [(ngModel)]="this.nuevaTienda.zona_geografica"/>
-                <p><strong>Provincia:</strong></p>
-                <input type="text" pInputText [(ngModel)]="this.nuevaTienda.provincia"/>
-            </div>
-            <div>
-                <p><strong>Población:</strong></p>
-                <input type="text" pInputText [(ngModel)]="this.nuevaTienda.poblacion"/>
-                <p><strong>CP:</strong></p>
-                <input type="text" pInputText [(ngModel)]="this.nuevaTienda.cp"/>
-            </div>
+        <div>
+            <p><strong>SFID:</strong></p>
+            <input type="text" pInputText [(ngModel)]="this.nuevaTienda.sfid"/>
+            <p><strong>Nombre:</strong></p>
+            <input type="text" pInputText [(ngModel)]="this.nuevaTienda.nombre"/>
+            <p><strong>Tipo PDV:</strong></p>
+            <input type="text" pInputText [(ngModel)]="this.nuevaTienda.tipo_pdv"/>
         </div>
-        <div class="formularioICIUG" *ngIf="activeIndex === 2">
-            <p><strong>Activo:</strong></p>
-            <td><p-toggleButton [(ngModel)]="nuevaTienda.activo" onLabel="Sí" offLabel="No" ></p-toggleButton></td>
-            <p><strong>Visible:</strong></p>
-            <td><p-toggleButton [(ngModel)]="nuevaTienda.visible" onLabel="Sí" offLabel="No" [style]="{'cursor': 'pointer'}"></p-toggleButton></td>                
-            <p><strong>Vodafone:</strong></p>
-            <td><p-toggleButton [(ngModel)]="nuevaTienda.vodafone" onLabel="Sí" offLabel="No"></p-toggleButton></td> 
-            <p><strong>Lowi:</strong></p>
-            <td><p-toggleButton [(ngModel)]="nuevaTienda.lowi" onLabel="Sí" offLabel="No"></p-toggleButton></td>            
+    </div>
+    <div class="formularioICIUG" *ngIf="activeIndex === 1">
+        <div>
+
+            <p><strong>Zona Geográfica:</strong></p>
+            <input type="text" pInputText [(ngModel)]="this.nuevaTienda.zona_geografica"/>
+            <p><strong>Provincia:</strong></p>
+            <input type="text" pInputText [(ngModel)]="this.nuevaTienda.provincia"/>
         </div>
-        <div *ngIf="activeIndex === 3">
-            <div *ngIf="!vistaCrearMueble">
-                <p-pickList [source]="listaMueblesMostrar" [target]="listaMueblesNuevaTienda" [targetHeader]="cabeceraListaDerecha" 
-                filterBy="nombre" sourceFilterPlaceholder="Buscar por nombre" targetFilterPlaceholder="Buscar por nombre" [dragdrop]="true" [responsive]="true"
-                [showSourceControls] = "false" [showTargetControls] = "false">
+        <div>
+            <p><strong>Población:</strong></p>
+            <input type="text" pInputText [(ngModel)]="this.nuevaTienda.poblacion"/>
+            <p><strong>CP:</strong></p>
+            <input type="text" pInputText [(ngModel)]="this.nuevaTienda.cp"/>
+        </div>
+    </div>
+    <div class="formularioICIUG" *ngIf="activeIndex === 2">
+        <p><strong>Activo:</strong></p>
+        <td><p-toggleButton [(ngModel)]="nuevaTienda.activo" onLabel="Sí" offLabel="No" ></p-toggleButton></td>
+        <p><strong>Visible:</strong></p>
+        <td><p-toggleButton [(ngModel)]="nuevaTienda.visible" onLabel="Sí" offLabel="No" [style]="{'cursor': 'pointer'}"></p-toggleButton></td>                
+        <p><strong>Vodafone:</strong></p>
+        <td><p-toggleButton [(ngModel)]="nuevaTienda.vodafone" onLabel="Sí" offLabel="No"></p-toggleButton></td> 
+        <p><strong>Lowi:</strong></p>
+        <td><p-toggleButton [(ngModel)]="nuevaTienda.lowi" onLabel="Sí" offLabel="No"></p-toggleButton></td>            
+    </div>
+    <div *ngIf="activeIndex === 3">
+        <div *ngIf="!vistaCrearMueble">
+            <p-pickList [source]="listaMueblesMostrar" [target]="listaMueblesNuevaTienda" [targetHeader]="cabeceraListaDerecha" 
+            filterBy="nombre" sourceFilterPlaceholder="Buscar por nombre" targetFilterPlaceholder="Buscar por nombre" [dragdrop]="true" [responsive]="true"
+            [showSourceControls] = "false" [showTargetControls] = "false">
+            <ng-template let-mueble pTemplate="item">
+                <div class="contenedorMuebleArrastras">
+                    <div class="anchoAltoDescripcionFotoReferencia">
+                        <span class="letrasCaracteristicasMueble"><strong>{{ mueble.nombre }}</strong></span>
+                    </div>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="sourceHeader" >
+                <div class="flex align-items-center justify-content-between">
+                    <p style="font-weight: 700;"> Muebles Disponibles</p>
+                    <p-button severity="danger" label="Crear Mueble" icon="pi pi-plus" (onClick)="vistaCrearMueble = !vistaCrearMueble"></p-button>
+                </div>
+                </ng-template>
+            </p-pickList>
+        </div>
+        <div *ngIf="vistaCrearMueble">
+            <p-button icon="pi pi-arrow-left" (onClick)="vistaCrearMueble = !vistaCrearMueble" label="Volver a la lista de muebles" [text]="true" severity="danger"></p-button>
+        </div>
+    </div>
+    <div class="resumentNuevaTienda" *ngIf="activeIndex === 4">
+        <div>
+            <p><strong>Resumen de la tienda:</strong></p>
+            <p><strong>Nombre: </strong>{{nuevaTienda.nombre}}</p>
+            <p><strong>CIF: </strong>{{nuevaTienda.cif}}</p>
+            <p><strong>SFID: </strong>{{nuevaTienda.sfid}}</p>
+            <p><strong>Razón Social: </strong>{{nuevaTienda.razon_social}}</p>
+            <p><strong>Tipo PDV: </strong>{{nuevaTienda.tipo_pdv}}</p>
+            <p><strong>Zona Geográfica: </strong>{{nuevaTienda.zona_geografica}}</p>
+            <p><strong>Provincia: </strong>{{nuevaTienda.provincia}}</p>
+            <p><strong>Población: </strong>{{nuevaTienda.poblacion}}</p>
+            <p><strong>CP: </strong>{{nuevaTienda.cp}}</p>
+            <p><strong>Activo: </strong><span class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': nuevaTienda.activo, 'text-red-500 pi-times-circle': !nuevaTienda.activo }" [style]="{'cursor': 'auto'}" ></span></p>
+            <p><strong>Visible: </strong><span class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': nuevaTienda.visible, 'text-red-500 pi-times-circle': !nuevaTienda.visible }" [style]="{'cursor': 'auto'}"></span></p>
+            <p><strong>Vodafone: </strong><span class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': nuevaTienda.vodafone, 'text-red-500 pi-times-circle': !nuevaTienda.vodafone }" [style]="{'cursor': 'auto'}"></span></p>
+            <p><strong>Lowi: </strong><span class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': nuevaTienda.lowi, 'text-red-500 pi-times-circle': !nuevaTienda.lowi }" [style]="{'cursor': 'auto'}"></span></p>
+        </div>
+        <div>
+            <p-orderList [value]="listaMueblesNuevaTienda" [listStyle]="{ height: '20rem' }" header="Muebles Seleccionados" >
                 <ng-template let-mueble pTemplate="item">
                     <div class="contenedorMuebleArrastras">
                         <div class="anchoAltoDescripcionFotoReferencia">
@@ -62,46 +99,7 @@
                         </div>
                     </div>
                 </ng-template>
-                <ng-template pTemplate="sourceHeader" >
-                    <div class="flex align-items-center justify-content-between">
-                        <p style="font-weight: 700;"> Muebles Disponibles</p>
-                        <p-button severity="danger" label="Crear Mueble" icon="pi pi-plus" (onClick)="vistaCrearMueble = !vistaCrearMueble"></p-button>
-                    </div>
-                    </ng-template>
-                </p-pickList>
-            </div>
-            <div *ngIf="vistaCrearMueble">
-                <p-button icon="pi pi-arrow-left" (onClick)="vistaCrearMueble = !vistaCrearMueble" label="Volver a la lista de muebles" [text]="true" severity="danger"></p-button>
-            </div>
-        </div>
-        <div class="resumentNuevaTienda" *ngIf="activeIndex === 4">
-            <div>
-                <p><strong>Resumen de la tienda:</strong></p>
-                <p><strong>Nombre: </strong>{{nuevaTienda.nombre}}</p>
-                <p><strong>CIF: </strong>{{nuevaTienda.cif}}</p>
-                <p><strong>SFID: </strong>{{nuevaTienda.sfid}}</p>
-                <p><strong>Razón Social: </strong>{{nuevaTienda.razon_social}}</p>
-                <p><strong>Tipo PDV: </strong>{{nuevaTienda.tipo_pdv}}</p>
-                <p><strong>Zona Geográfica: </strong>{{nuevaTienda.zona_geografica}}</p>
-                <p><strong>Provincia: </strong>{{nuevaTienda.provincia}}</p>
-                <p><strong>Población: </strong>{{nuevaTienda.poblacion}}</p>
-                <p><strong>CP: </strong>{{nuevaTienda.cp}}</p>
-                <p><strong>Activo: </strong><span class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': nuevaTienda.activo, 'text-red-500 pi-times-circle': !nuevaTienda.activo }" [style]="{'cursor': 'auto'}" ></span></p>
-                <p><strong>Visible: </strong><span class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': nuevaTienda.visible, 'text-red-500 pi-times-circle': !nuevaTienda.visible }" [style]="{'cursor': 'auto'}"></span></p>
-                <p><strong>Vodafone: </strong><span class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': nuevaTienda.vodafone, 'text-red-500 pi-times-circle': !nuevaTienda.vodafone }" [style]="{'cursor': 'auto'}"></span></p>
-                <p><strong>Lowi: </strong><span class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': nuevaTienda.lowi, 'text-red-500 pi-times-circle': !nuevaTienda.lowi }" [style]="{'cursor': 'auto'}"></span></p>
-            </div>
-            <div>
-                <p-orderList [value]="listaMueblesNuevaTienda" [listStyle]="{ height: '20rem' }" header="Muebles Seleccionados" >
-                    <ng-template let-mueble pTemplate="item">
-                        <div class="contenedorMuebleArrastras">
-                            <div class="anchoAltoDescripcionFotoReferencia">
-                                <span class="letrasCaracteristicasMueble"><strong>{{ mueble.nombre }}</strong></span>
-                            </div>
-                        </div>
-                    </ng-template>
-                </p-orderList>
-            </div>
+            </p-orderList>
         </div>
     </div>
     <div *ngIf="!vistaCrearMueble">

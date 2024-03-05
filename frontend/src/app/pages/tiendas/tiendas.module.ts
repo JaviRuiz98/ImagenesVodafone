@@ -15,11 +15,13 @@ import { OrderListModule } from 'primeng/orderlist';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { DialogNuevaTiendaComponent } from './component/dialog-nueva-tienda/dialog-nueva-tienda.component';
 import { DialogService } from 'primeng/dynamicdialog';
+import { EditarTiendaComponent } from './component/editar-tienda/editar-tienda.component';
 
 @NgModule({
   declarations: [
     TiendasComponent,
-    DialogNuevaTiendaComponent
+    DialogNuevaTiendaComponent,
+    EditarTiendaComponent
   ],
   imports: [
     CommonModule,

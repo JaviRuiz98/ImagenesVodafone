@@ -47,7 +47,8 @@ export class TiendasComponent implements OnInit{
     return tiendas.filter(tiendas => tiendas.sfid.toLowerCase().includes(this.nombreFiltro.toLowerCase()));
   }
 
-  confirmarCambio(tienda: tienda) {
+  confirmarCambio(tienda: tienda, parametro: string) {
+    this.mensajesActivarDesactivar(parametro, tienda);
     this.ConfirmationService.confirm({
       message: this.mensajeDialog,
       header: this.mensajeActivarDesactivar,
@@ -55,7 +56,7 @@ export class TiendasComponent implements OnInit{
       acceptLabel: 'Sí', 
       rejectLabel: 'No',
       accept: () => {
-        this.TiendasService.activarDesactivarTienda(tienda).subscribe((response: tienda) => {
+        this.TiendasService.activarDesactivarTienda(tienda, parametro).subscribe((response: tienda) => {
           const index = this.tiendas.findIndex(t => t.id === tienda.id && t.sfid === tienda.sfid);
           if (index !== -1) {
             this.tiendas[index].activo = response.activo;
@@ -72,6 +73,28 @@ export class TiendasComponent implements OnInit{
         } 
       },
     });
+  }
+  mensajesActivarDesactivar(parametro: string, tienda: tienda){
+    console.log(parametro, tienda.activo);
+    switch(parametro){
+      case 'activa':
+        if(tienda.activo){
+          this.mensajeDialog = '¿Seguro que desea desactivar la tienda?';
+          this.mensajeActivarDesactivar = 'Desactivar';
+        } else{        
+          this.mensajeDialog = '¿Seguro que desea activar la tienda?';
+          this.mensajeActivarDesactivar = 'Activar';
+        }
+      break;
+      default:
+        this.mensajeDialog = '¿Seguro que desea cambiar el estado del apartado ' + parametro + '?';
+        if(tienda[parametro]){
+          this.mensajeActivarDesactivar = 'Desactivar';
+        } else{
+          this.mensajeActivarDesactivar = 'Activar';
+        }
+      break;
+    }
   }
   editarTienda(tienda: tienda){
     this.tiendaSelected = tienda;

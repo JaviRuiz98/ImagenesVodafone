@@ -15,9 +15,7 @@
         </div>
         <app-dialog-nueva-tienda 
             [verFormularioNuevaTienda]="verFormularioNuevaTienda"
-            [verFormularioEditarTienda]="verFormularioNuevaTienda"
             (verFormularioNuevaTiendaChange)="verFormularioNuevaTienda = false"
-            (verFormularioEditarTiendaChange)="verFormularioEditarTienda = false"
             [tiendaSelected]="tiendaSelected"
             (actualizarListadoTiendasChange)="getAllTiendas()"
             [vistaCrearMueble]="vistaCrearMueble"
@@ -43,10 +41,6 @@
                 <th>Tipo distribuidor</th>
                 <th>Canal</th>
                 <th>Tipo PDV</th>
-                <th>Zona geográfica</th>
-                <th>Provincia</th>
-                <th>Población</th>
-                <th>CP</th>
                 <th>Editar</th>
                 <th>Activo</th>
                 <th>Visible</th>
@@ -63,16 +57,18 @@
                 <td>{{ tiendas.tipo_distribuidor }}</td>
                 <td>{{ tiendas.canal }}</td>
                 <td>{{ tiendas.tipo_pdv }}</td>
-                <td>{{ tiendas.zona_geografica }}</td>
-                <td>{{ tiendas.provincia }}</td>
-                <td>{{ tiendas.poblacion }}</td>
-                <td>{{ tiendas.cp }}</td>
                 <td style="padding: 0.4rem;"><p-button class="botonNuevaTienda" label="Editar Tienda" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="editarTienda(tiendas)" [style]="{'min-width': '130px'}" [disabled]="!tiendas.activo" ></p-button></td>
-                <td><p-button class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendas.activo, 'text-red-500 pi-times-circle': !tiendas.activo }" (click)="confirmarCambio(tiendas)" [style]="{'border': 'none', 'background': 'none', 'cursor': 'pointer', 'padding': '0'}"></p-button></td>
-                <td><p-button class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendas.visible, 'text-red-500 pi-times-circle': !tiendas.visible }" (click)="confirmarCambio(tiendas)" [style]="{'border': 'none', 'background': 'none', 'cursor': 'pointer', 'padding': '0'}"></p-button></td>
-                <td><p-button class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendas.vodafone, 'text-red-500 pi-times-circle': !tiendas.vodafone }" (click)="confirmarCambio(tiendas)" [style]="{'border': 'none', 'background': 'none', 'cursor': 'pointer', 'padding': '0'}"></p-button></td>
-                <td><p-button class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendas.lowi, 'text-red-500 pi-times-circle': !tiendas.lowi }" (click)="confirmarCambio(tiendas)" [style]="{'border': 'none', 'background': 'none', 'cursor': 'pointer', 'padding': '0'}"></p-button></td>
+                <td><p-button class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendas.activo, 'text-red-500 pi-times-circle': !tiendas.activo }" (click)="confirmarCambio(tiendas, 'activo')" [style]="{'border': 'none', 'background': 'none', 'cursor': 'pointer', 'padding': '0'}"></p-button></td>
+                <td><p-button class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendas.visible, 'text-red-500 pi-times-circle': !tiendas.visible }" (click)="confirmarCambio(tiendas, 'visible')" [style]="{'border': 'none', 'background': 'none', 'cursor': 'pointer', 'padding': '0'}"></p-button></td>
+                <td><p-button class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendas.vodafone, 'text-red-500 pi-times-circle': !tiendas.vodafone }" (click)="confirmarCambio(tiendas, 'vodafone')" [style]="{'border': 'none', 'background': 'none', 'cursor': 'pointer', 'padding': '0'}"></p-button></td>
+                <td><p-button class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendas.lowi, 'text-red-500 pi-times-circle': !tiendas.lowi }" (click)="confirmarCambio(tiendas, 'lowi')" [style]="{'border': 'none', 'background': 'none', 'cursor': 'pointer', 'padding': '0'}"></p-button></td>
             </tr>
+            <app-editar-tienda
+                [verFormularioEditarTienda]="verFormularioEditarTienda"
+                (verFormularioEditarTiendaChange)="verFormularioEditarTienda = false"
+                [tiendaSelected]="tiendaSelected"
+            >
+            </app-editar-tienda>
         </ng-template>
         </p-table>
     </div>
