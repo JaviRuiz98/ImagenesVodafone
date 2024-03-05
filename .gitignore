@@ -8,11 +8,12 @@ backend/.dockerignore
 backend/docker-compose.debug.yml
 backend/Dockerfile
 backend/assets/imagenes
+backend/reporte.pdf
 
 .env
 database
 docker-compose.yml
 
 frontend/node_modules
-
 frontend/.angular
+frontend/src/assets/3d_models

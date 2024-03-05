@@ -15,7 +15,7 @@
     </ng-template>
 </p-table>
 
-<div style="justify-content: center; display: flex; margin-top: 5%">
+<div style="justify-content: center; display: flex; margin-top: 10%">
     <h3>Resumen resultados:</h3>
     <p-chart type="pie" [data]="data" [options]="chartOptions"></p-chart>
 </div>
@@ -28,38 +28,38 @@
             <th>Detalles</th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-procesado>
-        <tr>
+    <ng-template pTemplate="body" let-elemento>
+        <tr *ngFor="let procesado of elemento.procesados_imagenes">
             <td>
                 <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block mx-auto border-round" 
-                     [src]="url_imagenes_referencia + procesado.elementos.imagenes.url" 
-                     [alt]="procesado.elementos.imagenes.url" />
+                        [src]="url_imagenes_referencia + elemento.elementos.imagenes.url" 
+                        [alt]="elemento.elementos.imagenes.url" />
             </td>
             <td>
                 <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block mx-auto border-round" 
-                     [src]="url_imagenes_procesadas + procesado.procesados_imagenes[0].imagenes.url" 
-                     [alt]="procesado.procesados_imagenes[0].imagenes.url"/>
+                        [src]="url_imagenes_procesadas + procesado.imagenes.url" 
+                        [alt]="procesado.imagenes.url"/>
             </td>
             <td>
                 <div display="flex">                    
-                    <div *ngIf="procesado.procesados_imagenes[0].id_categoria === 1">
+                    <div *ngIf="procesado.id_categoria === 1">
                         <strong>Resultados: </strong>
-                        <p-tag [severity]="getSeverityCartel(procesado.procesados_imagenes[0].probabilidades_respuesta_carteles.probabilidad)">
-                            {{procesado.procesados_imagenes[0].probabilidades_respuesta_carteles.probabilidad}}
+                        <p-tag [severity]="getSeverityCartel(procesado.probabilidades_respuesta_carteles.probabilidad)">
+                            {{procesado.probabilidades_respuesta_carteles.probabilidad}}
                         </p-tag>
                     </div>
-                    <div *ngIf="procesado.procesados_imagenes[0].id_categoria === 2">
+                    <div *ngIf="procesado.id_categoria === 2">
                         <strong>Resultados: </strong>
-                        <p-tag [severity]="getSeverityDispositivos(procesado.procesados_imagenes[0].dispositivos_contados, procesado.procesados_imagenes[0].huecos_esperados)">
-                            {{procesado.procesados_imagenes[0].dispositivos_contados}}/{{procesado.procesados_imagenes[0].huecos_esperados}}
+                        <p-tag [severity]="getSeverityDispositivos(procesado.dispositivos_contados, procesado.huecos_esperados)">
+                            {{procesado.dispositivos_contados}}/{{procesado.huecos_esperados}}
                         </p-tag>
                     </div>                    
                 </div>
                 <div style="margin-top: 10px">
-                    <strong>Fecha:</strong> {{ this.publicMedhodsService.formatDate(procesado.procesados_imagenes[0].fecha) }}
+                    <strong>Fecha:</strong> {{ this.publicMedhodsService.formatDate(procesado.fecha) }}
                 </div>
                 <div style="margin-top: 10px">
-                    <strong>Comentarios:</strong> {{ procesado.procesados_imagenes[0].comentarios }}
+                    <strong>Comentarios:</strong> {{ procesado.comentarios }}
                 </div>                
             </td>
         </tr>
