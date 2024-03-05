@@ -83,7 +83,6 @@ export class PasoAsignarElementoFormComponent implements OnInit {
       
     }
     return undefined;
-   
   }
   get indexAtributoFirstElementoSinModeloExpositor(): number | undefined {
     if (!!this.atributos_expositores) {

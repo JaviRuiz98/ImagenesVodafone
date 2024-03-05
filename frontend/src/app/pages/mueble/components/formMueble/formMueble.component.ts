@@ -199,7 +199,6 @@ export class FormMuebleComponent implements OnInit {
       atributosExpositores.push(atributoExpositorGroup);
     }
    
-
   }
 
   actualizarAtributoExpositor(expositorIndex: number, atributoIndex: number, atributo: atributos_expositores) {
