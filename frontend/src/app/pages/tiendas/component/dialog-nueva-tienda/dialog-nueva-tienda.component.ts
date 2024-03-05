@@ -13,8 +13,6 @@ import { muebles } from 'src/app/interfaces/muebles';
 
 export class DialogNuevaTiendaComponent{
 
-  constructor(private TiendasService: TiendasService, private MueblesService: MueblesService) { }
-  
   @Input() verFormularioNuevaTienda: boolean = false;
   @Input() verFormularioEditarTienda: boolean = false;
   @Input() vistaCrearMueble: boolean = false;
@@ -39,6 +37,8 @@ export class DialogNuevaTiendaComponent{
   cabeceraListaDerecha: string = '';
   cabeceraListaDerechaNuevaTienda: string = 'Muebles Seleccionados';
   cabeceraListaDerechaEditarTienda: string = 'Muebles Actuales';
+
+  constructor(private TiendasService: TiendasService, private MueblesService: MueblesService) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.verFormularioNuevaTienda && this.verFormularioNuevaTienda === true) {
@@ -112,6 +112,15 @@ export class DialogNuevaTiendaComponent{
       }
     }
   }
+  ordenarListaAlfabeticamente(lista: any[], campo: string) {
+    const listaOrdenada = lista.sort((a, b) => a[campo].localeCompare(b[campo]));
+    return listaOrdenada;
+  }
+  eliminarMueblesSeleccionados(listaCompleta: muebles[], listaMueblesSeleccionados: muebles[]){
+    const idsLista2 = new Set(listaMueblesSeleccionados.map(mueble => mueble.id));
+    const listaFiltrada = listaCompleta.filter((mueble) => !idsLista2.has(mueble.id));
+    return listaFiltrada;
+  }
   editarTienda(tienda: tienda){
 
     // const listaMueblesDisponibles = this.eliminarMueblesSeleccionados(this.listaTodosMuebles, this.listaMueblesNuevaTienda)
@@ -123,14 +132,5 @@ export class DialogNuevaTiendaComponent{
     //   this.listaMueblesMostrar = this.eliminarMueblesSeleccionados(this.listaTodosMuebles, response);
     // })
     // this.verFormularioNuevaTienda = true;
-  }
-  ordenarListaAlfabeticamente(lista: any[], campo: string) {
-    const listaOrdenada = lista.sort((a, b) => a[campo].localeCompare(b[campo]));
-    return listaOrdenada;
-  }
-  eliminarMueblesSeleccionados(listaCompleta: muebles[], listaMueblesSeleccionados: muebles[]){
-    const idsLista2 = new Set(listaMueblesSeleccionados.map(mueble => mueble.id));
-    const listaFiltrada = listaCompleta.filter((mueble) => !idsLista2.has(mueble.id));
-    return listaFiltrada;
   }
 }
