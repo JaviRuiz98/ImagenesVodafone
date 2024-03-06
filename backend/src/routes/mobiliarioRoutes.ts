@@ -9,7 +9,6 @@ router.post('/createMueble/',  createMueble);
 router.put('/muebles/:id_mueble',  updateMueble);
 router.get('/muebles',  getAllMuebles);
 router.get('/muebles/:id_tienda',  getMueblesAndExpositoresActivosByIdTienda);
-
 router.put('/expositores/:id', updateExpositor);
 
 export default router

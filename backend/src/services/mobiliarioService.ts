@@ -100,6 +100,7 @@ export const mobiliarioService = {
                                             elementos: {
                                                 include: {
                                                     imagenes: true,
+                                                    categorias_elementos: true
                                                 },
                                             },
                                         },
@@ -172,7 +173,6 @@ export const mobiliarioService = {
                 },
             });
 
-            //const expositores = muebles.flatMap((m) => m.expositores); //revisar
 
             return muebles;
         } catch (error) {
@@ -183,8 +183,9 @@ export const mobiliarioService = {
     },
 
     async getMueblesAndExpositoresActivosByIdTienda(
-        id_tienda: number
+        id_tienda?: number
     ): Promise<any[]> {
+
         if (!id_tienda) return this.getAllMuebles();
         try {
             const muebles = await db.muebles.findMany({
@@ -222,8 +223,7 @@ export const mobiliarioService = {
                 },
             });
 
-            //    const mapeoPromises = muebles.map(mapearExpositoresParaFront);
-            //    const mueblesFront = await Promise.all(mapeoPromises);
+        
             return muebles;
         } catch (error) {
             throw error;

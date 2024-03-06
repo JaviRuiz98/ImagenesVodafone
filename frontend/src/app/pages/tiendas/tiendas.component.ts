@@ -2,7 +2,11 @@ import { Component, OnInit, Output } from '@angular/core';
 import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
 import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
+import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
+import { Router } from '@angular/router';
+
 import { tienda } from 'src/app/interfaces/tienda';
+import { muebles } from 'src/app/interfaces/muebles';
 
 @Component({
   selector: 'app-tiendas',
@@ -28,7 +32,15 @@ export class TiendasComponent implements OnInit{
   mensajeActivarDesactivar: string = 'Desactivar';
   mensajeDialog: string = '¿Seguro que desea desactivar la tienda?';
 
-  constructor(private TiendasService: TiendasService, private MueblesService: MueblesService, private messageService: MessageService, private ConfirmationService: ConfirmationService){}
+  constructor(
+    private TiendasService: TiendasService, 
+    private MueblesService: MueblesService, 
+    private messageService: MessageService, 
+    private ConfirmationService: ConfirmationService,
+    private router: Router,
+    private localStorageService: LocalStorageService
+  ){}
+  
   ngOnInit(): void {
     this.getAllTiendas();
   }
@@ -100,4 +112,16 @@ export class TiendasComponent implements OnInit{
     this.tiendaSelected = tienda;
     this.verFormularioEditarTienda = true;
   }
+
+  eliminarMueblesSeleccionados(listaCompleta: muebles[], listaMueblesSeleccionados: muebles[]){
+    const idsLista2 = new Set(listaMueblesSeleccionados.map(mueble => mueble.id));
+    const listaFiltrada = listaCompleta.filter((mueble) => !idsLista2.has(mueble.id));
+    return listaFiltrada;
+  }
+
+  abrirPlanoTienda(id_tienda: number) {
+    this.localStorageService.setItem('id_tienda', id_tienda);
+    this.router.navigate(['/plano_tienda']);    
+  }
+
 }

@@ -1,7 +1,7 @@
 <p-toast>  </p-toast>
 
-<!-- <app-remarcar-expositor *ngIf=" verRemarcado"  (verRemarcado)="manejarVerRemarcado($event)" imagen="{{url_imagenes_referencias + '24.png'}}"></app-remarcar-expositor>       
-        -->
+<app-remarcar-expositor *ngIf=" true"  (verRemarcado)="manejarVerRemarcado($event)" imagen="{{url_imagenes_referencias + '24.png'}}"></app-remarcar-expositor>       
+       
 <p-panel header="Elementos" [style]="{width: '70%', margin: '0 auto'}">
     <p-toolbar styleClass="mb-4 gap-2">
 
@@ -16,14 +16,6 @@
             <p-dropdown [options]="categorias_elementos" (onChange)="cambiarOpcionBusqueda($event)" [(ngModel)]="categoriaSeleccionada"  optionLabel="nombre" [showClear]="true" placeholder="Buscar por clase" [style] = "{'margin-left': '20px'}"></p-dropdown>
             <p-dropdown [options]="opcionesCatalogo" (onChange)="cambiarOpcionBusqueda($event)" [(ngModel)]="opcionCatalogoSeleccionado" optionLabel="estado" [showClear]="true" placeholder="Estado del catalogo" [style] = "{'margin-left': '20px'}" ></p-dropdown>
             
-            
-            <!--  -->
-            <button pButton pRipple label="Mostrar RemarcarExpositor" icon="pi pi-plus" class="p-button-success mr-2" (click)="verRemarcadorExpositor()" ></button>
-            <div *ngIf="verRemarcado == true">
-                <app-remarcar-expositor  (verRemarcado)="manejarVerRemarcado($event)" imagen="{{url_imagenes_referencias + '24.png'}}"></app-remarcar-expositor>       
-            </div>
-            <!--  -->
-
         </ng-template>
     </p-toolbar>
     <p-table

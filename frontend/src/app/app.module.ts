@@ -18,6 +18,7 @@ import { AuditoriaModule } from './pages/auditoria/auditoria.module';
 import { DatePipe } from '@angular/common';
 import { ElementosModule } from './pages/elementos/elementos.modules';
 import { RemarcarExpositorComponent } from './componentes/remarcar-expositor/remarcar-expositor.component';
+import { PlanoTiendaModule } from './pages/plano-tienda/plano-tienda.module';
 import { LoginModule } from './pages/login/login.module';
 
 @NgModule({
@@ -36,6 +37,8 @@ import { LoginModule } from './pages/login/login.module';
     HttpClientModule,
     GestionDeAuditoriasModule,
     AuditoriaModule,    
+    ElementosModule,
+    PlanoTiendaModule
     ElementosModule,
     LoginModule
   ],
