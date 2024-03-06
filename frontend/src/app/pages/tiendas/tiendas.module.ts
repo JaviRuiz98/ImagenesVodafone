@@ -16,7 +16,7 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { DialogNuevaTiendaComponent } from './component/dialog-nueva-tienda/dialog-nueva-tienda.component';
 import { DialogService } from 'primeng/dynamicdialog';
 import { EditarTiendaComponent } from './component/editar-tienda/editar-tienda.component';
-
+import { AgregarMuebleATiendaComponent } from 'src/app/componentes/agregar-mueble-a-tienda/agregar-mueble-a-tienda.component';
 @NgModule({
   declarations: [
     TiendasComponent,
@@ -35,6 +35,7 @@ import { EditarTiendaComponent } from './component/editar-tienda/editar-tienda.c
     TableModule,
     OrderListModule,
     ToggleButtonModule,
+    AgregarMuebleATiendaComponent
   ],
   providers: [MessageService, DialogService],
 

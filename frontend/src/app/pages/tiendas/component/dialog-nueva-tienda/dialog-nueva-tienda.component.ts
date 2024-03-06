@@ -28,14 +28,8 @@ export class DialogNuevaTiendaComponent{
 
   nuevaTienda: tienda = {} as tienda;
   
-  listaTodosMuebles: muebles[] = [];
+  listaTodosMueblesDisponiblesOrdenados: muebles[] = [];
   listaMueblesNuevaTienda: muebles[] = [];
-  listaMueblesMostrar: muebles[] = [];
-  listaMueblesFiltrar: muebles[] = [];
-
-  cabeceraListaDerecha: string = '';
-  cabeceraListaDerechaNuevaTienda: string = 'Muebles Seleccionados';
-  cabeceraListaDerechaEditarTienda: string = 'Muebles Actuales';
 
   constructor(private TiendasService: TiendasService, private MueblesService: MueblesService) { }
 
@@ -52,13 +46,11 @@ export class DialogNuevaTiendaComponent{
     this.listaMueblesNuevaTienda = [];
     this.contenidoBotonCrearEditarTienda = 'Crear Tienda';
     this.nuevaTienda = {} as tienda;
-    this.cabeceraListaDerecha = this.cabeceraListaDerechaNuevaTienda;
   }
 
   getAllMuebles(){
-    this.MueblesService.getAllMuebles().subscribe((response: muebles[]) => {
-      this.listaTodosMuebles = this.ordenarListaAlfabeticamente(response, 'nombre');
-      this.listaMueblesMostrar = this.listaTodosMuebles;
+    this.MueblesService.getAllMuebles().subscribe((listaTodosMueblesDisponibles: muebles[]) => {
+      this.listaTodosMueblesDisponiblesOrdenados = this.ordenarListaAlfabeticamente(listaTodosMueblesDisponibles, 'nombre');
     });
   }
   inicializarSteps(){

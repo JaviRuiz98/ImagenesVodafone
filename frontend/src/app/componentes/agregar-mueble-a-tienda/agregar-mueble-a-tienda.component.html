@@ -1,0 +1,17 @@
+<p-pickList [source]="listaMueblesDisponiblesTablaIzquierda" [target]="listaMueblesAsignadosTablaDerecha" [targetHeader]="'Muebles Seleccionados'" 
+    filterBy="nombre" sourceFilterPlaceholder="Buscar por nombre" targetFilterPlaceholder="Buscar por nombre" [dragdrop]="true" [responsive]="true"
+    [showSourceControls] = "false" [showTargetControls] = "false">
+    <ng-template let-mueble pTemplate="item">
+        <div class="contenedorMuebleArrastras">
+            <div class="anchoAltoDescripcionFotoReferencia">
+                <span class="letrasCaracteristicasMueble"><strong>{{ mueble.nombre }}</strong></span>
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="sourceHeader" >
+        <div class="flex align-items-center justify-content-between">
+            <p style="font-weight: 700;"> Muebles Disponibles</p>
+            <p-button severity="danger" label="Crear Mueble" icon="pi pi-plus"></p-button>
+        </div>
+    </ng-template>
+</p-pickList>

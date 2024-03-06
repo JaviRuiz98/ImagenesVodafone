@@ -20,11 +20,9 @@ export class EditarTiendaComponent implements OnInit {
   activeIndex: number = 0;
   contenidoBotonCrearEditarTienda: string = 'Siguiente';
 
-  listaMueblesTiendaTablaDerecha: muebles[] = [];
-  listaMueblesMostrarTablaIzquierda: muebles[] = [];
-  listaMueblesFiltrar: muebles[] = [];
-
-  cabeceraListaDerecha: string = 'Muebles Seleccionados';
+  listaMueblesDisponiblesTablaIzquierda: muebles[] = [];
+  listaMueblesAsignadosTablaDerecha:  muebles[] = [];
+  modificacionListaDerecha:  muebles[] = [];
 
   constructor(private TiendasService: TiendasService, private MueblesService: MueblesService) { }
 
@@ -45,12 +43,14 @@ export class EditarTiendaComponent implements OnInit {
     this.contenidoBotonCrearEditarTienda = 'Editar Tienda';
   }
   getMueblesTienda(){
-    this.MueblesService.getAllMuebles().subscribe((response: muebles[]) => {
-      const listaTodosMuebles = this.ordenarListaAlfabeticamente(response, 'nombre');
-      this.MueblesService.getMueblesTiendaByIdTienda(this.tiendaSelected.id).subscribe((response: muebles[]) => {
-        this.listaMueblesMostrarTablaIzquierda = this.eliminarMueblesSeleccionados(listaTodosMuebles, response);
-        this.listaMueblesTiendaTablaDerecha = response;
-      })
+    this.MueblesService.getAllMuebles().subscribe((listaTodosLosMueblesDisponibles: muebles[]) => {
+      const listaTodosMueblesDisponiblesOrdenados = this.ordenarListaAlfabeticamente(listaTodosLosMueblesDisponibles, 'nombre');
+      if(this.tiendaSelected.id != undefined){
+        this.MueblesService.getMueblesTiendaByIdTienda(this.tiendaSelected.id).subscribe((mueblesTiendaAsignadosByIdTienda: muebles[]) => {
+          this.listaMueblesDisponiblesTablaIzquierda = this.eliminarMueblesSeleccionados(listaTodosMueblesDisponiblesOrdenados, mueblesTiendaAsignadosByIdTienda);
+          this.listaMueblesAsignadosTablaDerecha = mueblesTiendaAsignadosByIdTienda;
+        })
+      }
     });
   }
   inicializarSteps(){
@@ -79,7 +79,7 @@ export class EditarTiendaComponent implements OnInit {
     if(this.activeIndex < 2){
       this.activeIndex++;
     } else{
-      this.TiendasService.editarTienda(this.tiendaSelected, this.listaMueblesTiendaTablaDerecha).subscribe((response: any) => {
+      this.TiendasService.editarTienda(this.tiendaSelected, this.listaMueblesAsignadosTablaDerecha).subscribe((response: any) => {
         this.verFormularioEditarTienda = false;
       })
     }
