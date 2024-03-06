@@ -1,18 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Table } from 'primeng/table';
 import { muebles } from 'src/app/interfaces/muebles';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { FormMuebleComponent } from './components/formMueble/formMueble.component';
 import { HistorialExpositoresComponent } from './components/historialExpositores/historialExpositores.component';
 import { PrimeNGConfig } from 'primeng/api';
 import { expositores } from 'src/app/interfaces/expositores';
-import { elementos } from 'src/app/interfaces/elementos';
 import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
-import { PasoAsignarElementoFormComponent } from './components/formMueble/PasoAsignarElementoForm/PasoAsignarElementoForm.component';
 import { EditarExpositorComponent } from './components/editarExpositor/editarExpositor.component';
 import { UrlService } from 'src/app/servicios/url/url.service';
+import { Subject } from 'rxjs';
+
 @Component({
   selector: 'app-mueble',
   templateUrl: './mueble.component.html',
@@ -21,10 +20,6 @@ import { UrlService } from 'src/app/servicios/url/url.service';
 export class MuebleComponent implements OnInit {
 
 
-
-
-  
-  
   constructor( private urlService: UrlService, private muebleService: MueblesService, public dialogService: DialogService, public messageService: MessageService, private config: PrimeNGConfig) { }
   
   muebles: muebles[] = [];
@@ -35,10 +30,15 @@ export class MuebleComponent implements OnInit {
   nombreFiltro: string = '';
 
   muebleFormVisibility: boolean = false;
-
+  //dynamic dialog
   ref: DynamicDialogRef | undefined;
+  private dataSubject  = new Subject<expositores>();
+  emitData(data: expositores) {
+    this.dataSubject.next(data);
+  }
 
   
+
   ngOnInit() {
     this.config.setTranslation({
       startsWith: 'Empieza con',
@@ -151,27 +151,3 @@ export class MuebleComponent implements OnInit {
   
 }
 
-
-// separarExpositoresSegúnCategoria(muebles:muebles[]): mueblesVisualizacion[] {
-//    return  muebles.map(mueble => {
-
-//     const expositoresCarteles = mueble.expositores.filter(expositor => expositor.categoria === 'Carteles');
-
-//     const expositoresDispositivos = mueble.expositores.filter(expositor => expositor.categoria === 'Dispositivos');
-
-//     return {
-//       id: mueble.id,
-//       nombre_mueble: mueble.nombre_mueble,
-//       expositores: mueble.expositores,
-//       numero_expositores_carteles: expositoresCarteles.length,
-//       numero_expositores_dispositivos: expositoresDispositivos.length,
-//       expositores_carteles: expositoresCarteles,
-//       expositores_dispositivos: expositoresDispositivos
-//     };
-//   });
-  
-// }
-
-// resetTabla() {
-//   this.miTabla.reset();
-// }

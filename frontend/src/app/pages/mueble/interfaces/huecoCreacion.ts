@@ -7,5 +7,5 @@ export interface huecoCreacion {
     y_max?: number
     y_min?: number
     id_categoria?: number
-    elemento?: elementos
+
 }

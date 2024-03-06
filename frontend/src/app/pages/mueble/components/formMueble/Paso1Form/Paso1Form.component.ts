@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { regiones } from 'src/app/interfaces/regiones';
 import { EnumService } from 'src/app/servicios/enum.service';
 
@@ -20,19 +21,13 @@ export class Paso1FormComponent implements OnInit {
   @Input() objetivo_form: 'crear' | 'editar' = 'crear';
 
   @Output() formularioPaso1AddedImage = new EventEmitter< { imagenes: string, archivos_imagenes: File }>();
+  @Output() formularioPaso1DeletedExpositor = new EventEmitter<number>();
 
 
   get nombre_mueble() {
     return this.formulario.controls['nombre_mueble'];
   }
-  get imagenes() {
-    return this.formulario.controls['imagenes'];
-  }
-
-  get archivos_imagenes() {
-    return this.formulario.controls['archivos_imagenes'];
-  }
-
+ 
   get region(){
     return this.formulario.controls['region'];
   }
@@ -41,10 +36,28 @@ export class Paso1FormComponent implements OnInit {
   }
   
   get imagenesExpositores(): string[] {
-    return this.expositores.controls.map((expositor) => {
-      return expositor.get('imagen')?.value || ''; 
+    let imagenes: string[] = [];
+  
+    this.expositores.controls.forEach((expositor) => {
+      const atributosExpositores = expositor.get('atributos_expositores') as FormArray;
+  
+      atributosExpositores.controls.forEach((atributoExpositor) => {
+        
+        const elemento = atributoExpositor.get('elemento') as FormGroup;
+        const categoria = elemento.get('categorias_elementos')?.value;
+        const imagen = elemento.get('imagen')?.value;
+        if (imagen && categoria.id === 3) { //refactorizar
+          imagenes.push(imagen);
+        }
+      });
     });
+  
+    const imagenesUnicas = [...new Set(imagenes)];
+    console.log()
+    return imagenesUnicas;
   }
+  
+ 
   
 
   ngOnInit() {
@@ -58,9 +71,7 @@ export class Paso1FormComponent implements OnInit {
 
  
   deleteImage(index: number) {
-    this.formulario.patchValue({
-      imagenes: this.imagenes.value.filter((_, i) => i !== index)
-    })
+    this.formularioPaso1DeletedExpositor.emit(index);
   }
 
   onArchivoSeleccionadoChange($event: { archivo: File }) {
