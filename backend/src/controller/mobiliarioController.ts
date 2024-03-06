@@ -105,17 +105,16 @@ export async function getMueblesAndExpositoresActivosByIdTienda(
                   obtendré la imagen del elemento asociado de cualquier atributo_expositor con un elemento asociado. En caso  de no existir elemento asociado a ningún atributo_expositor o 
                   que no exista ningún atributo expositor en ningún expositor o que no haya expositores, devolveré null. Ese valor se añadirá a muebles.imagen_representativa
             */
-            let imgRepresentativa = null;
+            let imgRepresentativa:imagenes[] = [];
 
             imgRepresentativa = buscarImagenCategoriaEspecifica(3, muebles[i].expositores); //busco imagen de categoria 3 (modelo)
 
             //si no existe, busco cualquier imagen sin importar la categoria
-            if (!imgRepresentativa) {
+            if (imgRepresentativa.length === 0) {
                 imgRepresentativa = buscarImagenCualquierElemento(muebles[i].expositores);
             }
 
-           
-            muebles[i].imagen_representativa = imgRepresentativa;
+            muebles[i].imagen_representativa =  imgRepresentativa;
         }
         res.status(200).json(muebles);
     } catch (error) {
@@ -125,35 +124,35 @@ export async function getMueblesAndExpositoresActivosByIdTienda(
 }
 
 // Función para buscar imagen en categoría específica
-const buscarImagenCategoriaEspecifica = (categoria:number, expositores: any) :imagenes | null => {
+const buscarImagenCategoriaEspecifica = (categoria:number, expositores: any) :imagenes[] => {
+ let imagenes: imagenes[] = []
 for (let expositor of expositores) {
   
     for (let atributo of expositor.atributos_expositores) {
         if (atributo.id_categoria === categoria) {
             //solo hay una pertenencia (la mas reciente si el servicio es correcto) y siempre habrá un único elemento asociado a pertenencia 
             if (!!atributo.pertenencia_elementos_atributos[0].elementos.imagenes ) {
-                console.log(JSON.stringify(atributo.pertenencia_elementos_atributos[0]));
-
-                return atributo.pertenencia_elementos_atributos[0].elementos.imagenes;
+                imagenes.push(atributo.pertenencia_elementos_atributos[0].elementos.imagenes);
             }
         }
     }
 }
-return null;
+return imagenes;
 };
 
 // Función para buscar imagen en cualquier elemento asociado
-const buscarImagenCualquierElemento = (expositores: any) : imagenes | null => {
+const buscarImagenCualquierElemento = (expositores: any) : imagenes[]  => {
+    let imagenes:imagenes[] = [];
     for (let expositor of expositores) {
         for (let atributo of expositor.atributos_expositores) {
                            //solo hay una pertenencia (la mas reciente si el servicio es correcto) y siempre habrá un único elemento asociado a pertenencia 
-
         if (!!atributo.pertenencia_elementos_atributos[0].elementos.imagenes) {
-                return atributo.pertenencia_elementos_atributos[0].elementos[0].imagenes;
+                imagenes.push(atributo.pertenencia_elementos_atributos[0].elementos.imagenes);
+                break; //solo necesito una
             }
         }
     }
-    return null;
+    return imagenes;
 };       
 
 export async function updateExpositor(req: Request, res: Response) {
