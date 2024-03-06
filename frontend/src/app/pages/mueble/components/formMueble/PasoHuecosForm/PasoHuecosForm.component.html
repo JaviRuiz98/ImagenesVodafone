@@ -18,12 +18,12 @@ redimensionar: {{ this.redimensionado }} -->
 
 <div style="display: flex; flex-direction: row; margin-top: 50px;" >
     <div  style="width:50% ; text-align: center">
+      <!-- <canvas id="canvas" width="800" height="600" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)"></canvas> -->
 
-      <!-- <app-asignarHuecos [imagen]="imagen"></app-asignarHuecos> -->
- 
-      <canvas id="canvas" width="800" height="600" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)"></canvas>
+      <canvas id="canvas" width="600" height="500"></canvas>
       <br />
-      <p-button *ngIf="Validar" label="Validar" [link]="true" [icon]="'pi pi-check'"  (click)="validarRect()"></p-button>
+       <p-button (click)="anadirRectangulo()" [link]="true" label="Añadir elemento" [icon]="'pi pi-plus'"></p-button>
+ 
       <br />
 
       <p-button label="Empezar de nuevo" [link]="true" [icon]="'pi pi-times-circle'" (onClick)="clearRectangles()" ></p-button>
