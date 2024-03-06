@@ -85,6 +85,10 @@ export class BarraMenuComponent implements OnInit {
         this.contenidoBotonVolver = 'Volver a gestion de auditorias';
         this.iconoBotonVolver = this.volverAtrasIcono;    
       break;
+      case '/plano_tienda':
+        this.contenidoBotonVolver = 'Volver a gestion de tiendas';
+        this.iconoBotonVolver = this.volverAtrasIcono;    
+      break;
       default:
         this.contenidoBotonVolver = this.volverHome;
         this.iconoBotonVolver = this.volverHomeIcono;
@@ -112,6 +116,9 @@ export class BarraMenuComponent implements OnInit {
           break;
         case '/auditoria':
           this.router.navigate(['/gestionAuditorias']);
+          break;
+        case '/plano_tienda':
+          this.router.navigate(['/tiendas']);
           break;
         default:
           this.router.navigate(['/home']);

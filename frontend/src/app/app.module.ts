@@ -38,7 +38,7 @@ import { LoginModule } from './pages/login/login.module';
     GestionDeAuditoriasModule,
     AuditoriaModule,    
     ElementosModule,
-    PlanoTiendaModule
+    PlanoTiendaModule,
     ElementosModule,
     LoginModule
   ],
