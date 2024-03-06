@@ -4,7 +4,7 @@
     (onHide)="verFormularioEditarTiendaChange.emit(false)"
     [style]="{'width': '80vw', 'max-height': '100vh'}" 
     [draggable]="false">
-    <div *ngIf="verFormularioEditarTienda === true">
+    <div>
         <div class="formularioICIUG" *ngIf="activeIndex === 0">
             <p><strong>Activo:</strong></p>
             <td><p-toggleButton [(ngModel)]="tiendaSelected.activo" onLabel="Sí" offLabel="No" ></p-toggleButton></td>

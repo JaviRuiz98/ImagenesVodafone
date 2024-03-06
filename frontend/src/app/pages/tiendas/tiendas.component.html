@@ -63,14 +63,14 @@
                 <td><p-button class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendas.vodafone, 'text-red-500 pi-times-circle': !tiendas.vodafone }" (click)="confirmarCambio(tiendas, 'vodafone')" [style]="{'border': 'none', 'background': 'none', 'cursor': 'pointer', 'padding': '0'}"></p-button></td>
                 <td><p-button class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendas.lowi, 'text-red-500 pi-times-circle': !tiendas.lowi }" (click)="confirmarCambio(tiendas, 'lowi')" [style]="{'border': 'none', 'background': 'none', 'cursor': 'pointer', 'padding': '0'}"></p-button></td>
             </tr>
-            <app-editar-tienda
-                [verFormularioEditarTienda]="verFormularioEditarTienda"
-                (verFormularioEditarTiendaChange)="verFormularioEditarTienda = false"
-                [tiendaSelected]="tiendaSelected"
-            >
-            </app-editar-tienda>
         </ng-template>
-        </p-table>
+    </p-table>
+    <app-editar-tienda
+        [verFormularioEditarTienda]="verFormularioEditarTienda"
+        (verFormularioEditarTiendaChange)="verFormularioEditarTienda = false"
+        [tiendaSelected]="tiendaSelected"
+    >
+    </app-editar-tienda>
     </div>
 </div>
 <p-toast></p-toast>
