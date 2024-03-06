@@ -530,7 +530,7 @@ calcularCentroLateralesTransformados(centro: Coordenada, dimensiones: { width: n
         const atributoExpositor = this.atributos_expositores.controls[i];
         const elemento = atributoExpositor.get('elemento') as FormGroup;
         const imagen = elemento.get('imagen')?.value;
-        const categoria = elemento.get('categoria_elementos')?.value;
+        const categoria = elemento.get('categorias_elementos')?.value;
         
         if (categoria !== undefined && categoria !== null &&categoria.id === 3  ) {
           return imagen ;

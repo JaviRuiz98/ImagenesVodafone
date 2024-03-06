@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
 import { ChangeDetectorRef } from '@angular/core';
 import { fabric } from 'fabric';
@@ -14,7 +14,7 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
   templateUrl: './PasoAsignarElementoForm.component.html',
   styleUrls: ['./PasoAsignarElementoForm.component.css']
 })
-export class PasoAsignarElementoFormComponent implements OnInit {
+export class PasoAsignarElementoFormComponent implements AfterViewInit {
 
   constructor( public dialogConfig : DynamicDialogConfig, private cdr: ChangeDetectorRef) { }
 
@@ -23,7 +23,7 @@ export class PasoAsignarElementoFormComponent implements OnInit {
   @Input () expositorFormulario: FormGroup; 
   @Output () formularioPasoAsignarAtributoSinHuecos = new EventEmitter<{index:number, atributo: atributos_expositores} >();
 
-
+  
 
   get nombre_expositor() {
     return this.expositorFormulario? this.expositorFormulario.get('nombre_expositor'): undefined;
@@ -35,27 +35,24 @@ export class PasoAsignarElementoFormComponent implements OnInit {
   }
 
   get imagenesModeloExpositores(): string | undefined {
-    
-    this.atributos_expositores? this.atributos_expositores.controls.forEach((atributoExpositor) => {
-        
+    if (this.atributos_expositores) {
+      for (let atributoExpositor of this.atributos_expositores.controls) {
         const elemento = atributoExpositor.get('elemento') as FormGroup;
-        const categoria = elemento.get('categoria_elementos')?.value;
+        const categoria = elemento.get('categorias_elementos')?.value;
         const imagen = elemento.get('imagen')?.value;
-        if (imagen && categoria.id === 3) {
-          return imagen;
+        if (imagen && categoria && categoria.id === 3) {
+          return imagen; 
         }
-      }): undefined;
-
+      }
+    }
     return undefined;
-   
   }
-
   get elementosNoModelosExpositores(): FormArray | undefined {
     const otrosElementosArray: FormGroup[] = [];
     
     this.atributos_expositores? this.atributos_expositores.controls.forEach((atributoExpositor) => {
       const elemento = atributoExpositor.get('elemento') as FormGroup;
-      const categoria = elemento.get('categoria_elementos')?.value;
+      const categoria = elemento.get('categorias_elementos')?.value;
       
       if (categoria.id !== 3 && categoria.id !== 0) {
         otrosElementosArray.push(elemento);
@@ -76,7 +73,7 @@ export class PasoAsignarElementoFormComponent implements OnInit {
       for (let i = 0; i < this.atributos_expositores.controls.length; i++) {
         const atributoExpositor = this.atributos_expositores.controls[i];
         const elemento = atributoExpositor.get('elemento') as FormGroup;
-        const categoria = elemento.get('categoria_elementos')?.value;
+        const categoria = elemento.get('categorias_elementos')?.value;
         
         if (categoria !== undefined && categoria !== null &&categoria.id !== 3 && categoria.id !== 0 ) {
           return elemento.value ;
@@ -91,7 +88,7 @@ export class PasoAsignarElementoFormComponent implements OnInit {
       for (let i = 0; i < this.atributos_expositores.controls.length; i++) {
         const atributoExpositor = this.atributos_expositores.controls[i];
         const elemento = atributoExpositor.get('elemento') as FormGroup;
-        const categoria: number = elemento.get('categoria_elementos')?.value;
+        const categoria: number = elemento.get('categorias_elementos')?.value;
         if (categoria !== 3) {
           return i;
         }
@@ -137,24 +134,36 @@ export class PasoAsignarElementoFormComponent implements OnInit {
    }
 
  
+ 
   initCanvas(){
-    this.canvas = new fabric.Canvas('canvas', {
-      width: 800,
-      height: 600,
-      backgroundColor: 'lightgrey',
-    });
-    fabric.Image.fromURL('/assets/images/plano_tienda.jpg', (img) => {
-      img.scaleToWidth(this.canvas.getWidth());
-      img.scaleToHeight(this.canvas.getHeight());
-      this.canvas.setBackgroundImage(img, this.canvas.renderAll.bind(this.canvas), {
-        scaleX: this.canvas.width / img.width,
-        scaleY: this.canvas.height / img.height,
+    const canvasEl = document.getElementById('funciona_please');
+    if (canvasEl) {
+    
+
+      this.canvas = new fabric.Canvas('funciona_please', {
+       
+        backgroundColor: 'lightgrey',
       });
-    });
+      
+      fabric.Image.fromURL(this.imagenesModeloExpositores, (img) => {
+        img.scaleToWidth(this.canvas.getWidth());
+        img.scaleToHeight(this.canvas.getHeight());
+        this.canvas.setBackgroundImage(img, this.canvas.renderAll.bind(this.canvas), {
+          scaleX: this.canvas.width / img.width,
+          scaleY: this.canvas.height / img.height,
+        });
+      }, {
+        crossOrigin: 'anonymous',
+        onError: (err) => console.error('Error cargando la imagen:', err)
+      });
+    }else {
+      console.error('No se encontro el elemento canvas');
+    }
+    
   }
 
   drawRecangles(){
- 
+    
     for (let i = 0; i < this.huecos.length; i++) {
       const atributo = this.huecos.at(i) as FormGroup;
       const x = atributo.get('x_start')?.value || 0;
@@ -170,26 +179,31 @@ export class PasoAsignarElementoFormComponent implements OnInit {
         width: w, 
         height: h, 
         angle: angulo, 
-        cornerStyle: 'circle', // Estilo de los controles de esquina para redimensionar/rotar
+        selectable:false,
+        evented: false,
         borderColor: 'red', // Color del borde cuando el objeto está seleccionado
         cornerColor: 'red', // Color de las esquinas cuando el objeto está seleccionado
-        cornerSize: 12, // Tamaño de las esquinas para facilitar la manipulación
         transparentCorners: false, // Esquinas no transparentes para mejor visibilidad
-        hasRotatingPoint: true, // Permite la rotación con el control situado fuera del rectángulo
         opacity: 0.5, // Establece la opacidad del rectángulo para hacerlo casi transparente
       });
 
       // Añade el rectángulo al canvas
       this.canvas.add(rect);
-      // Hace que el rectángulo añadido sea el objeto activo para su edición inmediata
-      this.canvas.setActiveObject(rect);
     }
   }
 
   configurarEventosCanvas(){
     if (!this.canvas) return;
 
-    this.canvas.addEventListener('drop', (event) => {
+    const canvasEl = this.canvas.upperCanvasEl;
+
+    // Permitir que los elementos sean arrastrados sobre el canvas
+    canvasEl.addEventListener('dragover', (event) => {
+      event.preventDefault();
+    });
+
+    // Manejar el evento drop en el canvas
+    canvasEl.addEventListener('drop', (event) => {
       event.preventDefault();
       this.handleCanvasDrop(event);
     });
@@ -238,21 +252,23 @@ export class PasoAsignarElementoFormComponent implements OnInit {
             this.canvas.add(img);
         });
     }
-}
+  }
 
-puntoDentroDelHueco ({x, y}, {x_start, y_start, ancho, alto}) {
-  return x >= x_start && x <= x_start + ancho && y >= y_start && y <= y_start + alto;
-}
+  puntoDentroDelHueco ({x, y}, {x_start, y_start, ancho, alto}) {
+    return x >= x_start && x <= x_start + ancho && y >= y_start && y <= y_start + alto;
+  }
 
 
-  
- 
-  ngOnInit() {
+ ngAfterViewInit(): void {
+  if (this.huecos && this.huecos.length > 0) {
     this.initCanvas();
     this.drawRecangles();
     this.configurarEventosCanvas();
-
   }
+ 
+ }
+
+  ngAfet
 
   
 }

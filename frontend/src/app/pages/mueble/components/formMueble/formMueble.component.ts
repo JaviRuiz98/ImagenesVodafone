@@ -77,7 +77,7 @@ export class FormMuebleComponent implements OnInit {
       atributosExpositores.controls.forEach((atributoExpositor) => {
         
         const elemento = atributoExpositor.get('elemento') as FormGroup;
-        const categoria = elemento.get('categoria_elementos')?.value;
+        const categoria = elemento.get('categorias_elementos')?.value;
         const imagen = elemento.get('imagen')?.value;
         if (imagen && categoria.id === this.categoriaID) {
           imagenes.push(imagen);
@@ -166,8 +166,9 @@ export class FormMuebleComponent implements OnInit {
         id: [atributo && atributo.elemento ? atributo.elemento.id : 0],
         imagen: [imagen, Validators.required],
         archivos_imagenes: [archivo, Validators.maxLength(2)],
-        categoria_elementos: [atributo && atributo.elemento ? atributo.elemento.categorias_elementos : null],
-      })
+        categorias_elementos: [atributo && atributo.elemento ? atributo.elemento.categorias_elementos : null],
+      }), 
+      categorias_elementos: [atributo && atributo.elemento ? atributo.elemento.categorias_elementos : null],
     });
   }
   
