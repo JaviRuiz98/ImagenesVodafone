@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
 import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
+import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
 import { Router } from '@angular/router';
 
 import { tienda } from 'src/app/interfaces/tienda';
@@ -50,8 +51,10 @@ export class TiendasComponent implements OnInit{
     private MueblesService: MueblesService, 
     private messageService: MessageService, 
     private ConfirmationService: ConfirmationService,
-    private router: Router
+    private router: Router,
+    private localStorageService: LocalStorageService
   ){}
+  
   ngOnInit(): void {
     this.getAllTiendas();
     this.getAllMuebles();
@@ -190,14 +193,16 @@ export class TiendasComponent implements OnInit{
     const listaOrdenada = lista.sort((a, b) => a[campo].localeCompare(b[campo]));
     return listaOrdenada;
   }
+
   eliminarMueblesSeleccionados(listaCompleta: muebles[], listaMueblesSeleccionados: muebles[]){
     const idsLista2 = new Set(listaMueblesSeleccionados.map(mueble => mueble.id));
     const listaFiltrada = listaCompleta.filter((mueble) => !idsLista2.has(mueble.id));
     return listaFiltrada;
   }
 
-  abrirPlanoTienda(){
-    this.router.navigate(['/plano_tienda']);
+  abrirPlanoTienda(id_tienda: number) {
+    this.localStorageService.setItem('id_tienda', id_tienda);
+    this.router.navigate(['/plano_tienda']);    
   }
 
 }

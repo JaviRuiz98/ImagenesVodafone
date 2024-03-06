@@ -12,10 +12,11 @@ import { PickListModule } from 'primeng/picklist';
 import { TableModule } from 'primeng/table';
 import { OrderListModule } from 'primeng/orderlist';
 import { ToggleButtonModule } from 'primeng/togglebutton';
+import { PlanoTiendaComponent } from '../plano-tienda/plano-tienda.component';
 
 @NgModule({
   declarations: [
-    TiendasComponent
+    TiendasComponent,
   ],
   imports: [
     CommonModule,
@@ -28,7 +29,7 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
     PickListModule,
     TableModule,
     OrderListModule,
-    ToggleButtonModule,
+    ToggleButtonModule
   ]
 })
 export class TiendasModule { }
