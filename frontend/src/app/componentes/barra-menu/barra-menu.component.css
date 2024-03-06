@@ -14,7 +14,7 @@
   grid-template-columns: 10% 40% 50%;
   width: 100%;
   max-height: 80px;
-  background-color: red;
+  background-color: #be0303;
 }
 .image-container {
   max-height: 80px;
@@ -23,8 +23,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: red;
-  background-color: red;
+  border: #be0303;
+  background-color: #be0303;
   cursor: pointer;
 }
 
