@@ -17,8 +17,10 @@
                 draggable="true"
                 (dragstart)="onDragStart($event, mueble)"
                 [attr.data-id]="mueble.id">
-                <img style="margin-left: 10px;">
-                <h3 style="margin-left: 10px;">{{ mueble.nombre }}</h3>
+                <div *ngFor="let imagen of mueble.imagen_representativa">
+                    <img [src]="this.urlService.url_imagenes_referencia + imagen.url" class="imagenRepresentativaMueble">
+                </div>                
+                <h3>{{ mueble.nombre }}</h3>
             </div>
         </div>
     </div>

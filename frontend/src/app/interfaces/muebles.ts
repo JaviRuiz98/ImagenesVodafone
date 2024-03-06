@@ -1,4 +1,5 @@
 import { expositores } from "./expositores";
+import { imagenes } from "./imagenes";
 import { regiones } from "./regiones";
 
 export interface muebles {
@@ -6,4 +7,5 @@ export interface muebles {
     nombre: string;
     regiones?: regiones;
     expositores: expositores[];
+    imagen_representativa: imagenes[];
 }

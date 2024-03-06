@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { muebles } from 'src/app/interfaces/muebles';
+import { UrlService } from 'src/app/servicios/url/url.service';
 
 @Component({
   selector: 'app-plano-tienda',
@@ -25,7 +26,8 @@ export class PlanoTiendaComponent implements OnInit {
   constructor(
     private router: Router,
     private localStorageService: LocalStorageService,
-    private mueblesService: MueblesService
+    private mueblesService: MueblesService,
+    public urlService: UrlService
   ) {}
 
   ngOnInit() {
