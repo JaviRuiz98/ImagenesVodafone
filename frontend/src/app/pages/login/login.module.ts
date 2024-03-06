@@ -7,6 +7,7 @@ import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { PasswordModule } from 'primeng/password';
     FormsModule,
     CardModule,
     InputTextModule,
-    PasswordModule
+    PasswordModule,
+    ButtonModule
   ],
   providers: [MessageService, DialogService],
 })

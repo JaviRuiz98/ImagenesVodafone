@@ -16,6 +16,17 @@
                     <label for="username">Contraseña</label>
                 </span>
             </div>
+            <div class="resetPassword">
+                <p-button label="¿Has olvidado tu contraseña?" [link]="true" [style]="{'cursor': 'pointer', 'color': '#be0303', 'padding': '0'}"></p-button>
+            </div>
+            <div class="input">
+                <p-button label="Iniciar Sesión" 
+                class="buttonInicioSesion" 
+                [style]="{'cursor': (!credenciales.usuario || !credenciales.password) ? 'no-drop' : 'pointer', 
+                'padding': '0', 'background-color': '#be0303', 'border-color': '#be0303', 'width': '100%', 'height': '50%'}"
+                [disabled]="!credenciales.usuario || !credenciales.password"
+                ></p-button>
+            </div>
         </div>
     </p-card>
 </div>
