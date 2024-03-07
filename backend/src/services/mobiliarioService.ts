@@ -202,6 +202,9 @@ export const mobiliarioService = {
                     pertenencia_mueble_tienda:{
                         where:{
                             id_tienda: id_tienda
+                        },
+                        include:{
+                            posiciones_muebles_tienda: true
                         }
                     },
                     expositores: {
