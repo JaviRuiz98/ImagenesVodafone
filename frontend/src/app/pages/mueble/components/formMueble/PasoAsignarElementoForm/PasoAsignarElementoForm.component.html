@@ -1,9 +1,9 @@
 <div class="flex align-items-center justify-content-center mt-4" *ngIf="imagenesModeloExpositores && imagenesModeloExpositores.length > 0; else sinModelo">
   <div style="position: relative;" flex-1>
-    <canvas id="funciona_please"></canvas>
+    <canvas id="funciona_please" width="600" height="500"></canvas>
   </div>
   <div class="flex m-2">
-    <app-arrastrarElemento [mode]="'arrastrar'" (onDragEnd)="onDragEnd($event)"></app-arrastrarElemento>
+    <app-arrastrarElemento [mode]="'arrastrar'" (onDragStart)="onDragStart($event)" (onDragEnd)="onDragEnd($event)"></app-arrastrarElemento>
   </div>
 </div>
 

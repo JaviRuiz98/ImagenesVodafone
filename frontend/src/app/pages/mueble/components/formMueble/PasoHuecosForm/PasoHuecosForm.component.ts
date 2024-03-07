@@ -235,26 +235,21 @@ export class PasoHuecosFormComponent implements OnInit {
   }
 
 
+
  
   get imagenExpositor(): string {
-  
-  
-   
-    if (!!this.atributos_expositores) {
-      for (let i = 0; i < this.atributos_expositores.controls.length; i++) {
-        const atributoExpositor = this.atributos_expositores.controls[i];
+
+    if (this.atributos_expositores) {
+      for (let atributoExpositor of this.atributos_expositores.controls) {
         const elemento = atributoExpositor.get('elemento') as FormGroup;
+        const categoria = elemento.get('categorias_elementos')?.value;
         const imagen = elemento.get('imagen')?.value;
-        const categorias = elemento.get('categoria_elementos')?.value;
-        
-        if (categorias !== undefined && categorias !== null &&categorias.id === 3  ) {
-          return imagen ;
+        if (imagen && categoria && categoria.id === 3) {
+          return imagen; 
         }
       }
-      
     }
     return undefined;
-   
   }
  
 }
