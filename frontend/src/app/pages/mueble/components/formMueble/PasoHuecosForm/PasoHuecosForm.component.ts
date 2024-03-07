@@ -267,12 +267,7 @@ export class PasoHuecosFormComponent implements OnInit {
     this.src = this.imagenExpositor ;
      
     this.inicializaCanvas();
-
-
-    this.inicializarAtributosExpositor();     
-
-
-
+    this.inicializarAtributosExpositor();  
     this.inicializaCategoriasElementos();
   }
 
