@@ -8,6 +8,7 @@ import { atributos_expositores } from 'src/app/interfaces/atributos_expositores'
 import { elementos } from 'src/app/interfaces/elementos';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { UrlService } from 'src/app/servicios/url/url.service';
+import { MessageService } from 'primeng/api';
 
 
 @Component({
@@ -17,7 +18,7 @@ import { UrlService } from 'src/app/servicios/url/url.service';
 })
 export class PasoAsignarElementoFormComponent implements AfterViewInit {
 
-  constructor( private fb: FormBuilder, private urlService: UrlService, public dialogConfig : DynamicDialogConfig, private cdr: ChangeDetectorRef) { }
+  constructor( private fb: FormBuilder, private urlService: UrlService, public dialogConfig : DynamicDialogConfig, private cdr: ChangeDetectorRef, public messageService : MessageService) { }
 
   canvas: fabric.Canvas;
   
@@ -174,6 +175,7 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     const y = atributo.get('y_start')?.value || 0;
     const w = atributo.get('ancho')?.value || 0;
     const h = atributo.get('alto')?.value || 0;
+    const angulo = atributo.get('angulo')?.value || 0;
   
     const rect = new fabric.Rect({
       left: x,
@@ -205,6 +207,7 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     const group = new fabric.Group([rect, lineHorizontal, lineVertical], {
       left: x,
       top: y,
+      angle: angulo,
       selectable: false,
       evented: false,
     });
@@ -224,10 +227,11 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
           //busco imagen
           const elemento = atributoExpositor.get('elemento')?.value;
           if (elemento){
-            const imagen: string = elemento?.imagen;  
+            const imagen: string = elemento?.imagenes.url;  
             //si tiene imagen, la dibujo
             this.addImageOnGroup(grupo, imagen);
           }
+          
           
 
         } else { // Si el grupo ya existe, actualiza sus propiedades
@@ -238,22 +242,38 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     }
   }
   addImageOnGroup(grupo: fabric.Group, imagen: string) {
+
     const imagenUrl = this.urlService.url_imagenes_referencia + imagen;
     fabric.Image.fromURL(imagenUrl, (img) => {
-      const rect = grupo.getObjects()[0] as fabric.Rect;
-      
-      img.scaleToWidth(rect.width);
-      img.scaleToHeight(rect.height);
+      // Obtengo el rectangulo 
+      //const rect = grupo.getObjects()[0];
+
+      // Escalar la imagen para que coincida con el tamaño del rectángulo
+      img.scaleToWidth(grupo.width);
+      img.scaleToHeight(grupo.height);
+      if (img.width > grupo.width) {
+        //update rect width to be the same as img
+     
+
+      }
+  
+      // Calcular la posición central del rectángulo dentro del grupo
+      const centroRectX = grupo.left + grupo.width / 2;
+      const centroRectY = grupo.top + grupo.height / 2;
+  
+      // Configurar la imagen para que su centro coincida con el centro del rectángulo
       img.set({
-        left: rect.left,
-        top: rect.top,
-        
-        
+        left: centroRectX - img.getScaledWidth() / 2,
+        top: centroRectY - img.getScaledHeight() / 2,
+        angle: grupo.angle, // Asumir el mismo ángulo de rotación que el rectángulo
       });
+  
+      // Añadir la imagen al grupo y actualizar
       grupo.addWithUpdate(img);
       this.canvas.renderAll();
-    } );
-}
+    });
+  }
+  
 
   
   updateGroupProperties(groupIndex: number,  fillColor: string, strokeColor: string, lineStrokeColor: string): void {
@@ -301,8 +321,8 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     const y = event.offsetY;
   
     this.huecos?.controls.forEach((atributoExpositor, index) => {
-      const {x_start, y_start, ancho, alto} = atributoExpositor.value;
-      if (this.puntoDentroDelHueco({x, y}, {x_start, y_start, ancho, alto})) {
+      const {x_start, y_start, ancho, alto, angulo} = atributoExpositor.value;
+      if (this.puntoDentroDelHueco({x, y}, {x_start, y_start, ancho, alto, angulo})) {
         this.updateGroupProperties(index, 'gray', 'red', 'red');
       } else {
         this.updateGroupProperties(index, 'white', 'black', 'black');
@@ -319,7 +339,6 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
 
     if (!this.dragged_elemento) return;
 
-    const puntoSoltado = { x, y };
 
    
     const indiceSoltado = this.huecos.controls.findIndex((atributoExpositor) => {
@@ -327,7 +346,8 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
         const y_start = atributoExpositor.get('y_start').value;
         const ancho = atributoExpositor.get('ancho').value;
         const alto = atributoExpositor.get('alto').value;
-        return this.puntoDentroDelHueco(puntoSoltado, {x_start, y_start, ancho, alto});
+        const angulo = atributoExpositor.get('angulo').value;
+        return this.puntoDentroDelHueco( {x,y}, {x_start, y_start, ancho, alto, angulo});
     });
 
     if (indiceSoltado !== -1) {
@@ -342,8 +362,15 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
         }
       });
 
+    const categoria_hueco = this.huecos.controls.at(indiceSoltado).get('categorias_elementos').value;
+    if (this.dragged_elemento.categorias_elementos.id !== categoria_hueco.id) {
+      this.messageService.add({ key: 'edit', severity: 'error', summary: 'Error', detail: 'La categoría permitida para esta posición es ' + categoria_hueco.nombre });
+      return;
+    }
+
       const group: fabric.Group = this.groupRefs[indiceSoltado];
-      
+      this.updateGroupProperties(indiceSoltado, 'white', 'black', 'black');
+
       this.addImageOnGroup(group, image_url);
 
        
@@ -353,9 +380,30 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     }
   }
 
-  puntoDentroDelHueco ({x, y}, {x_start, y_start, ancho, alto}) {
-    return x >= x_start && x <= x_start + ancho && y >= y_start && y <= y_start + alto;
+   puntoDentroDelHueco({x, y}, {x_start, y_start, ancho, alto, angulo}) {
+    // Convertir el ángulo de grados a radianes
+    const anguloRadianes = (angulo * Math.PI) / 180;
+  
+    // Calcular el centro del rectángulo
+    const centroX = x_start + ancho / 2;
+    const centroY = y_start + alto / 2;
+  
+    // Trasladar el punto al origen de coordenadas para la rotación
+    const xRelativo = x - centroX;
+    const yRelativo = y - centroY;
+  
+    // Rotar el punto en la dirección opuesta del rectángulo
+    const xRotado = xRelativo * Math.cos(-anguloRadianes) - yRelativo * Math.sin(-anguloRadianes);
+    const yRotado = xRelativo * Math.sin(-anguloRadianes) + yRelativo * Math.cos(-anguloRadianes);
+  
+    // Trasladar el punto de vuelta a su posición original
+    const xFinal = xRotado + centroX;
+    const yFinal = yRotado + centroY;
+  
+    // Verificar si el punto está dentro de los límites del rectángulo no rotado
+    return xFinal >= x_start && xFinal <= x_start + ancho && yFinal >= y_start && yFinal <= y_start + alto;
   }
+  
 
 
  ngAfterViewInit(): void {
