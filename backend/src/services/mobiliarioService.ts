@@ -199,7 +199,11 @@ export const mobiliarioService = {
                     },
                 },
                 include: {
-                    pertenencia_mueble_tienda:true,
+                    pertenencia_mueble_tienda:{
+                        where:{
+                            id_tienda: id_tienda
+                        }
+                    },
                     expositores: {
                         include: {
                             atributos_expositores: {
