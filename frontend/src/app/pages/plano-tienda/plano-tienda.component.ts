@@ -5,6 +5,9 @@ import { LocalStorageService } from 'src/app/servicios/local-storage/localStorag
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { muebles } from 'src/app/interfaces/muebles';
 import { UrlService } from 'src/app/servicios/url/url.service';
+import { MessageService } from 'primeng/api';
+import { posiciones_muebles_tienda } from 'src/app/interfaces/posiciones_muebles_tienda';
+import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 
 @Component({
   selector: 'app-plano-tienda',
@@ -27,7 +30,9 @@ export class PlanoTiendaComponent implements OnInit {
     private router: Router,
     private localStorageService: LocalStorageService,
     private mueblesService: MueblesService,
-    public urlService: UrlService
+    public urlService: UrlService,
+    private messageService: MessageService,
+    private tiendasService: TiendasService
   ) {}
 
   ngOnInit() {
@@ -62,28 +67,69 @@ export class PlanoTiendaComponent implements OnInit {
       const mueblesData = JSON.parse(e.dataTransfer.getData('text'));
       const pointer = this.canvas.getPointer(e);
 
-      //Añadimos un objeto en la posicion pointer.x y pointer.y
-      fabric.Image.fromURL('/assets/images/icono_caja.svg', (img) => {
-        img.set({
-          left: pointer.x,
-          top: pointer.y,
-          scaleX: 0.05,
-          scaleY: 0.05,
-        });
-        this.canvas.add(img).renderAll();
-        console.log('Mueble soltado en el canvas: ', mueblesData);
+      let isOverRect = false;
+      let targetRect;
+
+      // Iterar por todos los objetos en el canvas para encontrar si el punto de soltar está sobre algun rectangulo
+      this.canvas.getObjects().forEach((object) => {
+        if (object.type === 'rect' && object.containsPoint(pointer)) {
+          isOverRect = true;
+          targetRect = object; // Guardar el rectangulo que contiene el punto de soltar
+        }
       });
 
-      //Prevenir el comportamiento por defecto del navegador
-      e.preventDefault();
-      e.stopPropagation();
-    });
+      if(!isOverRect || !targetRect){
+        this.messageService.add({ severity: 'warn', summary: 'Error', detail: 'Localización de mueble no válida' });
+      } else { // estamos sobre un rectangulo
+        const datos_posicion_mueble: posiciones_muebles_tienda = {
+          id_pertenencia_mueble_tienda: mueblesData.id,
+          x_start: targetRect.left,
+          y_start: targetRect.top,
+          ancho: targetRect.width,
+          alto: targetRect.height,
+          angulo: targetRect.angle
+        }
+        console.log('datos_posicion_mueble: ', datos_posicion_mueble);
 
-    // Permitir que el canvas acepte elementos arrastrados
-    const canvasElement = this.canvas.getElement();
-    canvasElement.addEventListener('dragover', (event) => {
-      event.preventDefault();
+        targetRect.set('opacity', 0.4);
+
+        //Añadimos un objeto en la posicion pointer.x y pointer.y
+        fabric.Image.fromURL('/assets/images/icono_caja.svg', (img) => {
+          const scaleX = targetRect.width / img.width;
+          const scaleY = targetRect.height / img.height;
+          const scale = Math.min(scaleX, scaleY) * 0.5;
+
+          img.set({
+            left: targetRect.left + targetRect.width / 2 - (img.width * scale) / 2,
+            top: targetRect.top + targetRect.height / 2 - (img.height * scale) / 2,
+            scaleX: scale,
+            scaleY: scale,
+          });
+          this.canvas.add(img).renderAll();
+          console.log('Mueble soltado en el rectangulo: ', mueblesData);
+        });
+
+        //Prevenir el comportamiento por defecto del navegador
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Permitir que el canvas acepte elementos arrastrados
+        const canvasElement = this.canvas.getElement();
+        canvasElement.addEventListener('dragover', (event) => {
+          event.preventDefault();
+        });
+      }
     });
+  }
+
+  guardarDatosPosicionEnBaseDatos(datos_posicion_mueble: posiciones_muebles_tienda) {
+    this.tiendasService.guardarPosicionMueble(this.id_tienda, datos_posicion_mueble).subscribe(
+      (data) => {
+        console.log('Posición del mueble guardada en la base de datos:', data);
+      }, (error) => {
+        console.error('Error al guardar la posición del mueble en la base de datos:', error);
+      }
+    )
   }
 
   getMueblesTienda(id_tienda) {
@@ -108,7 +154,7 @@ export class PlanoTiendaComponent implements OnInit {
     const rect = new fabric.Rect({
       left: 100, // Posición inicial en el eje X
       top: 100, // Posición inicial en el eje Y
-      fill: 'red', // Color de relleno
+      fill: 'yellow', // Color de relleno
       width: 60, // Ancho inicial
       height: 70, // Alto inicial
       angle: 0, // Ángulo inicial (sin rotación)
@@ -118,7 +164,7 @@ export class PlanoTiendaComponent implements OnInit {
       cornerSize: 12, // Tamaño de las esquinas para facilitar la manipulación
       transparentCorners: false, // Esquinas no transparentes para mejor visibilidad
       hasRotatingPoint: true, // Permite la rotación con el control situado fuera del rectángulo
-      opacity: 0.5, // Establece la opacidad del rectángulo para hacerlo casi transparente
+      opacity: 0.2, // Establece la opacidad del rectángulo para hacerlo casi transparente
     });
   
     // Añade el rectángulo al canvas

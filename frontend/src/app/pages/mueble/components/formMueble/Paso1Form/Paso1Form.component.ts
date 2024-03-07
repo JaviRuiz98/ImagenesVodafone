@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { regiones } from 'src/app/interfaces/regiones';
-import { EnumService } from 'src/app/servicios/enum.service';
+import { EnumService } from 'src/app/servicios/enum/enum.service';
 
 @Component({
   selector: 'app-Paso1Form',

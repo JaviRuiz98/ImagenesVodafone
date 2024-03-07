@@ -3,7 +3,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { categorias_elementos } from 'src/app/interfaces/categoria';
 import { elementos } from 'src/app/interfaces/elementos';
 import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
-import { EnumService } from 'src/app/servicios/enum.service';
+import { EnumService } from 'src/app/servicios/enum/enum.service';
 
 @Component({
   selector: 'app-arrastrarElemento',

@@ -4,6 +4,8 @@ import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
 import { PlanoTiendaComponent } from './plano-tienda.component';
 import { DialogModule } from 'primeng/dialog';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 
 
@@ -15,7 +17,11 @@ import { DialogModule } from 'primeng/dialog';
     CommonModule,
     ButtonModule,
     ToolbarModule,
-    DialogModule
-  ]
+    DialogModule,
+    ToastModule
+  ],
+  providers: [
+    MessageService
+  ],
 })
 export class PlanoTiendaModule { }

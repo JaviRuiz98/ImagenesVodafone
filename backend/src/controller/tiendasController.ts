@@ -67,6 +67,20 @@ export async function activarDesactivarTienda(req: Request, res: Response) {
     }
 }
 
+export async function guardarPosicionMueble(req: Request, res: Response) {
+    try{
+        const id_pertenencia_mueble_tienda = parseInt(req.params.id_pertenencia_mueble_tienda);
+        const datos_posicion_mueble = req.body;
+
+        await tiendaService.guardarPosicionMueble(id_pertenencia_mueble_tienda, datos_posicion_mueble);
+
+        res.status(200).json({'Posicion guardada para mueble': id_pertenencia_mueble_tienda});
+    } catch (error) {
+        console.error('Error al guardar posicion mueble:', error);
+        res.status(500).json({ error: 'Error guardando posicion mueble' });
+    }
+}
+
 
 
 
