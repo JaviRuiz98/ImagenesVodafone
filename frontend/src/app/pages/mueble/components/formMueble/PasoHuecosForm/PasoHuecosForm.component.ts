@@ -20,34 +20,24 @@ export class PasoHuecosFormComponent implements OnInit {
 
   @Input() expositorFormulario: FormGroup; 
 
-
   categoriaSeleccionada?: string;  
   opcionesCategoria: string[] = [];
   categorias_elementos: categorias_elementos[]; // inicializar
 
   atributos_expositor: atributos_expositores[] = []; // huecos
-
-  numero: number = 0;
   
   array_rectangulos: any[] = [];
   canvas: fabric.Canvas;
-  contadorHuecos = 0; // atributos_expositores
   id: number = 0;
-  //
-
   src: string = '';
 
   private stateHistory: any[] = [];
-
-    
-// Definición de un tipo para las coordenadas
 
   constructor(private elementosService: ElementosService, private fb: FormBuilder ) { }
 
   anadirRectangulo() {
     // Primero, dibujar todo 
     this.id++;
-
     // this.array_rectangulos[this.array_rectangulos.length] = new fabric.Rect({
     const rect = new fabric.Rect({
       left: 100 ,  // startX // Posición inicial en el eje X
@@ -63,14 +53,11 @@ export class PasoHuecosFormComponent implements OnInit {
       transparentCorners: false, // Esquinas no transparentes para mejor visibilidad
       hasRotatingPoint: true, // Permite la rotación con el control situado fuera del rectángulo
       opacity: 0.5, // Establece la opacidad del rectángulo para hacerlo casi transparente
-      
     });
         // Añade el rectángulo al canvas
     this.canvas.add(rect);
     this.array_rectangulos.push({rect, id: this.id});
     rect.id = this.id;
-
-    
     // Hace que el rectángulo añadido sea el objeto activo para su edición inmediata
     this.canvas.setActiveObject(rect);
 
@@ -85,11 +72,8 @@ export class PasoHuecosFormComponent implements OnInit {
       alto: rect.height,
       angulo: rect.angle
     }); 
-
     //añado al formgroup
     this.add_atributo_expositor(this.atributos_expositor[this.atributos_expositor.length - 1]);
-
-
     // Escuchar eventos de modificación en el rectángulo
     rect.on('modified', () => {
       const index = this.atributos_expositor.findIndex(m => m.id === rect.id); // Encuentra el hueco por ID
@@ -101,21 +85,14 @@ export class PasoHuecosFormComponent implements OnInit {
         this.atributos_expositor[index].ancho = rect.getScaledWidth();
         this.atributos_expositor[index].alto = rect.getScaledHeight();
         this.atributos_expositor[index].angulo = rect.angle;
-
         // Actualiza el formulario
         this.editar_atributo_expositor(this.atributos_expositor[index]);
-
       }
     });
-
-
   }
 
-
   inicializarRectangulo( startX: number, startY: number, ancho: number, alto: number,  angle: number, categorias_elementos: categorias_elementos) {
-    // Primero, dibujar todo 
     this.id++;
-
     // this.array_rectangulos[this.array_rectangulos.length] = new fabric.Rect({
     const rect = new fabric.Rect({
       left: startX ,  // startX // Posición inicial en el eje X
@@ -163,40 +140,23 @@ export class PasoHuecosFormComponent implements OnInit {
         this.atributos_expositor[index].ancho = rect.getScaledWidth();
         this.atributos_expositor[index].alto = rect.getScaledHeight();
         this.atributos_expositor[index].angulo = rect.angle;
-        
-        // Actualiza el formulario
         this.editar_atributo_expositor(this.atributos_expositor[index]);
       }
     });
-
-
   }
  
 
-
-
- 
-
-
-
-
   clearRectangles(): void {
     this.stateHistory = [];
-   // this.ngAfterViewInit();
    const control = <FormArray>this.expositorFormulario.controls['atributos_expositores'];
   
     for(let i = 0; i < this.array_rectangulos.length; i++){
       this.canvas.remove(this.array_rectangulos[i].rect);
       control.removeAt(control.length - 1);
-
     }
     this.id = 0;
     this.atributos_expositor = [];
-    
-    
-    
   }
- // se modifica el segundo con el movimiento del primero
 
   undoLastAction(): void {
     if (this.stateHistory.length >= 0) {
@@ -237,7 +197,8 @@ export class PasoHuecosFormComponent implements OnInit {
     this.elementosService.getCategorias_elementos().subscribe((categorias: categorias_elementos[]) => {
       this.categorias_elementos = categorias; 
       this.categoriaSeleccionada = this.categorias_elementos[0].nombre;
-      this.categorias_elementos.filter((elemento) => elemento.id !== 3);
+      this.categorias_elementos = this.categorias_elementos.filter((elemento) => elemento.id != 3);
+      console.log(this.categorias_elementos);
     })
   }
 
@@ -258,19 +219,12 @@ export class PasoHuecosFormComponent implements OnInit {
   }
 
 
-
-                                    //////////////////////////////////////////////////////////////////
-
   ngOnInit() {        
-                  
-    console.log(this.expositorFormulario);
     this.src = this.imagenExpositor ;
-     
     this.inicializaCanvas();
     this.inicializarAtributosExpositor();  
     this.inicializaCategoriasElementos();
   }
-
  
   get nombre_expositor() {
     return this.expositorFormulario? this.expositorFormulario.get('nombre_expositor'): undefined;
@@ -294,7 +248,6 @@ export class PasoHuecosFormComponent implements OnInit {
     console.log(this.expositorFormulario.value);
   }
 
-
   editar_atributo_expositor(atributo: atributos_expositores){
     const control = <FormArray>this.expositorFormulario.controls['atributos_expositores'];
     let index = this.atributos_expositor.findIndex((element) => element.id === atributo.id);
@@ -302,9 +255,6 @@ export class PasoHuecosFormComponent implements OnInit {
     if (index !== -1) {
       // Obtén el FormGroup del elemento a actualizar
       let formGroup = <FormGroup>control.at(index + 1);   // +1 porque el primer elemento es el modelo!!!
-  
-      // Actualiza el valor del atributo en el FormGroup
-      // Suponiendo que quieres actualizar un atributo llamado 'nombre'
       formGroup.patchValue({
         categorias_elementos: atributo.categorias_elementos,
         elemento: atributo.elemento,
@@ -338,16 +288,10 @@ export class PasoHuecosFormComponent implements OnInit {
     const control = <FormArray>this.expositorFormulario.get('atributos_expositores') as FormArray;
     for (let i = 1; i < control.length; i++) {
       this.inicializarRectangulo(control.at(i).value.x_start, control.at(i).value.y_start, control.at(i).value.ancho, control.at(i).value.alto, control.at(i).value.angulo,control.at(i).value.categorias_elementos);
-  
     }
-    console.log(this.expositorFormulario);
   }
 
-
-
- 
   get imagenExpositor(): string {
-     
     if (!!this.atributos_expositores) {
       for (let i = 0; i < this.atributos_expositores.controls.length; i++) {
         const atributoExpositor = this.atributos_expositores.controls[i];
