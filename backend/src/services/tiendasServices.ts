@@ -161,11 +161,11 @@ export const tiendaService = {
         }
     },
 
-    async guardarPosicionMueble(id_pertenencia_mueble_tienda: number, datos_posicion_mueble: posiciones_muebles_tienda): Promise<any> {
+    async guardarPosicionMueble(datos_posicion_mueble: posiciones_muebles_tienda): Promise<any> {
         try {
             await db.posiciones_muebles_tienda.create({ 
                 data: {
-                    id_pertenencia_mueble_tienda: id_pertenencia_mueble_tienda,
+                    id_pertenencia_mueble_tienda: datos_posicion_mueble.id_pertenencia_mueble_tienda,
                     x_start: datos_posicion_mueble.x_start,
                     y_start: datos_posicion_mueble.y_start,
                     ancho: datos_posicion_mueble.ancho,

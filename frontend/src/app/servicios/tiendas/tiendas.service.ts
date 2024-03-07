@@ -39,7 +39,7 @@ export class TiendasService {
     return this.http.put<tienda>(`${this.API_URI}/tiendas/`, datos);
   }
 
-  guardarPosicionMueble(id_pertenencia_mueble_tienda: number, datos_posicion_mueble: posiciones_muebles_tienda): Observable<boolean> {
-    return this.http.post<boolean>(`${this.API_URI}/posicion_mueble/` + id_pertenencia_mueble_tienda, datos_posicion_mueble);
+  guardarPosicionMueble(datos_posicion_mueble: posiciones_muebles_tienda): Observable<boolean> {
+    return this.http.post<boolean>(`${this.API_URI}/posicion_mueble`, datos_posicion_mueble);
   }
 }

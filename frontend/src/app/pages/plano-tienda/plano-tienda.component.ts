@@ -82,7 +82,7 @@ export class PlanoTiendaComponent implements OnInit {
         this.messageService.add({ severity: 'warn', summary: 'Error', detail: 'Localización de mueble no válida' });
       } else { // estamos sobre un rectangulo
         const datos_posicion_mueble: posiciones_muebles_tienda = {
-          id_pertenencia_mueble_tienda: mueblesData.id,
+          id_pertenencia_mueble_tienda: mueblesData.pertenencia_mueble_tienda[0].id,
           x_start: targetRect.left,
           y_start: targetRect.top,
           ancho: targetRect.width,
@@ -90,6 +90,7 @@ export class PlanoTiendaComponent implements OnInit {
           angulo: targetRect.angle
         }
         console.log('datos_posicion_mueble: ', datos_posicion_mueble);
+        this.guardarDatosPosicionEnBaseDatos(datos_posicion_mueble);
 
         targetRect.set('opacity', 0.4);
 
@@ -123,7 +124,7 @@ export class PlanoTiendaComponent implements OnInit {
   }
 
   guardarDatosPosicionEnBaseDatos(datos_posicion_mueble: posiciones_muebles_tienda) {
-    this.tiendasService.guardarPosicionMueble(this.id_tienda, datos_posicion_mueble).subscribe(
+    this.tiendasService.guardarPosicionMueble(datos_posicion_mueble).subscribe(
       (data) => {
         console.log('Posición del mueble guardada en la base de datos:', data);
       }, (error) => {

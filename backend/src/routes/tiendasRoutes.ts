@@ -7,7 +7,7 @@ router.get('/tiendas',getAllTiendas);
 
 router.post('/tiendas', newTienda);
 router.post('/tiendas/:id_tienda', updateTienda);
-router.post('/posicion_mueble/:id_pertenencia_mueble_tienda', guardarPosicionMueble);
+router.post('/posicion_mueble', guardarPosicionMueble);
 
 
 router.put('/tiendas/', activarDesactivarBooleanoTienda);
