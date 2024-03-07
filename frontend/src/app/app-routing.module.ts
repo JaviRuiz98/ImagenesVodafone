@@ -9,10 +9,15 @@ import { MuebleComponent } from './pages/mueble/mueble.component';
  import { TiendasComponent } from './pages/tiendas/tiendas.component';
 import { ElementosComponent } from './pages/elementos/elementos.component';
 import { TemplateInformeComponent } from './pages/template-informe/template-informe.component';
-import { PlanoTiendaComponent } from './componentes/plano-tienda/plano-tienda.component';
-import { PlanoTienda3DComponent } from './componentes/plano-tienda-3d/plano-tienda-3d.component';
+import { PlanoTiendaComponent } from './pages/plano-tienda/plano-tienda.component';
+import { LoginComponent } from './pages/login/login.component';
+
 
 const routes: Routes = [
+  {
+    path: "login", component: LoginComponent ,
+    data: { stateBarra: 'login' },
+  },
   { 
     path: "home", component: HomeComponent ,
     data: { stateBarra: 'home' },
@@ -52,15 +57,11 @@ const routes: Routes = [
     path: "plano_tienda", component: PlanoTiendaComponent, 
     data: { stateBarra: 'plano_tienda' },
    },
-   {
-    path: "plano_tienda_3D", component: PlanoTienda3DComponent,
-    data: { stateBarra: 'plano_tienda' },
-   },
 
 
   // { path:"expositores",}
   {
-    path: '', redirectTo: '/home', pathMatch: 'full' 
+    path: '', redirectTo: '/tiendas', pathMatch: 'full' 
   }
 ];
 

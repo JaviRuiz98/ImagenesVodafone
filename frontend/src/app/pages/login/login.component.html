@@ -1,0 +1,21 @@
+<div class="paginaCompleta">
+    <p-card class="centrar">
+        <div class="parametrosLogin">
+            <div class="divImagen">
+                <img class="anchoAltoMax" src="assets/images/icono.png">
+            </div>
+            <div class="card flex justify-content-center ajusteInput">
+                <span class="p-float-label input">
+                    <input pInputText id="username" class="input" [(ngModel)]="credenciales.usuario" />
+                    <label for="username">Usuario</label>
+                </span>
+            </div>
+            <div class="card flex justify-content-center ajusteInput">
+                <span class="p-float-label input">
+                    <p-password [(ngModel)]="credenciales.password" [toggleMask]="true" [feedback]="false" class="input"></p-password>
+                    <label for="username">Contraseña</label>
+                </span>
+            </div>
+        </div>
+    </p-card>
+</div>

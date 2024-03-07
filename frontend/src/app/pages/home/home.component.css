@@ -11,3 +11,6 @@
     align-items: center;
 }
 
+.paginaCompleta ::ng-deep .p-button{
+    background-color: #be0303;
+}
