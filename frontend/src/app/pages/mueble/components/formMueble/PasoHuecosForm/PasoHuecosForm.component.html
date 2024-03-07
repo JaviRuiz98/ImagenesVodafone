@@ -51,7 +51,7 @@ redimensionar: {{ this.redimensionado }} -->
                 <td> 
                   <p-dropdown class="ml-2" [options]="categorias_elementos" [(ngModel)]="hueco.categorias_elementos"
                   optionLabel="nombre" [showClear]="true" placeholder="Filtrar por categoría"
-                  [style]="{'margin-left': '20px'}" (onChange)="onSelectElemento(hueco)"></p-dropdown>
+                  [style]="{'margin-left': '20px', 'overflow': 'visible'}" (onChange)="onSelectElemento(hueco)" appendTo="body" ></p-dropdown>
                 </td> 
                 <td> <p-button label="Eliminar" [link]="true" [icon]="'pi pi-trash'" (onClick)="eliminarElemento(hueco)"></p-button></td>
             </tr>
