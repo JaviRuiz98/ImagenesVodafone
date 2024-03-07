@@ -16,7 +16,7 @@ export async function getAllTiendas(req: Request, res: Response) {
 
 export async function newTienda(req: Request, res: Response) {
     try{     
-        const tienda: tiendas = await tiendaService.newTienda(req.body.sfid);
+        const tienda: tiendas = await tiendaService.newTienda(req.body.parametros);
         const listaIdMuebles = req.body.listaNuevosMuebles.map((mueble: muebles) => mueble.id);
         await tiendaService.asignarPertenenciaMuebleTienda(tienda.id, listaIdMuebles);
         getAllTiendas(req, res);
@@ -57,13 +57,26 @@ export async function desactivarMueblesTienda(id_tienda: number) {
     }
 }
 
-export async function activarDesactivarTienda(req: Request, res: Response) {
+export async function activarDesactivarBooleanoTienda(req: Request, res: Response) {
     try{     
-        const tienda = await tiendaService.activarDesactivarTienda(req.body);
-
+        const tienda = await tiendaService.activarDesactivarBooleanoTienda(req.body.tienda, req.body.parametro);
         res.status(200).json(tienda);
     }catch (error) {
         console.error('Error al crear tienda:', error);
+    }
+}
+
+export async function guardarPosicionMueble(req: Request, res: Response) {
+    try{
+        const id_pertenencia_mueble_tienda = parseInt(req.params.id_pertenencia_mueble_tienda);
+        const datos_posicion_mueble = req.body;
+
+        await tiendaService.guardarPosicionMueble(id_pertenencia_mueble_tienda, datos_posicion_mueble);
+
+        res.status(200).json({'Posicion guardada para mueble': id_pertenencia_mueble_tienda});
+    } catch (error) {
+        console.error('Error al guardar posicion mueble:', error);
+        res.status(500).json({ error: 'Error guardando posicion mueble' });
     }
 }
 

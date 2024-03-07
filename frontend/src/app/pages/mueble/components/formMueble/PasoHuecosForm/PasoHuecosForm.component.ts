@@ -364,10 +364,8 @@ export class PasoHuecosFormComponent implements OnInit {
           return imagen ;
         }
       }
-      
     }
     return undefined;
-   
   }
  
 }

@@ -18,7 +18,8 @@ import { AuditoriaModule } from './pages/auditoria/auditoria.module';
 import { DatePipe } from '@angular/common';
 import { ElementosModule } from './pages/elementos/elementos.modules';
 import { RemarcarExpositorComponent } from './componentes/remarcar-expositor/remarcar-expositor.component';
-import { PlanoTienda3DComponent } from './componentes/plano-tienda-3d/plano-tienda-3d.component';
+import { PlanoTiendaModule } from './pages/plano-tienda/plano-tienda.module';
+import { LoginModule } from './pages/login/login.module';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,10 @@ import { PlanoTienda3DComponent } from './componentes/plano-tienda-3d/plano-tien
     HttpClientModule,
     GestionDeAuditoriasModule,
     AuditoriaModule,    
-    ElementosModule
+    ElementosModule,
+    PlanoTiendaModule,
+    ElementosModule,
+    LoginModule
   ],
   providers: [   
     PrimeIcons,

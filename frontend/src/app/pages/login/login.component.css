@@ -1,0 +1,63 @@
+.paginaCompleta{
+    display:flex;
+    width: 100vw;
+    height: 100vh;
+    background-color: #be0303;
+}
+.centrar{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+::ng-deep .p-card.p-component{
+    display: flex;
+    width: 25%;
+    height: 70%;
+    padding: 0;
+}
+::ng-deep .p-card-body {
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+::ng-deep .p-card-content {
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+.parametrosLogin{
+    display: grid;
+    grid-template-rows: 20% 15% 15% 20% 20%;
+    width: 80%;
+    height: 100%;
+}
+.divImagen {
+    display: flex;
+    justify-content: center;
+}
+.anchoAltoMax {
+    width: auto;
+    height: 100%;
+}
+.ajusteInput {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.input {
+    display: flex;
+    width: 100%;
+} 
+::ng-deep .p-password {
+    width: 100%;
+}
+::ng-deep .p-inputtext {
+    width: 100%;
+}
