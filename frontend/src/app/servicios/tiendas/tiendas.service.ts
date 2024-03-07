@@ -21,7 +21,7 @@ export class TiendasService {
 
   newTienda(nuevaTienda: tienda, listaNuevosMuebles: muebles[]): Observable<boolean> {
     const datosNuevaTienda = {
-      sfid: nuevaTienda.sfid,
+      parametros: nuevaTienda,
       listaNuevosMuebles: listaNuevosMuebles
     }
     return this.http.post<boolean>(`${this.API_URI}/tiendas`, datosNuevaTienda);
@@ -31,8 +31,12 @@ export class TiendasService {
     return this.http.post<boolean>(`${this.API_URI}/tiendas/` + tienda.id, listaNuevosMuebles);
   }
 
-  activarDesactivarTienda(tienda: tienda): Observable<tienda> {
-    return this.http.put<tienda>(`${this.API_URI}/tiendas/`, tienda);
+  activarDesactivarTienda(tienda: tienda, parametro: string): Observable<tienda> {
+    const datos = {
+      tienda: tienda,
+      parametro: parametro
+    }
+    return this.http.put<tienda>(`${this.API_URI}/tiendas/`, datos);
   }
 
   guardarPosicionMueble(id_pertenencia_mueble_tienda: number, datos_posicion_mueble: posiciones_muebles_tienda): Observable<boolean> {

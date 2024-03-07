@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
@@ -12,11 +13,16 @@ import { PickListModule } from 'primeng/picklist';
 import { TableModule } from 'primeng/table';
 import { OrderListModule } from 'primeng/orderlist';
 import { ToggleButtonModule } from 'primeng/togglebutton';
-import { PlanoTiendaComponent } from '../plano-tienda/plano-tienda.component';
+import { DialogNuevaTiendaComponent } from './component/dialog-nueva-tienda/dialog-nueva-tienda.component';
+import { DialogService } from 'primeng/dynamicdialog';
+import { EditarTiendaComponent } from './component/editar-tienda/editar-tienda.component';
+import { AgregarMuebleATiendaComponent } from 'src/app/componentes/agregar-mueble-a-tienda/agregar-mueble-a-tienda.component';
 
 @NgModule({
   declarations: [
     TiendasComponent,
+    DialogNuevaTiendaComponent,
+    EditarTiendaComponent
   ],
   imports: [
     CommonModule,
@@ -29,7 +35,9 @@ import { PlanoTiendaComponent } from '../plano-tienda/plano-tienda.component';
     PickListModule,
     TableModule,
     OrderListModule,
-    ToggleButtonModule
-  ]
+    ToggleButtonModule,
+    AgregarMuebleATiendaComponent
+  ],
+  providers: [MessageService, DialogService],
 })
 export class TiendasModule { }

@@ -10,8 +10,14 @@ import { MuebleComponent } from './pages/mueble/mueble.component';
 import { ElementosComponent } from './pages/elementos/elementos.component';
 import { TemplateInformeComponent } from './pages/template-informe/template-informe.component';
 import { PlanoTiendaComponent } from './pages/plano-tienda/plano-tienda.component';
+import { LoginComponent } from './pages/login/login.component';
+
 
 const routes: Routes = [
+  {
+    path: "login", component: LoginComponent ,
+    data: { stateBarra: 'login' },
+  },
   { 
     path: "home", component: HomeComponent ,
     data: { stateBarra: 'home' },
@@ -55,7 +61,7 @@ const routes: Routes = [
 
   // { path:"expositores",}
   {
-    path: '', redirectTo: '/home', pathMatch: 'full' 
+    path: '', redirectTo: '/tiendas', pathMatch: 'full' 
   }
 ];
 

@@ -70,6 +70,7 @@ export class BarraMenuComponent implements OnInit {
     this.currentState = rutaActual;
     switch (rutaActual) {
       case '/home':
+      case '/login':
         this.contenidoBotonVolver = '';
         this.iconoBotonVolver = '';    
       break;
@@ -84,6 +85,10 @@ export class BarraMenuComponent implements OnInit {
         this.contenidoBotonVolver = 'Volver a gestion de auditorias';
         this.iconoBotonVolver = this.volverAtrasIcono;    
       break;
+      case '/plano_tienda':
+        this.contenidoBotonVolver = 'Volver a gestion de tiendas';
+        this.iconoBotonVolver = this.volverAtrasIcono;    
+      break;
       default:
         this.contenidoBotonVolver = this.volverHome;
         this.iconoBotonVolver = this.volverHomeIcono;
@@ -91,19 +96,34 @@ export class BarraMenuComponent implements OnInit {
     }
   }
 
-  volverAtras(){
+  volverAtras(iconoVodafonePulsado: boolean){
     const rutaActual = this.router.url;
-    switch (rutaActual) {
-      case '/home':
-        this.contenidoBotonVolver = '';
-        this.iconoBotonVolver = '';    
-        break;
+    if(iconoVodafonePulsado)
+    switch (rutaActual) {   
+      case '/gestionAuditorias':
+      case '/tiendas':
+      case '/muebles':
+      case '/elementos':
       case '/auditoria':
-        this.router.navigate(['/gestionAuditorias']);
-        break;
-      default:
-        this.router.navigate(['/home']);
-        break;
+        this.router.navigate(['/home']);    
+      break;
+    } else {
+      switch (rutaActual) {
+        case '/home':
+        case '/login':
+          this.contenidoBotonVolver = '';
+          this.iconoBotonVolver = '';    
+          break;
+        case '/auditoria':
+          this.router.navigate(['/gestionAuditorias']);
+          break;
+        case '/plano_tienda':
+          this.router.navigate(['/tiendas']);
+          break;
+        default:
+          this.router.navigate(['/home']);
+          break;
+      }
     }
   }
 }
