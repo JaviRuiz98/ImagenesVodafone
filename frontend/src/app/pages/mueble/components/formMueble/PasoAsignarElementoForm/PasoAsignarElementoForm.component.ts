@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormArray, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ChangeDetectorRef } from '@angular/core';
 import { fabric } from 'fabric';
 
@@ -7,6 +7,7 @@ import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
 import { elementos } from 'src/app/interfaces/elementos';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { UrlService } from 'src/app/servicios/url/url.service';
 
 
 @Component({
@@ -16,9 +17,13 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 })
 export class PasoAsignarElementoFormComponent implements AfterViewInit {
 
-  constructor( public dialogConfig : DynamicDialogConfig, private cdr: ChangeDetectorRef) { }
+  constructor( private fb: FormBuilder, private urlService: UrlService, public dialogConfig : DynamicDialogConfig, private cdr: ChangeDetectorRef) { }
 
   canvas: fabric.Canvas;
+  
+  dragged_elemento: elementos|undefined;
+  private groupRefs: fabric.Group[] = []; // Almacenar referencias a los grupos
+  rectangulos_creados: boolean = false;
 
   @Input () expositorFormulario: FormGroup; 
   @Output () formularioPasoAsignarAtributoSinHuecos = new EventEmitter<{index:number, atributo: atributos_expositores} >();
@@ -114,7 +119,6 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     return huecosArray.length > 0 ? new FormArray(huecosArray) : undefined;
   }
   
- 
   onSeleccionadoSinHuecos($event: elementos){
     
     const atributo: atributos_expositores = {
@@ -128,12 +132,15 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
 
   }
 
-
    onDragEnd(event:{dragEvent:  CdkDragDrop<string[]>}) {
      console.log("terminar");
    }
 
+   onDragStart(event: {dragEvent: DragEvent, elemento: elementos}) {
+    event.dragEvent.dataTransfer.setData("text", JSON.stringify(event.elemento));
+    this.dragged_elemento = event.elemento;
  
+   }
  
   initCanvas(){
     const canvasEl = document.getElementById('funciona_please');
@@ -162,36 +169,102 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     
   }
 
-  drawRecangles(){
-    
-    for (let i = 0; i < this.huecos.length; i++) {
-      const atributo = this.huecos.at(i) as FormGroup;
-      const x = atributo.get('x_start')?.value || 0;
-      const y = atributo.get('y_start')?.value || 0;
-      const w = atributo.get('ancho')?.value || 0;
-      const h = atributo.get('alto')?.value || 0;
-      const angulo = atributo.get('angulo')?.value || 0;
+  createGroup(atributo: FormGroup, fillColor: string = 'white', strokeColor: string = 'black', lineStrokeColor: string = 'black'): fabric.Group {
+    const x = atributo.get('x_start')?.value || 0;
+    const y = atributo.get('y_start')?.value || 0;
+    const w = atributo.get('ancho')?.value || 0;
+    const h = atributo.get('alto')?.value || 0;
+  
+    const rect = new fabric.Rect({
+      left: x,
+      top: y,
+      fill: fillColor,
+      opacity: 0.5,
+      width: w,
+      height: h,
+      stroke: strokeColor,
+      strokeWidth: 2,
+      strokeDashArray: [5, 5],
+      selectable: false,
+      evented: false,
+    });
+  
+    // Ajustar la longitud de las líneas para hacerlas más pequeñas
+    const lineLength = Math.min(w, h) * 0.2; // Longitud de las líneas, ajustada al 20% del ancho o la altura del rectángulo
+  
+    // Crear una línea horizontal
+    const lineHorizontal = new fabric.Line([x + (w / 2) - (lineLength / 2), y + (h / 2), x + (w / 2) + (lineLength / 2), y + (h / 2)], {
+      stroke: lineStrokeColor,
+    });
+  
+    // Crear una línea vertical
+    const lineVertical = new fabric.Line([x + (w / 2), y + (h / 2) - (lineLength / 2), x + (w / 2), y + (h / 2) + (lineLength / 2)], {
+      stroke: lineStrokeColor,
+    });
+  
+    const group = new fabric.Group([rect, lineHorizontal, lineVertical], {
+      left: x,
+      top: y,
+      selectable: false,
+      evented: false,
+    });
+  
+    return group;
+  }
+ 
+  drawRectangles(): void {
+    const huecos = this.huecos;
+    if (huecos) {
+      huecos.controls.forEach((atributoExpositor, index) => {
+        if (!this.groupRefs[index]) { // Si no existe un grupo para este índice, créalo
+          const grupo = this.createGroup(atributoExpositor as FormGroup);
+          this.groupRefs[index] = grupo; // Almacenar referencia al grupo
+          this.canvas.add(grupo);
 
-      const rect = new fabric.Rect({
-        left: x, 
-        top: y, 
-        fill: 'red', 
-        width: w, 
-        height: h, 
-        angle: angulo, 
-        selectable:false,
-        evented: false,
-        borderColor: 'red', // Color del borde cuando el objeto está seleccionado
-        cornerColor: 'red', // Color de las esquinas cuando el objeto está seleccionado
-        transparentCorners: false, // Esquinas no transparentes para mejor visibilidad
-        opacity: 0.5, // Establece la opacidad del rectángulo para hacerlo casi transparente
+          //busco imagen
+          const imagen: string = atributoExpositor.get('elemento')?.value.imagenes.url || '';  
+          //si tiene imagen, la dibujo
+          this.addImageOnGroup(grupo, imagen);
+
+        } else { // Si el grupo ya existe, actualiza sus propiedades
+          this.updateGroupProperties(index, 'white', 'black', 'black');
+        }
       });
-
-      // Añade el rectángulo al canvas
-      this.canvas.add(rect);
+      this.canvas.renderAll();
     }
   }
+  addImageOnGroup(grupo: fabric.Group, imagen: string) {
+    const imagenUrl = this.urlService.url_imagenes_referencia + imagen;
+    fabric.Image.fromURL(imagenUrl, (img) => {
+      grupo.addWithUpdate(img);
+      this.canvas.renderAll();
 
+    }, {
+      crossOrigin: 'anonymous'
+    });
+  }
+  
+  updateGroupProperties(groupIndex: number,  fillColor: string, strokeColor: string, lineStrokeColor: string): void {
+    const group = this.groupRefs[groupIndex];
+    if (group) {
+      const rect = group.getObjects()[0] as fabric.Rect;
+      const lineHorizontal = group.getObjects()[1] as fabric.Line;
+      const lineVertical = group.getObjects()[2] as fabric.Line;
+  
+      rect.set({
+        fill: fillColor,
+        stroke: strokeColor,
+      });
+  
+      lineHorizontal.set({ stroke: lineStrokeColor });
+      lineVertical.set({ stroke: lineStrokeColor });
+  
+      group.setCoords(); 
+      this.canvas.renderAll();
+    
+    }
+  }
+ 
   configurarEventosCanvas(){
     if (!this.canvas) return;
 
@@ -199,27 +272,40 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
 
     // Permitir que los elementos sean arrastrados sobre el canvas
     canvasEl.addEventListener('dragover', (event) => {
-      event.preventDefault();
+      this.effectSelectable( event); 
     });
+    
 
     // Manejar el evento drop en el canvas
     canvasEl.addEventListener('drop', (event) => {
-      event.preventDefault();
       this.handleCanvasDrop(event);
     });
   }
 
-  handleCanvasDrop(event) {
+  effectSelectable(event: DragEvent) {
     event.preventDefault();
     if (!this.canvas) return;
+    const x = event.offsetX;
+    const y = event.offsetY;
+  
+    this.huecos?.controls.forEach((atributoExpositor, index) => {
+      const {x_start, y_start, ancho, alto} = atributoExpositor.value;
+      if (this.puntoDentroDelHueco({x, y}, {x_start, y_start, ancho, alto})) {
+        this.updateGroupProperties(index, 'gray', 'red', 'red');
+      } else {
+        this.updateGroupProperties(index, 'white', 'black', 'black');
+      }
+    });
+  }
+  
 
-    const pointer = this.canvas.getPointer(event.e);
-    const x = pointer.x;
-    const y = pointer.y;
+  handleCanvasDrop(event: DragEvent) {
+    event.preventDefault();
+    if (!this.canvas) return;
+    const x = event.offsetX;
+    const y = event.offsetY;
 
-    const elementoData = event.dataTransfer?.getData("text");
-    const elemento = elementoData ? JSON.parse(elementoData) : null;
-    if (!elemento) return;
+    if (!this.dragged_elemento) return;
 
     const puntoSoltado = { x, y };
 
@@ -233,24 +319,25 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     });
 
     if (indiceSoltado !== -1) {
-        
-      this.huecos.controls.at(indiceSoltado).patchValue({
-        elemento_id: elemento.id
-      })
+      const image_url:string = this.dragged_elemento.imagenes.url;
+      const atributo = this.huecos.controls.at(indiceSoltado);
+      atributo.patchValue({
+        elemento: {
+          id: this.dragged_elemento.id,
+          imagenes: {
+            url: image_url
+          }
+        }
+      });
+
+      const group: fabric.Group = this.groupRefs[indiceSoltado];
       
-        // Carga y muestra la imagen en el hueco correspondiente
-        const atributo = this.huecos.at(indiceSoltado) as FormGroup;
-        const imagenURL = elemento.imagen; // Asegúrate de que 'elemento' tenga una propiedad 'imagen'
-        fabric.Image.fromURL(imagenURL, (img) => {
-            img.set({
-                left: atributo.get('x_start').value,
-                top: atributo.get('y_start').value,
-                scaleX: atributo.get('ancho').value / img.width,
-                scaleY: atributo.get('alto').value / img.height,
-                selectable: false // Para evitar que la imagen sea seleccionable si no lo deseas
-            });
-            this.canvas.add(img);
-        });
+      this.addImageOnGroup(group, image_url);
+
+       
+    }else {
+      console.log("se ha soltado fuera del hueco");
+     
     }
   }
 
@@ -261,14 +348,13 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
 
  ngAfterViewInit(): void {
   if (this.huecos && this.huecos.length > 0) {
+    console.log(this.huecos.value);
     this.initCanvas();
-    this.drawRecangles();
+    this.drawRectangles();
     this.configurarEventosCanvas();
   }
  
  }
-
-  ngAfet
 
   
 }
