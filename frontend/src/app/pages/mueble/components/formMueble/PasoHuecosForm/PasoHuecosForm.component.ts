@@ -237,6 +237,7 @@ export class PasoHuecosFormComponent implements OnInit {
     this.elementosService.getCategorias_elementos().subscribe((categorias: categorias_elementos[]) => {
       this.categorias_elementos = categorias; 
       this.categoriaSeleccionada = this.categorias_elementos[0].nombre;
+      this.categorias_elementos.filter((elemento) => elemento.id !== 3);
     })
   }
 
