@@ -222,9 +222,13 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
           this.canvas.add(grupo);
 
           //busco imagen
-          const imagen: string = atributoExpositor.get('elemento')?.value.imagenes.url || '';  
-          //si tiene imagen, la dibujo
-          this.addImageOnGroup(grupo, imagen);
+          const elemento = atributoExpositor.get('elemento')?.value;
+          if (elemento){
+            const imagen: string = elemento?.imagen;  
+            //si tiene imagen, la dibujo
+            this.addImageOnGroup(grupo, imagen);
+          }
+          
 
         } else { // Si el grupo ya existe, actualiza sus propiedades
           this.updateGroupProperties(index, 'white', 'black', 'black');
@@ -236,13 +240,21 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
   addImageOnGroup(grupo: fabric.Group, imagen: string) {
     const imagenUrl = this.urlService.url_imagenes_referencia + imagen;
     fabric.Image.fromURL(imagenUrl, (img) => {
+      const rect = grupo.getObjects()[0] as fabric.Rect;
+      
+      img.scaleToWidth(rect.width);
+      img.scaleToHeight(rect.height);
+      img.set({
+        left: rect.left,
+        top: rect.top,
+        
+        
+      });
       grupo.addWithUpdate(img);
       this.canvas.renderAll();
+    } );
+}
 
-    }, {
-      crossOrigin: 'anonymous'
-    });
-  }
   
   updateGroupProperties(groupIndex: number,  fillColor: string, strokeColor: string, lineStrokeColor: string): void {
     const group = this.groupRefs[groupIndex];
