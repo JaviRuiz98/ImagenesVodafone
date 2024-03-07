@@ -1,25 +1,14 @@
-<div class="flex">
-  <div class="flex-1 m-2">
-    <div *ngIf="imagenesModeloExpositores && imagenesModeloExpositores.length > 0; else sinModelo">
-      <app-arrastrarElemento 
-        [mode]="'arrastrar'" 
-        (onElementoSeleccionado)="onSeleccionadoSinHuecos($event)">
-      </app-arrastrarElemento>
-    </div>
-
-    <ng-template #sinModelo>
-      <div class="flex align-items-center justify-content-center" >
-          <app-arrastrarElemento 
-          [mode]="'seleccionar'" 
-          [initialSelectedElemento]="firstElementoSinModeloExpositor"
-          (onElementoSeleccionado)="onSeleccionadoSinHuecos($event)">
-        </app-arrastrarElemento>
-      </div>
-
-        
-    </ng-template>
-  
-
-
+<div class="flex align-items-center justify-content-center mt-4" *ngIf="imagenesModeloExpositores && imagenesModeloExpositores.length > 0; else sinModelo">
+  <div style="position: relative;" flex-1>
+    <canvas id="funciona_please"></canvas>
+  </div>
+  <div class="flex m-2">
+    <app-arrastrarElemento [mode]="'arrastrar'" (onDragEnd)="onDragEnd($event)"></app-arrastrarElemento>
   </div>
 </div>
+
+<ng-template #sinModelo>
+  <app-arrastrarElemento [mode]="'seleccionar'" [initialSelectedElemento]="firstElementoSinModeloExpositor"
+    (onElementoSeleccionado)="onSeleccionadoSinHuecos($event)">
+  </app-arrastrarElemento>
+</ng-template>

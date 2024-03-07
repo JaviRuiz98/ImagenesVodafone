@@ -21,12 +21,10 @@ export class EditarExpositorComponent implements OnInit {
   imageElement: HTMLImageElement;
 
 
-  constructor(private urlService : UrlService, public dialogConfig : DynamicDialogConfig, private muebleService : MueblesService, public messageService : MessageService) { }
+  constructor(private urlService : UrlService, public dialogConfig : DynamicDialogConfig,  private muebleService : MueblesService, public messageService : MessageService) { }
 
   url_imagenes_referencias = this.urlService.url_imagenes_referencia;
   
-  @Input () expositorToEdit?: expositores;
-  @Output() onUpdate: EventEmitter<expositores> = new EventEmitter();
 
   expositor: expositores = {
     id: 0,
@@ -308,8 +306,8 @@ export class EditarExpositorComponent implements OnInit {
     console.log("terminar");
   }
   private updateExpositor() {
-    this.onUpdate.emit(this.expositor);
-    //this.muebleService.updateExpositor(this.expositor).subscribe();
+   // this.onUpdate.emit(this.expositor);
+    this.muebleService.updateExpositor(this.expositor).subscribe();
   }
 
   eliminarImagen (indice: number) {
