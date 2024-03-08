@@ -4,6 +4,7 @@ import {
     mobiliarioService,
 } from "../services/mobiliarioService";
 import { imagenes, muebles } from "@prisma/client";
+import { muebleCreation } from "../interfaces/mueblesCreados";
 
 //No está operatica
 export async function getFilteredMuebles(req: Request, res: Response) {
@@ -40,14 +41,13 @@ export async function getFilteredMuebles(req: Request, res: Response) {
     }
 }
 
-export async function createMueble(req: Request, res: Response) {
+
+export async function createMueble (req: Request, res: Response) {
     try {
-        const data = req.body; //tipar en un futuro
-
-        //hacer valdiator
-
+        const data: muebleCreation = req.body;
         const mobiliario = await mobiliarioService.createMueble(data);
         res.status(200).json(mobiliario);
+        
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Internal server error" });
@@ -173,3 +173,4 @@ export async function updateExpositor(req: Request, res: Response) {
         res.status(500).json({ error: "Internal server error" });
     }
 }
+

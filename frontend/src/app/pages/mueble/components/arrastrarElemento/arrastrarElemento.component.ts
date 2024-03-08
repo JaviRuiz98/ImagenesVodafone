@@ -33,6 +33,8 @@ export class ArrastrarElementoComponent implements OnInit {
   
   filterNameValue: string="";
 
+  categoria_id_modelo : number = 3;
+
   categoriaSeleccionada?: categorias_elementos;
   categorias_elementos: categorias_elementos[];
   url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
@@ -65,7 +67,7 @@ export class ArrastrarElementoComponent implements OnInit {
 
   inicializaCategorias_elementos(){
     this.enumService.getCategorias_elementos().subscribe((categorias: categorias_elementos[]) => {
-      this.categorias_elementos = categorias.filter((categoria) => categoria.id !== 3); //ME GUSTARIA NO TENERLO HARCODEADO 
+      this.categorias_elementos = categorias.filter((categoria) => categoria.id !== this.categoria_id_modelo); 
     })
   }
 

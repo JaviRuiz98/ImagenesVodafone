@@ -7,17 +7,17 @@
 @import '~primeflex/primeflex.css';
 
 .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
-    background-color: #be0303; /* Color de fondo rojo para la página activa */
+    background-color: #fc6262; /* Color de fondo rojo para la página activa */
     color: white; /* Color de texto blanco */
   }
   
 .p-datatable .p-datatable-tbody > tr.p-highlight {
   background-color: #ffecec; /* Color de fondo rojo para la página activa */
-  color: #be0303; /* Color de texto blanco */
+  color: red; /* Color de texto blanco */
 }
 .p-picklist-buttons .p-button {
-  background: #be0303;
-  border: #be0303;
+  background: red;
+  border: red;
 }
 
 .p-steps .p-steps-item.p-highlight .p-steps-number {
