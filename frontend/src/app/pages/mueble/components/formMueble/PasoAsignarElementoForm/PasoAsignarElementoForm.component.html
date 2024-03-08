@@ -1,6 +1,29 @@
+<p-toast key='edit'></p-toast>
+
 <div class="flex align-items-center justify-content-center mt-4" *ngIf="imagenesModeloExpositores && imagenesModeloExpositores.length > 0; else sinModelo">
-  <div style="position: relative;" flex-1>
-    <canvas id="funciona_please" width="600" height="500"></canvas>
+  <div style="position: relative;" class=" flex-1">
+    <canvas id="funciona_please" width="600" height="500" style="position: absolute; z-index: 1;"></canvas>
+
+    <ng-container *ngFor="let attr of huecos.value; let i = index">
+
+      <div *ngIf="attr.elemento" 
+        [style.position]="'absolute'" 
+        [style.left.px]="getRotatedCoordinateX( i)"
+        [style.top.px]="getRotatedCoordinateY( i)" 
+        [style.width.px]="attr.ancho" 
+        [style.height.px]="attr.alto" 
+        [style.transform]="attr.angulo ? 'rotate(' + attr.angulo + 'deg)' : ''"
+
+        style="border: 1px solid transparent; z-index: 2;">
+        <!-- Contenedor para los botones de esquina -->
+        <div class="corner-buttons">
+          <!-- Botón de esquina superior izquierda -->
+          <p-button type="button" severity="danger" [rounded]="true" icon="pi pi-times" (click)="eliminarImagen(i)" class="deleteButton corner-button corner-top-right"></p-button>
+          <!-- Aquí puedes agregar más botones para otras esquinas siguiendo el mismo patrón -->
+        </div>
+      </div>
+    </ng-container> 
+
   </div>
   <div class="flex m-2">
     <app-arrastrarElemento [mode]="'arrastrar'" (onDragStart)="onDragStart($event)" (onDragEnd)="onDragEnd($event)"></app-arrastrarElemento>

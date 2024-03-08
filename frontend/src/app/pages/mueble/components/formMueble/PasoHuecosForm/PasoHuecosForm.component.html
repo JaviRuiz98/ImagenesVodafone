@@ -36,7 +36,14 @@ redimensionar: {{ this.redimensionado }} -->
       
     </div>   
     <div  style="width:50%; text-align: center">
-      <p-table [value]="atributos_expositor"  >
+      <p-table 
+        [value]="atributos_expositor"  
+        [scrollable]="true"
+        [scrollHeight]="'calc(100vh - 300px )'"
+        selectionMode="single"
+        (onRowSelect)="HuecoSeleccionaoDeLaTablaChavalito($event)"        
+      
+      >
         <ng-template pTemplate="header">
             <tr>
               <th>Numero</th>
@@ -45,10 +52,10 @@ redimensionar: {{ this.redimensionado }} -->
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-hueco>
-            <tr>
+            <tr  [pSelectableRow]="hueco">
                 <td>{{ hueco.id }} </td>
 
-                <td> 
+                <td > 
                   <p-dropdown class="ml-2" [options]="categorias_elementos" [(ngModel)]="hueco.categorias_elementos"
                   optionLabel="nombre" [showClear]="true" placeholder="Filtrar por categoría"
                   [style]="{'margin-left': '20px', 'overflow': 'visible'}" (onChange)="onSelectElemento(hueco)" appendTo="body" ></p-dropdown>

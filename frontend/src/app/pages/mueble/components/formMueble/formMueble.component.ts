@@ -19,7 +19,13 @@ export class FormMuebleComponent implements OnInit {
 
   formulario: FormGroup;
   
-  constructor( private urlService: UrlService, private cdr: ChangeDetectorRef, public dialogConfig : DynamicDialogConfig, private fb: FormBuilder, private elementosService: ElementosService, private muebleService: MueblesService) {
+  constructor( 
+    private urlService: UrlService,
+    private cdr: ChangeDetectorRef,
+    public dialogConfig : DynamicDialogConfig,
+    private fb: FormBuilder, 
+    private muebleService: MueblesService) {
+
     this.formulario = this.fb.group({
       mueble: this.fb.group({
         nombre_mueble: ['', Validators.required],
@@ -437,6 +443,13 @@ export class FormMuebleComponent implements OnInit {
     
   onSubmit() {
     console.log("guardar",this.formulario.value);
+    const mueble = this.formulario.value.mueble;
+    this.muebleService.createMueble(mueble).subscribe(
+      (data) => {
+        console.log("mueble guardado", data);
+
+      }
+    );
   }
 
 

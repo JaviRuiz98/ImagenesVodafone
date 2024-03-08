@@ -9,6 +9,7 @@ import { elementos } from 'src/app/interfaces/elementos';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { UrlService } from 'src/app/servicios/url/url.service';
 import { MessageService } from 'primeng/api';
+import { group } from '@angular/animations';
 
 
 @Component({
@@ -17,6 +18,7 @@ import { MessageService } from 'primeng/api';
   styleUrls: ['./PasoAsignarElementoForm.component.css']
 })
 export class PasoAsignarElementoFormComponent implements AfterViewInit {
+
 
   constructor( private fb: FormBuilder, private urlService: UrlService, public dialogConfig : DynamicDialogConfig, private cdr: ChangeDetectorRef, public messageService : MessageService) { }
 
@@ -129,7 +131,6 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     if (this.indexAtributoFirstElementoSinModeloExpositor != -1){
       this.formularioPasoAsignarAtributoSinHuecos.emit( {index:this.indexAtributoFirstElementoSinModeloExpositor,  atributo:atributo}); 
     }
-  
 
   }
 
@@ -161,7 +162,6 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
           scaleY: this.canvas.height / img.height,
         });
       }, {
-        crossOrigin: 'anonymous',
         onError: (err) => console.error('Error cargando la imagen:', err)
       });
     }else {
@@ -229,11 +229,8 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
           if (elemento){
             const imagen: string = elemento?.imagenes.url;  
             //si tiene imagen, la dibujo
-            this.addImageOnGroup(grupo, imagen);
+            this.addImageOnGroup(index, imagen);
           }
-          
-          
-
         } else { // Si el grupo ya existe, actualiza sus propiedades
           this.updateGroupProperties(index, 'white', 'black', 'black');
         }
@@ -241,41 +238,103 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
       this.canvas.renderAll();
     }
   }
-  addImageOnGroup(grupo: fabric.Group, imagen: string) {
+
+  eliminarImagen( index_hueco:number) {
+    this.huecos.at(index_hueco).patchValue({
+      elemento: undefined
+    });
+    this.deleteImageFromCanvas(this.groupRefs[index_hueco]);
+    this.canvas.renderAll();
+
+    
+  } 
+  deleteImageFromCanvas(grupo: fabric.Group) {
+    const objetosParaEliminar = [];
+    grupo.getObjects().forEach((obj) => {
+      if (obj.type === 'image') {
+        objetosParaEliminar.push(obj);
+      }
+    });
+
+    objetosParaEliminar.forEach((obj) => {
+      grupo.remove(obj);
+    });
+
+  }
+
+  getRotatedCoordinateX(index_hueco: number): number {
+    
+    const grupo = this.groupRefs[index_hueco];
+
+    const cosAngle = Math.cos(fabric.util.degreesToRadians(grupo.angle));
+    const sinAngle = Math.sin(fabric.util.degreesToRadians(grupo.angle));
+ 
+    const dx = (grupo.width / 2) * cosAngle - (grupo.height / 2) * sinAngle;
+
+    return grupo.left + dx;
+  }
+
+
+  
+  getRotatedCoordinateY( index_hueco: number): number {
+  
+    const grupo = this.groupRefs[index_hueco];
+    
+    const cosAngle = Math.cos(fabric.util.degreesToRadians(grupo.angle));
+    const sinAngle = Math.sin(fabric.util.degreesToRadians(grupo.angle));
+ 
+    const dy = (grupo.width / 2) * sinAngle + (grupo.height / 2) * cosAngle;
+
+  
+    return grupo.top + dy;
+
+  }
+  
+  addImageOnGroup(index_hueco	: number, imagen: string) {
 
     const imagenUrl = this.urlService.url_imagenes_referencia + imagen;
+    const grupo = this.groupRefs[index_hueco];
+
     fabric.Image.fromURL(imagenUrl, (img) => {
-      // Obtengo el rectangulo 
-      //const rect = grupo.getObjects()[0];
 
-      // Escalar la imagen para que coincida con el tamaño del rectángulo
-      img.scaleToWidth(grupo.width);
-      img.scaleToHeight(grupo.height);
-      if (img.width > grupo.width) {
-        //update rect width to be the same as img
-     
-
-      }
+      const scaleRatio = Math.min(
+        grupo.getScaledWidth() / img.width,
+        grupo.getScaledHeight() / img.height
+      );
   
       // Calcular la posición central del rectángulo dentro del grupo
       const centroRectX = grupo.left + grupo.width / 2;
       const centroRectY = grupo.top + grupo.height / 2;
   
       // Configurar la imagen para que su centro coincida con el centro del rectángulo
-      img.set({
+      img.scale(scaleRatio).set({
         left: centroRectX - img.getScaledWidth() / 2,
         top: centroRectY - img.getScaledHeight() / 2,
-        angle: grupo.angle, // Asumir el mismo ángulo de rotación que el rectángulo
+        originX: 'center',
+        originY: 'center',
       });
+
+      //Rotación
+      img.rotate(grupo.angle);
+ 
+      const cosAngle = Math.cos(fabric.util.degreesToRadians(grupo.angle));
+      const sinAngle = Math.sin(fabric.util.degreesToRadians(grupo.angle));
+ 
+      const dx = (grupo.width / 2) * cosAngle - (grupo.height / 2) * sinAngle;
+      const dy = (grupo.width / 2) * sinAngle + (grupo.height / 2) * cosAngle;
   
+      img.set({
+        left: grupo.left + dx,
+        top: grupo.top + dy,
+      });
+
       // Añadir la imagen al grupo y actualizar
       grupo.addWithUpdate(img);
       this.canvas.renderAll();
     });
   }
   
-
-  
+    
   updateGroupProperties(groupIndex: number,  fillColor: string, strokeColor: string, lineStrokeColor: string): void {
     const group = this.groupRefs[groupIndex];
     if (group) {
@@ -317,12 +376,11 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
   effectSelectable(event: DragEvent) {
     event.preventDefault();
     if (!this.canvas) return;
-    const x = event.offsetX;
-    const y = event.offsetY;
-  
+    const pointer = this.canvas.getPointer(event);
     this.huecos?.controls.forEach((atributoExpositor, index) => {
-      const {x_start, y_start, ancho, alto, angulo} = atributoExpositor.value;
-      if (this.puntoDentroDelHueco({x, y}, {x_start, y_start, ancho, alto, angulo})) {
+      const group = this.groupRefs[this.huecos.controls.indexOf(atributoExpositor)];
+      if (this.puntoDentroDelHueco(pointer, group)) {
+        
         this.updateGroupProperties(index, 'gray', 'red', 'red');
       } else {
         this.updateGroupProperties(index, 'white', 'black', 'black');
@@ -334,20 +392,13 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
   handleCanvasDrop(event: DragEvent) {
     event.preventDefault();
     if (!this.canvas) return;
-    const x = event.offsetX;
-    const y = event.offsetY;
 
+    const pointer = this.canvas.getPointer(event);
     if (!this.dragged_elemento) return;
 
-
-   
     const indiceSoltado = this.huecos.controls.findIndex((atributoExpositor) => {
-        const x_start = atributoExpositor.get('x_start').value;
-        const y_start = atributoExpositor.get('y_start').value;
-        const ancho = atributoExpositor.get('ancho').value;
-        const alto = atributoExpositor.get('alto').value;
-        const angulo = atributoExpositor.get('angulo').value;
-        return this.puntoDentroDelHueco( {x,y}, {x_start, y_start, ancho, alto, angulo});
+       const group = this.groupRefs[this.huecos.controls.indexOf(atributoExpositor)];
+        return this.puntoDentroDelHueco( pointer, group);
     });
 
     if (indiceSoltado !== -1) {
@@ -363,47 +414,26 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
       });
 
     const categoria_hueco = this.huecos.controls.at(indiceSoltado).get('categorias_elementos').value;
-    if (this.dragged_elemento.categorias_elementos.id !== categoria_hueco.id) {
-      this.messageService.add({ key: 'edit', severity: 'error', summary: 'Error', detail: 'La categoría permitida para esta posición es ' + categoria_hueco.nombre });
+    if (categoria_hueco && this.dragged_elemento.categorias_elementos.id !== categoria_hueco.id) {
+      this.messageService.add({ key: 'edit', severity: 'warn', summary: 'Error', detail: 'La categoría permitida para esta posición es "' + categoria_hueco.nombre.toLowerCase()  + '"'});
+      this.updateGroupProperties(indiceSoltado, 'white', 'black', 'black');
       return;
     }
 
       const group: fabric.Group = this.groupRefs[indiceSoltado];
       this.updateGroupProperties(indiceSoltado, 'white', 'black', 'black');
-
-      this.addImageOnGroup(group, image_url);
-
-       
+      this.addImageOnGroup(indiceSoltado, image_url);
+    
     }else {
-      console.log("se ha soltado fuera del hueco");
-     
+      console.log("se ha soltado fuera del hueco"); 
     }
   }
 
-   puntoDentroDelHueco({x, y}, {x_start, y_start, ancho, alto, angulo}) {
-    // Convertir el ángulo de grados a radianes
-    const anguloRadianes = (angulo * Math.PI) / 180;
-  
-    // Calcular el centro del rectángulo
-    const centroX = x_start + ancho / 2;
-    const centroY = y_start + alto / 2;
-  
-    // Trasladar el punto al origen de coordenadas para la rotación
-    const xRelativo = x - centroX;
-    const yRelativo = y - centroY;
-  
-    // Rotar el punto en la dirección opuesta del rectángulo
-    const xRotado = xRelativo * Math.cos(-anguloRadianes) - yRelativo * Math.sin(-anguloRadianes);
-    const yRotado = xRelativo * Math.sin(-anguloRadianes) + yRelativo * Math.cos(-anguloRadianes);
-  
-    // Trasladar el punto de vuelta a su posición original
-    const xFinal = xRotado + centroX;
-    const yFinal = yRotado + centroY;
-  
-    // Verificar si el punto está dentro de los límites del rectángulo no rotado
-    return xFinal >= x_start && xFinal <= x_start + ancho && yFinal >= y_start && yFinal <= y_start + alto;
+  puntoDentroDelHueco(pointer, group: fabric.Group) {
+    if (!this.canvas) return false; 
+    return group.containsPoint(pointer);
   }
-  
+ 
 
 
  ngAfterViewInit(): void {
