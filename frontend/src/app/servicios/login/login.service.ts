@@ -14,7 +14,7 @@ export class LoginService {
 
   constructor(private http: HttpClient) { }
 
-  verificarUsuario(credenciales: credenciales): Observable<boolean>{
-    return this.http.post<boolean>(this.API_URI_LOGIN, credenciales);
+  verificarUsuario(credenciales: credenciales): Observable<string>{
+    return this.http.post<string>(this.API_URI_LOGIN, credenciales);
   }
 }

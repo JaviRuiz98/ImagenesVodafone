@@ -3,13 +3,13 @@ import { loginService } from '../services/loginService';
 
 export async function verificarUsuario(req: Request, res: Response) {
     try {
-        const { usuario, password } = req.body;
-        const existe = loginService.existeUsuario(usuario);
+        const { usuario } = req.body;
+        const existe = await loginService.existeUsuario(usuario);
         if (!existe) {
-            res.status(400).json({ error: 'El usuario no existe' });
+            res.status(200).json('El usuario no existe.');
             return;
         }
-        console.log(usuario, password);
+        console.log('hola')
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
         throw error;
