@@ -1,11 +1,14 @@
 import { Request, Response } from 'express';
 import { tiendaService } from '../services/tiendasServices';
 import { muebles, tiendas } from '@prisma/client';
+ 
+ 
 
 export async function getAllTiendas(req: Request, res: Response) {
     try{
         const tiendaId: number | undefined = req.query.tiendaId ? parseInt(req.query.tiendaId as string) : undefined;
         const tiendas: tiendas[] = await tiendaService.getAllById(tiendaId);
+ 
         res.status(200).json(tiendas);
     }
     catch (error) {
