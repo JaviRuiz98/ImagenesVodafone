@@ -12,5 +12,5 @@
 }
 
 .paginaCompleta ::ng-deep .p-button{
-    background-color: #be0303;
+    background-color: red;
 }
