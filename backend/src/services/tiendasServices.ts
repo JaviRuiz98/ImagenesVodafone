@@ -179,5 +179,23 @@ export const tiendaService = {
         } finally {
             await db.$disconnect();
         }
+    },
+
+    async desactivarPosicionMueble(id_posicion_mueble: number): Promise<any> {
+        try {
+            await db.posiciones_muebles_tienda.update({
+                where: {
+                    id: id_posicion_mueble
+                }, 
+                data: {
+                    activo: false
+                }
+            })
+        } catch (error) {
+            console.error(error);
+            throw error;
+        } finally {
+            await db.$disconnect();
+        }
     }
 }

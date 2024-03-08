@@ -42,4 +42,8 @@ export class TiendasService {
   guardarPosicionMueble(datos_posicion_mueble: posiciones_muebles_tienda): Observable<boolean> {
     return this.http.post<boolean>(`${this.API_URI}/posicion_mueble`, datos_posicion_mueble);
   }
+
+  eliminarPosicionMueble(id_posicion_mueble: number): Observable<boolean> {
+    return this.http.put<boolean>(`${this.API_URI}/desactivar_mueble_tienda`, {id_posicion_mueble});
+  }
 }

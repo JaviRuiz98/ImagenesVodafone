@@ -1,5 +1,5 @@
 import express from 'express';
-import { getAllTiendas, newTienda, updateTienda, activarDesactivarBooleanoTienda, guardarPosicionMueble } from '../controller/tiendasController';
+import { getAllTiendas, newTienda, updateTienda, activarDesactivarBooleanoTienda, guardarPosicionMueble, desactivarPosicionMueble } from '../controller/tiendasController';
 
 const router = express.Router();
 
@@ -11,6 +11,7 @@ router.post('/posicion_mueble', guardarPosicionMueble);
 
 
 router.put('/tiendas/', activarDesactivarBooleanoTienda);
+router.put('/desactivar_mueble_tienda/', desactivarPosicionMueble);
 
 
 export default router;

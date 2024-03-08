@@ -79,6 +79,19 @@ export async function guardarPosicionMueble(req: Request, res: Response) {
     }
 }
 
+export async function desactivarPosicionMueble(req: Request, res: Response) {
+    try{
+        const id_posicion_mueble = req.body.id_posicion_mueble;
+        console.log(id_posicion_mueble);
+
+        await tiendaService.desactivarPosicionMueble(id_posicion_mueble);
+
+        res.status(200).json({'Posicion desactivada para mueble': id_posicion_mueble});
+    } catch (error) {
+        console.error('Error al guardar posicion mueble:', error);
+        res.status(500).json({ error: 'Error guardando posicion mueble' });
+    }
+}
 
 
 
