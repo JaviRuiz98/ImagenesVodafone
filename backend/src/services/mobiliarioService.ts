@@ -74,8 +74,7 @@ export const mobiliarioService = {
                        
                     }
                 });
-                console.log("expo: " + JSON.stringify(mueble));
-                console.log(mueble.expositores);
+                
                 for ( const expositores of mueble.expositores) {
                     //creo expositor
                     const newExpositor = await prisma.expositores.create({
@@ -96,12 +95,10 @@ export const mobiliarioService = {
                                 alto: atributo.alto,
                                 ancho: atributo.ancho,
                                 angulo: atributo.angulo,
-                                
-                                
                             },
                         });
                         //creo pertenencia atributos
-                        if (!!atributo.elemento){
+                        if (atributo.elemento?.id) {
                             await prisma.pertenencia_elementos_atributos.create({
                                 data: {
                                     id_atributos_expositores: newAtributo.id,
