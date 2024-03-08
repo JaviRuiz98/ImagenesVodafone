@@ -8,6 +8,8 @@ export async function verificarUsuario(req: Request, res: Response) {
         if (!existe) {
             res.status(200).json('El usuario no existe.');
             return;
+        } else{
+            return res.status(200).json('El usuario existe.');
         }
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
