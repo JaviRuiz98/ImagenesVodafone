@@ -8,7 +8,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { categorias_elementos } from 'src/app/interfaces/categoria';
 import { FormControl, FormGroup } from '@angular/forms';
 import { timeout } from 'rxjs';
-import { EnumService } from 'src/app/servicios/enum.service';
+import { EnumService } from 'src/app/servicios/enum/enum.service';
 
 @Component({
   selector: 'app-elementos',

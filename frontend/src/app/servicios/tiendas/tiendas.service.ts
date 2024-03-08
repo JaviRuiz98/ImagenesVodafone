@@ -3,6 +3,7 @@ import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { tienda } from '../../interfaces/tienda';  
 import { muebles } from 'src/app/interfaces/muebles';
+import { posiciones_muebles_tienda } from 'src/app/interfaces/posiciones_muebles_tienda';
 
 @Injectable({
   providedIn: 'root'
@@ -36,5 +37,9 @@ export class TiendasService {
       parametro: parametro
     }
     return this.http.put<tienda>(`${this.API_URI}/tiendas/`, datos);
+  }
+
+  guardarPosicionMueble(id_pertenencia_mueble_tienda: number, datos_posicion_mueble: posiciones_muebles_tienda): Observable<boolean> {
+    return this.http.post<boolean>(`${this.API_URI}/posicion_mueble/` + id_pertenencia_mueble_tienda, datos_posicion_mueble);
   }
 }

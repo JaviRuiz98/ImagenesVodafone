@@ -199,6 +199,7 @@ export const mobiliarioService = {
                     },
                 },
                 include: {
+                    pertenencia_mueble_tienda:true,
                     expositores: {
                         include: {
                             atributos_expositores: {

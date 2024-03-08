@@ -16,7 +16,7 @@ import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormControl, 
 import { categorias_elementos } from 'src/app/interfaces/categoria';
 
 import { regiones } from 'src/app/interfaces/regiones';
-import { EnumService } from 'src/app/servicios/enum.service';
+import { EnumService } from 'src/app/servicios/enum/enum.service';
 
 
 @Component({
