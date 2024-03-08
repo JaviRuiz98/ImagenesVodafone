@@ -15,7 +15,7 @@
 ::ng-deep .p-card.p-component{
     display: flex;
     width: 25%;
-    height: 70%;
+    height: 60%;
     padding: 0;
 }
 ::ng-deep .p-card-body {
@@ -32,7 +32,7 @@
 }
 .parametrosLogin{
     display: grid;
-    grid-template-rows: 20% 15% 15% 10% 20%;
+    grid-template-rows: 20% 15% 15% 10% 20% 0%;
     width: 80%;
     height: 100%;
 }
@@ -71,4 +71,11 @@
     justify-content: center;
     width: 100%;
     height: 100%;
+}
+.crearUsuario {
+    display: grid;
+    grid-template-columns: 25% 50% 25%;
+}
+.centrarLinea{
+    margin-top: 5%;
 }
