@@ -269,7 +269,7 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     const cosAngle = Math.cos(fabric.util.degreesToRadians(grupo.angle));
     const sinAngle = Math.sin(fabric.util.degreesToRadians(grupo.angle));
  
-    const dx = (grupo.width / 2) * cosAngle - (grupo.height / 2) * sinAngle;
+    const dx = (grupo.width / 2) * cosAngle + (grupo.height / 2) * sinAngle;
 
     return grupo.left + dx;
   }
@@ -283,7 +283,7 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     const cosAngle = Math.cos(fabric.util.degreesToRadians(grupo.angle));
     const sinAngle = Math.sin(fabric.util.degreesToRadians(grupo.angle));
  
-    const dy = (grupo.width / 2) * sinAngle + (grupo.height / 2) * cosAngle;
+    const dy = (grupo.width / 2) * sinAngle -(grupo.height / 2) * cosAngle;
 
   
     return grupo.top + dy;

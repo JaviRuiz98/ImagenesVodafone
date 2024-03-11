@@ -254,7 +254,6 @@ export class PasoHuecosFormComponent implements OnInit {
     control.push(this.fb.group({ id: atributo.id, expositor: atributo.expositor, categorias_elementos: atributo.categorias_elementos, elemento: atributo.elemento, 
     x_start: atributo.x_start, y_start: atributo.y_start, ancho: atributo.ancho, alto: atributo.alto, angulo: atributo.angulo }));
 
-    console.log(this.expositorFormulario.value);
   }
 
   editar_atributo_expositor(atributo: atributos_expositores){

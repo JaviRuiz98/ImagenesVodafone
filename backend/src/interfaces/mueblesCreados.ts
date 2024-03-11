@@ -1,3 +1,7 @@
+
+
+
+
 export interface muebleCreation{
     nombre_mueble: string,
     region: {
@@ -6,6 +10,7 @@ export interface muebleCreation{
     expositores: [
         {
             nombre_expositor: string,
+            
             atributos_expositores: [
             
                 {
@@ -18,7 +23,15 @@ export interface muebleCreation{
                         id: number
                     },
                     elemento?: {
-                        id:number
+                        id?:number,
+                        nombre?: string,
+                        imagen ?: string,
+                        archivo_imagen?: File,
+                        nombre_archivo?: string,
+                        categorias_elementos?: {
+                            id: number
+                        },
+
                        
                     }
                 }

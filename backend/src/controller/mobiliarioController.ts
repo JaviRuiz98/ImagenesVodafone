@@ -5,8 +5,10 @@ import {
 } from "../services/mobiliarioService";
 import { imagenes, muebles } from "@prisma/client";
 import { muebleCreation } from "../interfaces/mueblesCreados";
+import { fetchGuardarElemento } from "./elementoController";
+import { ConsoleMessage } from "puppeteer";
 
-//No está operatica
+//No está operativa
 export async function getFilteredMuebles(req: Request, res: Response) {
     try {
         const id_tienda = req.body.id_tienda
@@ -41,17 +43,66 @@ export async function getFilteredMuebles(req: Request, res: Response) {
     }
 }
 
-
+const idCategoriaModelo = 3;
 export async function createMueble (req: Request, res: Response) {
     try {
-        const data: muebleCreation = req.body;
-        const mobiliario = await mobiliarioService.createMueble(data);
-        res.status(200).json(mobiliario);
+         //const muebleDat: muebleCreation = req.body.muebleData;
+        const muebleDat:muebleCreation  = JSON.parse(req.body.muebleData);
+        const imagenes = req.files;
+        for (const expositor of muebleDat.expositores) {
+            for (const atributo of expositor.atributos_expositores) {
+                if (atributo.categorias_elementos?.id != null &&
+                    atributo.categorias_elementos.id == idCategoriaModelo &&
+                    atributo.elemento?.id == null &&
+                    atributo.elemento?.nombre_archivo != null) {
+                    const imagenFile = encontrarArchivoPorNombre(imagenes, atributo.elemento.nombre_archivo);
+                    if (imagenFile) {
+                        console.log("introducido: " + imagenFile.originalname);
+                        const elemento = await fetchGuardarElemento(atributo.elemento.nombre ?? "", true, atributo.elemento.categorias_elementos?.id ?? idCategoriaModelo, imagenFile);
+                        if (elemento) {
+                            atributo.elemento.id = elemento.id;
+                        } else {
+                            console.error('Error al crear el elemento');
+                            throw new Error('Error al crear el elemento');
+                        }
+                    } else {
+                        console.error('No se encontró el archivo');
+                        throw new Error('No se encontró el archivo');
+                    }
+                } 
+            }
+        }
+        
+        // const mobiliario = await mobiliarioService.createMueble(muebleDat);
+        // res.status(200).json(mobiliario);
         
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: "Internal server error" });
     }
+}
+
+function encontrarArchivoPorNombre(imagenes:
+        {[fieldname: string]: Express.Multer.File[];} |
+        Express.Multer.File[] |
+        undefined, 
+    nombreArchivo: string) {
+
+    let archivoEncontrado = undefined;
+
+    // Si imagenes es un array directo de Express.Multer.File
+    if (Array.isArray(imagenes)) {
+        archivoEncontrado = imagenes.find(imagen => imagen.originalname === nombreArchivo);
+    } 
+    // Si imagenes es un objeto con propiedades cuyos valores son arrays de Express.Multer.File
+    else if (imagenes && typeof imagenes === 'object') {
+        Object.keys(imagenes).forEach(key => {
+            const posibleArchivo = imagenes[key].find(imagen => imagen.originalname === nombreArchivo);
+            if (posibleArchivo) archivoEncontrado = posibleArchivo;
+        });
+    }
+    
+    return archivoEncontrado;
 }
 
 export async function updateMueble(req: Request, res: Response) {
