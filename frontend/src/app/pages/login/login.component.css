@@ -15,7 +15,7 @@
 ::ng-deep .p-card.p-component{
     display: flex;
     width: 25%;
-    height: 60%;
+    height: 70%;
     padding: 0;
 }
 ::ng-deep .p-card-body {
@@ -33,6 +33,12 @@
 .parametrosLogin{
     display: grid;
     grid-template-rows: 20% 15% 15% 10% 20% 0%;
+    width: 80%;
+    height: 100%;
+}
+.parametrosCrearUsuario{
+    display: grid;
+    grid-template-rows: 20% 5% 15% 15% 15% 15% 15%;
     width: 80%;
     height: 100%;
 }
@@ -75,4 +81,15 @@
 .crearUsuario {
     display: grid;
     grid-template-columns: 25% 50% 25%;
+}
+.botonVolver{
+    color: #be0303;
+    cursor: pointer;
+    width: 10%;
+}
+::ng-deep .p-button.p-button-danger.p-button-text {
+    margin: 0;
+    padding: 0;
+    color: #be0303;
+    width: auto;
 }

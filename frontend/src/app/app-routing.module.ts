@@ -61,7 +61,7 @@ const routes: Routes = [
 
   // { path:"expositores",}
   {
-    path: '', redirectTo: '/tiendas', pathMatch: 'full' 
+    path: '', redirectTo: '/login', pathMatch: 'full' 
   }
 ];
 

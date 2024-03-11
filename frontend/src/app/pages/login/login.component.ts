@@ -3,6 +3,8 @@ import { credenciales } from '../../interfaces/login';
 import { LoginService } from 'src/app/servicios/login/login.service';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
+import { nuevoUsuario } from '../../interfaces/login';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -11,6 +13,8 @@ import { Router } from '@angular/router';
 export class LoginComponent {
 
   credenciales: credenciales = {} as credenciales;
+  crearUsuario: boolean = false;
+  nuevoUsuario: nuevoUsuario = {} as nuevoUsuario;
 
   constructor(private LoginService: LoginService, private messageService: MessageService, private router: Router) {}
 
@@ -19,9 +23,23 @@ export class LoginComponent {
       console.log(usuarioVerificado);
       if (usuarioVerificado === 'El usuario no existe.'){ 
         this.messageService.add({ severity: 'error', summary: 'ERROR!', detail: usuarioVerificado });
-      } else{
+      } else if(usuarioVerificado === 'La contraseña es incorrecta.'){
+        this.messageService.add({ severity: 'error', summary: 'ERROR!', detail: usuarioVerificado });
+      }
+      
+
+      else{
         this.router.navigate(['/home']);
       }
+    })
+  }
+  vistaCrearNuevoUsuario(){
+    this.crearUsuario = true;
+    this.nuevoUsuario = {} as nuevoUsuario;
+  }
+  registrarNuevoUsuario(){
+    this.LoginService.crearUsuario(this.nuevoUsuario).subscribe(respuesta =>{
+      console.log(respuesta);
     })
   }
 }

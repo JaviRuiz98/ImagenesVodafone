@@ -1,6 +1,6 @@
 <div class="paginaCompleta">
     <p-card class="centrar">
-        <div class="parametrosLogin">
+        <div class="parametrosLogin" *ngIf="!crearUsuario">
             <div class="divImagen">
                 <img class="anchoAltoMax" src="assets/images/icono.png">
             </div>
@@ -28,16 +28,55 @@
                 (onClick)="iniciarSesion()"
                 ></p-button>
             </div>
-            <div class="crearUsuario">
+            <div class="crearUsuario" *ngIf="!crearUsuario">
                 <div style="margin-top: 5%;">
                     <hr style="border: 1px solid #be0303;">
                 </div>
                 <div>
-                    <p-button label="¿No tienes usuario? Regístrate" [link]="true" [style]="{'cursor': 'pointer', 'color': '#be0303', 'padding': '0'}"></p-button>
+                    <p-button label="¿No tienes usuario? Regístrate" [link]="true" [style]="{'cursor': 'pointer', 'color': '#be0303', 'padding': '0'}" (onClick)="crearUsuario = !crearUsuario"></p-button>
                 </div>
                 <div style="margin-top: 5%;">
                     <hr style="border: 1px solid #be0303;">
                 </div>
+            </div>
+        </div>
+        <div class="parametrosCrearUsuario" *ngIf="crearUsuario">
+            <div class="divImagen">
+                <img class="anchoAltoMax" src="assets/images/icono.png">
+            </div>
+            <p-button icon="pi pi-arrow-left" [rounded]="true" [text]="true" severity="danger " class="botonVolver" (onClick)="crearUsuario = !crearUsuario"></p-button>
+            <div class="card flex justify-content-center ajusteInput">
+                <span class="p-float-label input">
+                    <input pInputText id="username" class="input" [(ngModel)]="nuevoUsuario.usuario" />
+                    <label for="username">Nuevo Usuario</label>
+                </span>
+            </div>
+            <div class="card flex justify-content-center ajusteInput">
+                <span class="p-float-label input">
+                    <input pInputText id="repiteUsuario" class="input" [(ngModel)]="nuevoUsuario.repiteUsuario" />
+                    <label for="repiteUsuario"> Repetir Nuevo Usuario</label>
+                </span>
+            </div>
+            <div class="card flex justify-content-center ajusteInput">
+                <span class="p-float-label input">
+                    <p-password [(ngModel)]="nuevoUsuario.password" [toggleMask]="true" [feedback]="false" class="input"></p-password>
+                    <label for="password">Contraseña</label>
+                </span>
+            </div>
+            <div class="card flex justify-content-center ajusteInput">
+                <span class="p-float-label input">
+                    <p-password [(ngModel)]="nuevoUsuario.repitePassword" [toggleMask]="true" [feedback]="false" class="input"></p-password>
+                    <label for="repitePassword"> Repetir Nueva Contraseña</label>
+                </span>
+            </div>
+            <div class="input">
+                <p-button label="Registrarme" 
+                class="buttonInicioSesion" 
+                [style]="{'cursor': (!nuevoUsuario.usuario || !nuevoUsuario.repiteUsuario || !nuevoUsuario.password || !nuevoUsuario.repitePassword) ? 'no-drop' : 'pointer', 
+                'padding': '0', 'background-color': '#be0303', 'border-color': '#be0303', 'width': '100%', 'height': '50%'}"
+                [disabled]="(!nuevoUsuario.usuario || !nuevoUsuario.repiteUsuario || !nuevoUsuario.password || !nuevoUsuario.repitePassword)"
+                (onClick)="registrarNuevoUsuario()"
+                ></p-button>
             </div>
         </div>
     </p-card>
