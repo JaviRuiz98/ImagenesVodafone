@@ -2,8 +2,7 @@
     display:flex;
     width: 100vw;
     height: 100vh;
-    background: linear-gradient(to bottom left, #fd5f5f, #be0303);
-    /* background-color: #be0303; */
+    background: linear-gradient(to bottom left, #d30404, #660101);
 }
 .centrar{
     display: flex;
