@@ -6,7 +6,6 @@ import {
 import { imagenes, muebles } from "@prisma/client";
 import { muebleCreation } from "../interfaces/mueblesCreados";
 import { fetchGuardarElemento } from "./elementoController";
-import { ConsoleMessage } from "puppeteer";
 
 //No está operativa
 export async function getFilteredMuebles(req: Request, res: Response) {

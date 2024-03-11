@@ -269,9 +269,9 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     const cosAngle = Math.cos(fabric.util.degreesToRadians(grupo.angle));
     const sinAngle = Math.sin(fabric.util.degreesToRadians(grupo.angle));
  
-    const dx = (grupo.width / 2) * cosAngle + (grupo.height / 2) * sinAngle;
+    const dx = (grupo.width / 2) * cosAngle - (grupo.height / 2) * sinAngle;
 
-    return grupo.left + dx;
+    return grupo.left;
   }
 
 
@@ -283,10 +283,10 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     const cosAngle = Math.cos(fabric.util.degreesToRadians(grupo.angle));
     const sinAngle = Math.sin(fabric.util.degreesToRadians(grupo.angle));
  
-    const dy = (grupo.width / 2) * sinAngle -(grupo.height / 2) * cosAngle;
+    const dy = (grupo.width / 2) * sinAngle +(grupo.height / 2) * cosAngle;
 
   
-    return grupo.top + dy;
+    return grupo.top;
 
   }
   
@@ -329,7 +329,15 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
       });
 
       // Añadir la imagen al grupo y actualizar
+      console.log(grupo);
+      const topAnterior = grupo.top;
+      const leftAnterior = grupo.left;
       grupo.addWithUpdate(img);
+      grupo.set({
+        top: topAnterior,
+        left: leftAnterior
+      })
+      console.log(grupo);
       this.canvas.renderAll();
     });
   }
