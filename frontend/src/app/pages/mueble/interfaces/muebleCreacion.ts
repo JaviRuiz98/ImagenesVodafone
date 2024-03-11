@@ -26,7 +26,7 @@
                         id?:number,
                         nombre?: string,
                         imagen ?: string,
-                        archivo_imagen?: File,
+                        archivos_imagenes?: File,
                         nombre_archivo?: string,
                         categorias_elementos?: {
                             id: number

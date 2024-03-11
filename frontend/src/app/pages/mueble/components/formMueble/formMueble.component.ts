@@ -116,7 +116,7 @@ export class FormMuebleComponent implements OnInit {
               id_imagen: 0,
               url: datos.imagenes
             },
-            archivo_imagen: datos.archivos_imagenes,
+            archivos_imagenes: datos.archivos_imagenes,
             nombre: 'elemento '+datos.archivos_imagenes.name,
             activo: true,
             categorias_elementos: {
@@ -157,10 +157,10 @@ export class FormMuebleComponent implements OnInit {
     
     // Verificar y preparar la imagen y el archivo si el atributo viene con un elemento
     if (atributo && atributo.elemento) {
-      if (!(atributo.elemento as elementoCreacion).archivo_imagen) {
+      if (!(atributo.elemento as elementoCreacion).archivos_imagenes) {
         imagen += this.url_imagenes_referencias; 
       } else {
-        archivo = (atributo.elemento as elementoCreacion).archivo_imagen;
+        archivo = (atributo.elemento as elementoCreacion).archivos_imagenes;
       }
       
       imagen += atributo.elemento.imagenes.url;
@@ -173,6 +173,7 @@ export class FormMuebleComponent implements OnInit {
         id: [atributo && atributo.elemento ? atributo.elemento.id : 0],
         imagen: [imagen, Validators.required],
         archivos_imagenes: [archivo, Validators.maxLength(2)],
+        nombre: [atributo && atributo.elemento ? atributo.elemento.nombre : '', Validators.required],
         categorias_elementos: [atributo && atributo.elemento ? atributo.elemento.categorias_elementos : null],
       }), 
       categorias_elementos: [atributo && atributo.elemento ? atributo.elemento.categorias_elementos : null],

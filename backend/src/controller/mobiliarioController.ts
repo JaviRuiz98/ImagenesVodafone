@@ -45,7 +45,6 @@ export async function getFilteredMuebles(req: Request, res: Response) {
 const idCategoriaModelo = 3;
 export async function createMueble (req: Request, res: Response) {
     try {
-         //const muebleDat: muebleCreation = req.body.muebleData;
         const muebleDat:muebleCreation  = JSON.parse(req.body.muebleData);
         const imagenes = req.files;
         for (const expositor of muebleDat.expositores) {
@@ -56,7 +55,6 @@ export async function createMueble (req: Request, res: Response) {
                     atributo.elemento?.nombre_archivo != null) {
                     const imagenFile = encontrarArchivoPorNombre(imagenes, atributo.elemento.nombre_archivo);
                     if (imagenFile) {
-                        console.log("introducido: " + imagenFile.originalname);
                         const elemento = await fetchGuardarElemento(atributo.elemento.nombre ?? "", true, atributo.elemento.categorias_elementos?.id ?? idCategoriaModelo, imagenFile);
                         if (elemento) {
                             atributo.elemento.id = elemento.id;
@@ -72,8 +70,8 @@ export async function createMueble (req: Request, res: Response) {
             }
         }
         
-        // const mobiliario = await mobiliarioService.createMueble(muebleDat);
-        // res.status(200).json(mobiliario);
+        const mobiliario = await mobiliarioService.createMueble(muebleDat);
+        res.status(200).json(mobiliario);
         
     } catch (error) {
         console.error(error);

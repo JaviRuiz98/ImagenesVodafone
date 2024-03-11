@@ -329,7 +329,6 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
       });
 
       // Añadir la imagen al grupo y actualizar
-      console.log(grupo);
       const topAnterior = grupo.top;
       const leftAnterior = grupo.left;
       grupo.addWithUpdate(img);
@@ -337,7 +336,6 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
         top: topAnterior,
         left: leftAnterior
       })
-      console.log(grupo);
       this.canvas.renderAll();
     });
   }
