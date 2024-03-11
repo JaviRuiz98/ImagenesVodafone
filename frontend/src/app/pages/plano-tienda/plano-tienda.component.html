@@ -1,13 +1,11 @@
 <p-toast></p-toast>
+
 <div style="display: flex;">
     <!-- Parte izquierda -->
     <div>
         <canvas id="canvas_plano"></canvas>
         <p-button icon="pi pi-times" styleClass="btn-eliminar" [ngStyle]="{position: 'absolute', display: 'none'}"></p-button>
         <p-button (click)="anadirRectangulo()" label="Añadir posición mueble" icon="pi pi-plus" severity="danger"></p-button>
-        <div style="margin-left: 15px;" *ngFor="let posicion_mueble of posiciones_muebles">
-            <p>{{ posicion_mueble.descripcion }}: Posición ({{ posicion_mueble.left | number:'1.0-0' }}, {{ posicion_mueble.top | number:'1.0-0' }}), Tamaño ({{ posicion_mueble.width | number:'1.0-0' }}x{{ posicion_mueble.height | number:'1.0-0' }}), Ángulo: {{ posicion_mueble.angle | number:'1.0-0' }}°</p>
-        </div>
     </div>
     <!-- Parte derecha -->
     <div style="margin-left: 15px; width: 50%">
@@ -24,13 +22,20 @@
                 </div>                
                 <h3>{{ mueble.nombre }}</h3>
             </div>
-            <div class="muebleAsignado" *ngIf="mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda.length != 0">
+            <div class="muebleAsignado" 
+                *ngIf="mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda.length != 0">
                 <div *ngFor="let imagen of mueble.imagen_representativa">
                     <img [src]="this.urlService.url_imagenes_referencia + imagen.url" class="imagenRepresentativaMueble">
                 </div>                
                 <h3>{{ mueble.nombre }}</h3>
                 <p-button icon="pi pi-times" [text]="true" severity="danger" [size]="'large'" (onClick)="eliminarPosicionMueble(mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].id)"></p-button>
             </div>
+            <!-- <p-overlayPanel #op>
+                <strong>{{mueble.nombre}}</strong>
+                <div *ngFor="let imagen of mueble.imagen_representativa">
+                    <img [src]="this.urlService.url_imagenes_referencia + imagen.url" class="imagenRepresentativaMueble">
+                </div>
+            </p-overlayPanel> -->
         </div>
     </div>
 </div>

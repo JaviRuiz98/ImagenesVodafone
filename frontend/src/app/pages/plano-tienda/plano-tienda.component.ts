@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { fabric } from 'fabric';
 import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
@@ -7,6 +7,8 @@ import { UrlService } from 'src/app/servicios/url/url.service';
 import { MessageService } from 'primeng/api';
 import { posiciones_muebles_tienda } from 'src/app/interfaces/posiciones_muebles_tienda';
 import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
+import { group } from '@angular/animations';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-plano-tienda',
@@ -14,6 +16,8 @@ import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
   styleUrls: ['./plano-tienda.component.css'],
 })
 export class PlanoTiendaComponent implements OnInit {
+
+  @ViewChild('op') op: OverlayPanel;
 
   mostrar_dialogo_asignar_muebles = false;
 
@@ -128,10 +132,7 @@ export class PlanoTiendaComponent implements OnInit {
         top: targetRect.top + dy,
       });
 
-      const group = new fabric.Group([targetRect,img], {
-        left: targetRect.left,
-        top: targetRect.top,
-      });
+      const group = new fabric.Group([targetRect,img], { });
 
       // Bloqueo el movimiento del rectángulo una vez se le asigna un mueble
       group.set({
@@ -148,8 +149,63 @@ export class PlanoTiendaComponent implements OnInit {
       this.canvas.add(group);
       this.canvas.renderAll();
 
+      group.on('mouse:over', function(e) {
+        e.console.log('mouse:over');
+        this.mostrarInfoMueble(group, mueble);
+      })
+      
+
       this.canvas.remove(targetRect); // Eliminar el rectángulo para que no se duplique
     });
+  }
+
+  mostrarInfoMueble(group: fabric.Group, mueble: muebles) {
+    const padding = 10;
+    const infoWidth = 200;
+    const infoHeight = 100;
+
+    const fondo = new fabric.Rect({
+      width: infoWidth,
+      height: infoHeight,
+      fill: 'white',
+      stroke: 'black',
+      strokeWidth: 2,
+      rx: 10,
+      ry: 10,
+    });
+
+    const texto = new fabric.Text(mueble.nombre, {
+      fontSize: 20,
+      originX: 'center',
+      top: padding,
+    })
+
+    fabric.Image.fromURL(this.urlService.url_imagenes_referencia + mueble.imagen_representativa[0].url, (img) => {
+      img.scaleToWidth(infoWidth - 2 * padding);
+      img.scaleToHeight(infoHeight - texto.height - 3 * padding);
+      img.set({
+        originX: 'center',
+        top: texto.height + 2 * padding,
+      });
+
+      const infoGroup = new fabric.Group([fondo, texto, img], {
+        left: group.left + group.width / 2 - infoWidth / 2,
+        top: group.top + infoHeight - padding,
+        originX: 'center',
+        originY: 'center',
+        selectable: false,
+        evented: false,
+      })
+
+      this.canvas.add(infoGroup);
+      this.canvas.bringToFront(infoGroup);
+      this.canvas.renderAll();
+
+      group.on('mouse:out', () => {
+        this.canvas.remove(infoGroup);
+        this.canvas.off('mouseout');
+      })
+    })
   }
 
   guardarDatosPosicionEnBaseDatos(datos_posicion_mueble: posiciones_muebles_tienda) {
@@ -304,5 +360,8 @@ export class PlanoTiendaComponent implements OnInit {
       }
     })    
     return objetoDetectado;
+  }
+  showOverlayPanel(event: MouseEvent) {
+    this.op.toggle(event);
   }
 }
