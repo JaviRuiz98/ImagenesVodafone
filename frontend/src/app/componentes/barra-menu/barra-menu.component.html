@@ -13,7 +13,7 @@
       <app-sidebar></app-sidebar>
     </div> 
   </div>
-  <div *ngIf="currentState !== '/home' && currentState !== '/login'">
+  <div *ngIf="currentState !== '/home' && currentState !== '/login'" style="background: white;">
     <p-button [label]="contenidoBotonVolver" [icon]="iconoBotonVolver" (click)="volverAtras(false)" [text]="true" severity="danger"></p-button>
   </div>
 </div>
