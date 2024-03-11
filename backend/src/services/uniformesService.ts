@@ -9,6 +9,7 @@ export const uniformesService = {
     async getProductos(): Promise<producto[]> {
         try {
             return await db.producto.findMany();
+
         } catch (error) {
             throw error;
         } finally {
@@ -33,6 +34,16 @@ export const uniformesService = {
         } catch (error) {
             throw error;
         } finally {
+            await db.$disconnect();
+        }
+    },
+
+    async postNuevoProducto(producto: any): Promise<any> {
+        try {
+            return await db.producto.create({ data: producto });
+        }catch (error) {
+            throw error;
+        }finally {
             await db.$disconnect();
         }
     },

@@ -5,8 +5,9 @@ import { uniformesService } from '../services/uniformesService';
 export async function getProductos(__req: Request, res: Response) {
     try {
         const productos = await uniformesService.getProductos();
+     
         res.status(200).json(productos);
-    } catch (error) {
+    } catch (error) { 
         console.error(error);
         res.status(500).json({ error: "Internal server error" });
     }
@@ -20,4 +21,17 @@ export async function getCaracteristicas(__req: Request, res: Response) {
         console.error(error);
         res.status(500).json({ error: "Internal server error" });
     }
+} //
+
+
+export async function postNuevoProducto(req: Request, res: Response) {
+    try {
+        const data = req.body;
+        const nuevoProducto = await uniformesService.postNuevoProducto(data);
+        res.status(200).json(nuevoProducto);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+    
 }

@@ -8,6 +8,10 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { DataViewModule } from 'primeng/dataview';  
 import{ DataViewLayoutOptions } from 'primeng/dataview';
+import { CardModule } from 'primeng/card';
+import { TagModule } from 'primeng/tag';
+import { SidebarModule } from 'primeng/sidebar'; 
+import { CheckboxModule } from 'primeng/checkbox';
 
 
 @NgModule({
@@ -21,6 +25,10 @@ import{ DataViewLayoutOptions } from 'primeng/dataview';
         DialogModule,
         ToastModule,
         DataViewModule, 
+        CardModule,
+        TagModule,
+        SidebarModule,
+        CheckboxModule
     ],
     providers: [
         MessageService,
