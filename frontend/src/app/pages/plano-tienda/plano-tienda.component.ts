@@ -149,6 +149,8 @@ export class PlanoTiendaComponent implements OnInit {
       this.canvas.add(group);
       this.canvas.renderAll();
 
+      console.log('group: ', group);
+
       group.on('mouse:over', function(e) {
         e.console.log('mouse:over');
         this.mostrarInfoMueble(group, mueble);
@@ -255,7 +257,7 @@ export class PlanoTiendaComponent implements OnInit {
     const rect = new fabric.Rect({
         left: posicion.x_start,
         top: posicion.y_start,
-        fill: 'yellow', // Asumiendo que quieres un color específico para los rectángulos con muebles
+        fill: 'red', // Asumiendo que quieres un color específico para los rectángulos con muebles
         width: posicion.ancho,
         height: posicion.alto,
         angle: posicion.angulo,
@@ -265,7 +267,7 @@ export class PlanoTiendaComponent implements OnInit {
         cornerSize: 12,
         transparentCorners: false,
         hasRotatingPoint: true,
-        opacity: 0.3, // Establece la opacidad del rectángulo para indicar que está ocupado
+        opacity: 0.1, // Establece la opacidad del rectángulo para indicar que está ocupado
     });
 
     // Añade el rectángulo al canvas

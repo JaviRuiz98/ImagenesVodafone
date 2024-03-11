@@ -29,13 +29,30 @@
                 </div>                
                 <h3>{{ mueble.nombre }}</h3>
                 <p-button icon="pi pi-times" [text]="true" severity="danger" [size]="'large'" (onClick)="eliminarPosicionMueble(mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].id)"></p-button>
+                
+                {{mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].alto}}
+                {{mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].ancho}}
+                <ng-container> <!--Crear un div en html para cada mueble asignado-->
+                    <div
+                      [style.position]="'absolute'" 
+                      [style.left.px]="mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].x_start"
+                      [style.top.px]="mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].y_start " 
+                      [style.width.px]="mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].ancho" 
+                      [style.height.px]="mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].alto" 
+                      [style.transform]="mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].angulo ? 'rotate(' + mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].angulo + 'deg)' : ''"
+              
+                      style="border: 1px solid transparent; z-index: 2;">
+                      <!-- Contenedor para los botones de esquina -->
+                      <div class="corner-buttons">
+                        <!-- Botón de esquina superior izquierda -->
+                        <p-button type="button" severity="danger" [rounded]="true" icon="pi pi-times" (click)="eliminarPosicionMueble(mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].id)" class="deleteButton corner-button corner-top-right"></p-button>
+                        <!-- Aquí puedes agregar más botones para otras esquinas siguiendo el mismo patrón -->
+                      </div>
+                    </div>
+
+                  </ng-container> 
             </div>
-            <!-- <p-overlayPanel #op>
-                <strong>{{mueble.nombre}}</strong>
-                <div *ngFor="let imagen of mueble.imagen_representativa">
-                    <img [src]="this.urlService.url_imagenes_referencia + imagen.url" class="imagenRepresentativaMueble">
-                </div>
-            </p-overlayPanel> -->
+            
         </div>
     </div>
 </div>
