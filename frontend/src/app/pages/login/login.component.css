@@ -90,6 +90,6 @@
 ::ng-deep .p-button.p-button-danger.p-button-text {
     margin: 0;
     padding: 0;
-    background: linear-gradient(to bottom left, #d30404, #660101);
+    color: #be0303;
     width: auto;
 }
