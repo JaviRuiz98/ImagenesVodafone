@@ -71,3 +71,10 @@
 body.scrolled .scrolling-bar::before {
   transform: translateY(0);
 }
+.botonesVolverCerrarSesion {
+  display: grid;
+  grid-template-columns: 10% 90%;
+  background: white;
+  background-color: white;
+  margin: 1%;
+}

@@ -87,7 +87,7 @@
     cursor: pointer;
     width: 10%;
 }
-::ng-deep .p-button.p-button-danger.p-button-text {
+.paginaCompleta ::ng-deep .p-button.p-button-danger.p-button-text {
     margin: 0;
     padding: 0;
     color: #be0303;
