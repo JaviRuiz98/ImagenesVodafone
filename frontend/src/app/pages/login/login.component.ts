@@ -13,33 +13,43 @@ import { nuevoUsuario } from '../../interfaces/login';
 export class LoginComponent {
 
   credenciales: credenciales = {} as credenciales;
-  crearUsuario: boolean = false;
   nuevoUsuario: nuevoUsuario = {} as nuevoUsuario;
+  crearUsuario: boolean = false;
 
   constructor(private LoginService: LoginService, private messageService: MessageService, private router: Router) {}
 
   iniciarSesion(){
     this.LoginService.verificarUsuario(this.credenciales).subscribe(usuarioVerificado => {
-      console.log(usuarioVerificado);
       if (usuarioVerificado === 'El usuario no existe.'){ 
         this.messageService.add({ severity: 'error', summary: 'ERROR!', detail: usuarioVerificado });
-      } else if(usuarioVerificado === 'La contraseña es incorrecta.'){
+      } else if(usuarioVerificado === 'Contraseña incorrecta!'){
         this.messageService.add({ severity: 'error', summary: 'ERROR!', detail: usuarioVerificado });
-      }
-      
-
-      else{
+      } else{
         this.router.navigate(['/home']);
       }
     })
   }
   vistaCrearNuevoUsuario(){
     this.crearUsuario = true;
-    this.nuevoUsuario = {} as nuevoUsuario;
+    this.nuevoUsuario = {
+      usuario: '',
+      repiteUsuario: '',
+      password: '',
+      repitePassword: '',
+    } 
   }
   registrarNuevoUsuario(){
-    this.LoginService.crearUsuario(this.nuevoUsuario).subscribe(respuesta =>{
-      console.log(respuesta);
-    })
+    if(this.nuevoUsuario.password === this.nuevoUsuario.repitePassword && this.nuevoUsuario.usuario === this.nuevoUsuario.repiteUsuario){
+      this.LoginService.crearUsuario(this.nuevoUsuario).subscribe(respuesta =>{
+        if(respuesta === 'El usuario ya existe.'){
+          this.messageService.add({ severity: 'error', summary: 'ERROR!', detail: respuesta });
+        } else{
+          this.messageService.add({ severity: 'success', summary: 'Confirmado!', detail: respuesta });
+          this.router.navigate(['/home']);
+        }
+      })
+    } else{
+      this.messageService.add({ severity: 'error', summary: 'ERROR!', detail: 'Las contraseñas o los usuarios no coinciden.' });
+    }
   }
 }

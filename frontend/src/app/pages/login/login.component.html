@@ -47,7 +47,7 @@
             <p-button icon="pi pi-arrow-left" [rounded]="true" [text]="true" severity="danger " class="botonVolver" (onClick)="crearUsuario = !crearUsuario"></p-button>
             <div class="card flex justify-content-center ajusteInput">
                 <span class="p-float-label input">
-                    <input pInputText id="username" class="input" [(ngModel)]="nuevoUsuario.usuario" />
+                    <input pInputText id="usuario" class="input" [(ngModel)]="nuevoUsuario.usuario" />
                     <label for="username">Nuevo Usuario</label>
                 </span>
             </div>
@@ -59,22 +59,21 @@
             </div>
             <div class="card flex justify-content-center ajusteInput">
                 <span class="p-float-label input">
-                    <p-password [(ngModel)]="nuevoUsuario.password" [toggleMask]="true" [feedback]="false" class="input"></p-password>
+                    <p-password  [toggleMask]="true" [feedback]="false" class="input" [(ngModel)]="nuevoUsuario.password"></p-password>
                     <label for="password">Contraseña</label>
                 </span>
             </div>
             <div class="card flex justify-content-center ajusteInput">
                 <span class="p-float-label input">
-                    <p-password [(ngModel)]="nuevoUsuario.repitePassword" [toggleMask]="true" [feedback]="false" class="input"></p-password>
+                    <p-password (onClear)="nuevoUsuario.repitePassword = ''" [toggleMask]="true" [feedback]="false" class="input" [(ngModel)]="nuevoUsuario.repitePassword"></p-password>
                     <label for="repitePassword"> Repetir Nueva Contraseña</label>
                 </span>
             </div>
             <div class="input">
                 <p-button label="Registrarme" 
                 class="buttonInicioSesion" 
-                [style]="{'cursor': (!nuevoUsuario.usuario || !nuevoUsuario.repiteUsuario || !nuevoUsuario.password || !nuevoUsuario.repitePassword) ? 'no-drop' : 'pointer', 
+                [style]="{'cursor': 'pointer', 
                 'padding': '0', 'background-color': '#be0303', 'border-color': '#be0303', 'width': '100%', 'height': '50%'}"
-                [disabled]="(!nuevoUsuario.usuario || !nuevoUsuario.repiteUsuario || !nuevoUsuario.password || !nuevoUsuario.repitePassword)"
                 (onClick)="registrarNuevoUsuario()"
                 ></p-button>
             </div>

@@ -26,6 +26,22 @@ export const loginService = {
             await db.$disconnect(); 
         }
     },
+    async getPasswordByUsuario(usuario: string): Promise<any> {
+        try {
+            const user = await db.usuarios.findFirst({
+                where: {
+                    usuario: usuario,
+                }
+            });
+            return user;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        } finally {
+            await db.$disconnect();
+        }
+    }
+    
 };
 
 

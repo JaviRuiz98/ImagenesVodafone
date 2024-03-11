@@ -12,5 +12,6 @@
 }
 
 .paginaCompleta ::ng-deep .p-button{
-    background-color: red;
+    background: linear-gradient(to bottom left, #d30404, #660101);
+    border: none;
 }

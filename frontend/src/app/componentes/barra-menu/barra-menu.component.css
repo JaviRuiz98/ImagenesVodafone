@@ -1,6 +1,7 @@
 @media print {
   .barraCompletaBotonVolver {
     display: none;  
+    
   }
 }
 
@@ -14,7 +15,7 @@
   grid-template-columns: 10% 40% 50%;
   width: 100%;
   max-height: 80px;
-  background-color: red;
+
 }
 .image-container {
   max-height: 80px;
@@ -23,8 +24,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: red;
-  background-color: red;
+  border: none;
   cursor: pointer;
 }
 
