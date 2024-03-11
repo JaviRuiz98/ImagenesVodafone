@@ -13,6 +13,8 @@ export class MueblesService {
 
   constructor(private http: HttpClient) { }
 
+  modeloCategoriaId = 3;
+
   API_URI = 'http://localhost:3000/muebles/';
   API_URI_CREATE = 'http://localhost:3000/createMueble';
   API_URI_EXPOSITORES = 'http://localhost:3000/expositores/';
@@ -20,6 +22,11 @@ export class MueblesService {
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
   });
+
+  headersMultiForm = new HttpHeaders({
+    'Content-Type': 'multipart/form-data',
+  });
+
   options = { 
     headers: this.headers
   }
@@ -52,8 +59,25 @@ export class MueblesService {
   }
 
   createMueble(mueble: muebleCreation): Observable<muebles> {
-    console.log("mueble",mueble)
-    return this.http.post<muebles>(this.API_URI_CREATE, mueble, this.options);
+    const formData = new FormData();
+
+    for (const expositor of mueble.expositores) {
+      for (const atributo of expositor.atributos_expositores) {
+          if (atributo.categorias_elementos?.id != null && atributo.categorias_elementos.id == this.modeloCategoriaId && atributo.elemento?.archivo_imagen != undefined) {
+            formData.append('imagenesReferencia', atributo.elemento.archivo_imagen);
+
+            //insertar nombre de archivo en MUEBLE
+            const indexExpositor = mueble.expositores.indexOf(expositor);
+            const indexAtributo = expositor.atributos_expositores.indexOf(atributo);
+            mueble.expositores[indexExpositor].atributos_expositores[indexAtributo].elemento.nombre_archivo = atributo.elemento.archivo_imagen.name;
+        
+            
+          } 
+      }
+    }
+    console.log ("mueble", mueble);  
+    formData.append('muebleData', JSON.stringify(mueble));
+    return this.http.post<muebles>(this.API_URI_CREATE, formData);
   }
 
   updateMueble(mueble: muebles): Observable<muebles> {

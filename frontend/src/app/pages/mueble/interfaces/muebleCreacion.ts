@@ -10,6 +10,7 @@
     expositores: [
         {
             nombre_expositor: string,
+            
             atributos_expositores: [
             
                 {
@@ -22,7 +23,15 @@
                         id: number
                     },
                     elemento?: {
-                        id:number
+                        id?:number,
+                        nombre?: string,
+                        imagen ?: string,
+                        archivo_imagen?: File,
+                        nombre_archivo?: string,
+                        categorias_elementos?: {
+                            id: number
+                        },
+
                        
                     }
                 }

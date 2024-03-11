@@ -63,25 +63,45 @@ export async function guardarElemento(req: Request, res: Response) {
         const imagenExpositor = req.file;//(files['imagenesprocesado'] as Express.Multer.File[]).map(file => file.path)[0];
 
         const categoria = parseInt(req.body.categoria);
-
-
-
-        if (!imagenExpositor ||!imagenExpositor.path || !imagenExpositor.filename) {
-            res.status(500).json({ error: 'La imagen procesada no existe' });
-            return;
+        
+        const row = await fetchGuardarElemento(nombre, activo,  categoria, imagenExpositor);
+        
+        if (!row) {
+            res.status(500).json({ error: 'No pudo procesarse la imagen' });
         }
-        const [nuevaImagen]  = await Promise.all([
-            imagenService.create(imagenExpositor.filename, imagenExpositor.originalname),
-        ]);    
-        const row = await elementosService.guardarElemento(nombre, activo, nuevaImagen.id, categoria);
+
         res.status(200).json(row);
+
+        // if (!imagenExpositor ||!imagenExpositor.path || !imagenExpositor.filename) {
+        //     res.status(500).json({ error: 'La imagen procesada no existe' });
+        //     return;
+        // }
+        // const [nuevaImagen]  = await Promise.all([
+        //     imagenService.create(imagenExpositor.filename, imagenExpositor.originalname),
+        // ]);    
+        // const row = await elementosService.guardarElemento(nombre, activo, nuevaImagen.id, categoria);
     }catch(error){
         res.status(500).json({ error: 'Error interno del servidor' });        
     }
 }
+    export async function fetchGuardarElemento(nombre: string, activo: boolean,   categoria: number, imagenExpositor?: Express.Multer.File,) {
+         try {
+            if (!imagenExpositor ||!imagenExpositor.path || !imagenExpositor.filename) {
+                return null;
+            }
+            const [nuevaImagen]  = await Promise.all([
+                imagenService.create(imagenExpositor.filename, imagenExpositor.originalname),
+            ]);    
+            return await elementosService.guardarElemento(nombre, activo, nuevaImagen.id, categoria);
+         } catch (error) {
+            console.log(error)
+            return null;
+        }
+
+    }
+
 
 //Ojo puedes usar directamente el controlador del update para esta función
-
 export async function editarEstadoElemento(req: Request, res: Response){
     try{
         const id_elemento = req.body.id_elemento;

@@ -8,6 +8,7 @@ import { atributos_expositores } from 'src/app/interfaces/atributos_expositores'
 import { MenuItem } from 'primeng/api';
 import { UrlService } from 'src/app/servicios/url/url.service';
 import { elementoCreacion } from '../../interfaces/elementoCreacion';
+import { muebleCreation } from '../../interfaces/muebleCreacion';
 
 @Component({
   selector: 'app-formMueble',
@@ -442,12 +443,12 @@ export class FormMuebleComponent implements OnInit {
   }
     
   onSubmit() {
-    console.log("guardar",this.formulario.value);
-    const mueble = this.formulario.value.mueble;
+   
+    const mueble:muebleCreation = this.formulario.value.mueble;
     this.muebleService.createMueble(mueble).subscribe(
       (data) => {
         console.log("mueble guardado", data);
-
+        // this.dialogRef.close();
       }
     );
   }

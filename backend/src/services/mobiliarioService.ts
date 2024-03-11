@@ -62,7 +62,6 @@ export const mobiliarioService = {
         return await db.muebles.findUnique({ where: { id: id_mueble } });
     },
 
-    //tipar
     async createMueble(mueble: muebleCreation): Promise<muebles> {
         try {
             const result: muebles = await db.$transaction( async (prisma) => {
@@ -70,12 +69,10 @@ export const mobiliarioService = {
                 const newMueble = await prisma.muebles.create({
                     data: {
                         nombre: mueble.nombre_mueble,
-                        id_region: mueble.region?.id,
-                       
+                        id_region: mueble.region?.id,  
                     }
                 });
-                console.log("expo: " + JSON.stringify(mueble));
-                console.log(mueble.expositores);
+                
                 for ( const expositores of mueble.expositores) {
                     //creo expositor
                     const newExpositor = await prisma.expositores.create({
@@ -96,12 +93,13 @@ export const mobiliarioService = {
                                 alto: atributo.alto,
                                 ancho: atributo.ancho,
                                 angulo: atributo.angulo,
-                                
-                                
                             },
                         });
-                        //creo pertenencia atributos
-                        if (!!atributo.elemento){
+                        //creo pertenencia atributo
+                        // console.log("atributo", atributo);
+                        // console.log ("pertenencia", atributo.elemento);
+                        // console.log ("pertenencia", atributo.elemento?.id);
+                        if (atributo.elemento?.id) {
                             await prisma.pertenencia_elementos_atributos.create({
                                 data: {
                                     id_atributos_expositores: newAtributo.id,
