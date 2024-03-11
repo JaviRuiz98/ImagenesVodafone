@@ -1,6 +1,6 @@
 <div class="barraCompletaBotonVolver" *ngIf="currentState !== '/login'">
-  <div class="barraCompleta" style="background: linear-gradient(to bottom left, #d30404, #660101);">
-    <button class="image-container" (click)="volverAtras(true)" style="background: linear-gradient(to bottom right, #d30404, #660101);">
+  <div class="barraCompleta" style="background: linear-gradient(to bottom right, #ff0000, #c30808);">
+    <button class="image-container" (click)="volverAtras(true)" style="background: linear-gradient(to bottom left, #ff0000, #c30808);">
       <img src="../../../assets/images/icono.png" alt="icono">
     </button>
     <div>
@@ -15,10 +15,10 @@
   </div>
   <div class="botonesVolverCerrarSesion">
     <div *ngIf="currentState !== '/home' && currentState !== '/login'" style="background: white;">
-      <p-button [label]="contenidoBotonVolver" [icon]="iconoBotonVolver" (click)="volverAtras(false)" [text]="true" severity="danger" [style]="{'color': '#be0303'}" ></p-button>
+      <p-button [label]="contenidoBotonVolver" [icon]="iconoBotonVolver" (click)="volverAtras(false)" [text]="true" severity="danger" [style]="{'color': '#c30808'}" ></p-button>
     </div>
     <div [style]="{'background': 'white'}">
-      <p-button [label]="'Cerrar Sesión'" [icon]="'pi pi-lock'" (click)="navigateToLogin()" [text]="true" severity="danger" [style]="{'color': '#be0303'}"></p-button>
+      <p-button [label]="'Cerrar Sesión'" [icon]="'pi pi-lock'" (click)="navigateToLogin()" [text]="true" severity="danger" [style]="{'color': '#c30808'}"></p-button>
     </div>
   </div>
 </div>

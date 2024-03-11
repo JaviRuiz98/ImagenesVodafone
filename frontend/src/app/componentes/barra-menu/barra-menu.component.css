@@ -76,6 +76,6 @@ body.scrolled .scrolling-bar::before {
   grid-template-columns: 10% 90%;
   background: white;
   background-color: white;
-  margin: 1%;
+  margin: 0.2%;
   margin-bottom: 0;
 }

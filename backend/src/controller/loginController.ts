@@ -1,6 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { loginService } from '../services/loginService';
 import * as crypto from 'crypto';
+// import * as jwt from 'jsonwebtoken';
+// import { JwtPayload } from 'jsonwebtoken';
+
+// const secretKey = process.env.JWT_SECRET; 
 
 export const verificarExistenciaUsuario = (foldername:string) => async (req: Request, res: Response, next: NextFunction) => {
     try {

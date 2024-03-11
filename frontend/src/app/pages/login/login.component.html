@@ -6,13 +6,14 @@
             </div>
             <div class="card flex justify-content-center ajusteInput">
                 <span class="p-float-label input">
-                    <input pInputText id="username" class="input" [(ngModel)]="credenciales.usuario" />
+                    <input pInputText id="username" class="input" [(ngModel)]="credenciales.usuario" (keyup.enter)="iniciarSesion()"/>
                     <label for="username">Usuario</label>
                 </span>
             </div>
             <div class="card flex justify-content-center ajusteInput">
                 <span class="p-float-label input">
-                    <p-password [(ngModel)]="credenciales.password" [toggleMask]="true" [feedback]="false" class="input"></p-password>
+                    <p-password [(ngModel)]="credenciales.password" [toggleMask]="true" [feedback]="false" class="input" (keyup.enter)="iniciarSesion()"
+                    ></p-password>
                     <label for="username">Contraseña</label>
                 </span>
             </div>
@@ -26,6 +27,7 @@
                 'padding': '0', 'background-color': '#be0303', 'border-color': '#be0303', 'width': '100%', 'height': '50%'}"
                 [disabled]="!credenciales.usuario || !credenciales.password"
                 (onClick)="iniciarSesion()"
+                (keyup.enter)="iniciarSesion()"
                 ></p-button>
             </div>
             <div class="crearUsuario" *ngIf="!crearUsuario">
@@ -74,7 +76,8 @@
                 class="buttonInicioSesion" 
                 [style]="{'cursor': 'pointer', 
                 'padding': '0', 'background-color': '#be0303', 'border-color': '#be0303', 'width': '100%', 'height': '50%'}"
-                (onClick)="registrarNuevoUsuario()"
+                (onClick)="registrarNuevoUsuario()",
+                (keyup.enter)="registrarNuevoUsuario()">
                 ></p-button>
             </div>
         </div>
