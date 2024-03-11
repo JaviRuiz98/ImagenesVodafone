@@ -77,4 +77,5 @@ body.scrolled .scrolling-bar::before {
   background: white;
   background-color: white;
   margin: 1%;
+  margin-bottom: 0;
 }

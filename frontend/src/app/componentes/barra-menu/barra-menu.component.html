@@ -15,10 +15,10 @@
   </div>
   <div class="botonesVolverCerrarSesion">
     <div *ngIf="currentState !== '/home' && currentState !== '/login'" style="background: white;">
-      <p-button [label]="contenidoBotonVolver" [icon]="iconoBotonVolver" (click)="volverAtras(false)" [text]="true" severity="danger"></p-button>
+      <p-button [label]="contenidoBotonVolver" [icon]="iconoBotonVolver" (click)="volverAtras(false)" [text]="true" severity="danger" [style]="{'color': '#be0303'}" ></p-button>
     </div>
     <div [style]="{'background': 'white'}">
-      <p-button [label]="'Cerrar Sesión'" [icon]="'pi pi-lock'" (click)="navigateToLogin()" [text]="true" severity="danger"></p-button>
+      <p-button [label]="'Cerrar Sesión'" [icon]="'pi pi-lock'" (click)="navigateToLogin()" [text]="true" severity="danger" [style]="{'color': '#be0303'}"></p-button>
     </div>
   </div>
 </div>
