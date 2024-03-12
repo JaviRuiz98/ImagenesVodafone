@@ -2,7 +2,7 @@
   display: grid;
   grid-template-columns: 10% 40% 50%;
   width: 100%;
-  max-height: 80px;
+  height: 80px;
   background: linear-gradient(to bottom right, #ff0000, #c30808);
 }
 .image-container {
