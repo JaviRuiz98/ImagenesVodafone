@@ -29,17 +29,16 @@
                 </div>                
                 <h3>{{ mueble.nombre }}</h3>
                 <p-button icon="pi pi-times" [text]="true" severity="danger" [size]="'large'" (onClick)="eliminarPosicionMueble(mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].id)"></p-button>
-                
-                {{mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].alto}}
-                {{mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].ancho}}
+
                 <ng-container> <!--Crear un div en html para cada mueble asignado-->
                     <div
                       [style.position]="'absolute'" 
-                      [style.left.px]="mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].x_start"
-                      [style.top.px]="mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].y_start " 
-                      [style.width.px]="mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].ancho" 
-                      [style.height.px]="mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].alto" 
-                      [style.transform]="mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].angulo ? 'rotate(' + mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].angulo + 'deg)' : ''"
+                      [style.left.px]="getPosicionMuebleDadoMueble(mueble).x_start"
+                      [style.top.px]="getPosicionMuebleDadoMueble(mueble).y_start + anchura_barra"
+                      [style.width.px]="getPosicionMuebleDadoMueble(mueble).ancho" 
+                      [style.height.px]="getPosicionMuebleDadoMueble(mueble).alto" 
+                      [style.transform]="getPosicionMuebleDadoMueble(mueble).angulo ? 'rotate(' + getPosicionMuebleDadoMueble(mueble).angulo + 'deg)' : ''"
+                      [style.transform-origin]="getPosicionMuebleDadoMueble(mueble).angulo ? '0% 0%' : ''"
               
                       style="border: 1px solid transparent; z-index: 2;">
                       <!-- Contenedor para los botones de esquina -->

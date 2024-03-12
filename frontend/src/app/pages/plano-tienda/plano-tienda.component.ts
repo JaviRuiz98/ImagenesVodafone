@@ -28,6 +28,7 @@ export class PlanoTiendaComponent implements OnInit {
   contadorMuebles = 0; // Contador para generar IDs únicos para los muebles
   id: number = 0;
   id_tienda: number = 0;
+  anchura_barra: number = 0;
 
   constructor(
     private localStorageService: LocalStorageService,
@@ -41,10 +42,17 @@ export class PlanoTiendaComponent implements OnInit {
     this.id_tienda = this.localStorageService.getItem('id_tienda');
     console.log('Id de la tienda:', this.id_tienda);
 
+    this.obtenerAnchuraBarra();
+
     this.inicializarCanvas();
     this.accionAlAsignarMueble();
 
     this.getMueblesTienda(this.id_tienda);
+  }
+
+  obtenerAnchuraBarra() {
+    this.anchura_barra = this.localStorageService.getItem('anchura_componente_barra');
+    console.log('Anchura de la barra:', this.anchura_barra);
   }
 
   inicializarCanvas() {
@@ -63,7 +71,7 @@ export class PlanoTiendaComponent implements OnInit {
     });
   }
 
-  accionAlAsignarMueble() {
+  async accionAlAsignarMueble() {
     this.canvas.on('drop', (options) => {
       const e = options.e as DragEvent;
       const mueblesData = JSON.parse(e.dataTransfer.getData('text'));
@@ -94,14 +102,23 @@ export class PlanoTiendaComponent implements OnInit {
         console.log('datos_posicion_mueble: ', datos_posicion_mueble);
         console.log('targetRect: ', targetRect);
         this.guardarDatosPosicionEnBaseDatos(datos_posicion_mueble);
-
-        // Actualizo la lista de muebles para que los arrastrados se muestren en gris
-        this.getMueblesTienda(this.id_tienda);
+        this.anadirIconoDentroRectangulo(targetRect, mueblesData.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].id, mueblesData);
+        this.canvas.renderAll();
       }
     });
   }
 
-  anadirIconoDentroRectangulo(targetRect: any, id_posicion_mueble: number, mueble: muebles) {
+  guardarDatosPosicionEnBaseDatos(datos_posicion_mueble: posiciones_muebles_tienda) {
+    this.tiendasService.guardarPosicionMueble(datos_posicion_mueble).subscribe(
+      (data) => {
+        console.log('Posición del mueble guardada en la base de datos:', data);
+      }, (error) => {
+        console.error('Error al guardar la posición del mueble en la base de datos:', error);
+      }
+    )
+  }
+
+  async anadirIconoDentroRectangulo(targetRect: any, id_posicion_mueble: number, mueble: muebles) {
     fabric.Image.fromURL(this.urlService.url_imagenes_referencia + mueble.imagen_representativa[0].url, (img) => {
       const scaleX = targetRect.width / img.width;
       const scaleY = targetRect.height / img.height;
@@ -147,77 +164,14 @@ export class PlanoTiendaComponent implements OnInit {
       });
 
       this.canvas.add(group);
-      this.canvas.renderAll();
+
+      if(targetRect) {
+        this.canvas.remove(targetRect); // Eliminar el rectángulo para que no se duplique
+        console.log('Rectangulo eliminado: ', targetRect);
+      }
 
       console.log('group: ', group);
-
-      group.on('mouse:over', function(e) {
-        e.console.log('mouse:over');
-        this.mostrarInfoMueble(group, mueble);
-      })
-      
-
-      this.canvas.remove(targetRect); // Eliminar el rectángulo para que no se duplique
     });
-  }
-
-  mostrarInfoMueble(group: fabric.Group, mueble: muebles) {
-    const padding = 10;
-    const infoWidth = 200;
-    const infoHeight = 100;
-
-    const fondo = new fabric.Rect({
-      width: infoWidth,
-      height: infoHeight,
-      fill: 'white',
-      stroke: 'black',
-      strokeWidth: 2,
-      rx: 10,
-      ry: 10,
-    });
-
-    const texto = new fabric.Text(mueble.nombre, {
-      fontSize: 20,
-      originX: 'center',
-      top: padding,
-    })
-
-    fabric.Image.fromURL(this.urlService.url_imagenes_referencia + mueble.imagen_representativa[0].url, (img) => {
-      img.scaleToWidth(infoWidth - 2 * padding);
-      img.scaleToHeight(infoHeight - texto.height - 3 * padding);
-      img.set({
-        originX: 'center',
-        top: texto.height + 2 * padding,
-      });
-
-      const infoGroup = new fabric.Group([fondo, texto, img], {
-        left: group.left + group.width / 2 - infoWidth / 2,
-        top: group.top + infoHeight - padding,
-        originX: 'center',
-        originY: 'center',
-        selectable: false,
-        evented: false,
-      })
-
-      this.canvas.add(infoGroup);
-      this.canvas.bringToFront(infoGroup);
-      this.canvas.renderAll();
-
-      group.on('mouse:out', () => {
-        this.canvas.remove(infoGroup);
-        this.canvas.off('mouseout');
-      })
-    })
-  }
-
-  guardarDatosPosicionEnBaseDatos(datos_posicion_mueble: posiciones_muebles_tienda) {
-    this.tiendasService.guardarPosicionMueble(datos_posicion_mueble).subscribe(
-      (data) => {
-        console.log('Posición del mueble guardada en la base de datos:', data);
-      }, (error) => {
-        console.error('Error al guardar la posición del mueble en la base de datos:', error);
-      }
-    )
   }
 
   getMueblesTienda(id_tienda) {
@@ -360,10 +314,37 @@ export class PlanoTiendaComponent implements OnInit {
       if (objeto.id_posicion_mueble && objeto.id_posicion_mueble === id_posicion_mueble) {
         objetoDetectado = objeto;
       }
-    })    
+    }) 
     return objetoDetectado;
   }
-  showOverlayPanel(event: MouseEvent) {
-    this.op.toggle(event);
+
+  getPosicionMuebleDadoMueble(mueble: muebles): posiciones_muebles_tienda {
+    const posicion = mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0]
+    return posicion;
+  }
+
+  getXDelDivDadoMueble(mueble: muebles): number {
+    const posicion = mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0]
+
+    const anguloRadianes = posicion.angulo * Math.PI / 180; // Convertir de grados a radianes
+
+    const dx = Math.cos(anguloRadianes) * posicion.ancho/2 + Math.sin(anguloRadianes) * posicion.alto;
+    const x_start = posicion.x_start + dx;
+    console.log('x_start', x_start);
+
+    return x_start;
+  }
+
+  getYDelDivDadoMueble(mueble: muebles): number {
+    const posicion = mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0]
+
+    const anguloRadianes = posicion.angulo * Math.PI / 180; // Convertir de grados a radianes
+
+    //const dy = Math.sin(anguloRadianes) * posicion.ancho - Math.cos(anguloRadianes) * posicion.alto;
+    const dy = 0
+    const y_start = posicion.y_start + dy;
+    console.log('y_start', y_start);
+
+    return y_start;
   }
 }

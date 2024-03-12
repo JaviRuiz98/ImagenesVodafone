@@ -1,6 +1,7 @@
 @media print {
   .barraCompletaBotonVolver {
     display: none;  
+    
   }
 }
 
@@ -9,12 +10,12 @@
   grid-template-rows: 80% 20%;
 }
 
-.barraCompleta {
+.barra {
   display: grid;
   grid-template-columns: 10% 40% 50%;
   width: 100%;
-  max-height: 80px;
   background-color: #be0303;
+  height: 80px;
 }
 .image-container {
   max-height: 80px;
@@ -41,15 +42,8 @@
   color: rgb(255, 255, 255); 
   font-size: 24px;
 }
-.seleccionarTienda {
-  display: flex;
-  align-items: center;
-  height: 100%;
-}
-.seleccionarTienda > * {
-  margin-right: 1%; 
-}
-.elementosValidator{
+
+.estadisticasSidebar{
   display: flex;
   justify-content: right;
   align-items: center;
