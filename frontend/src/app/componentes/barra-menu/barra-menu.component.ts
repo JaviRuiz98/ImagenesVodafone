@@ -138,4 +138,8 @@ export class BarraMenuComponent implements OnInit, AfterViewInit {
       }
     }
   }
+  
+  navigateToLogin() {
+    this.router.navigate(['/login']);
+  }
 }

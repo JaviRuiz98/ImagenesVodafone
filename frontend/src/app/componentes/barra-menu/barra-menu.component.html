@@ -1,4 +1,4 @@
-<div class="barraCompletaBotonVolver" *ngIf="currentState !== '/login'" #barraMenu >
+<div *ngIf="currentState !== '/login'">
   <div class="barra">
     <button class="image-container" (click)="volverAtras(true)">
       <img src="../../../assets/images/icono.png" alt="icono">
@@ -13,8 +13,13 @@
       <app-sidebar></app-sidebar>
     </div> 
   </div>
-  <div *ngIf="currentState !== '/home' && currentState !== '/login'" [ngStyle]="{'height': '40px'}">
-    <p-button [label]="contenidoBotonVolver" [icon]="iconoBotonVolver" (click)="volverAtras(false)" [text]="true" severity="danger"></p-button>
+  <div class="botonesVolverCerrarSesion">
+    <div *ngIf="currentState !== '/home' && currentState !== '/login'" style="background: white; 'height': '40px'">
+      <p-button [label]="contenidoBotonVolver" [icon]="iconoBotonVolver" (click)="volverAtras(false)" [text]="true" severity="danger" [style]="{'color': '#c30808'}" ></p-button>
+    </div>
+    <div [style]="{'background': 'white'}">
+      <p-button [label]="'Cerrar Sesión'" [icon]="'pi pi-lock'" (click)="navigateToLogin()" [text]="true" severity="danger" [style]="{'color': '#c30808'}"></p-button>
+    </div>
   </div>
 </div>
 

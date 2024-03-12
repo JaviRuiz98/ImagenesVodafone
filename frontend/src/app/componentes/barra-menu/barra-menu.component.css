@@ -1,21 +1,9 @@
-@media print {
-  .barraCompletaBotonVolver {
-    display: none;  
-    
-  }
-}
-
-.barraCompletaBotonInicio {
-  display: grid;
-  grid-template-rows: 80% 20%;
-}
-
 .barra {
   display: grid;
   grid-template-columns: 10% 40% 50%;
   width: 100%;
-  background-color: #be0303;
   height: 80px;
+  background: linear-gradient(to bottom right, #ff0000, #c30808);
 }
 .image-container {
   max-height: 80px;
@@ -24,9 +12,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: #be0303;
-  background-color: #be0303;
+  border: none;
   cursor: pointer;
+  background: linear-gradient(to bottom left, #ff0000, #c30808);
 }
 
 .image-container img {
@@ -42,7 +30,6 @@
   color: rgb(255, 255, 255); 
   font-size: 24px;
 }
-
 .estadisticasSidebar{
   display: flex;
   justify-content: right;
@@ -64,4 +51,12 @@
 
 body.scrolled .scrolling-bar::before {
   transform: translateY(0);
+}
+.botonesVolverCerrarSesion {
+  display: grid;
+  grid-template-columns: 10% 90%;
+  background: white;
+  background-color: white;
+  margin: 0.2%;
+  margin-bottom: 0;
 }
