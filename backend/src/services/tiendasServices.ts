@@ -161,16 +161,34 @@ export const tiendaService = {
         }
     },
 
-    async guardarPosicionMueble(id_pertenencia_mueble_tienda: number, datos_posicion_mueble: posiciones_muebles_tienda): Promise<any> {
+    async guardarPosicionMueble(datos_posicion_mueble: posiciones_muebles_tienda): Promise<any> {
         try {
             await db.posiciones_muebles_tienda.create({ 
                 data: {
-                    id_pertenencia_mueble_tienda: id_pertenencia_mueble_tienda,
+                    id_pertenencia_mueble_tienda: datos_posicion_mueble.id_pertenencia_mueble_tienda,
                     x_start: datos_posicion_mueble.x_start,
                     y_start: datos_posicion_mueble.y_start,
                     ancho: datos_posicion_mueble.ancho,
                     alto: datos_posicion_mueble.alto,
                     angulo: datos_posicion_mueble.angulo
+                }
+            })
+        } catch (error) {
+            console.error(error);
+            throw error;
+        } finally {
+            await db.$disconnect();
+        }
+    },
+
+    async desactivarPosicionMueble(id_posicion_mueble: number): Promise<any> {
+        try {
+            await db.posiciones_muebles_tienda.update({
+                where: {
+                    id: id_posicion_mueble
+                }, 
+                data: {
+                    activo: false
                 }
             })
         } catch (error) {

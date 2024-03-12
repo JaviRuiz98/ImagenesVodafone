@@ -6,6 +6,7 @@ import { PlanoTiendaComponent } from './plano-tienda.component';
 import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 
 
@@ -18,7 +19,8 @@ import { MessageService } from 'primeng/api';
     ButtonModule,
     ToolbarModule,
     DialogModule,
-    ToastModule
+    ToastModule,
+    OverlayPanelModule
   ],
   providers: [
     MessageService

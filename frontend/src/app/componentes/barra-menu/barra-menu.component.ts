@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { tienda } from 'src/app/interfaces/tienda';
@@ -23,7 +23,9 @@ import { LocalStorageService } from 'src/app/servicios/local-storage/localStorag
     DropdownModule,
   ],
 })
-export class BarraMenuComponent implements OnInit {
+export class BarraMenuComponent implements OnInit, AfterViewInit {
+
+  @ViewChild('barraMenu') barraMenu!: ElementRef;
 
   tiendas: tienda[] = [] ;
   tiendaSeleccionada: tienda | undefined;
@@ -38,7 +40,6 @@ export class BarraMenuComponent implements OnInit {
   constructor(
     private localStorageService: LocalStorageService,
     private tiendasService: TiendasService,
-    private activatedRoute: ActivatedRoute, 
     private router: Router) 
   {}
 
@@ -49,6 +50,17 @@ export class BarraMenuComponent implements OnInit {
         this.contenidoBotonVolverAtras();
       }
     })
+  }
+
+  ngAfterViewInit(): void {
+    this.obtenerYAlmacenarAnchuraBarra();
+  }
+
+  obtenerYAlmacenarAnchuraBarra() {
+    const anchura_componente_barra = 120; // anchura de 120px fijada a partir de los estilos
+    console.log('Anchura de la barra:', anchura_componente_barra);
+
+    this.localStorageService.setItem('anchura_componente_barra', anchura_componente_barra);
   }
 
   initTiendas() {
@@ -82,11 +94,11 @@ export class BarraMenuComponent implements OnInit {
         this.iconoBotonVolver = this.volverHomeIcono;    
       break;
       case '/auditoria':
-        this.contenidoBotonVolver = 'Volver a gestion de auditorias';
+        this.contenidoBotonVolver = 'Volver';
         this.iconoBotonVolver = this.volverAtrasIcono;    
       break;
       case '/plano_tienda':
-        this.contenidoBotonVolver = 'Volver a gestion de tiendas';
+        this.contenidoBotonVolver = 'Volver';
         this.iconoBotonVolver = this.volverAtrasIcono;    
       break;
       default:
@@ -125,5 +137,9 @@ export class BarraMenuComponent implements OnInit {
           break;
       }
     }
+  }
+  
+  navigateToLogin() {
+    this.router.navigate(['/login']);
   }
 }

@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { fabric } from 'fabric';
-import { Router } from '@angular/router';
 import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { muebles } from 'src/app/interfaces/muebles';
@@ -8,6 +7,7 @@ import { UrlService } from 'src/app/servicios/url/url.service';
 import { MessageService } from 'primeng/api';
 import { posiciones_muebles_tienda } from 'src/app/interfaces/posiciones_muebles_tienda';
 import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-plano-tienda',
@@ -15,6 +15,8 @@ import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
   styleUrls: ['./plano-tienda.component.css'],
 })
 export class PlanoTiendaComponent implements OnInit {
+
+  @ViewChild('op') op: OverlayPanel;
 
   mostrar_dialogo_asignar_muebles = false;
 
@@ -25,9 +27,9 @@ export class PlanoTiendaComponent implements OnInit {
   contadorMuebles = 0; // Contador para generar IDs únicos para los muebles
   id: number = 0;
   id_tienda: number = 0;
+  anchura_barra: number = 0;
 
   constructor(
-    private router: Router,
     private localStorageService: LocalStorageService,
     private mueblesService: MueblesService,
     public urlService: UrlService,
@@ -39,10 +41,17 @@ export class PlanoTiendaComponent implements OnInit {
     this.id_tienda = this.localStorageService.getItem('id_tienda');
     console.log('Id de la tienda:', this.id_tienda);
 
+    this.obtenerAnchuraBarra();
+
     this.inicializarCanvas();
-    this.configurarCanvasParaAceptarArrastre();
+    this.accionAlAsignarMueble();
 
     this.getMueblesTienda(this.id_tienda);
+  }
+
+  obtenerAnchuraBarra() {
+    this.anchura_barra = this.localStorageService.getItem('anchura_componente_barra');
+    console.log('Anchura de la barra:', this.anchura_barra);
   }
 
   inicializarCanvas() {
@@ -61,7 +70,7 @@ export class PlanoTiendaComponent implements OnInit {
     });
   }
 
-  configurarCanvasParaAceptarArrastre() {
+  async accionAlAsignarMueble() {
     this.canvas.on('drop', (options) => {
       const e = options.e as DragEvent;
       const mueblesData = JSON.parse(e.dataTransfer.getData('text'));
@@ -82,7 +91,7 @@ export class PlanoTiendaComponent implements OnInit {
         this.messageService.add({ severity: 'warn', summary: 'Error', detail: 'Localización de mueble no válida' });
       } else { // estamos sobre un rectangulo
         const datos_posicion_mueble: posiciones_muebles_tienda = {
-          id_pertenencia_mueble_tienda: mueblesData.id,
+          id_pertenencia_mueble_tienda: mueblesData.pertenencia_mueble_tienda[0].id,
           x_start: targetRect.left,
           y_start: targetRect.top,
           ancho: targetRect.width,
@@ -90,46 +99,79 @@ export class PlanoTiendaComponent implements OnInit {
           angulo: targetRect.angle
         }
         console.log('datos_posicion_mueble: ', datos_posicion_mueble);
-
-        targetRect.set('opacity', 0.4);
-
-        //Añadimos un objeto en la posicion pointer.x y pointer.y
-        fabric.Image.fromURL('/assets/images/icono_caja.svg', (img) => {
-          const scaleX = targetRect.width / img.width;
-          const scaleY = targetRect.height / img.height;
-          const scale = Math.min(scaleX, scaleY) * 0.5;
-
-          img.set({
-            left: targetRect.left + targetRect.width / 2 - (img.width * scale) / 2,
-            top: targetRect.top + targetRect.height / 2 - (img.height * scale) / 2,
-            scaleX: scale,
-            scaleY: scale,
-          });
-          this.canvas.add(img).renderAll();
-          console.log('Mueble soltado en el rectangulo: ', mueblesData);
-        });
-
-        //Prevenir el comportamiento por defecto del navegador
-        e.preventDefault();
-        e.stopPropagation();
-
-        // Permitir que el canvas acepte elementos arrastrados
-        const canvasElement = this.canvas.getElement();
-        canvasElement.addEventListener('dragover', (event) => {
-          event.preventDefault();
-        });
+        console.log('targetRect: ', targetRect);
+        this.guardarDatosPosicionEnBaseDatos(datos_posicion_mueble);
+        this.canvas.renderAll();
       }
     });
   }
 
   guardarDatosPosicionEnBaseDatos(datos_posicion_mueble: posiciones_muebles_tienda) {
-    this.tiendasService.guardarPosicionMueble(this.id_tienda, datos_posicion_mueble).subscribe(
+    this.tiendasService.guardarPosicionMueble(datos_posicion_mueble).subscribe(
       (data) => {
         console.log('Posición del mueble guardada en la base de datos:', data);
+
+        this.getMueblesTienda(this.id_tienda);
       }, (error) => {
         console.error('Error al guardar la posición del mueble en la base de datos:', error);
       }
     )
+  }
+
+  async anadirIconoDentroRectangulo(targetRect: any, id_posicion_mueble: number, mueble: muebles) {
+    fabric.Image.fromURL(this.urlService.url_imagenes_referencia + mueble.imagen_representativa[0].url, (img) => {
+      const scaleX = targetRect.width / img.width;
+      const scaleY = targetRect.height / img.height;
+      const scale = Math.min(scaleX, scaleY);
+
+      img.set({
+        left: targetRect.left + targetRect.width / 2 - (img.width * scale) / 2,
+        top: targetRect.top + targetRect.height / 2 - (img.height * scale) / 2,
+        originX: 'center',
+        originY: 'center',
+        scaleX: scale,
+        scaleY: scale,
+      });
+
+      // Aplicar la misma rotación del rectángulo al icono
+      img.rotate(targetRect.angle);
+
+      // Ajustar las coordenadas del icono considerando la rotación
+      // Esto es necesario si la rotación no es respecto al centro del canvas
+      const cosAngle = Math.cos(fabric.util.degreesToRadians(targetRect.angle));
+      const sinAngle = Math.sin(fabric.util.degreesToRadians(targetRect.angle));
+
+      const dx = (targetRect.width / 2) * cosAngle - (targetRect.height / 2) * sinAngle;
+      const dy = (targetRect.width / 2) * sinAngle + (targetRect.height / 2) * cosAngle;
+
+      img.set({
+        left: targetRect.left + dx,
+        top: targetRect.top + dy,
+      });
+
+      const group = new fabric.Group([targetRect,img], { });
+
+      // Bloqueo el movimiento del rectángulo una vez se le asigna un mueble
+      group.set({
+        lockMovementX: true,
+        lockMovementY: true,
+        lockRotation: true,
+        lockScalingX: true,
+        lockScalingY: true,
+        hasControls: false, // Opcional: deshabilita los controles de escalado y rotación
+        evented: false,
+        id_posicion_mueble: id_posicion_mueble
+      });
+
+      this.canvas.add(group);
+
+      if(targetRect) {
+        this.canvas.remove(targetRect); // Eliminar el rectángulo para que no se duplique
+        console.log('Rectangulo eliminado: ', targetRect);
+      }
+
+      console.log('group: ', group);
+    });
   }
 
   getMueblesTienda(id_tienda) {
@@ -137,11 +179,58 @@ export class PlanoTiendaComponent implements OnInit {
       (muebles) => {
         this.muebles = muebles;
         console.log('Muebles:', this.muebles);
+
+        this.cargarMueblesAsignados();
       },
       (error) => {
         console.error('Error al obtener los muebles:', error);
       }
     );
+  }
+
+  async cargarMueblesAsignados() {
+    await this.vaciarMueblesDelCanvas();
+
+    this.muebles.forEach(mueble => {
+      mueble.pertenencia_mueble_tienda.forEach(pertenencia => {
+          pertenencia.posiciones_muebles_tienda.forEach(posicion => {
+              this.inicializarRectanguloConMueble(posicion, posicion.id, mueble);
+          });
+      });
+    });
+  }
+
+  vaciarMueblesDelCanvas() {
+    this.canvas.getObjects().forEach(object => {
+        this.canvas.remove(object);
+      }
+    )
+  }
+
+  inicializarRectanguloConMueble(posicion, id_posicion_mueble, mueble) {
+    const rect = new fabric.Rect({
+        left: posicion.x_start,
+        top: posicion.y_start,
+        fill: 'red', // Asumiendo que quieres un color específico para los rectángulos con muebles
+        width: posicion.ancho,
+        height: posicion.alto,
+        angle: posicion.angulo,
+        cornerStyle: 'circle',
+        borderColor: 'red',
+        cornerColor: 'red',
+        cornerSize: 12,
+        transparentCorners: false,
+        hasRotatingPoint: true,
+        opacity: 0.1, // Establece la opacidad del rectángulo para indicar que está ocupado
+    });
+
+    // Añade el rectángulo al canvas
+    this.canvas.add(rect);
+
+    // Opcional: Añadir icono o texto para representar el mueble dentro del rectángulo
+    this.anadirIconoDentroRectangulo(rect, id_posicion_mueble, mueble);
+
+    this.canvas.renderAll();
   }
 
   onDragStart(event: DragEvent, mueble: muebles) {
@@ -185,15 +274,52 @@ export class PlanoTiendaComponent implements OnInit {
 
     // Escuchar eventos de modificación en el rectángulo
     rect.on('modified', () => {
-      const index = this.posiciones_muebles.findIndex(m => m.id === this.id); // Encuentra el mueble por ID
-      if (index !== -1) {
-        // Actualiza los datos del mueble en el arreglo
-        this.posiciones_muebles[index].left = rect.left;
-        this.posiciones_muebles[index].top = rect.top;
-        this.posiciones_muebles[index].width = rect.getScaledWidth();
-        this.posiciones_muebles[index].height = rect.getScaledHeight();
-        this.posiciones_muebles[index].angle = rect.angle;
-      }
+      rect.set({
+        width: rect.getScaledWidth(),
+        height: rect.getScaledHeight(),
+        scaleX: 1,
+        scaleY: 1,
+      })
     });
+  }
+
+  eliminarPosicionMueble(id_posicion_mueble: number) {
+    const objetoAEliminar = this.detectarRectanguloDadoIdMueble(id_posicion_mueble);
+
+    if(objetoAEliminar) {
+      console.log('Objeto detectado', objetoAEliminar);
+
+      this.tiendasService.eliminarPosicionMueble(id_posicion_mueble).subscribe(
+        res => {
+          console.log('res', res);
+
+          this.canvas.remove(objetoAEliminar);
+          this.canvas.renderAll();
+          this.getMueblesTienda(this.id_tienda);
+
+        }, error => console.log(error)
+      );
+
+      
+    } else {
+      console.log('No se encontro el objeto');
+    }
+  }
+
+  detectarRectanguloDadoIdMueble(id_posicion_mueble: number): fabric.group | null {
+    let objetoDetectado = null;
+
+    this.canvas.getObjects().forEach(objeto => {
+      console.log(objeto.id_posicion_mueble, id_posicion_mueble)
+      if (objeto.id_posicion_mueble && objeto.id_posicion_mueble === id_posicion_mueble) {
+        objetoDetectado = objeto;
+      }
+    }) 
+    return objetoDetectado;
+  }
+
+  getPosicionMuebleDadoMueble(mueble: muebles): posiciones_muebles_tienda {
+    const posicion = mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0]
+    return posicion;
   }
 }

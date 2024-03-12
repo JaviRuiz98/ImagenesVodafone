@@ -2,7 +2,7 @@
     display:flex;
     width: 100vw;
     height: 100vh;
-    background-color: #be0303;
+    background: linear-gradient(to bottom left, #d30404, #660101);
 }
 .centrar{
     display: flex;
@@ -32,7 +32,13 @@
 }
 .parametrosLogin{
     display: grid;
-    grid-template-rows: 20% 15% 15% 20% 20%;
+    grid-template-rows: 20% 15% 15% 10% 20% 0%;
+    width: 80%;
+    height: 100%;
+}
+.parametrosCrearUsuario{
+    display: grid;
+    grid-template-rows: 20% 5% 15% 15% 15% 15% 15%;
     width: 80%;
     height: 100%;
 }
@@ -60,4 +66,30 @@
 }
 ::ng-deep .p-inputtext {
     width: 100%;
+}
+.resetPassword{
+    display: flex;
+    justify-content: right;
+    width: 100%;
+}
+.buttonInicioSesion {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+.crearUsuario {
+    display: grid;
+    grid-template-columns: 25% 50% 25%;
+}
+.botonVolver{
+    color: #be0303;
+    cursor: pointer;
+    width: 10%;
+}
+.paginaCompleta ::ng-deep .p-button.p-button-danger.p-button-text {
+    margin: 0;
+    padding: 0;
+    color: #be0303;
+    width: auto;
 }
