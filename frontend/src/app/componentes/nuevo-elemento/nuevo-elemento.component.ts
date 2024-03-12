@@ -106,7 +106,7 @@ export class NuevoElementoComponent implements OnInit {
       this.submitted = true;
     }else{
  
-      this.elementosService.guardarElemento(this.nombre?.value,  this.region?.value, this.imagen?.value, this.categoria?.value.id).subscribe((elemento) => {
+      this.elementosService.guardarElemento(this.nombre?.value,  this.imagen?.value, this.categoria?.value.id).subscribe((elemento) => {
         if(elemento.id> 0) {
           this.messageService.add({severity:'success', summary: 'Guardado', detail: 'Elemento guardado correctamente'});
           this.nuevoElementoCreado.emit(elemento);

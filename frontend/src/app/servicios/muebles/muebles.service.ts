@@ -3,7 +3,7 @@ import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { muebles } from '../../interfaces/muebles';
 import { filtro_procesados } from 'src/app/interfaces/filtro_procesados';
-import { MuebleCreacion } from 'src/app/pages/mueble/interfaces/muebleCreacion';
+import { muebleCreation } from 'src/app/pages/mueble/interfaces/muebleCreacion';
 import { expositores } from 'src/app/interfaces/expositores';
 
 @Injectable({
@@ -13,12 +13,20 @@ export class MueblesService {
 
   constructor(private http: HttpClient) { }
 
+  modeloCategoriaId = 3;
+
   API_URI = 'http://localhost:3000/muebles/';
+  API_URI_CREATE = 'http://localhost:3000/createMueble';
   API_URI_EXPOSITORES = 'http://localhost:3000/expositores/';
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
   });
+
+  headersMultiForm = new HttpHeaders({
+    'Content-Type': 'multipart/form-data',
+  });
+
   options = { 
     headers: this.headers
   }
@@ -50,8 +58,27 @@ export class MueblesService {
     return this.http.get<muebles[]>(this.API_URI+id_tienda);
   }
 
-  createMueble(mueble: MuebleCreacion): Observable<muebles> {
-    return this.http.post<muebles>(this.API_URI, mueble, this.options);
+  createMueble(mueble: muebleCreation): Observable<muebles> {
+    const formData = new FormData();
+
+    for (const expositor of mueble.expositores) {
+      for (const atributo of expositor.atributos_expositores) {
+          if (atributo.categorias_elementos?.id != null && atributo.categorias_elementos.id == this.modeloCategoriaId && atributo.elemento?.archivos_imagenes != undefined) {
+            console.log("introducido");
+            formData.append('imagenesReferencia', atributo.elemento.archivos_imagenes);
+
+            //insertar nombre de archivo en MUEBLE
+            const indexExpositor = mueble.expositores.indexOf(expositor);
+            const indexAtributo = expositor.atributos_expositores.indexOf(atributo);
+            mueble.expositores[indexExpositor].atributos_expositores[indexAtributo].elemento.nombre_archivo = atributo.elemento.archivos_imagenes.name;
+            console.log (mueble.expositores[indexExpositor].atributos_expositores[indexAtributo].elemento);
+            
+          } 
+      }
+    }
+    console.log ("mueble", mueble);  
+    formData.append('muebleData', JSON.stringify(mueble));
+    return this.http.post<muebles>(this.API_URI_CREATE, formData);
   }
 
   updateMueble(mueble: muebles): Observable<muebles> {

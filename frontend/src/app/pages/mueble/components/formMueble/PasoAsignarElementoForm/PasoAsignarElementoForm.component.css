@@ -1,0 +1,35 @@
+.delete-button ::ng-deep .p-button.p-button-icon-only {
+    width: 02rem;
+    padding: 0.15rem 0;
+    height: 02rem;
+}
+.corner-buttons {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .corner-button {
+    position: absolute;
+  }
+  
+  .corner-top-left {
+    top: 0;
+    left: 0;
+  }
+  
+  .corner-top-right {
+    top: -5;
+    right: 10;
+  }
+  
+  .corner-bottom-left {
+    bottom: 0;
+    left: 0;
+  }
+  
+  .corner-bottom-right {
+    bottom: 0;
+    right: 0;
+  }
+  

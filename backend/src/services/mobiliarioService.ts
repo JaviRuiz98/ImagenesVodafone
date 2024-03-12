@@ -1,5 +1,6 @@
-import { expositores, muebles } from "@prisma/client";
+import {  expositores, muebles } from "@prisma/client";
 import db from "../config/database";
+import { muebleCreation } from "../interfaces/mueblesCreados";
 
 // import { ExpositorFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
 // import {expositoresConProcesados} from "../interfaces/expositoresProcesados"
@@ -61,10 +62,63 @@ export const mobiliarioService = {
         return await db.muebles.findUnique({ where: { id: id_mueble } });
     },
 
-    //tipar
-    async createMueble(mueble: any): Promise<any> {
+    async createMueble(mueble: muebleCreation): Promise<muebles> {
         try {
-           return await db.muebles.create({ data: mueble });
+            const result: muebles = await db.$transaction( async (prisma) => {
+                //Crear mueble:
+                const newMueble = await prisma.muebles.create({
+                    data: {
+                        nombre: mueble.nombre_mueble,
+                        id_region: mueble.region?.id,  
+                    }
+                });
+                
+                for ( const expositores of mueble.expositores) {
+                    //creo expositor
+                    const newExpositor = await prisma.expositores.create({
+                        data: {
+                            id_mueble: newMueble.id,
+                            nombre: expositores.nombre_expositor,
+                        }
+                    });
+
+                    for (const atributo of expositores.atributos_expositores) {
+                        //creo atributo
+                        const newAtributo = await prisma.atributos_expositores.create({
+                            data: {
+                                id_expositor: newExpositor.id,
+                                id_categoria: atributo.categorias_elementos?.id,
+                                x_start: atributo.x_start,
+                                y_start: atributo.y_start,
+                                alto: atributo.alto,
+                                ancho: atributo.ancho,
+                                angulo: atributo.angulo,
+                            },
+                        });
+                        //creo pertenencia atributo
+                        // console.log("atributo", atributo);
+                        // console.log ("pertenencia", atributo.elemento);
+                        // console.log ("pertenencia", atributo.elemento?.id);
+                        if (atributo.elemento?.id) {
+                            await prisma.pertenencia_elementos_atributos.create({
+                                data: {
+                                    id_atributos_expositores: newAtributo.id,
+                                    id_elementos: atributo.elemento?.id,
+                                }
+                            })
+                        }
+                       
+                      
+                      
+                        
+                    }
+                   
+                }
+                return newMueble;
+            });
+         
+            return result;
+
         } catch (error) {
             throw error;
         } finally {
@@ -204,7 +258,11 @@ export const mobiliarioService = {
                             id_tienda: id_tienda
                         },
                         include:{
-                            posiciones_muebles_tienda: true
+                            posiciones_muebles_tienda: {
+                                where:{
+                                    activo:true
+                                }
+                            }
                         }
                     },
                     expositores: {

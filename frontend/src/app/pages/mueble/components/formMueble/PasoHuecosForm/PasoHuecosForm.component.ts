@@ -1,9 +1,10 @@
-import { Component, Input, OnInit, Output,EventEmitter,ElementRef} from '@angular/core';
+import { Component, Input, OnInit,} from '@angular/core';
 import { categorias_elementos } from 'src/app/interfaces/categoria';
 import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
 import { fabric } from 'fabric';
+import { TableRowSelectEvent } from 'primeng/table';
 
 type Coordenada = {
   x: number;
@@ -202,6 +203,14 @@ export class PasoHuecosFormComponent implements OnInit {
     })
   }
 
+  HuecoSeleccionaoDeLaTablaChavalito ( event: TableRowSelectEvent ) {
+    console.log(event)
+    const atributo = event.data;
+    var rect = this.array_rectangulos.find(rect => rect.id === atributo.id);
+      console.log(rect);
+    this.canvas.setActiveObject(rect.rect);
+    this.canvas.renderAll();
+  }
   eliminarElemento(atributo: atributos_expositores){
 
     var rect = this.array_rectangulos.find(rect => rect.id === atributo.id);
@@ -245,7 +254,6 @@ export class PasoHuecosFormComponent implements OnInit {
     control.push(this.fb.group({ id: atributo.id, expositor: atributo.expositor, categorias_elementos: atributo.categorias_elementos, elemento: atributo.elemento, 
     x_start: atributo.x_start, y_start: atributo.y_start, ancho: atributo.ancho, alto: atributo.alto, angulo: atributo.angulo }));
 
-    console.log(this.expositorFormulario.value);
   }
 
   editar_atributo_expositor(atributo: atributos_expositores){

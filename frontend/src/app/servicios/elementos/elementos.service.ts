@@ -22,13 +22,12 @@ export class ElementosService {
   }
 
   
-  guardarElemento(nombre: string,  region: regiones, imageFile: File, categoria: number ): Observable<elementos> {
+  guardarElemento(nombre: string,  imageFile: File, categoria: number ): Observable<elementos> {
     const formData = new FormData();
 
     formData.append('imagenesReferencia', imageFile);
     formData.append('nombre', nombre);
     formData.append('activo', 'true');
-    formData.append('id_region', region.id.toString());
     formData.append('categoria', categoria.toString());
 
     return this.http.post<elementos>(`${this.API_URI}/elemento`, formData);
