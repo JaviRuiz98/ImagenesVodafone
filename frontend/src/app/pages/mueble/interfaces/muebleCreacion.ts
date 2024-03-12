@@ -3,6 +3,7 @@
 
 
   export interface muebleCreation{
+    id?: number,
     nombre_mueble: string,
     region: {
         id: number
@@ -14,6 +15,7 @@
             atributos_expositores: [
             
                 {
+                    id?: number,
                     x_start?: number,
                     y_start?: number,
                     ancho?: number,

@@ -95,10 +95,7 @@ export const mobiliarioService = {
                                 angulo: atributo.angulo,
                             },
                         });
-                        //creo pertenencia atributo
-                        // console.log("atributo", atributo);
-                        // console.log ("pertenencia", atributo.elemento);
-                        // console.log ("pertenencia", atributo.elemento?.id);
+   
                         if (atributo.elemento?.id) {
                             await prisma.pertenencia_elementos_atributos.create({
                                 data: {
@@ -125,12 +122,41 @@ export const mobiliarioService = {
             await db.$disconnect();
         }
     },
-    //tipar
-    async updateMueble(id_mueble: number, mueble: any): Promise<muebles | null> {
+
+    async updateMueble(mueble: muebleCreation): Promise<muebles | null> {
         try {
-            throw new Error(
-                `No se implementado el update de muebles ${id_mueble} ${mueble}`
-            );
+            const result: muebles = await db.$transaction( async (prisma) => {
+                //Editar mueble:
+                const newMueble = await prisma.muebles.update({
+                    where: {
+                        id: mueble.id
+                    },
+                    data: {
+                        nombre: mueble.nombre_mueble,
+                        id_region: mueble.region?.id || null,  
+                    }
+                });
+                
+                for ( const expositores of mueble.expositores) {
+                   
+                    for (const atributo of expositores.atributos_expositores) {
+                       //Por cada atributo de cada expositor
+                        //creo una nueva pertenencia
+                        if (atributo.elemento?.id && !!atributo.id) {
+                           await prisma.pertenencia_elementos_atributos.create({
+                               data: {
+                                   id_atributos_expositores: atributo.id,
+                                   id_elementos: atributo.elemento?.id,
+                               }
+                           })
+                        }  
+                    }
+                   
+                }
+                return newMueble;
+            });
+         
+            return result;
         } catch (error) {
             throw error;
         } finally {

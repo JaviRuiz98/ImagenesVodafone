@@ -43,10 +43,50 @@ export async function getFilteredMuebles(req: Request, res: Response) {
 }
 
 const idCategoriaModelo = 3;
-export async function createMueble (req: Request, res: Response) {
+export async function updateMuebleForm (req: Request, res: Response) {
     try {
         const muebleDat:muebleCreation  = JSON.parse(req.body.muebleData);
         const imagenes = req.files;
+        let nuevoMueble: muebles;
+
+        if (muebleDat.id != null ){
+            nuevoMueble =  await editarMueble(muebleDat);
+        }else{
+            nuevoMueble = await createMueble(muebleDat, imagenes);
+        }
+       
+        if (nuevoMueble == undefined){
+            res.status(500).json({ error: "Internal server error" });
+            return;     
+        }
+
+        res.status(200).json(nuevoMueble);
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+async function editarMueble(muebleDat:muebleCreation) {
+    try {
+       const mueble = await mobiliarioService.getMuebleById(muebleDat.id!);
+        if (!mueble) {
+            throw new Error('Mueble no encontrado');
+        }
+        const muebleEditado =  await mobiliarioService.updateMueble(muebleDat);
+        if (!muebleEditado) {
+            throw new Error('Error al editar el mueble');
+        }
+        return muebleEditado;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+async function createMueble(muebleDat:muebleCreation, imagenes: any) {
+    try {
         for (const expositor of muebleDat.expositores) {
             for (const atributo of expositor.atributos_expositores) {
                 if (atributo.categorias_elementos?.id != null &&
@@ -68,14 +108,12 @@ export async function createMueble (req: Request, res: Response) {
                     }
                 } 
             }
-        }
+        } 
         
-        const mobiliario = await mobiliarioService.createMueble(muebleDat);
-        res.status(200).json(mobiliario);
-        
+        return await mobiliarioService.createMueble(muebleDat);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Internal server error" });
+        throw error;
     }
 }
 
@@ -102,26 +140,7 @@ function encontrarArchivoPorNombre(imagenes:
     return archivoEncontrado;
 }
 
-export async function updateMueble(req: Request, res: Response) {
-    try {
-        const data = req.body; //tipar
-        const id_mueble = req.params.id_mueble
-            ? parseInt(req.params.id_mueble as string)
-            : undefined;
 
-        //hacer validator
-        if (!id_mueble) {
-            res.status(400).json({ error: "id_mueble es necesario" });
-            return;
-        }
-
-        const mobiliario = await mobiliarioService.updateMueble(id_mueble, data);
-        res.status(200).json(mobiliario);
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: "Internal server error" });
-    }
-}
 
 export async function getAllMuebles(_req: Request, res: Response) {
     try {
@@ -139,7 +158,7 @@ export async function getAllMuebles(_req: Request, res: Response) {
 export async function getMueblesAndExpositoresActivosByIdTienda(
     req: Request,
     res: Response
-) {
+) { 
     try {
         const id_tienda = parseInt(req.params.id_tienda);
         const muebles: any[] =

@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { expositores } from 'src/app/interfaces/expositores';
@@ -24,11 +24,13 @@ export class FormMuebleComponent implements OnInit {
     private urlService: UrlService,
     private cdr: ChangeDetectorRef,
     public dialogConfig : DynamicDialogConfig,
+    public dialogRef : DynamicDialogRef,
     private fb: FormBuilder, 
     private muebleService: MueblesService) {
 
     this.formulario = this.fb.group({
       mueble: this.fb.group({
+        id: [],
         nombre_mueble: ['', Validators.required],
         region: [''],
         expositores: this.fb.array([]) // Ahora es un FormArray
@@ -169,8 +171,9 @@ export class FormMuebleComponent implements OnInit {
 
     // Crear el FormGroup para el atributo del expositor
     return this.fb.group({
+      id: [atributo && atributo.id ? atributo.id : null],
       elemento: this.fb.group({
-        id: [atributo && atributo.elemento ? atributo.elemento.id : 0],
+        id: [atributo && atributo.elemento ? atributo.elemento.id : null],
         imagen: [imagen, Validators.required],
         archivos_imagenes: [archivo, Validators.maxLength(2)],
         nombre: [atributo && atributo.elemento ? atributo.elemento.nombre : '', Validators.required],
@@ -233,6 +236,7 @@ export class FormMuebleComponent implements OnInit {
 
       this.formulario.patchValue({
         mueble: {
+          id: mueble.id,
           nombre_mueble: mueble.nombre,
           region: mueble.regiones,
         }
@@ -449,7 +453,7 @@ export class FormMuebleComponent implements OnInit {
     this.muebleService.createMueble(mueble).subscribe(
       (data) => {
         console.log("mueble guardado", data);
-        // this.dialogRef.close();
+         this.dialogRef.close();
       }
     );
   }
