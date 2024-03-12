@@ -94,11 +94,11 @@ export class BarraMenuComponent implements OnInit, AfterViewInit {
         this.iconoBotonVolver = this.volverHomeIcono;    
       break;
       case '/auditoria':
-        this.contenidoBotonVolver = 'Volver a gestion de auditorias';
+        this.contenidoBotonVolver = 'Volver';
         this.iconoBotonVolver = this.volverAtrasIcono;    
       break;
       case '/plano_tienda':
-        this.contenidoBotonVolver = 'Volver a gestion de tiendas';
+        this.contenidoBotonVolver = 'Volver';
         this.iconoBotonVolver = this.volverAtrasIcono;    
       break;
       default:

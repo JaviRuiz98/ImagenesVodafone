@@ -14,7 +14,7 @@
     </div> 
   </div>
   <div class="botonesVolverCerrarSesion">
-    <div *ngIf="currentState !== '/home' && currentState !== '/login'" style="background: white; 'height': '40px'">
+    <div *ngIf="currentState !== '/home' && currentState !== '/login'" style="background: white; height: '40px'">
       <p-button [label]="contenidoBotonVolver" [icon]="iconoBotonVolver" (click)="volverAtras(false)" [text]="true" severity="danger" [style]="{'color': '#c30808'}" ></p-button>
     </div>
     <div [style]="{'background': 'white'}">
