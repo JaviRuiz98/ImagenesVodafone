@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { loginService } from '../services/loginService';
 import * as crypto from 'crypto';
-// import * as jwt from 'jsonwebtoken';
+import * as jwt from 'jsonwebtoken';
 // import { JwtPayload } from 'jsonwebtoken';
 
-// const secretKey = process.env.JWT_SECRET; 
+const secretKey = process.env.JWT_SECRET; 
 
 export const verificarExistenciaUsuario = (foldername:string) => async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -31,9 +31,9 @@ export async function verificarPassword(req: Request, res: Response) {
         if(passwordBD.password !== passwordCifrada){
             res.status(200).json('Contraseña incorrecta!');
         } else {
-            res.status(200).json('Login Correcto!');
+            const token = crearToken(req.body.usuario);
+            res.status(200).json({ token });
         }
-        
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
         throw error;
@@ -57,4 +57,8 @@ function hashPassword(password: string): string {
     return hash.digest('hex');
 }
 
-  
+function crearToken(usuario:string) {
+    const token = jwt.sign({ usuario: usuario }, secretKey!, { expiresIn: '1h' });
+    return token;
+}
+

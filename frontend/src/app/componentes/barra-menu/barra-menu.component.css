@@ -1,15 +1,3 @@
-@media print {
-  .barraCompletaBotonVolver {
-    display: none;  
-    
-  }
-}
-
-.barraCompletaBotonInicio {
-  display: grid;
-  grid-template-rows: 80% 20%;
-}
-
 .barraCompleta {
   display: grid;
   grid-template-columns: 10% 40% 50%;

@@ -57,12 +57,13 @@ const routes: Routes = [
     path: "plano_tienda", component: PlanoTiendaComponent, 
     data: { stateBarra: 'plano_tienda' },
    },
-
-
-  // { path:"expositores",}
-  {
-    path: '', redirectTo: '/login', pathMatch: 'full' 
-  }
+   {
+    path: "plano_tienda", component: PlanoTiendaComponent, 
+    data: { stateBarra: 'plano_tienda' },
+   },
+   {
+      path: '', redirectTo: '/login', pathMatch: 'full' 
+    }
 ];
 
 @NgModule({
