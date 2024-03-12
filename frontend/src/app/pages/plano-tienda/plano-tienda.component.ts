@@ -322,29 +322,4 @@ export class PlanoTiendaComponent implements OnInit {
     const posicion = mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0]
     return posicion;
   }
-
-  getXDelDivDadoMueble(mueble: muebles): number {
-    const posicion = mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0]
-
-    const anguloRadianes = posicion.angulo * Math.PI / 180; // Convertir de grados a radianes
-
-    const dx = Math.cos(anguloRadianes) * posicion.ancho/2 + Math.sin(anguloRadianes) * posicion.alto;
-    const x_start = posicion.x_start + dx;
-    console.log('x_start', x_start);
-
-    return x_start;
-  }
-
-  getYDelDivDadoMueble(mueble: muebles): number {
-    const posicion = mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0]
-
-    const anguloRadianes = posicion.angulo * Math.PI / 180; // Convertir de grados a radianes
-
-    //const dy = Math.sin(anguloRadianes) * posicion.ancho - Math.cos(anguloRadianes) * posicion.alto;
-    const dy = 0
-    const y_start = posicion.y_start + dy;
-    console.log('y_start', y_start);
-
-    return y_start;
-  }
 }
