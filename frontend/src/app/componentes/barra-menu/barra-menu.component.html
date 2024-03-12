@@ -14,10 +14,10 @@
     </div> 
   </div>
   <div class="botonesVolverCerrarSesion">
-    <div *ngIf="currentState !== '/home' && currentState !== '/login'" style="background: white;">
-      <p-button [label]="contenidoBotonVolver" [icon]="iconoBotonVolver" (click)="volverAtras(false)" [text]="true" severity="danger" [style]="{'color': '#c30808'}" ></p-button>
+    <div style="background: white;">
+      <p-button *ngIf="currentState !== '/home' && currentState !== '/login'" [label]="contenidoBotonVolver" [icon]="iconoBotonVolver" (click)="volverAtras(false)" [text]="true" severity="danger" [style]="{'color': '#c30808'}" ></p-button>
     </div>
-    <div [style]="{'background': 'white'}">
+    <div class="usuarioBotonCerrarSesion">
       <p-button [label]="'Cerrar Sesión'" [icon]="'pi pi-lock'" (click)="navigateToLogin()" [text]="true" severity="danger" [style]="{'color': '#c30808'}"></p-button>
     </div>
   </div>
