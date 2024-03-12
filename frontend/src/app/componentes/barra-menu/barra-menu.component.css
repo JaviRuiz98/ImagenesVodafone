@@ -1,4 +1,4 @@
-.barraSinBotonVolver {
+.barra {
   display: grid;
   grid-template-columns: 10% 40% 50%;
   width: 100%;
