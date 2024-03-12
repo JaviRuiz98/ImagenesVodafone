@@ -1,6 +1,6 @@
 <div *ngIf="currentState !== '/login'">
-  <div class="barraCompleta" style="background: linear-gradient(to bottom right, #ff0000, #c30808);">
-    <button class="image-container" (click)="volverAtras(true)" style="background: linear-gradient(to bottom left, #ff0000, #c30808);">
+  <div class="barraSinBotonVolver">
+    <button class="image-container" (click)="volverAtras(true)">
       <img src="../../../assets/images/icono.png" alt="icono">
     </button>
     <div>
@@ -9,7 +9,7 @@
         {{tiendaSeleccionada?  getTiendaTitle() : ''}}
       </h1>
     </div>
-    <div *ngIf="currentState === '/gestionAuditorias'" class ="elementosValidator" >        
+    <div *ngIf="currentState === '/gestionAuditorias'" class ="estadisticasSidebar" >        
       <app-sidebar></app-sidebar>
     </div> 
   </div>
