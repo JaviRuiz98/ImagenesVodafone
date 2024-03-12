@@ -76,7 +76,7 @@ export class MueblesService {
           } 
       }
     }
-    console.log ("mueble", mueble);  
+    console.log ("mueble guardado", mueble);  
     formData.append('muebleData', JSON.stringify(mueble));
     return this.http.post<muebles>(this.API_URI_CREATE, formData);
   }

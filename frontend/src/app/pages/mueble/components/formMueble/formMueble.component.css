@@ -35,9 +35,9 @@
   padding: 0;
 }
 
-::ng-deep .p-toolbar {
+/* ::ng-deep .p-toolbar {
   padding: 0;
-}
+} */
 
 .asignar_huecos_container{
   width: 100%;

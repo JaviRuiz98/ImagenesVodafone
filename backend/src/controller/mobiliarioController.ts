@@ -48,6 +48,7 @@ export async function updateMuebleForm (req: Request, res: Response) {
         const muebleDat:muebleCreation  = JSON.parse(req.body.muebleData);
         const imagenes = req.files;
         let nuevoMueble: muebles;
+        console.log(JSON.stringify(muebleDat));
 
         if (muebleDat.id != null ){
             nuevoMueble =  await editarMueble(muebleDat);

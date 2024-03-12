@@ -56,7 +56,7 @@ export class FormMuebleComponent implements OnInit {
 
   url_imagenes_referencias: string = this.urlService.url_imagenes_referencia;
 
-  getExpositorFormGroup(): any {
+  getExpositorFormGroup(): FormGroup {
     return this.expositores.at(this.index_expositor_actual) as FormGroup;
     
   }
@@ -113,6 +113,8 @@ export class FormMuebleComponent implements OnInit {
           categorias_elementos: {
             id: categoriaID,
           },
+          
+
           elemento:  {
             imagenes: {
               id_imagen: 0,
@@ -168,18 +170,22 @@ export class FormMuebleComponent implements OnInit {
       imagen += atributo.elemento.imagenes.url;
     }
     
-
     // Crear el FormGroup para el atributo del expositor
     return this.fb.group({
       id: [atributo && atributo.id ? atributo.id : null],
-      elemento: this.fb.group({
-        id: [atributo && atributo.elemento ? atributo.elemento.id : null],
+      x_start: [atributo && atributo.x_start ? atributo.x_start : null],
+      y_start: [atributo && atributo.y_start ? atributo.y_start : null],
+      alto: [atributo && atributo.alto ? atributo.alto : null],
+      ancho: [atributo && atributo.ancho ? atributo.ancho : null],
+      angulo: [atributo && atributo.angulo ? atributo.angulo : null],
+      elemento: atributo && atributo.elemento ?  this.fb.group({
+        id: [ atributo.elemento.id ],
         imagen: [imagen, Validators.required],
         archivos_imagenes: [archivo, Validators.maxLength(2)],
-        nombre: [atributo && atributo.elemento ? atributo.elemento.nombre : '', Validators.required],
-        categorias_elementos: [atributo && atributo.elemento ? atributo.elemento.categorias_elementos : null],
-      }), 
-      categorias_elementos: [atributo && atributo.elemento ? atributo.elemento.categorias_elementos : null],
+        nombre: [ atributo.elemento.nombre , Validators.required],
+        categorias_elementos: [atributo.elemento.categorias_elementos],
+      }): null, 
+      categorias_elementos: [atributo && atributo.categorias_elementos ? atributo.categorias_elementos : null],
     });
   }
   
@@ -448,11 +454,9 @@ export class FormMuebleComponent implements OnInit {
   }
     
   onSubmit() {
-   
     const mueble:muebleCreation = this.formulario.value.mueble;
     this.muebleService.createMueble(mueble).subscribe(
       (data) => {
-        console.log("mueble guardado", data);
          this.dialogRef.close();
       }
     );

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ChangeDetectorRef } from '@angular/core';
 import { fabric } from 'fabric';
 
@@ -9,7 +9,6 @@ import { elementos } from 'src/app/interfaces/elementos';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { UrlService } from 'src/app/servicios/url/url.service';
 import { MessageService } from 'primeng/api';
-import { group } from '@angular/animations';
 
 
 @Component({
@@ -27,6 +26,7 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
   dragged_elemento: elementos|undefined;
   private groupRefs: fabric.Group[] = []; // Almacenar referencias a los grupos
   rectangulos_creados: boolean = false;
+  categoria_id_modelo: number = 3;
 
   @Input () expositorFormulario: FormGroup; 
   @Output () formularioPasoAsignarAtributoSinHuecos = new EventEmitter<{index:number, atributo: atributos_expositores} >();
@@ -48,7 +48,7 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
         const elemento = atributoExpositor.get('elemento') as FormGroup;
         const categoria = elemento.get('categorias_elementos')?.value;
         const imagen = elemento.get('imagen')?.value;
-        if (imagen && categoria && categoria.id === 3) {
+        if (imagen && categoria && categoria.id === this.categoria_id_modelo) {
           return imagen; 
         }
       }
@@ -62,7 +62,7 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
       const elemento = atributoExpositor.get('elemento') as FormGroup;
       const categoria = elemento.get('categorias_elementos')?.value;
       
-      if (categoria.id !== 3 && categoria.id !== 0) {
+      if (categoria.id !== this.categoria_id_modelo && categoria.id !== 0) {
         otrosElementosArray.push(elemento);
       }
     }): undefined;
@@ -83,7 +83,7 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
         const elemento = atributoExpositor.get('elemento') as FormGroup;
         const categoria = elemento.get('categorias_elementos')?.value;
         
-        if (categoria !== undefined && categoria !== null &&categoria.id !== 3 && categoria.id !== 0 ) {
+        if (categoria !== undefined && categoria !== null &&categoria.id !== this.categoria_id_modelo && categoria.id !== 0 ) {
           return elemento.value ;
         }
       }
@@ -97,7 +97,7 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
         const atributoExpositor = this.atributos_expositores.controls[i];
         const elemento = atributoExpositor.get('elemento') as FormGroup;
         const categoria: number = elemento.get('categorias_elementos')?.value;
-        if (categoria !== 3) {
+        if (categoria !== this.categoria_id_modelo) {
           return i;
         }
       }
@@ -105,22 +105,23 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     return -1;
   }
 
-  get huecos(): FormArray | undefined {
-    const huecosArray: FormGroup[] = [];
+  get huecos(): FormGroup[] | undefined {
+    const atributosExpositores: FormArray = this.expositorFormulario.get('atributos_expositores') as FormArray;
   
-    if (this.atributos_expositores) {
-      this.atributos_expositores.controls.forEach((atributoExpositor) => {
-        const atributo = atributoExpositor.value;
-        if (atributo.alto != null && atributo.ancho != null && atributo.x_start != null && atributo.y_start != null) {
-          huecosArray.push(atributoExpositor as FormGroup);
-        }
-      });
-    } else {
-      return undefined; // Devolver undefined si atributos_expositores es undefined
+    if (!atributosExpositores || atributosExpositores.length === 0) {
+      return undefined;
     }
   
-    return huecosArray.length > 0 ? new FormArray(huecosArray) : undefined;
+    // Simplemente devuelve el array de FormGroup filtrados, sin crear un nuevo FormArray
+    const huecosArray: FormGroup[] = atributosExpositores.controls.filter((atributoExpositor: AbstractControl) => {
+      const atributo = atributoExpositor.value;
+      return atributo.alto != null && atributo.ancho != null && atributo.x_start != null && atributo.y_start != null;
+    }) as FormGroup[];
+  
+    return huecosArray.length > 0 ? huecosArray : undefined;
   }
+  
+  
   
   onSeleccionadoSinHuecos($event: elementos){
     
@@ -216,9 +217,9 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
   }
  
   drawRectangles(): void {
-    const huecos = this.huecos;
-    if (huecos) {
-      huecos.controls.forEach((atributoExpositor, index) => {
+   
+    if (this.huecos) {
+      this.huecos.forEach((atributoExpositor, index) => {
         if (!this.groupRefs[index]) { // Si no existe un grupo para este índice, créalo
           const grupo = this.createGroup(atributoExpositor as FormGroup);
           this.groupRefs[index] = grupo; // Almacenar referencia al grupo
@@ -227,10 +228,24 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
           //busco imagen
           const elemento = atributoExpositor.get('elemento')?.value;
           if (elemento){
-            const imagen: string = elemento?.imagenes.url;  
+            const imagen: string =  this.urlService.url_imagenes_referencia + elemento?.imagenes?.url;  
             //si tiene imagen, la dibujo
-            this.addImageOnGroup(index, imagen);
+            if (imagen) {
+              this.checkImage(imagen).then(exists => {
+                if (exists) {
+                  this.addImageOnGroup(index, imagen);
+                  
+                } else {
+                  console.log('La imagen no existe');
+                }
+              }).catch(error => {
+                console.log('Error al verificar la imagen:', error);
+              });
+              
+            }
+           
           }
+          this.cdr.detectChanges();
         } else { // Si el grupo ya existe, actualiza sus propiedades
           this.updateGroupProperties(index, 'white', 'black', 'black');
         }
@@ -262,15 +277,31 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
 
   }
 
+  checkImage(url: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      var request = new XMLHttpRequest();
+      request.open("GET", url, true);
+      request.onload = function() {
+        if (request.status == 200) {
+          resolve(true);
+        } else {
+          reject(false);
+        }
+      };
+      request.onerror = function() {
+        reject(false);
+      }
+      request.send();
+    });
+  }
+  
+
   getRotatedCoordinateX(index_hueco: number): number {
     
     const grupo = this.groupRefs[index_hueco];
-
-    const cosAngle = Math.cos(fabric.util.degreesToRadians(grupo.angle));
-    const sinAngle = Math.sin(fabric.util.degreesToRadians(grupo.angle));
- 
-    const dx = (grupo.width / 2) * cosAngle - (grupo.height / 2) * sinAngle;
-
+    if (!grupo) {
+        return 0;
+    }
     return grupo.left;
   }
 
@@ -279,12 +310,9 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
   getRotatedCoordinateY( index_hueco: number): number {
   
     const grupo = this.groupRefs[index_hueco];
-    
-    const cosAngle = Math.cos(fabric.util.degreesToRadians(grupo.angle));
-    const sinAngle = Math.sin(fabric.util.degreesToRadians(grupo.angle));
- 
-    const dy = (grupo.width / 2) * sinAngle +(grupo.height / 2) * cosAngle;
-
+    if (!grupo) {
+      return 0; 
+    }
   
     return grupo.top;
 
@@ -379,20 +407,39 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     });
   }
 
+  // effectSelectable(event: DragEvent) {
+  //   event.preventDefault();
+  //   if (!this.canvas) return;
+  //   const pointer = this.canvas.getPointer(event);
+   
+  //   this.huecos?.controls.forEach((atributoExpositor, index) => {
+  //     const group = this.groupRefs[this.huecos.controls.indexOf(atributoExpositor)];
+  //     if (this.puntoDentroDelHueco(pointer, group)) {
+        
+  //       this.updateGroupProperties(index, 'gray', 'red', 'red');
+  //     } else {
+  //       this.updateGroupProperties(index, 'white', 'black', 'black');
+  //     }
+  //   });
+  // }
+
   effectSelectable(event: DragEvent) {
     event.preventDefault();
     if (!this.canvas) return;
     const pointer = this.canvas.getPointer(event);
-    this.huecos?.controls.forEach((atributoExpositor, index) => {
-      const group = this.groupRefs[this.huecos.controls.indexOf(atributoExpositor)];
+  
+    // Asegurándonos de que this.huecos es un array antes de iterar
+    this.huecos?.forEach((atributoExpositor, index) => {
+      // Ahora, usamos directamente this.huecos para acceder al grupo, sin usar .controls
+      const group = this.groupRefs[index];
       if (this.puntoDentroDelHueco(pointer, group)) {
-        
         this.updateGroupProperties(index, 'gray', 'red', 'red');
       } else {
         this.updateGroupProperties(index, 'white', 'black', 'black');
       }
     });
   }
+  
   
 
   handleCanvasDrop(event: DragEvent) {
@@ -402,14 +449,39 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     const pointer = this.canvas.getPointer(event);
     if (!this.dragged_elemento) return;
 
-    const indiceSoltado = this.huecos.controls.findIndex((atributoExpositor) => {
-       const group = this.groupRefs[this.huecos.controls.indexOf(atributoExpositor)];
-        return this.puntoDentroDelHueco( pointer, group);
+    // const indiceSoltado = this.huecos.controls.findIndex((atributoExpositor) => {
+    //    const group = this.groupRefs[this.huecos.controls.indexOf(atributoExpositor)];
+    //     return this.puntoDentroDelHueco( pointer, group);
+    // });
+
+    // if (indiceSoltado !== -1) {
+    //   const categoria_hueco = this.huecos.controls.at(indiceSoltado).get('categorias_elementos').value;
+    //   if (categoria_hueco && this.dragged_elemento.categorias_elementos.id !== categoria_hueco.id) {
+    //     this.messageService.add({ key: 'edit', severity: 'warn', summary: 'Error', detail: 'La categoría permitida para esta posición es "' + categoria_hueco.nombre.toLowerCase()  + '"'});
+    //     this.updateGroupProperties(indiceSoltado, 'white', 'black', 'black');
+    //     return;
+    //   }
+
+    //   const image_url:string = this.dragged_elemento.imagenes.url;
+    //   const atributo = this.huecos.controls.at(indiceSoltado) as FormGroup;
+    
+    const indiceSoltado = this.huecos?.findIndex((atributoExpositor, index) => {
+      const group = this.groupRefs[index]; 
+      return this.puntoDentroDelHueco(pointer, group);
     });
 
-    if (indiceSoltado !== -1) {
-      const image_url:string = this.dragged_elemento.imagenes.url;
-      const atributo = this.huecos.controls.at(indiceSoltado);
+    if (indiceSoltado !== -1 && indiceSoltado !== undefined) {
+      const categoria_hueco = this.huecos[indiceSoltado].get('categorias_elementos').value;
+      if (categoria_hueco && this.dragged_elemento.categorias_elementos.id !== categoria_hueco.id) {
+        this.messageService.add({ key: 'edit', severity: 'warn', summary: 'Error', detail: 'La categoría permitida para esta posición es "' + categoria_hueco.nombre.toLowerCase() + '"'});
+        this.updateGroupProperties(indiceSoltado, 'white', 'black', 'black');
+        return;
+      }
+    
+      const image_url: string = this.dragged_elemento.imagenes.url;
+      const atributo = this.huecos[indiceSoltado];
+      
+      // Continúa con la lógica que sigue, como la actualización del atributo con 'patchValue' o cualquier otra operación      
       atributo.patchValue({
         elemento: {
           id: this.dragged_elemento.id,
@@ -418,14 +490,8 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
           }
         }
       });
-
-    const categoria_hueco = this.huecos.controls.at(indiceSoltado).get('categorias_elementos').value;
-    if (categoria_hueco && this.dragged_elemento.categorias_elementos.id !== categoria_hueco.id) {
-      this.messageService.add({ key: 'edit', severity: 'warn', summary: 'Error', detail: 'La categoría permitida para esta posición es "' + categoria_hueco.nombre.toLowerCase()  + '"'});
-      this.updateGroupProperties(indiceSoltado, 'white', 'black', 'black');
-      return;
-    }
-
+      console.log (atributo.value);
+      console.log (this.expositorFormulario.value);
       const group: fabric.Group = this.groupRefs[indiceSoltado];
       this.updateGroupProperties(indiceSoltado, 'white', 'black', 'black');
       this.addImageOnGroup(indiceSoltado, image_url);
@@ -439,18 +505,17 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     if (!this.canvas) return false; 
     return group.containsPoint(pointer);
   }
- 
-
 
  ngAfterViewInit(): void {
   if (this.huecos && this.huecos.length > 0) {
-    console.log(this.huecos.value);
+    console.log(this.huecos.values);
     this.initCanvas();
     this.drawRectangles();
     this.configurarEventosCanvas();
+  }else{
+    console.log('No se encontraron huecos');
   }
  
  }
 
-  
 }

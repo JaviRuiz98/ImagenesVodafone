@@ -1,18 +1,18 @@
 <p-toast key='edit'></p-toast>
 
-<div class="flex align-items-center justify-content-center mt-4" *ngIf="imagenesModeloExpositores && imagenesModeloExpositores.length > 0; else sinModelo">
+<div class="flex align-items-center justify-content-center mt-4" *ngIf="this.huecos && this.huecos.length > 0; else sinModelo">
   <div style="position: relative;" class=" flex-1">
     <canvas id="funciona_please" width="600" height="500" style="position: absolute; z-index: 1;"></canvas>
 
-    <ng-container *ngFor="let attr of huecos.value; let i = index">
+    <ng-container *ngFor="let attr of huecos ?? []; let i = index">
 
-      <div *ngIf="attr.elemento" 
+      <div *ngIf="attr.value.elemento" 
         [style.position]="'absolute'" 
         [style.left.px]="getRotatedCoordinateX( i)"
         [style.top.px]="getRotatedCoordinateY( i)" 
-        [style.width.px]="attr.ancho" 
-        [style.height.px]="attr.alto" 
-        [style.transform]="attr.angulo ? 'rotate(' + attr.angulo + 'deg)' : ''"
+        [style.width.px]="attr.value.ancho" 
+        [style.height.px]="attr.value.alto" 
+        [style.transform]="attr.value.angulo ? 'rotate(' + attr.value.angulo + 'deg)' : ''"
 
         style="border: 1px solid transparent; z-index: 2;">
         <!-- Contenedor para los botones de esquina -->

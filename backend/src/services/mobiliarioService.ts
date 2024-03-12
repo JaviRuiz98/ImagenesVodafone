@@ -81,8 +81,8 @@ export const mobiliarioService = {
                             nombre: expositores.nombre_expositor,
                         }
                     });
-
                     for (const atributo of expositores.atributos_expositores) {
+                        console.log(atributo);
                         //creo atributo
                         const newAtributo = await prisma.atributos_expositores.create({
                             data: {
@@ -103,10 +103,7 @@ export const mobiliarioService = {
                                     id_elementos: atributo.elemento?.id,
                                 }
                             })
-                        }
-                       
-                      
-                      
+                        }   
                         
                     }
                    
@@ -142,13 +139,24 @@ export const mobiliarioService = {
                     for (const atributo of expositores.atributos_expositores) {
                        //Por cada atributo de cada expositor
                         //creo una nueva pertenencia
+                       
                         if (atributo.elemento?.id && !!atributo.id) {
-                           await prisma.pertenencia_elementos_atributos.create({
-                               data: {
-                                   id_atributos_expositores: atributo.id,
-                                   id_elementos: atributo.elemento?.id,
-                               }
-                           })
+                            //comprobar que no existe ya una pertenencia con ese id_atributos_expositores y id_elementos
+                            const pertenencia = await prisma.pertenencia_elementos_atributos.findFirst({
+                                where: {
+                                    id_atributos_expositores: atributo.id,
+                                    id_elementos: atributo.elemento?.id,
+                                }
+                            });
+                            if (!pertenencia) {
+                                await prisma.pertenencia_elementos_atributos.create({
+                                    data: {
+                                        id_atributos_expositores: atributo.id,
+                                        id_elementos: atributo.elemento?.id,
+                                    }
+                                });
+                            }
+                          
                         }  
                     }
                    

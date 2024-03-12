@@ -53,7 +53,6 @@ export const  uploadFileToFtp = (foldername:string) => async (req: Request, res:
 export const uploadMultipleFilesToFtp = (folderName: string, opcional: boolean = false) => async (req: Request, res: Response, next: NextFunction) => {
     // `req.files` debe ser tratado como un array de archivos
     const files: Express.Multer.File[] = req.files as Express.Multer.File[];
-    console.log(files);
 
     if (!files || files.length === 0) {
         if (opcional) return next();
