@@ -7,7 +7,6 @@ import { UrlService } from 'src/app/servicios/url/url.service';
 import { MessageService } from 'primeng/api';
 import { posiciones_muebles_tienda } from 'src/app/interfaces/posiciones_muebles_tienda';
 import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
-import { group } from '@angular/animations';
 import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
@@ -102,7 +101,6 @@ export class PlanoTiendaComponent implements OnInit {
         console.log('datos_posicion_mueble: ', datos_posicion_mueble);
         console.log('targetRect: ', targetRect);
         this.guardarDatosPosicionEnBaseDatos(datos_posicion_mueble);
-        this.anadirIconoDentroRectangulo(targetRect, mueblesData.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].id, mueblesData);
         this.canvas.renderAll();
       }
     });
@@ -112,6 +110,8 @@ export class PlanoTiendaComponent implements OnInit {
     this.tiendasService.guardarPosicionMueble(datos_posicion_mueble).subscribe(
       (data) => {
         console.log('Posición del mueble guardada en la base de datos:', data);
+
+        this.getMueblesTienda(this.id_tienda);
       }, (error) => {
         console.error('Error al guardar la posición del mueble en la base de datos:', error);
       }

@@ -40,7 +40,20 @@
                       [style.height.px]="getPosicionMuebleDadoMueble(mueble).alto" 
                       [style.transform]="getPosicionMuebleDadoMueble(mueble).angulo ? 'rotate(' + getPosicionMuebleDadoMueble(mueble).angulo + 'deg)' : ''"
                       [style.transform-origin]="getPosicionMuebleDadoMueble(mueble).angulo ? '0% 0%' : ''"
-                      style="border: 1px solid transparent; z-index: 2;">
+                      style="border: 1px solid transparent; z-index: 2;"
+                      (mouseenter)="op.toggle($event)" (mouseleave)="op.toggle($event)">
+
+                      <!-- Overlay panel con la información básica del mueble -->
+                      <p-overlayPanel #op >
+                        <ng-template pTemplate>
+                          <div style="display: flex;">
+                            <div *ngFor="let imagen of mueble.imagen_representativa">
+                              <img [src]="this.urlService.url_imagenes_referencia + imagen.url" class="imagenRepresentativaMueble">
+                            </div>                                          
+                          </div>
+                          <h3>{{ mueble.nombre }}</h3>
+                        </ng-template>
+                      </p-overlayPanel>
                       
                       <!-- Contenedor para los botones de esquina -->
                       <div class="corner-buttons" style="position: absolute; right: -24px; top: -24px; width: 48px; height: 48px;">
