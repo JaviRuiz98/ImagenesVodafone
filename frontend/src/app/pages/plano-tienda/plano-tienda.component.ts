@@ -24,6 +24,10 @@ export class PlanoTiendaComponent implements OnInit {
   posiciones_muebles: any[] = []; // Arreglo para almacenar los resúmenes de los muebles
   muebles: muebles[] = [];
 
+  lista_todos_muebles: muebles[] = [];
+  lista_todos_muebles_ordenados: muebles[] = [];
+  lista_muebles_no_seleccionados: muebles[] = [];
+
   contadorMuebles = 0; // Contador para generar IDs únicos para los muebles
   id: number = 0;
   id_tienda: number = 0;
@@ -47,6 +51,7 @@ export class PlanoTiendaComponent implements OnInit {
     this.accionAlAsignarMueble();
 
     this.getMueblesTienda(this.id_tienda);
+    this.obtenerListaTodosMueblesDisponibles();
   }
 
   obtenerAnchuraBarra() {
@@ -56,8 +61,8 @@ export class PlanoTiendaComponent implements OnInit {
 
   inicializarCanvas() {
     this.canvas = new fabric.Canvas('canvas_plano', {
-      width: 800,
-      height: 600,
+      width: 1100,
+      height: 700,
       backgroundColor: 'lightgrey',
     });
     fabric.Image.fromURL('/assets/images/plano_tienda.jpg', (img) => {
@@ -325,5 +330,24 @@ export class PlanoTiendaComponent implements OnInit {
 
   cambiarMuebles() {
     this.mostrar_dialog_asignar_muebles = true;
+  }
+
+  obtenerListaTodosMueblesDisponibles() {
+    this.mueblesService.getAllMuebles().subscribe(
+      (listaTodosMueblesDisponibles: muebles[]) => {
+        this.lista_todos_muebles_ordenados = this.ordenarListaAlfabeticamente(listaTodosMueblesDisponibles, 'nombre');
+        this.lista_muebles_no_seleccionados = this.eliminarMueblesSeleccionados(this.lista_todos_muebles_ordenados, this.muebles);
+    });
+  }
+
+  ordenarListaAlfabeticamente(lista: any[], campo: string) {
+    const listaOrdenada = lista.sort((a, b) => a[campo].localeCompare(b[campo]));
+    return listaOrdenada;
+  }
+
+  eliminarMueblesSeleccionados(listaCompleta: muebles[], listaMueblesSeleccionados: muebles[]){
+    const idsLista2 = new Set(listaMueblesSeleccionados.map(mueble => mueble.id));
+    const listaFiltrada = listaCompleta.filter((mueble) => !idsLista2.has(mueble.id));
+    return listaFiltrada;
   }
 }

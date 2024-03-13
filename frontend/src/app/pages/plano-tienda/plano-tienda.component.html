@@ -2,17 +2,20 @@
 
 <div style="display: flex;">
     <!-- Parte izquierda -->
-    <div>
+    <div style="width: 65%">
         <canvas id="canvas_plano"></canvas>
         <p-button icon="pi pi-times" styleClass="btn-eliminar" [ngStyle]="{position: 'absolute', display: 'none'}"></p-button>
         <p-button (click)="anadirRectangulo()" label="Añadir posición mueble" icon="pi pi-plus" severity="danger"></p-button>
     </div>
     <!-- Parte derecha -->
-    <div style="margin-left: 15px; width: 50%">
+    <div style="margin-left: 15px; width: 30%">
         <p-toolbar>
             <p-button icon="pi pi-plus" severity="danger" label="Cambiar muebles" (click)="cambiarMuebles()"></p-button>
             <p-dialog [(visible)]="this.mostrar_dialog_asignar_muebles" [style]="{width: '80vw'}">
-              <app-agregar-mueble-a-tienda></app-agregar-mueble-a-tienda>
+              <app-agregar-mueble-a-tienda
+                [listaMueblesAsignadosTablaDerecha]="this.muebles"
+                [listaMueblesDisponiblesTablaIzquierda]="this.lista_muebles_no_seleccionados"
+              ></app-agregar-mueble-a-tienda>
             </p-dialog>
         </p-toolbar>
         <div *ngFor="let mueble of this.muebles">
