@@ -283,6 +283,7 @@ export const mobiliarioService = {
                             tiendas: {
                                 id: id_tienda,
                             },
+                            activo: true
                         },
                     },
                 },

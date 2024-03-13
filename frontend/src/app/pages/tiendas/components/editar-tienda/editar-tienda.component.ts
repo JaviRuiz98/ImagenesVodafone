@@ -22,7 +22,6 @@ export class EditarTiendaComponent implements OnInit {
 
   listaMueblesDisponiblesTablaIzquierda: muebles[] = [];
   listaMueblesAsignadosTablaDerecha:  muebles[] = [];
-  modificacionListaDerecha:  muebles[] = [];
 
   constructor(private TiendasService: TiendasService, private MueblesService: MueblesService) { }
 

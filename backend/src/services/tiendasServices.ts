@@ -95,18 +95,28 @@ export const tiendaService = {
   },
 
   async asignarPertenenciaMuebleTienda(id_tienda: number, listaIdMuebles: number[]): Promise<any[]> {
-        let resultados = [];
-        console.log('listaIdMuebles', listaIdMuebles, 'id_tienda', id_tienda);
+
         try {
+            const resultados = [];
             for (let i = 0; i < listaIdMuebles.length; i++) {
-                const insertarMuebles = await db.pertenencia_mueble_tienda.create({
-                    data: {
-                        id_mueble: listaIdMuebles[i],
+                const id_mueble = listaIdMuebles[i];
+                const upsertResult = await db.pertenencia_mueble_tienda.upsert({
+                    where: {
+                        id_mueble_id_tienda: {
+                            id_mueble: id_mueble,
+                            id_tienda: id_tienda,
+                        },
+                    },
+                    create: {
+                        id_mueble: id_mueble,
                         id_tienda: id_tienda,
                         activo: true,
                     },
+                    update: {
+                        activo: true,
+                    },
                 });
-                resultados.push(insertarMuebles);
+                resultados.push(upsertResult);
             }
             return resultados;
         } catch (error) {
@@ -116,13 +126,16 @@ export const tiendaService = {
             await db.$disconnect();
         }
     },
-    async deleteMueblesTienda(id_tienda: number): Promise<any> {
+    async desactivarMueblesTienda(id_tienda: number): Promise<any> {
         try {
-            await db.pertenencia_mueble_tienda.deleteMany({
+            await db.pertenencia_mueble_tienda.updateMany({
                 where: {
-                    id: id_tienda,
+                    id_tienda: id_tienda,
                 },
-            });
+                data: {
+                    activo: false,
+                },
+            })
             return true;
         } catch (error) {
             console.log(error);
