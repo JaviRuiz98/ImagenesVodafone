@@ -96,12 +96,14 @@ export const tiendaService = {
 
   async asignarPertenenciaMuebleTienda(id_tienda: number, listaIdMuebles: number[]): Promise<any[]> {
         let resultados = [];
+        console.log('listaIdMuebles', listaIdMuebles, 'id_tienda', id_tienda);
         try {
             for (let i = 0; i < listaIdMuebles.length; i++) {
                 const insertarMuebles = await db.pertenencia_mueble_tienda.create({
                     data: {
                         id_mueble: listaIdMuebles[i],
                         id_tienda: id_tienda,
+                        activo: true,
                     },
                 });
                 resultados.push(insertarMuebles);
@@ -118,7 +120,7 @@ export const tiendaService = {
         try {
             await db.pertenencia_mueble_tienda.deleteMany({
                 where: {
-                    id_tienda: id_tienda,
+                    id: id_tienda,
                 },
             });
             return true;
