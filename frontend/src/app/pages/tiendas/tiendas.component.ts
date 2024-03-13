@@ -44,6 +44,7 @@ export class TiendasComponent implements OnInit{
   ngOnInit(): void {
     this.getAllTiendas();
   }
+
   getAllTiendas(){
     this.TiendasService.getAllTiendas().subscribe((response: tienda[]) => {
       this.tiendas = response;

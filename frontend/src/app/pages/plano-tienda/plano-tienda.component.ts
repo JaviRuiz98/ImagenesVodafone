@@ -51,7 +51,6 @@ export class PlanoTiendaComponent implements OnInit {
     this.accionAlAsignarMueble();
 
     this.getMueblesTienda(this.id_tienda);
-    this.obtenerListaTodosMueblesDisponibles();
   }
 
   obtenerAnchuraBarra() {
@@ -329,6 +328,7 @@ export class PlanoTiendaComponent implements OnInit {
   }
 
   cambiarMuebles() {
+    this.obtenerListaTodosMueblesDisponibles();
     this.mostrar_dialog_asignar_muebles = true;
   }
 
@@ -349,5 +349,9 @@ export class PlanoTiendaComponent implements OnInit {
     const idsLista2 = new Set(listaMueblesSeleccionados.map(mueble => mueble.id));
     const listaFiltrada = listaCompleta.filter((mueble) => !idsLista2.has(mueble.id));
     return listaFiltrada;
+  }
+
+  editarListaMuebles(){
+    
   }
 }
