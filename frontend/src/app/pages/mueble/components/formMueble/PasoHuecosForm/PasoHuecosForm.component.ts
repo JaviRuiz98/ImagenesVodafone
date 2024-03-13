@@ -308,7 +308,7 @@ export class PasoHuecosFormComponent implements OnInit {
         const categorias = elemento.get('categorias_elementos')?.value;
         
         if (categorias !== undefined && categorias !== null &&categorias.id === 3  ) {
-          return imagen ;
+          return imagen;
         }
       }
     }

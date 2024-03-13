@@ -63,19 +63,20 @@ export class MueblesService {
 
     for (const expositor of mueble.expositores) {
       for (const atributo of expositor.atributos_expositores) {
-          if (atributo.categorias_elementos?.id != null && atributo.categorias_elementos.id == this.modeloCategoriaId && atributo.elemento?.archivo_imagen != undefined) {
-            formData.append('imagenesReferencia', atributo.elemento.archivo_imagen);
+          if (atributo.categorias_elementos?.id != null && atributo.categorias_elementos.id == this.modeloCategoriaId && atributo.elemento?.archivos_imagenes != undefined) {
+            console.log("introducido");
+            formData.append('imagenesReferencia', atributo.elemento.archivos_imagenes);
 
             //insertar nombre de archivo en MUEBLE
             const indexExpositor = mueble.expositores.indexOf(expositor);
             const indexAtributo = expositor.atributos_expositores.indexOf(atributo);
-            mueble.expositores[indexExpositor].atributos_expositores[indexAtributo].elemento.nombre_archivo = atributo.elemento.archivo_imagen.name;
-        
+            mueble.expositores[indexExpositor].atributos_expositores[indexAtributo].elemento.nombre_archivo = atributo.elemento.archivos_imagenes.name;
+            console.log (mueble.expositores[indexExpositor].atributos_expositores[indexAtributo].elemento);
             
           } 
       }
     }
-    console.log ("mueble", mueble);  
+    console.log ("mueble guardado", mueble);  
     formData.append('muebleData', JSON.stringify(mueble));
     return this.http.post<muebles>(this.API_URI_CREATE, formData);
   }

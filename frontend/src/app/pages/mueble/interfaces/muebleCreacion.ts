@@ -3,6 +3,7 @@
 
 
   export interface muebleCreation{
+    id?: number,
     nombre_mueble: string,
     region: {
         id: number
@@ -14,6 +15,7 @@
             atributos_expositores: [
             
                 {
+                    id?: number,
                     x_start?: number,
                     y_start?: number,
                     ancho?: number,
@@ -26,7 +28,7 @@
                         id?:number,
                         nombre?: string,
                         imagen ?: string,
-                        archivo_imagen?: File,
+                        archivos_imagenes?: File,
                         nombre_archivo?: string,
                         categorias_elementos?: {
                             id: number
