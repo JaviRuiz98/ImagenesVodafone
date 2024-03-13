@@ -54,7 +54,6 @@
                 <th>Opciones</th>
                 <th>Enviar informe</th>
                 <th>Descargar informe</th>
-                <th>Previsualizar informe</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-auditoria>            
@@ -70,16 +69,13 @@
                     <app-barra-de-barras [datos_barras]="auditoria.datos_barra_progreso"></app-barra-de-barras>
                 </td>
                 <td class="opciones">         
-                    <p-button class ="smallMarginRight" severity="danger" [raised]="true" [text]="true" [rounded]="true" label="Ir auditoría" icon="pi pi-pencil"  (click)="goToAuditoria(auditoria)"></p-button>                    
+                    <p-button class ="smallMarginRight" severity="danger" [raised]="true" [text]="true" [rounded]="true" [label]="contenidoBotonAuditoriaInforme(auditoria.estados_auditoria.estado)" [icon]="contenidoIconoAuditoriaInforme(auditoria.estados_auditoria.estado)"  (click)="goToAuditoriaOInforme(auditoria)"></p-button>                    
                 </td>
                 <td>
                     <p-button label="Enviar" icon="pi pi-envelope" severity="danger" [text]="true" [raised]="true" [rounded]="true" (click)="enviarInforme(auditoria.id)" [disabled]="auditoria.estados_auditoria.estado === 'en progreso'"></p-button>
                 </td>
                 <td>
                     <p-button label="Descargar" icon="pi pi-download" severity="danger" [text]="true" [raised]="true" [rounded]="true" (click)="descargarInforme(auditoria.id)" [disabled]="auditoria.estados_auditoria.estado === 'en progreso'"></p-button>
-                </td>
-                <td>
-                    <p-button label="Ir template" severity="danger" [text]="true" [raised]="true" [rounded]="true" (click)="navegarTemplateInformeAuditoria(auditoria.id)" [disabled]="auditoria.estados_auditoria.estado === 'en progreso'"></p-button>
                 </td>
             </tr>
         </ng-template>

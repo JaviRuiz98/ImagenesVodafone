@@ -283,6 +283,7 @@ export const mobiliarioService = {
                             tiendas: {
                                 id: id_tienda,
                             },
+                            activo: true
                         },
                     },
                 },
@@ -322,8 +323,6 @@ export const mobiliarioService = {
                     },
                 },
             });
-
-        
             return muebles;
         } catch (error) {
             throw error;
