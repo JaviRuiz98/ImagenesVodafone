@@ -18,7 +18,7 @@ export class PlanoTiendaComponent implements OnInit {
 
   @ViewChild('op') op: OverlayPanel;
 
-  mostrar_dialogo_asignar_muebles = false;
+  mostrar_dialog_asignar_muebles = false;
 
   canvas: fabric.Canvas;
   posiciones_muebles: any[] = []; // Arreglo para almacenar los resúmenes de los muebles
@@ -321,5 +321,9 @@ export class PlanoTiendaComponent implements OnInit {
   getPosicionMuebleDadoMueble(mueble: muebles): posiciones_muebles_tienda {
     const posicion = mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0]
     return posicion;
+  }
+
+  cambiarMuebles() {
+    this.mostrar_dialog_asignar_muebles = true;
   }
 }

@@ -10,7 +10,10 @@
     <!-- Parte derecha -->
     <div style="margin-left: 15px; width: 50%">
         <p-toolbar>
-            <p-button icon="pi pi-plus" severity="danger" label="Cambiar muebles"></p-button>
+            <p-button icon="pi pi-plus" severity="danger" label="Cambiar muebles" (click)="cambiarMuebles()"></p-button>
+            <p-dialog [(visible)]="this.mostrar_dialog_asignar_muebles" [style]="{width: '80vw'}">
+              <app-agregar-mueble-a-tienda></app-agregar-mueble-a-tienda>
+            </p-dialog>
         </p-toolbar>
         <div *ngFor="let mueble of this.muebles">
             <div class="muebleSinAsignar" *ngIf="mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda.length == 0"
