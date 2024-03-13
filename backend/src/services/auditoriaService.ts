@@ -1,6 +1,5 @@
 import db  from "../config/database";
 import { auditorias, elementos, muebles } from '@prisma/client';
-import { mobiliarioService } from "./mobiliarioService";
 
 export const auditoriaService = {
 
@@ -61,7 +60,7 @@ export const auditoriaService = {
         }
     },
 
-    async createPertenenciaExpositorAuditoria(id_auditoria: number, mueble: muebles, elemento: elementos) {
+    async createPertenenciaElementosAuditoria(id_auditoria: number, mueble: muebles, elemento: elementos) {
         await db.pertenencia_elementos_auditoria.create({
             data: {
                 id_auditoria: id_auditoria,
@@ -71,10 +70,9 @@ export const auditoriaService = {
         });
     },
 
-    async createAuditoria(id_tienda: number): Promise<auditorias> {
-        try{
-            // Miro si la ultima auditoria esta todavia en progreso y la marco como caducada
-            const lastAuditoria = await db.auditorias.findFirst({
+    async getLastAuditoriaByTienda(id_tienda: number): Promise<auditorias | null> {
+        try {
+            return db.auditorias.findFirst({
                 where: {
                     id_tienda: id_tienda
                 },
@@ -82,45 +80,34 @@ export const auditoriaService = {
                     id: 'desc'
                 }
             })
+        } catch (error) {
+            console.error('No se pudo obtener el auditoria:', error);
+            throw error;
+        } finally {
+            await db.$disconnect();
+        }
+    },
 
-            if(lastAuditoria?.id_estado == 1) {
-                await db.auditorias.update({
-                    where: {
-                        id: lastAuditoria.id
-                    },
-                    data: {
-                        id_estado: 3,
-                        fecha_fin: new Date()
-                    }
-                })
-                
+    async marcarAuditoriaComoCaducada(id_auditoria: number) {
+        await db.auditorias.update({
+            where: {
+                id: id_auditoria
+            },
+            data: {
+                id_estado: 3,
+                fecha_fin: new Date()
             }
+        })
+    },
 
-            // Creo la auditoria
+    async createAuditoria(id_tienda: number): Promise<auditorias> {
+        try{
             const auditoria = await db.auditorias.create({
                 data: {
                     id_tienda: id_tienda,
                     id_estado: 1
                 }
-            })
-
-            // Almaceno todos los expositores que posee la auditoria en la tabla de auditoria_expositores
-            const muebles: any[] = await mobiliarioService.getMueblesAndElementosByIdTienda(id_tienda);
-            const promises = [];
-
-            for (const mueble of muebles) {
-                for(const expositor of mueble.expositores) {
-                    for (const atributos_expositores of expositor.atributos_expositores) {
-                        for (const elemento of atributos_expositores.pertenencia_elementos_atributos) {
-                            console.log('elemento:', elemento);
-                            promises.push(auditoriaService.createPertenenciaExpositorAuditoria(auditoria.id, mueble, elemento));
-                        }
-                    }
-                }
-                
-            }
-
-            await Promise.all(promises);
+            });
 
             return auditoria;
         }catch (error) {
