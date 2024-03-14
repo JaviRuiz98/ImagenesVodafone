@@ -157,9 +157,8 @@ export async function getNumberArrayProgresoAuditoria(id_auditoria: number): Pro
     }
 }
 
-export async function createAuditoria(req: Request, res: Response) {
+async function createAuditoria(id_tienda: number): Promise<auditorias> {
     try {
-        const id_tienda = parseInt(req.body.id_tienda as string);
         const promises = [];
 
         // Actualizo la información de la auditoría anterior en caso de que esté caducada
@@ -184,6 +183,21 @@ export async function createAuditoria(req: Request, res: Response) {
         }
         await Promise.all(promises);
 
+        console.log('Auditoria creada');
+
+        return createdAuditoria;
+    } catch (error) {
+        console.log('No se pudo crear la auditoria:', error);
+        throw error;
+    }
+} 
+
+export async function createSingleAuditoria(req: Request, res: Response) {
+    try {
+        const id_tienda = parseInt(req.body.id_tienda as string);
+        
+        const createdAuditoria = await createAuditoria(id_tienda);
+
         res.status(201).json(createdAuditoria);
         console.log('Auditoria creada');
     } catch (error) {
@@ -199,7 +213,7 @@ export async function createAuditoriaGlobal(_req: Request, res: Response) {
         // Creo todas las auditorias de forma secuencial
         const promises = [];
         for (let tienda of tiendas) {
-            promises.push(auditoriaService.createAuditoria(tienda.id));
+            promises.push(createAuditoria(tienda.id));
         }
 
         await Promise.all(promises);
