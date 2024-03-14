@@ -196,10 +196,12 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
   
     // Ajustar la longitud de las líneas para hacerlas más pequeñas
     const lineLength = Math.min(w, h) * 0.2; // Longitud de las líneas, ajustada al 20% del ancho o la altura del rectángulo
-  
+    
+    
     // Crear una línea horizontal
     const lineHorizontal = new fabric.Line([x + (w / 2) - (lineLength / 2), y + (h / 2), x + (w / 2) + (lineLength / 2), y + (h / 2)], {
       stroke: lineStrokeColor,
+      
     });
   
     // Crear una línea vertical
@@ -207,12 +209,12 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
       stroke: lineStrokeColor,
     });
   
-    const group = new fabric.Group([rect, lineHorizontal, lineVertical], {
-      left: x,
-      top: y,
-      angle: angulo,
+    const group = new fabric.Group([rect, lineHorizontal, lineVertical], {     
+      left: x, 
+      top: y, 
       selectable: false,
       evented: false,
+      angle: angulo,
     });
   
     return group;
@@ -237,7 +239,6 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
             if (imagen && imagen != "") {
               this.addImageOnGroup(index, imagen);
 
-       
             }
            
           }
@@ -254,8 +255,8 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     const atributo = this.huecos.at(index_hueco) as FormGroup;
     
     // Reemplaza 'elemento' con un nuevo grupo vacío
-    const nuevoGrupoElemento = this.fb.group([]);
-    atributo.setControl('elemento', nuevoGrupoElemento);
+    //const nuevoGrupoElemento = this.fb.group({});
+    atributo.removeControl('elemento');
   
     // Ahora procede a eliminar la imagen del canvas
     this.deleteImageFromCanvas(this.groupRefs[index_hueco]);
@@ -283,62 +284,13 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
 
   
 
-  getCoordinateX(index_hueco: number): number {
-    
-    const grupo = this.groupRefs[index_hueco];
-    if (!grupo) {
-        return 0;
-    }
-    return grupo.left;
-  }
-
-
-  
-  getCoordinateY( index_hueco: number): number {
-  
-    const grupo = this.groupRefs[index_hueco];
-    if (!grupo) {
-      return 0; 
-    }
-  
-    return grupo.top;
-
-  }
-  getCoordinateW(index_hueco: number): number {
-    
-    const grupo = this.groupRefs[index_hueco];
-    if (!grupo) {
-        return 0;
-    }
-    return grupo.width;
-  }
-
-
-  
-  getCoordinateH( index_hueco: number): number {
-  
-    const grupo = this.groupRefs[index_hueco];
-    if (!grupo) {
-      return 0; 
-    }
-  
-    return grupo.height;
-
-  }
-  getAngulo( index_hueco: number): number {
-      const grupo = this.groupRefs[index_hueco];
-      if (!grupo) {
-          return 0;
-      }
-      return grupo.angle;
-  }
-  
   addImageOnGroup(index_hueco	: number, imagen: string) {
 
     let imagenUrl : string = imagen
     !imagen.startsWith(this.urlService.url_imagenes_referencia) ?  imagenUrl = this.urlService.url_imagenes_referencia + imagen: imagenUrl = imagen;
     const grupo = this.groupRefs[index_hueco];
 
+    this.deleteImageFromCanvas(grupo);
     fabric.Image.fromURL(imagenUrl, (img) => {
 
       const scaleRatio = Math.min(
@@ -383,7 +335,6 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
       this.canvas.renderAll();
     });
   }
-  
     
   updateGroupProperties(groupIndex: number,  fillColor: string, strokeColor: string, lineStrokeColor: string): void {
     const group = this.groupRefs[groupIndex];
@@ -466,15 +417,26 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     
       const image_url: string = this.dragged_elemento.imagenes.url;
       const atributo = this.huecos[indiceSoltado];
+
+      if (!atributo.get('elemento')) {
+        atributo.setControl('elemento', this.fb.group({
+          id: [this.dragged_elemento.id],
+          imagen: [image_url],
+          categorias_elementos: [this.dragged_elemento.categorias_elementos],
+          nombre: [this.dragged_elemento.nombre]
+
+        }));
+      }else{
+        atributo.patchValue({
+          elemento: {
+            id: this.dragged_elemento.id,
+            imagen: image_url,
+            
+          }
+        });
+      }
       
-      // Continúa con la lógica que sigue, como la actualización del atributo con 'patchValue' o cualquier otra operación      
-      atributo.patchValue({
-        elemento: {
-          id: this.dragged_elemento.id,
-          imagen: image_url,
-          
-        }
-      });
+     
       console.log (atributo.value);
       console.log (this.expositorFormulario.value);
       const group: fabric.Group = this.groupRefs[indiceSoltado];

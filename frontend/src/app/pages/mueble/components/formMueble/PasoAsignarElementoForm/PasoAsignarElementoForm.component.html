@@ -9,12 +9,12 @@
   
           <div *ngIf="attr.value.elemento && attr.value.elemento.id" 
             [style.position]="'absolute'" 
-            [style.left.px]="attr.value.x_min"
-            [style.top.px]="attr.value.y_min" 
-            [style.width.px]="getCoordinateW( i)" 
-            [style.height.px]="getCoordinateH( i)" 
-            [style.transform]="getAngulo( i) ? 'rotate(' + getAngulo( i) + 'deg)' : ''"
-            [style.transform-origin]="getAngulo( i)? '0% 0%' : ''"
+            [style.left.px]="attr.value.x_start"
+            [style.top.px]="attr.value.y_start" 
+            [style.width.px]="attr.value.ancho" 
+            [style.height.px]="attr.value.alto" 
+            [style.transform]="attr.value.angulo ? 'rotate(' + attr.value.angulo + 'deg)' : ''"
+            [style.transform-origin]="attr.value.angulo? '0% 0%' : ''"
             (mouseenter)="op.toggle($event)" (mouseleave)="op.toggle($event)"
     
             style="border: 1px solid transparent; z-index: 2;">
