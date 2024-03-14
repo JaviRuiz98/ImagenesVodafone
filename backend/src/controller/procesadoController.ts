@@ -22,16 +22,16 @@ const id_prompt_dispositivos: number = 5; //prompt usado actualmente para dispos
 
 export async function procesarImagenes(req: Request, res: Response) {
   try {
-    const file = req.file //as { [fieldname: string]: Express.Multer.File[] };
+    const file = req.file; //as { [fieldname: string]: Express.Multer.File[] };
     const id_elemento: number = parseInt(req.body.id_elemento); //ojo refactor
     const id_auditoria: number = parseInt(req.body.id_auditoria);
-    const id_mueble: number = parseInt(req.body.id_mueble);
+    const id_expositor: number = parseInt(req.body.id_expositor);
 
-    console.log('id_auditoria: ',id_auditoria)
-    console.log('id_elemento: ',id_elemento)
+    console.log('id_auditoria: ',id_auditoria);
+    console.log('id_elemento: ',id_elemento);
     
     //obtengo la imagen a procesar
-    const imagenProcesada = file//(files['imagenesprocesado'] as Express.Multer.File[]).map(file => file.path)[0];
+    const imagenProcesada = file; //(files['imagenesprocesado'] as Express.Multer.File[]).map(file => file.path)[0];
 
     if (!imagenProcesada ||!imagenProcesada.path || !imagenProcesada.filename) {
       
@@ -39,7 +39,7 @@ export async function procesarImagenes(req: Request, res: Response) {
        return;
     }
 
-    //Creo la imagen, y obtengo el elemento
+    //Creo la imagen y obtengo el elemento
     const [nuevaImagen, existingElemento, id_elemento_auditoria]  = await Promise.all([
       imagenService.create(imagenProcesada.filename, imagenProcesada.originalname),
       elementosService.getById(id_elemento),
@@ -62,8 +62,7 @@ export async function procesarImagenes(req: Request, res: Response) {
     //la imagen de referencia  es necesaria para el procesado
     const [imagenReferencia, huecosEsperados] = await Promise.all([
       elementosService.getImage(existingElemento.id_imagen!),
-      mobiliarioService.getHuecosDisponibles(id_mueble)
-        
+      mobiliarioService.getHuecosDisponibles(id_expositor)
     ]);
     
     
@@ -105,7 +104,7 @@ export async function procesarImagenes(req: Request, res: Response) {
     const filePaths = [imagenReferencia.url, imagenProcesada.path];
     const openAiResult = await getOpenAiResults(filePaths, promptObject.texto_prompt!);
     if (!openAiResult) {
-      res.status(500).json({ error: 'Error al procesar imágenes' });
+      res.status(500).json({ error: 'No hay respuesta de openAI' });
       return;
     }
     //Comprobación de la válidez de la respuesta (falta por implementar)
@@ -113,16 +112,14 @@ export async function procesarImagenes(req: Request, res: Response) {
     if (!isValidOpenAiResponse(cleanedResponse, promptObject.id_categoria!)) {
       res.status(500).json({ error: 'Respuesta inválida' });
       return;
-    }
-
-    
+    }    
 
     const similarityObject = JSON.parse(cleanedResponse);
 
-      const id_probabilidad_cartel: number | undefined = await procesadoService.getIdProbabilidadCartelDadaProbabilidad(similarityObject.probab_estar_contenido)
-
-      //Si id_probabilidad_cartel es null, se ha procesado por dispositivo
-     
+    let id_probabilidad_cartel: number | undefined = undefined;
+    if(similarityObject.probab_estar_contenido) {
+      id_probabilidad_cartel = await procesadoService.getIdProbabilidadCartelDadaProbabilidad(similarityObject.probab_estar_contenido);
+    }     
    
     //Guardar en la base de datos (falta por implementar)
     const id_procesado_imagen = await procesadoService.create( //devuelve el id del procesado de imagen para usarlo en el almacenamiento de la respuesta
