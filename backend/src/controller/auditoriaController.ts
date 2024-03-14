@@ -176,12 +176,13 @@ async function createAuditoria(id_tienda: number): Promise<auditorias> {
             for(const expositor of mueble.expositores) {
                 for (const atributos_expositores of expositor.atributos_expositores) {
                     for (const elemento of atributos_expositores.pertenencia_elementos_atributos) {
-                        promises.push(auditoriaService.createPertenenciaElementosAuditoria(createdAuditoria.id, mueble, elemento));
+                        //promises.push(auditoriaService.createPertenenciaElementosAuditoria(createdAuditoria.id, mueble, elemento));
+                        auditoriaService.createPertenenciaElementosAuditoria(createdAuditoria.id, mueble, elemento)
                     }
                 }
             } 
         }
-        await Promise.all(promises);
+        //await Promise.all(promises);
 
         console.log('Auditoria creada');
 
