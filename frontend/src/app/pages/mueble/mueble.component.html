@@ -1,18 +1,93 @@
 
-<p-toast [key]="'general'"></p-toast>
-<app-ir-arriba></app-ir-arriba> 
+  
+    <p-toast [key]="'general'"></p-toast>
+    <div>
+        <p-toolbar class="w-90">
+            <div class="flex align-items-start justify-content-between mt-2 w-full">  
+                <div class="flex align-items-center">
+                    <h2>Muebles</h2>
+                    <span class="p-input-icon-left ml-2">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" [(ngModel)]="nombreFiltro" (input)="filtrarPorNombreDeMueble()" placeholder="Filtrar por nombre de mueble" /> 
+                    </span> 
+                    
+                    
+                </div>         
+                <p-button severity="danger"  label="Nuevo" icon="pi pi-plus" (onClick)="nuevoMueble()"></p-button>
+                
+            </div>
+            
+            <p-progressSpinner *ngIf="(muebles.length == 0 )"   fill="var(--surface-ground)" [style]="{'width': '5%', 'height': '5%'}" animationDuration=".6s"  class="fadein animation-duration-1000 "></p-progressSpinner>
+        </p-toolbar>
+        <p-scrollPanel [style]="{'height':'calc(100vh - 300px )'}">
 
- 
+            <p-dataView #dv [value]="mueblesFiltrados" [rows]="6" [paginator]="true">
+                
+                <ng-template let-mueble pTemplate="listItem">
+                    
+                    <div class="col-12 sm:col-6 lg:col-3 xl:col-4 p-2">
+                        <div class="p-4 border-1 surface-border surface-card border-round">
+                            <div class="flex flex-wrap align-items-center justify-content-between gap-2">
+                                <div class="text-2xl font-bold">{{ mueble.nombre }}</div>
+                            </div>
+                            <div class="flex flex-column align-items-center gap-3 py-5">
+                                <div *ngFor="let expositor of mueble.expositores; let i = index;" class="item-container ">
+                                    <div *ngIf="tieneModelo(expositor.atributos_expositores)"  class="image-button-container">
+                                        
+                                        <p-image class="imagenSimple" [src]="url_imagenes_referencias + getImagenModelo(expositor)" height="200vh" [alt]="getImagenModelo(expositor) ? getImagenModelo(expositor) : 'No disponible'" [preview]="true"></p-image>
+                                        
+                                        <p-button [raised]="true" [text]="true" [rounded]="true" severity="danger" label="Asignación de elementos" icon="pi pi-plus-circle" [disabled]="!tieneModelo(expositor.atributos_expositores)" (onClick)="editMueble(mueble,i)" class="full-width-button"></p-button>
+                                    
+                                    </div>
+                                    <div *ngIf="!tieneModelo(expositor.atributos_expositores)" class="flex align-items-center justify-content-center">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="m-2">
+                                <p-accordion  [multiple]="true" [style]="{'width':'100% '}" >
+                                    <p-accordionTab header="Elementos del mueble">
+                                        <div *ngFor="let expositor of mueble.expositores; let i = index;">
+                                            <div *ngFor ="let attr of expositor.atributos_expositores; let j = index;">
+                                                <div *ngIf="attr.categorias_elementos.id!= 3 && attr.elemento" >
+                                                    <h3>{{attr.elemento.nombre}}</h3>
+                                                    
+                                                    <p-image class="imagenSimple" [src]="url_imagenes_referencias + attr.elemento.imagenes.url" height="200vh" [alt]="getImagenModelo(expositor) ? getImagenModelo(expositor) : 'No disponible'" [preview]="true"></p-image>
+                                                    
+                                                    
+                                                </div>
+                                        </div>
+                                    </div>
+                                </p-accordionTab>
+                            </p-accordion>
+                            
+                            
+                        </div>
+                            <div class="flex align-items-center justify-content-between">
+                                <p-button  [raised]="true"  [text]="true" [rounded]="true" severity="danger" label="Ver historial" icon="pi pi-history" [disabled]="mueble.expositores.length < 1" (click) ="showHistorial(mueble)"></p-button>
+                                <p-button severity="danger" class="mr-2" [raised]="true" [text]="true" [rounded]="true" label="Editar" icon="pi pi-pencil"  (click)="editMueble(mueble)"></p-button>
+        
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </p-dataView> 
+        </p-scrollPanel>
+            
+
+</div>
+
+
+
 <!-- 
-     <p-table 
-            #miTabla
+    <p-table 
+    #miTabla
             class="table"
             [value]="muebles"
             [paginator]="true"
             [rows]="10"
             [scrollable]="true"
             [scrollHeight]="'calc(100vh - 300px )'"
-        
+            
             paginatorStyleClass="background-color: rgba(232, 232, 232, 0.9);"
             [showCurrentPageReport]="true"
             [tableStyle]="{ 'min-width': '50rem' }"
@@ -21,10 +96,10 @@
             [globalFilterFields]="['nombre' ]"
         >
          <ng-template pTemplate="caption" >
-            <div class="flex align-items-center justify-content-between">
-                <p class="p-m-0 text-2xl"> Muebles</p>
-                <p-button severity="danger"  label="Nuevo" icon="pi pi-plus" (onClick)="nuevoMueble()"></p-button>
-            </div>
+             <div class="flex align-items-center justify-content-between">
+                 <p class="p-m-0 text-2xl"> Muebles</p>
+                 <p-button severity="danger"  label="Nuevo" icon="pi pi-plus" (onClick)="nuevoMueble()"></p-button>
+                </div>
             <p-progressSpinner *ngIf="(muebles.length == 0 )"   fill="var(--surface-ground)" [style]="{'width': '5%', 'height': '5%'}" animationDuration=".6s"  class="fadein animation-duration-1000 "></p-progressSpinner>
         </ng-template> 
         <ng-template pTemplate="header">
@@ -41,31 +116,31 @@
                 <th></th>
                 <th></th>
                 <th></th>
-            
+                
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-mueble>
             <tr>
                 <td>{{ mueble.nombre }}</td>
-        
+                
                 <td [ngClass]="mueble.expositores.length > 1 ? 'expositores-container' : ''">
                     <div *ngFor="let expositor of mueble.expositores; let i = index;" class="item-container m-4">
                       <div *ngIf="tieneModelo(expositor.atributos_expositores)" class="image-button-container">
-                        <p-image class="imagenSimple" [src]="url_imagenes_referencias + getImagenModelo(expositor)" height="200vh" [alt]="getImagenModelo(expositor) ? getImagenModelo(expositor) : 'No disponible'" [preview]="true"></p-image>
-                        <p-button [raised]="true" [text]="true" [rounded]="true" severity="danger" label="Elementos" icon="pi pi-plus-circle" [disabled]="!tieneModelo(expositor.atributos_expositores)" (onClick)="showEditarExpositor(expositor)" class="full-width-button"></p-button>
-                      </div>
-                      <div *ngIf="!tieneModelo(expositor.atributos_expositores)" class="flex align-items-center justify-content-center">-</div>
+                          <p-image class="imagenSimple" [src]="url_imagenes_referencias + getImagenModelo(expositor)" height="200vh" [alt]="getImagenModelo(expositor) ? getImagenModelo(expositor) : 'No disponible'" [preview]="true"></p-image>
+                          <p-button [raised]="true" [text]="true" [rounded]="true" severity="danger" label="Elementos" icon="pi pi-plus-circle" [disabled]="!tieneModelo(expositor.atributos_expositores)" (onClick)="showEditarExpositor(expositor)" class="full-width-button"></p-button>
+                        </div>
+                        <div *ngIf="!tieneModelo(expositor.atributos_expositores)" class="flex align-items-center justify-content-center">-</div>
                     </div>
-                  </td>
-        
+                </td>
+                
                 <td>
-                  
+                    
                     <p-button severity="danger" class="mr-2" [raised]="true" [text]="true" [rounded]="true" label="Editar" icon="pi pi-pencil"  (click)="editMueble(mueble)"></p-button>
                 </td>
                 <td>
-               
+                    
                     <p-button  [raised]="true"  [text]="true" [rounded]="true" severity="danger" label="Ver historial" icon="pi pi-history" [disabled]="mueble.expositores.length < 1" (click) ="showHistorial(mueble)"></p-button>
-                  
+                    
                 </td>
             </tr>
         </ng-template>
@@ -76,62 +151,5 @@
             </tr>
         </ng-template>
         
-        </p-table>  -->
-<div class="paginaCompleta">
-     <p-dataView #dv [value]="muebles" [rows]="5" [paginator]="true">
-        <ng-template pTemplate="header">
-            <div class="flex align-items-start justify-content-between">           
-              <h3>Muebles</h3>
-                <p-button severity="danger"  label="Nuevo" icon="pi pi-plus" (onClick)="nuevoMueble()"></p-button>
-            </div>
-          
-            <p-progressSpinner *ngIf="(muebles.length == 0 )"   fill="var(--surface-ground)" [style]="{'width': '5%', 'height': '5%'}" animationDuration=".6s"  class="fadein animation-duration-1000 "></p-progressSpinner>
-        </ng-template>
-
-      
-
-        <ng-template let-mueble pTemplate="listItem">
-            <div class="col-12 sm:col-6 lg:col-3 xl:col-4 p-2">
-                <div class="p-4 border-1 surface-border surface-card border-round">
-                    <div class="flex flex-wrap align-items-center justify-content-between gap-2">
-                        <span class="flex align-items-center gap-2">
-                            <span class="font-semibold">{{ mueble.descripcion }}</span>
-                        </span>
-                    </div>
-                    <div class="flex flex-column align-items-center gap-3 py-5">
-                        <div *ngFor="let expositor of mueble.expositores; let i = index;" class="item-container ">
-                            <div *ngIf="tieneModelo(expositor.atributos_expositores)"  class="image-button-container">
-                              
-                               <p-image class="imagenSimple" [src]="url_imagenes_referencias + getImagenModelo(expositor)" height="200vh" [alt]="getImagenModelo(expositor) ? getImagenModelo(expositor) : 'No disponible'" [preview]="true"></p-image>
-                              
-                                <p-button [raised]="true" [text]="true" [rounded]="true" severity="danger" label="Asignación de elementos" icon="pi pi-plus-circle" [disabled]="!tieneModelo(expositor.atributos_expositores)" (onClick)="editMueble(mueble,i)" class="full-width-button"></p-button>
-                               
-                            </div>
-                            <div *ngIf="!tieneModelo(expositor.atributos_expositores)" class="flex align-items-center justify-content-center">
-                            </div>
-                          </div>
-                        <div class="text-2xl font-bold">{{ mueble.nombre }}</div>
-                    </div>
-                    <div class="flex align-items-center justify-content-between">
-                        <div *ngFor="let expositor of mueble.expositores; let i = index;">
-                            <div *ngFor ="let attr of expositor.atributos_expositores; let j = index;">
-                                
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="flex align-items-center justify-content-between">
-                        <p-button  [raised]="true"  [text]="true" [rounded]="true" severity="danger" label="Ver historial" icon="pi pi-history" [disabled]="mueble.expositores.length < 1" (click) ="showHistorial(mueble)"></p-button>
-                        <p-button severity="danger" class="mr-2" [raised]="true" [text]="true" [rounded]="true" label="Editar" icon="pi pi-pencil"  (click)="editMueble(mueble)"></p-button>
-
-                    </div>
-                </div>
-            </div>
-        </ng-template>
-
-
-    </p-dataView> 
-
-</div>
-
-
+    </p-table>  -->
+  

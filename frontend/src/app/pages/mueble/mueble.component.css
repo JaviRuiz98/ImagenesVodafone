@@ -1,13 +1,7 @@
 
 .paginaCompleta {
-    width: 100%; 
-    
-    display: flex;
-    padding-left: 15%;
-    padding-right: 15%;
-    justify-content: center;
-    align-items: center;
-    
+    padding-left: 10%;
+    padding-right: 10%;   
 }
 
 .table{
@@ -69,8 +63,7 @@
     flex-direction: column;
     width: 100%; /* Asegura que el contenedor tome toda la anchura disponible */
   }
-  
-  
+
   
   .full-width-button {
     width: 100%; /* Hace que el botón se ajuste a la anchura del contenedor */
