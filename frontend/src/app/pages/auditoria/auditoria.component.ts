@@ -63,8 +63,10 @@ export class AuditoriaComponent implements OnInit{
     }
 
     async inicializaImagenesReferencia() {
-      this.auditoriaService.getMueblesAndExpositoresWithProcesadosByIdAuditoria(this.auditoria_seleccionada.id).subscribe((data: any[]) => {
+      this.auditoriaService.getMueblesAndExpositoresWithProcesadosByIdAuditoria(this.auditoria_seleccionada.id).subscribe(
+        (data: any[]) => {
           this.muebles = data;
+          console.log('muebles', this.muebles);
         }, 
         (error: Error) => { console.log(error) }
       );
@@ -74,13 +76,13 @@ export class AuditoriaComponent implements OnInit{
       this.inicializaImagenesReferencia();  
     }
 
-    async procesarImagen(event: {archivo: File}, id_elemento_selected: number, id_mueble_selected: number) {
+    async procesarImagen(event: {archivo: File}, id_elemento_selected: number, id_expositor_selected: number) {
       this.imagenAProcesar = event.archivo;
       this.cargas_procesamiento[id_elemento_selected] = true;   
       this.messageService.add({ severity: 'info', summary: 'Cargando', detail: 'La imagen se está procesando' });
     
       try {
-        const response: procesados_imagenes = await this.procesamientoService.postProcesamientoImagenes(id_elemento_selected, id_mueble_selected, this.auditoria_seleccionada.id, this.imagenAProcesar).toPromise();
+        const response: procesados_imagenes = await this.procesamientoService.postProcesamientoImagenes(id_elemento_selected, id_expositor_selected, this.auditoria_seleccionada.id, this.imagenAProcesar).toPromise();
         this.cargas_procesamiento[id_elemento_selected] = false;
         await this.actualizarProcesamientoEnMueble(id_elemento_selected, response);
         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Imagen procesada correctamente' });

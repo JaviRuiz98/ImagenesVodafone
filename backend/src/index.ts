@@ -11,7 +11,7 @@ import auditoriaRouter from './routes/auditoriaRoutes';
 import expositoresRoutes from './routes/elementoRoutes';
 import informeRoutes from './routes/informeRoutes';
 import uniformesRoutes from './routes/uniformesRoutes';
-
+import loginRoutes from './routes/loginRoutes';
 
 const app = express();
 app.use(bodyParser.json({ limit: '10mb' }));
@@ -21,6 +21,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/', tiendaRoutes);
+app.use('/', loginRoutes);
 app.use('/', imagesRoutes);
 app.use('/', procesamientoRoutes);
 app.use('/', promptsRoutes);

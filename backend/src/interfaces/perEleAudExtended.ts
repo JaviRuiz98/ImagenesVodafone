@@ -6,6 +6,7 @@ export interface per_ele_aud_extended {
     id: number;
     id_auditoria: number;
     id_mueble: number;
+    id_expositor: number;
     id_elemento: number;
     muebles: muebles;
     elementos: elementoExtended;
