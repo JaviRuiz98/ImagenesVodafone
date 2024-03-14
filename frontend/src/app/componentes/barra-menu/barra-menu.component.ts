@@ -117,6 +117,7 @@ export class BarraMenuComponent implements OnInit, AfterViewInit {
       case '/muebles':
       case '/elementos':
       case '/auditoria':
+      case '/plano_tienda':
         this.router.navigate(['/home']);    
       break;
     } else {
