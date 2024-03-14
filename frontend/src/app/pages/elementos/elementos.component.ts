@@ -209,7 +209,7 @@ export class ElementosComponent implements OnInit{
     this.inicializaElementos();
     this.inicializaCategorias_elementos(); 
 
-    this.elementosService.getElementos(1).
+  
 
 
     this.opcionesCatalogo = [

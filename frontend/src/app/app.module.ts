@@ -43,7 +43,7 @@ import { ButtonModule } from 'primeng/button';
     PlanoTiendaModule,
     ElementosModule,
     LoginModule,
-    UniformesModule
+    UniformesModule,
     ButtonModule
   ],
   providers: [   
