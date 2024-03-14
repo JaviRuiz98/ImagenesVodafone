@@ -182,8 +182,6 @@ export class PlanoTiendaComponent implements OnInit {
     this.mueblesService.getMueblesTiendaByIdTienda(this.id_tienda).subscribe(
       (muebles) => {
         this.muebles = muebles;
-        console.log('Muebles:', this.muebles);
-
         this.cargarMueblesAsignados();
       },
       (error) => {
@@ -352,6 +350,6 @@ export class PlanoTiendaComponent implements OnInit {
   }
 
   editarListaMuebles(){
-    
+    console.log('this.muebles', this.muebles);
   }
 }

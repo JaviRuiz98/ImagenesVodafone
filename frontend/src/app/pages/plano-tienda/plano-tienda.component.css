@@ -18,13 +18,13 @@
 }
 
 .cambiarMuebles {
+    height: 100%;
     display: grid;
-    grid-template-rows: 90% 10%;
+    grid-template-rows: 85% 15%;
 }
 
 .botonEditarListaMuebles {
     display: flex;
-    cursor: pointer;
     min-width: 200px;
     min-height: 80px;
     justify-content: end;

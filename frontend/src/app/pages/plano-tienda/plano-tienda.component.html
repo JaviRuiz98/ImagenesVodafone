@@ -9,7 +9,7 @@
   <div style="margin-left: 15px; width: 30%">
     <p-toolbar>
       <p-button icon="pi pi-plus" severity="danger" label="Cambiar muebles" (click)="cambiarMuebles()"></p-button>
-      <p-dialog [(visible)]="this.mostrar_dialog_asignar_muebles" [style]="{width: '80vw'}" [draggable]="false">
+      <p-dialog [(visible)]="this.mostrar_dialog_asignar_muebles" [style]="{width: '80vw', height: '80vh'}" [draggable]="false">
         <div class="cambiarMuebles">
           <app-agregar-mueble-a-tienda
             [listaMueblesAsignadosTablaDerecha]="this.muebles"
@@ -17,7 +17,7 @@
           ></app-agregar-mueble-a-tienda>
           <div class="botonEditarListaMuebles">
             <p-button (click)="editarListaMuebles()" [text]="true" [raised]="true" severity="danger" [rounded]="true" 
-            label="Editar"></p-button>
+            label="Editar" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px', 'justify-content': 'center'}"></p-button>
           </div>
         </div>
       </p-dialog>
