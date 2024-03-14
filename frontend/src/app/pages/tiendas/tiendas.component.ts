@@ -120,9 +120,9 @@ export class TiendasComponent implements OnInit{
     return listaFiltrada;
   }
 
-  abrirPlanoTienda(id_tienda: number) {
+  abrirPlanoTienda(id_tienda: number, tienda: tienda) {
     this.localStorageService.setItem('id_tienda', id_tienda);
+    this.localStorageService.setItem('tienda', tienda);
     this.router.navigate(['/plano_tienda']);    
   }
-
 }

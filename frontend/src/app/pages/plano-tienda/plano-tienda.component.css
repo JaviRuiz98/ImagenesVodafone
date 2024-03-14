@@ -1,3 +1,29 @@
+/* .paginaCompleta {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    height: 86vh;
+    width: 100vw;
+}
+.planoBotonAñadirPosicionMueble{
+    height: 100%;
+    width: 100%;
+}
+.panelDerechoAsignarMueblesToolbar{
+    display: grid;
+    grid-template-rows: 10% 80%;
+    justify-content: center;
+    width: 100%;
+}
+.panelDerechoAsignarMueblesToolbar ::ng-deep .p-toolbar{
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+.toolbar {
+    width: 100%;
+    padding: 0;
+} */
+
 .muebleSinAsignar {
     display: flex;
     border-radius: 5px;
