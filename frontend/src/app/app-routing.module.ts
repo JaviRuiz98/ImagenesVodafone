@@ -11,7 +11,7 @@ import { ElementosComponent } from './pages/elementos/elementos.component';
 import { TemplateInformeComponent } from './pages/template-informe/template-informe.component';
 import { PlanoTiendaComponent } from './pages/plano-tienda/plano-tienda.component';
 import { LoginComponent } from './pages/login/login.component';
-
+import { UniformesComponent } from './pages/uniformes/uniformes.component';
 
 const routes: Routes = [
   {
@@ -58,9 +58,14 @@ const routes: Routes = [
     data: { stateBarra: 'plano_tienda' },
    },
    {
-    path: "plano_tienda", component: PlanoTiendaComponent, 
-    data: { stateBarra: 'plano_tienda' },
+    path: "uniformes", component: UniformesComponent, 
+    data: { stateBarra: 'uniformes' },
    },
+
+
+  // { path:"expositores",}
+
+
    {
       path: '', redirectTo: '/login', pathMatch: 'full' 
     }
