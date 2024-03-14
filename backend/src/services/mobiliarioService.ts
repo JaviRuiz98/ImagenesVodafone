@@ -8,17 +8,11 @@ import { muebleCreation } from "../interfaces/mueblesCreados";
 export const mobiliarioService = {
     async getHuecosDisponibles (id_expositor: number)  {
         try {
-           return await db.expositores.count(
+           return await db.atributos_expositores.count(
                 {
                 where: { 
-                    id: id_expositor,
-                    atributos_expositores:{
-                        some: {
-                            categorias_elementos: {
-                                id: 2
-                            }
-                        }
-                    }
+                    id_expositor: id_expositor,
+                    id_categoria: 2
                 }
                             
                         
@@ -30,6 +24,7 @@ export const mobiliarioService = {
             await db.$disconnect();
         }
     },
+    
     getFilteredMuebles: async (
         id?: number,
         _orden_clause:
