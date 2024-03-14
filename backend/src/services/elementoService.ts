@@ -28,6 +28,14 @@ export const elementosService = {
         
     },
 
+    getAllActivos(): Promise<elementos[]> {
+        return db.elementos.findMany({
+            where: {
+                activo: true
+            }
+        })
+    },
+
 // repasar
     async  getImage(id_imagen: number): Promise<imagenes> {
         try {

@@ -100,9 +100,7 @@ export const mobiliarioService = {
                             await prisma.pertenencia_elementos_atributos.create({
                                 data: {
                                     id_atributo_expositor: newAtributo.id,
-                                    id_elemento: atributo.elemento?.id,
-                                    id_atributo_expositor: newAtributo.id,
-                                    id_elemento: atributo.elemento?.id,
+                                    id_elemento: atributo.elemento?.id  
                                 }
                             })
                         }   
@@ -353,8 +351,6 @@ export const expositorService = {
                 if (atributo.id && atributo.elemento?.id) { 
                     await db.pertenencia_elementos_atributos.create({
                         data: {
-                            id_atributo_expositor: atributo.id,
-                            id_elemento: atributo.elemento.id
                             id_atributo_expositor: atributo.id,
                             id_elemento: atributo.elemento.id
                         }
