@@ -101,7 +101,8 @@ function agruparElementosMueblesAuditorias(per_ele_aud_brutos: per_ele_aud_exten
         }
         mueble.elementos.push({
             ...item.elementos,
-            procesados_imagenes: item.procesados_imagenes
+            procesados_imagenes: item.procesados_imagenes,
+            id_expositor: item.id_expositor
         });
         return acc;
     }, []);
@@ -136,7 +137,7 @@ export async function getNumberArrayProgresoAuditoria(id_auditoria: number): Pro
             switch (pea.elementos.id_categoria) {
               case 1:
                 return pea.procesados_imagenes[0].id_probabilidad_cartel || 0;
-              case 2:
+              case 3:
                 const dispositivos_contados = pea.procesados_imagenes[0].dispositivos_contados;
                 const huecos_esperados = pea.procesados_imagenes[0].huecos_esperados;
                 if (dispositivos_contados != undefined && huecos_esperados != undefined) {
@@ -175,8 +176,10 @@ async function createAuditoria(id_tienda: number): Promise<auditorias> {
         for (const mueble of muebles) {
             for(const expositor of mueble.expositores) {
                 for (const atributos_expositores of expositor.atributos_expositores) {
-                    for (const elemento of atributos_expositores.pertenencia_elementos_atributos) {
-                        promises.push(auditoriaService.createPertenenciaElementosAuditoria(createdAuditoria.id, mueble, elemento));
+                    for (const pertenencia of atributos_expositores.pertenencia_elementos_atributos) {
+                        if(pertenencia.elementos.id_categoria != 2) {
+                            promises.push(auditoriaService.createPertenenciaElementosAuditoria(createdAuditoria.id, mueble, expositor.id, pertenencia.elementos));
+                        }
                     }
                 }
             } 

@@ -4,6 +4,7 @@ export interface elementoExtended {
     id: number;
     id_imagen: number | null;
     id_region: number | null;
+    id_expositor?: number | null; // para cuando es un elemento perteneciente a una auditoria
     nombre: string | null;
     activo: boolean;
     id_categoria: number;

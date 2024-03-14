@@ -42,6 +42,7 @@ export class DialogInformacionProcesadoComponent implements OnInit{
   constructor(private procesamientoService: ProcesamientoService, private publicMethodsService: PublicMethodsService) { }
 
   ngOnInit(): void {
+    console.log('procesado', this.procesado)
   }
   getSeverityCartel(procesado: string): string {
     return this.publicMethodsService.getSeverityCartel(procesado);

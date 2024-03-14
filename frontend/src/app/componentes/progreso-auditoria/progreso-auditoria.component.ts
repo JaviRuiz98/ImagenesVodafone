@@ -68,6 +68,7 @@ export class ProgresoAuditoriaComponent implements OnInit {
     this.auditoriaService.getBarraProgresoAuditoria(id_auditoria_seleccionada).subscribe(
       (data) => {
         this.datos_barra_progreso = data;
+        console.log('barra de progreso', this.datos_barra_progreso)
       }, (error) => { console.error(error) }
     )
   }
