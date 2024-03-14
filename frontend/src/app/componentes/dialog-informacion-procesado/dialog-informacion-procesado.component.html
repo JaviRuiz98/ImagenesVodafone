@@ -6,12 +6,12 @@
         [severity]="getSeverityCartel(procesado[posicionGaleria].probabilidades_respuesta_carteles.probabilidad)" 
         (onClick)="open.toggle($event)"
     ></p-button>
-    <p-button *ngIf="procesado.id_categoria === 2" 
+    <p-button *ngIf="procesado[posicionGaleria].id_categoria === 3" 
         [style]="{'width': '80%'}"
         class = "cursor-pointer "
         icon="pi pi-info-circle"
-        label="{{procesado[posicionGaleria].dispositivos_contados}}/{{procesado[posicionGaleria].huecos_esperados}}"
-        [severity]="getSeverityDispositivos(procesado.dispositivos_contados, procesado.huecos_esperados)" 
+        label="{{procesado[posicionGaleria].dispositivos_contados}}/{{procesado[posicionGaleria].huecos_esperados}}  "
+        [severity]="getSeverityDispositivos(procesado[posicionGaleria].dispositivos_contados, procesado[posicionGaleria].huecos_esperados)" 
         (onClick)="open.toggle($event)"
     ></p-button>     
 </div>

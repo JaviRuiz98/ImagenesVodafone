@@ -63,7 +63,6 @@ export async function procesarImagenes(req: Request, res: Response) {
     const [imagenReferencia, huecosEsperados] = await Promise.all([
       elementosService.getImage(existingElemento.id_imagen!),
       mobiliarioService.getHuecosDisponibles(id_mueble)
-        
     ]);
     
     
@@ -113,19 +112,14 @@ export async function procesarImagenes(req: Request, res: Response) {
     if (!isValidOpenAiResponse(cleanedResponse, promptObject.id_categoria!)) {
       res.status(500).json({ error: 'Respuesta inválida' });
       return;
-    }
-
-    
+    }    
 
     const similarityObject = JSON.parse(cleanedResponse);
 
     let id_probabilidad_cartel: number | undefined = undefined;
     if(similarityObject.probab_estar_contenido) {
       id_probabilidad_cartel = await procesadoService.getIdProbabilidadCartelDadaProbabilidad(similarityObject.probab_estar_contenido);
-    }
-      
-
-     
+    }     
    
     //Guardar en la base de datos (falta por implementar)
     const id_procesado_imagen = await procesadoService.create( //devuelve el id del procesado de imagen para usarlo en el almacenamiento de la respuesta
