@@ -63,7 +63,6 @@ export class MuebleComponent implements OnInit {
   }
 
   editMueble(mueble: muebles, showing_asignar_expositores_index?:number) {
-    
     this.ref = this.dialogService.open(FormMuebleComponent, {
       header: 'Editar mueble ' + mueble.nombre ,
       width: '70%',
@@ -72,7 +71,7 @@ export class MuebleComponent implements OnInit {
       maximizable: true,
       data: {
         mueble: mueble, 
-        showing_asignar_expositores_index: showing_asignar_expositores_index
+        showing_asignar_expositores_index: showing_asignar_expositores_index!= undefined? showing_asignar_expositores_index : undefined
       }
     });
     

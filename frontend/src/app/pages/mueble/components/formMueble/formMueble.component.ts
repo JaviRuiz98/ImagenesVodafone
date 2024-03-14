@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { expositores } from 'src/app/interfaces/expositores';
 import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
@@ -20,7 +19,7 @@ export class FormMuebleComponent implements OnInit {
 
   formulario: FormGroup;
 
-  editar_Expositor_Elementos_Index?: number = null;
+  editar_expositor_elementos_index?: number = undefined;
   
   constructor( 
     private urlService: UrlService,
@@ -58,8 +57,10 @@ export class FormMuebleComponent implements OnInit {
 
   url_imagenes_referencias: string = this.urlService.url_imagenes_referencia;
 
-  getExpositorFormGroup(): FormGroup {
-    return this.expositores.at(this.index_expositor_actual) as FormGroup;
+  getExpositorFormGroup(index_expositor? :number): FormGroup {
+    const index = index_expositor!= undefined ? index_expositor : this.index_expositor_actual;
+    
+    return this.expositores.at(index) as FormGroup;
     
   }
   
@@ -259,11 +260,12 @@ export class FormMuebleComponent implements OnInit {
 
       
       this.step_count = this.expositores.length+1;
-      const index_expositor_a_editar = this.dialogConfig.data.showing_asignar_expositores_index;
+      const index_expositor_a_editar: number = this.dialogConfig.data.showing_asignar_expositores_index;
 
       if (index_expositor_a_editar!= undefined ) {
-        this.index_expositor_actual = index_expositor_a_editar;
+        this.editar_expositor_elementos_index = index_expositor_a_editar;
       }
+
 
     }else{
       console.log ("nuevo");

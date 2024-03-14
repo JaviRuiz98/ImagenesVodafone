@@ -38,6 +38,7 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { DividerModule } from 'primeng/divider';
 import { DataViewModule } from 'primeng/dataview';
 import { DialogModule } from 'primeng/dialog';
+import { AccordionModule } from 'primeng/accordion';
 //import {DragDropModule} from '@angular/cdk/drag-drop'
 
 
@@ -71,6 +72,7 @@ import { NuevoElementoComponent } from 'src/app/componentes/nuevo-elemento/nuevo
     StepsModule,
     OverlayPanelModule,
     DataViewModule,
+    AccordionModule,
     
 
     ReactiveFormsModule,
