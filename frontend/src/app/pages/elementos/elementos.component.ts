@@ -168,7 +168,7 @@ export class ElementosComponent implements OnInit{
      
     this.elementos = this.elementosTodos;
     if(this.opcionesCatalogo.find((opcion) => opcion.estado === $event.value?.estado)){
-  //    this.opcionCatalogoSeleccionado.estado = $event.value.nombre; da bugazo
+  //    this.opcionCatalogoSeleccionado.estado = $event.value.nombre; 
     }else{
 
       if(this.categorias_elementos.find((opcion) => opcion.nombre === $event.value?.nombre)){
@@ -189,18 +189,17 @@ export class ElementosComponent implements OnInit{
       this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == "Carteles");
     }else if(this.categoriaSeleccionada.nombre  == "Dispositivos"){
       this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == "Dispositivos");
+    }else if(this.categoriaSeleccionada.nombre  == "Modelo"){
+      this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == "Modelo");
     }else if(this.categoriaSeleccionada.nombre  == "Otros"){
       this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == "Otros");
     }
   }
-
-  // this.regiones = regiones;
-  // this.Dropdown_regiones = regiones.map((region) => region.nombre);
  
+
   inicializaCategorias_elementos(){
     this.enumService.getCategorias_elementos().subscribe((elementos: categorias_elementos[]) => {
       this.categorias_elementos = elementos; 
-      this.categoriaSeleccionada = this.categorias_elementos[0];
     })
   }
 
@@ -208,11 +207,9 @@ export class ElementosComponent implements OnInit{
   
   ngOnInit(): void { 
     this.inicializaElementos();
-    this.inicializaCategorias_elementos();
+    this.inicializaCategorias_elementos(); 
 
-    // this.enumService.getAllRegiones().subscribe((regiones: regiones[]) => {
-    //   this.regiones = regiones;
-    // });
+  
 
 
     this.opcionesCatalogo = [
