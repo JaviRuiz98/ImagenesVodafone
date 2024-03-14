@@ -178,7 +178,7 @@ export class PlanoTiendaComponent implements OnInit {
     });
   }
 
-  getMueblesTienda(id_tienda) {
+  getMueblesTienda(id_tienda: number) {
     this.mueblesService.getMueblesTiendaByIdTienda(this.id_tienda).subscribe(
       (muebles) => {
         this.muebles = muebles;
