@@ -35,7 +35,7 @@ export class LoginComponent {
 
         console.log('Usuario verificado:', usuarioVerificado);
         // this.CookieService.setCookie('token', usuarioVerificado, 1);
-        // this.router.navigate(['/home']);
+        this.router.navigate(['/home']);
       }
     })
   }
