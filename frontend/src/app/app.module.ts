@@ -20,11 +20,11 @@ import { ElementosModule } from './pages/elementos/elementos.modules';
 import { RemarcarExpositorComponent } from './componentes/remarcar-expositor/remarcar-expositor.component';
 import { PlanoTiendaModule } from './pages/plano-tienda/plano-tienda.module';
 import { LoginModule } from './pages/login/login.module';
-import { UniformesModule } from './pages/uniformes/uniformes.module';
+import { UniformesModule } from './pages/uniformes/uniformes.module'; 
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent, 
   ],
   imports: [
     BarraMenuComponent,

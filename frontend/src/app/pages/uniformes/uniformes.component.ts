@@ -8,7 +8,8 @@ import { Opciones_caracteristicas } from 'src/app/interfaces/caracteristicas';
 @Component({
   selector: 'app-uniformes',
   templateUrl: './uniformes.component.html',
-  styleUrls: ['./uniformes.component.css']
+  styleUrls: ['./uniformes.component.css'],
+
 })
 
 
@@ -24,7 +25,7 @@ export class UniformesComponent implements OnInit {
 
   verOpcionesProducto: boolean = false;
   opciones_producto!: productos[];
-  
+  url_imagenes_productos: string = 'http://validador-vf.topdigital.local/imagenes/imagenesProducto/';
 
   constructor(private uniformesService: UniformesService) { }
 
@@ -41,11 +42,10 @@ export class UniformesComponent implements OnInit {
     this.sidebarVisible = !this.sidebarVisible;
   }
 
-  popUpCaracteristicasProduto(producto: productos){
-
-    this.verOpcionesProducto = true;
+ 
+  anadirCarrito(producto: productos){
+    
   }
-
 
   ngOnInit() {
     this.inicializaProductos();
@@ -54,6 +54,7 @@ export class UniformesComponent implements OnInit {
   inicializaProductos() {
     this.uniformesService.getProductos().subscribe((productos: productos[]) => {
       this.productos = productos;
+
     });
     this.inicializaCaracteristicasProducto();
   }
@@ -63,9 +64,11 @@ export class UniformesComponent implements OnInit {
       this.opciones_caracteristicas = caracteristicas;
       this.productos.map(producto => {
         producto.opciones_caracteristicas = this.opciones_caracteristicas.filter(caracteristica => caracteristica.id_producto === producto.id);
+
       })
       console.log(this.productos);
     });
+    
   }
 
 

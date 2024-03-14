@@ -1,7 +1,7 @@
 import { imagenes } from "@prisma/client";
 import { opciones_caracteristicas } from "./opciones_caracteristicas";
 
-export interface producto {
+export interface productoExtended {
     id: number; 
     nombre: string | null;
     precio: number;

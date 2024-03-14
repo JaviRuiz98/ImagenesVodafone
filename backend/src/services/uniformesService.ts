@@ -1,5 +1,6 @@
 
-import { producto, carrito, opciones_caracteristicas } from "@prisma/client";
+import { producto, carrito, imagenes, opciones_caracteristicas } from "@prisma/client";
+
 import db from "../config/database";
 
 
@@ -8,14 +9,37 @@ export const uniformesService = {
 
     async getProductos(): Promise<producto[]> {
         try {
-            return await db.producto.findMany();
-
+            const productos = await db.producto.findMany();
+            return productos;
         } catch (error) {
             throw error;
         } finally {
             await db.$disconnect();
         }
     },
+
+    async  getImage(id_imagen: number): Promise<imagenes> {
+        try {
+          const image = await db.imagenes.findUnique({
+            where: {
+              id: id_imagen
+            }
+          });
+      
+          if (!image) {
+            throw new Error(`No se encontró ninguna imagen con ID ${id_imagen}`);
+          }
+      
+        //   image.url = `${getDestination('imagenesReferencia')}/${image.url}`;
+          return image;
+        } catch (error) {
+          console.log("Error:", error);
+          throw error;
+        } finally {
+          await db.$disconnect();
+        }
+      },
+      
 
     async getCaracteristicas(): Promise<opciones_caracteristicas[]> {
         try {
@@ -38,15 +62,36 @@ export const uniformesService = {
         }
     },
 
-    async postNuevoProducto(producto: any): Promise<any> {
+    async postNuevoProducto(producto: producto): Promise<producto> {
+        
         try {
-            return await db.producto.create({ data: producto });
+            return await db.producto.create({
+                 data: { 
+                    id_imagen: producto.id_imagen,
+                    descripcion: producto.descripcion,
+                    genero: producto.genero,
+                    nombre: producto.nombre,
+                    precio: producto.precio,
+                 } 
+                });
         }catch (error) {
             throw error;
         }finally {
             await db.$disconnect();
         }
     },
+
+    async postCaracteristicaProducto(caracteristica: any): Promise<any> {
+        try {
+            return await db.opciones_caracteristicas.create({ 
+                data: caracteristica 
+            });
+        }catch (error) {
+            throw error;
+        }finally {
+            await db.$disconnect();
+        }
+    }
 
 }
 

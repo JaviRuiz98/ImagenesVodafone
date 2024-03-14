@@ -12,7 +12,7 @@ import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { SidebarModule } from 'primeng/sidebar'; 
 import { CheckboxModule } from 'primeng/checkbox';
-
+import { DataView } from 'primeng/dataview';
 
 @NgModule({
     declarations: [
@@ -28,11 +28,13 @@ import { CheckboxModule } from 'primeng/checkbox';
         CardModule,
         TagModule,
         SidebarModule,
-        CheckboxModule
+        CheckboxModule,
     ],
     providers: [
-        MessageService,
+        MessageService,        
+        DataView,
         DataViewLayoutOptions
     ], 
+ 
 })
 export class UniformesModule { }

@@ -21,52 +21,16 @@ function getDestination(folderPath: string): string {
 // Crear configuraciones de almacenamiento específicas
 const storageImagenReferencia = createStorageConfig('imagenesReferencia');
 const storageImagenProcesada = createStorageConfig('imagenesProcesamiento');
-
+const storageImagenProducto = createStorageConfig('imagenesProducto');
 // Middleware de Multer
 
 
 const uploadImagenRepresentativa = multer({ storage: storageImagenReferencia }).single('imagenesReferencia');
 const uploadArrayImagenRepresentativa = multer({ storage: storageImagenReferencia }).array('imagenesReferencia');
 const uploadImagenProcesada = multer({ storage: storageImagenProcesada }).single('imagenesProcesamiento');
+const uploadImagenProducto = multer({ storage: storageImagenProducto }).single('imagenesProducto'); //almacenamiento para los productos de uniforme
 const uploadNone = multer().none();
 
 // Exportar los middleware
-export { uploadImagenRepresentativa, uploadArrayImagenRepresentativa, uploadImagenProcesada,uploadNone, getDestination };
+export { uploadImagenRepresentativa, uploadArrayImagenRepresentativa, uploadImagenProcesada,uploadImagenProducto,uploadNone, getDestination };
 
-
-
-// import multer from 'multer';
-// import path from 'path';
-// import { v4 as uuidv4 } from 'uuid'; // Importando UUID para generar identificadores únicos
-
-// // Configuración centralizada de la ruta base de las imágenes
-// const IMAGES_BASE_PATH = '../../assets/imagenes';
-
-// // Función para crear la configuración de almacenamiento
-// const createStorageConfig = (folderName: string) => {
-//   const storage = multer.diskStorage({
-//     destination: (_req, _file, cb) => {
-//       // Construyendo la ruta del directorio de destino usando la configuración centralizada
-//       const destinationPath = path.join(__dirname, IMAGES_BASE_PATH, folderName);
-//       cb(null, destinationPath);
-//     },
-//     filename: (_req, file, cb) => {
-//       // Generando un nombre de archivo único usando UUID
-//       const uniqueSuffix = `${Date.now()}-${uuidv4()}`;
-//       const fileName = `${uniqueSuffix}${path.extname(file.originalname)}`;
-//       cb(null, fileName);
-//     },
-//   });
-//   return storage;
-// };
-
-// // Crear configuraciones de almacenamiento específicas
-// const storageImagenReferencia = createStorageConfig('imagenesReferencia');
-// const storageImagenProcesada = createStorageConfig('imagenesProcesamiento');
-
-// // Middleware de Multer para subir imágenes
-// const uploadImagenReferencia = multer({ storage: storageImagenReferencia }).single('imagenReferencia');
-// const uploadImagenProcesada = multer({ storage: storageImagenProcesada }).single('imagenProcesada');
-
-// // Exportar los middleware
-// export { uploadImagenReferencia, uploadImagenProcesada };
