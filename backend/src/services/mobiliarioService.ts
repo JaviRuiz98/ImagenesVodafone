@@ -99,8 +99,8 @@ export const mobiliarioService = {
                         if (atributo.elemento?.id) {
                             await prisma.pertenencia_elementos_atributos.create({
                                 data: {
-                                    id_atributos_expositores: newAtributo.id,
-                                    id_elementos: atributo.elemento?.id,
+                                    id_atributo_expositor: newAtributo.id,
+                                    id_elemento: atributo.elemento?.id,
                                 }
                             })
                         }   
@@ -144,15 +144,15 @@ export const mobiliarioService = {
                             //comprobar que no existe ya una pertenencia con ese id_atributos_expositores y id_elementos
                             const pertenencia = await prisma.pertenencia_elementos_atributos.findFirst({
                                 where: {
-                                    id_atributos_expositores: atributo.id,
-                                    id_elementos: atributo.elemento?.id,
+                                    id_atributo_expositor: atributo.id,
+                                    id_elemento: atributo.elemento?.id,
                                 }
                             });
                             if (!pertenencia) {
                                 await prisma.pertenencia_elementos_atributos.create({
                                     data: {
-                                        id_atributos_expositores: atributo.id,
-                                        id_elementos: atributo.elemento?.id,
+                                        id_atributo_expositor: atributo.id,
+                                        id_elemento: atributo.elemento?.id,
                                     }
                                 });
                             }
@@ -351,8 +351,8 @@ export const expositorService = {
                 if (atributo.id && atributo.elemento?.id) { 
                     await db.pertenencia_elementos_atributos.create({
                         data: {
-                            id_atributos_expositores: atributo.id,
-                            id_elementos: atributo.elemento.id
+                            id_atributo_expositor: atributo.id,
+                            id_elemento: atributo.elemento.id
                         }
                     })
                 }
