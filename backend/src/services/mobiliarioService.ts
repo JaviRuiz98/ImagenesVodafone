@@ -261,7 +261,6 @@ export const mobiliarioService = {
                 },
             });
 
-
             return muebles;
         } catch (error) {
             throw error;
