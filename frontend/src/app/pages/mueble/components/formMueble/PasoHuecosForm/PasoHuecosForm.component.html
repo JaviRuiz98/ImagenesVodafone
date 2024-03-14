@@ -1,41 +1,27 @@
-<!-- 
-Pos actual: ({{ this.currentX }} , {{ this.currentY }})
-<br />
 
-Click transformado: {{ this.clickTransformado | json }}  
-<br />
-esquinas: {{ this.corners | json }}
-<br />
-Pos inicio: ({{ this.startX}}. {{ this.startY}})
-<br />
-Centro: {{ this.centro | json }} 
-<br />
-angulo: {{ this.angulo }}
-<br />
-rotar: {{ this.Rotacion }}
-<br />
-redimensionar: {{ this.redimensionado }} -->
 
-<div style="display: flex; flex-direction: row; margin-top: 50px;" >
-    <div  style="width:50% ; text-align: center">
+<div class="flex"  >
+    <div  class="flex-1" >
       <!-- <canvas id="canvas" width="800" height="600" (mousedown)="onMouseDown($event)" (mouseup)="onMouseUp($event)"></canvas> -->
-
-      <canvas id="canvas" width="600" height="500"></canvas>
-      <br />
-       <p-button (click)="anadirRectangulo()" [link]="true" label="Añadir elemento" [icon]="'pi pi-plus'"></p-button>
- 
-      <br />
-
-      <p-button label="Empezar de nuevo" [link]="true" [icon]="'pi pi-times-circle'" (onClick)="clearRectangles()" ></p-button>
-      <br />
-
-      <p-button label="Deshacer" [link]="true" [icon]="'pi pi-replay'" (onClick)="undoLastAction()"></p-button>
-      <br />
-      <img id="target-image" hidden />
+      <div style="display: flex; justify-content: center;" class ="mt-2">
+        <canvas id="canvas" width="500%"  height="500%"></canvas>
+      </div>
+      <div style="display: flex; justify-content: center">
+        <p-button (click)="anadirRectangulo()" [link]="true" label="Añadir elemento" [icon]="'pi pi-plus'"></p-button>
+      </div>
+      <div style="display: flex; justify-content: center">
+        <p-button label="Empezar de nuevo" [link]="true" [icon]="'pi pi-times-circle'" (onClick)="clearRectangles()" ></p-button>
+      </div>
+      <div style="display: flex; justify-content: center">
+        <p-button label="Deshacer" [link]="true" [icon]="'pi pi-replay'" (onClick)="undoLastAction()"></p-button>
+      </div>
+        <div>
+        <img id="target-image" hidden />
+      </div>
         
       
     </div>   
-    <div  style="width:50%; text-align: center">
+    <div  class="flex-1 ml-2 mt-2" >
       <p-table 
         [value]="atributos_expositor"  
         [scrollable]="true"

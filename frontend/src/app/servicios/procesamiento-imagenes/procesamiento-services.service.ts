@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpParams } from '@angular/common/http';
-import { Observable } from "rxjs";
+import { Observable, catchError, map, of } from "rxjs";
 
 import { procesados_imagenes } from '../../interfaces/procesados_imagenes';
 
@@ -37,4 +37,19 @@ export class ProcesamientoService {
     };
     return this.http.post<any>(`${this.API_URI}/feedbackProcesado`,body);
   }
+
+  checkImage(url: string): Observable<boolean> {
+    return this.http.get(url, { responseType: 'text', observe: 'response' })
+      .pipe(
+        map(response => {
+          // Si el servidor devuelve una respuesta, asumimos que la imagen existe
+          return true;
+        }),
+        catchError(error => {
+          // Si hay un error (ej., 404 Not Found), asumimos que la imagen no existe
+          return of(false);
+        })
+      );
+  }
+  
 }

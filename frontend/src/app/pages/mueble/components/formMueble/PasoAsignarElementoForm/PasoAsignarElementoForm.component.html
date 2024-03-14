@@ -1,31 +1,55 @@
 <p-toast key='edit'></p-toast>
 
-<div class="flex align-items-center justify-content-center mt-4" *ngIf="this.huecos && this.huecos.length > 0; else sinModelo">
-  <div style="position: relative;" class=" flex-1">
-    <canvas id="funciona_please" width="600" height="500" style="position: absolute; z-index: 1;"></canvas>
+<div class="flex" *ngIf="this.huecos && this.huecos.length > 0; else sinModelo">
+  <div  class=" flex-1 mt-2">
+    <div style="display: flex; justify-content: center" >
+      <div class="position: relative">
+        <canvas id="funciona_please" width="500%"  height="500%"></canvas>
+        <ng-container *ngFor="let attr of huecos ?? []; let i = index">
+  
+          <div *ngIf="attr.value.elemento && attr.value.elemento.id" 
+            [style.position]="'absolute'" 
+            [style.left.px]="attr.value.x_start"
+            [style.top.px]="attr.value.y_start" 
+            [style.width.px]="attr.value.ancho" 
+            [style.height.px]="attr.value.alto" 
+            [style.transform]="attr.value.angulo ? 'rotate(' + attr.value.angulo + 'deg)' : ''"
+            [style.transform-origin]="attr.value.angulo? '0% 0%' : ''"
+            (mouseenter)="op.toggle($event)" (mouseleave)="op.toggle($event)"
+    
+            style="border: 1px solid transparent; z-index: 2;">
+    
+              <p-overlayPanel #op >
+                <ng-template pTemplate>
+                  <div style="display: flex;">
+                      <div *ngIf="attr.value.elemento?.imagen">
+                      <img [src]=" getImageSrc(attr.value.elemento?.imagen)"  style="width: 64px; height: 64px; object-fit: cover;" class="imagenRepresentativaMueble">
+                    </div>                                          
+                  </div>
+                  <h3>{{ attr.value.elemento?.nombre }}</h3>
+                </ng-template>
+              </p-overlayPanel>
+              
+              <!-- Contenedor para los botones de esquina -->
+              <div class="corner-buttons" style="position: absolute; right: -24px; top: -24px; width: 48px; height: 48px;">
+                <!-- Botón de esquina superior derecha -->
+                <p-button type="button" severity="danger" [rounded]="true" icon="pi pi-times" 
+                    [size]="'small'"
+                    (click)="eliminarImagen(i)" 
+                    class="deleteButton corner-button corner-top-right"></p-button>
+                <!-- Aquí puedes agregar más botones para otras esquinas siguiendo el mismo patrón -->
+              </div>
+            </div>
+        </ng-container> 
 
-    <ng-container *ngFor="let attr of huecos ?? []; let i = index">
-
-      <div *ngIf="attr.value.elemento" 
-        [style.position]="'absolute'" 
-        [style.left.px]="getRotatedCoordinateX( i)"
-        [style.top.px]="getRotatedCoordinateY( i)" 
-        [style.width.px]="attr.value.ancho" 
-        [style.height.px]="attr.value.alto" 
-        [style.transform]="attr.value.angulo ? 'rotate(' + attr.value.angulo + 'deg)' : ''"
-
-        style="border: 1px solid transparent; z-index: 2;">
-        <!-- Contenedor para los botones de esquina -->
-        <div class="corner-buttons">
-          <!-- Botón de esquina superior izquierda -->
-          <p-button type="button" severity="danger" [rounded]="true" icon="pi pi-times" (click)="eliminarImagen(i)" class="deleteButton corner-button corner-top-right"></p-button>
-          <!-- Aquí puedes agregar más botones para otras esquinas siguiendo el mismo patrón -->
-        </div>
       </div>
-    </ng-container> 
+
+     
+    </div>
+   
 
   </div>
-  <div class="flex m-2">
+  <div class="flex-1 mt-2 ml-2">
     <app-arrastrarElemento [mode]="'arrastrar'" (onDragStart)="onDragStart($event)" (onDragEnd)="onDragEnd($event)"></app-arrastrarElemento>
   </div>
 </div>

@@ -9,6 +9,8 @@ import { elementos } from 'src/app/interfaces/elementos';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { UrlService } from 'src/app/servicios/url/url.service';
 import { MessageService } from 'primeng/api';
+import { HttpRequest } from '@angular/common/http';
+import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
 
 
 @Component({
@@ -19,7 +21,7 @@ import { MessageService } from 'primeng/api';
 export class PasoAsignarElementoFormComponent implements AfterViewInit {
 
 
-  constructor( private fb: FormBuilder, private urlService: UrlService, public dialogConfig : DynamicDialogConfig, private cdr: ChangeDetectorRef, public messageService : MessageService) { }
+  constructor(private imagenService: ProcesamientoService, private fb: FormBuilder, private urlService: UrlService, public dialogConfig : DynamicDialogConfig, private cdr: ChangeDetectorRef, public messageService : MessageService) { }
 
   canvas: fabric.Canvas;
   
@@ -194,10 +196,12 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
   
     // Ajustar la longitud de las líneas para hacerlas más pequeñas
     const lineLength = Math.min(w, h) * 0.2; // Longitud de las líneas, ajustada al 20% del ancho o la altura del rectángulo
-  
+    
+    
     // Crear una línea horizontal
     const lineHorizontal = new fabric.Line([x + (w / 2) - (lineLength / 2), y + (h / 2), x + (w / 2) + (lineLength / 2), y + (h / 2)], {
       stroke: lineStrokeColor,
+      
     });
   
     // Crear una línea vertical
@@ -205,12 +209,12 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
       stroke: lineStrokeColor,
     });
   
-    const group = new fabric.Group([rect, lineHorizontal, lineVertical], {
-      left: x,
-      top: y,
-      angle: angulo,
+    const group = new fabric.Group([rect, lineHorizontal, lineVertical], {     
+      left: x, 
+      top: y, 
       selectable: false,
       evented: false,
+      angle: angulo,
     });
   
     return group;
@@ -227,21 +231,14 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
 
           //busco imagen
           const elemento = atributoExpositor.get('elemento')?.value;
-          if (elemento){
-            const imagen: string =  this.urlService.url_imagenes_referencia + elemento?.imagenes?.url;  
+          if (elemento && elemento?.id) {
+            const imagen: string =  elemento?.imagen;  
+   
+
             //si tiene imagen, la dibujo
-            if (imagen) {
-              this.checkImage(imagen).then(exists => {
-                if (exists) {
-                  this.addImageOnGroup(index, imagen);
-                  
-                } else {
-                  console.log('La imagen no existe');
-                }
-              }).catch(error => {
-                console.log('Error al verificar la imagen:', error);
-              });
-              
+            if (imagen && imagen != "") {
+              this.addImageOnGroup(index, imagen);
+
             }
            
           }
@@ -254,15 +251,23 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     }
   }
 
-  eliminarImagen( index_hueco:number) {
-    this.huecos.at(index_hueco).patchValue({
-      elemento: undefined
-    });
-    this.deleteImageFromCanvas(this.groupRefs[index_hueco]);
-    this.canvas.renderAll();
-
+  eliminarImagen(index_hueco: number) {
+    const atributo = this.huecos.at(index_hueco) as FormGroup;
     
-  } 
+    // Reemplaza 'elemento' con un nuevo grupo vacío
+    //const nuevoGrupoElemento = this.fb.group({});
+    atributo.removeControl('elemento');
+  
+    // Ahora procede a eliminar la imagen del canvas
+    this.deleteImageFromCanvas(this.groupRefs[index_hueco]);
+  
+    // Opcional: Log para verificar el estado actual del formulario
+    console.log(this.expositorFormulario.value);
+  
+    // Vuelve a renderizar el canvas
+    this.canvas.renderAll();
+  }
+  
   deleteImageFromCanvas(grupo: fabric.Group) {
     const objetosParaEliminar = [];
     grupo.getObjects().forEach((obj) => {
@@ -277,52 +282,15 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
 
   }
 
-  checkImage(url: string): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      var request = new XMLHttpRequest();
-      request.open("GET", url, true);
-      request.onload = function() {
-        if (request.status == 200) {
-          resolve(true);
-        } else {
-          reject(false);
-        }
-      };
-      request.onerror = function() {
-        reject(false);
-      }
-      request.send();
-    });
-  }
   
 
-  getRotatedCoordinateX(index_hueco: number): number {
-    
-    const grupo = this.groupRefs[index_hueco];
-    if (!grupo) {
-        return 0;
-    }
-    return grupo.left;
-  }
-
-
-  
-  getRotatedCoordinateY( index_hueco: number): number {
-  
-    const grupo = this.groupRefs[index_hueco];
-    if (!grupo) {
-      return 0; 
-    }
-  
-    return grupo.top;
-
-  }
-  
   addImageOnGroup(index_hueco	: number, imagen: string) {
 
-    const imagenUrl = this.urlService.url_imagenes_referencia + imagen;
+    let imagenUrl : string = imagen
+    !imagen.startsWith(this.urlService.url_imagenes_referencia) ?  imagenUrl = this.urlService.url_imagenes_referencia + imagen: imagenUrl = imagen;
     const grupo = this.groupRefs[index_hueco];
 
+    this.deleteImageFromCanvas(grupo);
     fabric.Image.fromURL(imagenUrl, (img) => {
 
       const scaleRatio = Math.min(
@@ -367,7 +335,6 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
       this.canvas.renderAll();
     });
   }
-  
     
   updateGroupProperties(groupIndex: number,  fillColor: string, strokeColor: string, lineStrokeColor: string): void {
     const group = this.groupRefs[groupIndex];
@@ -407,21 +374,6 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     });
   }
 
-  // effectSelectable(event: DragEvent) {
-  //   event.preventDefault();
-  //   if (!this.canvas) return;
-  //   const pointer = this.canvas.getPointer(event);
-   
-  //   this.huecos?.controls.forEach((atributoExpositor, index) => {
-  //     const group = this.groupRefs[this.huecos.controls.indexOf(atributoExpositor)];
-  //     if (this.puntoDentroDelHueco(pointer, group)) {
-        
-  //       this.updateGroupProperties(index, 'gray', 'red', 'red');
-  //     } else {
-  //       this.updateGroupProperties(index, 'white', 'black', 'black');
-  //     }
-  //   });
-  // }
 
   effectSelectable(event: DragEvent) {
     event.preventDefault();
@@ -449,21 +401,6 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     const pointer = this.canvas.getPointer(event);
     if (!this.dragged_elemento) return;
 
-    // const indiceSoltado = this.huecos.controls.findIndex((atributoExpositor) => {
-    //    const group = this.groupRefs[this.huecos.controls.indexOf(atributoExpositor)];
-    //     return this.puntoDentroDelHueco( pointer, group);
-    // });
-
-    // if (indiceSoltado !== -1) {
-    //   const categoria_hueco = this.huecos.controls.at(indiceSoltado).get('categorias_elementos').value;
-    //   if (categoria_hueco && this.dragged_elemento.categorias_elementos.id !== categoria_hueco.id) {
-    //     this.messageService.add({ key: 'edit', severity: 'warn', summary: 'Error', detail: 'La categoría permitida para esta posición es "' + categoria_hueco.nombre.toLowerCase()  + '"'});
-    //     this.updateGroupProperties(indiceSoltado, 'white', 'black', 'black');
-    //     return;
-    //   }
-
-    //   const image_url:string = this.dragged_elemento.imagenes.url;
-    //   const atributo = this.huecos.controls.at(indiceSoltado) as FormGroup;
     
     const indiceSoltado = this.huecos?.findIndex((atributoExpositor, index) => {
       const group = this.groupRefs[index]; 
@@ -480,16 +417,26 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     
       const image_url: string = this.dragged_elemento.imagenes.url;
       const atributo = this.huecos[indiceSoltado];
-      
-      // Continúa con la lógica que sigue, como la actualización del atributo con 'patchValue' o cualquier otra operación      
-      atributo.patchValue({
-        elemento: {
-          id: this.dragged_elemento.id,
-          imagenes: {
-            url: image_url
+
+      if (!atributo.get('elemento')) {
+        atributo.setControl('elemento', this.fb.group({
+          id: [this.dragged_elemento.id],
+          imagen: [image_url],
+          categorias_elementos: [this.dragged_elemento.categorias_elementos],
+          nombre: [this.dragged_elemento.nombre]
+
+        }));
+      }else{
+        atributo.patchValue({
+          elemento: {
+            id: this.dragged_elemento.id,
+            imagen: image_url,
+            
           }
-        }
-      });
+        });
+      }
+      
+     
       console.log (atributo.value);
       console.log (this.expositorFormulario.value);
       const group: fabric.Group = this.groupRefs[indiceSoltado];
@@ -505,6 +452,14 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     if (!this.canvas) return false; 
     return group.containsPoint(pointer);
   }
+
+  getImageSrc(imagen: string) {
+    let imagenUrl : string = imagen
+    !imagen.startsWith(this.urlService.url_imagenes_referencia) ?  imagenUrl = this.urlService.url_imagenes_referencia + imagen: imagenUrl = imagen;
+    return imagenUrl;
+
+  }
+    
 
  ngAfterViewInit(): void {
   if (this.huecos && this.huecos.length > 0) {
