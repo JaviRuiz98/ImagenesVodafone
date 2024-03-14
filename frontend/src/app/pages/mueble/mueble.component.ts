@@ -23,20 +23,22 @@ export class MuebleComponent implements OnInit {
   constructor( private urlService: UrlService, private muebleService: MueblesService, public dialogService: DialogService, public messageService: MessageService, private config: PrimeNGConfig) { }
   
   muebles: muebles[] = [];
+
+  mostrarDialogoEditarElementosMueble: boolean[] = [];
+
  
   url_imagenes_referencias: string = this.urlService.url_imagenes_referencia;
 
 
   nombreFiltro: string = '';
 
+  
+
   muebleFormVisibility: boolean = false;
   //dynamic dialog
   ref: DynamicDialogRef | undefined;
   private dataSubject  = new Subject<expositores>();
-  emitData(data: expositores) {
-    this.dataSubject.next(data);
-  }
-
+ 
   
 
   ngOnInit() {
@@ -117,22 +119,7 @@ export class MuebleComponent implements OnInit {
     });
   }
 
-  showEditarExpositor(expositor:expositores) {
 
-    this.ref = this.dialogService.open(EditarExpositorComponent, {
-      width: '70%',
-      contentStyle: { overflow: 'auto' },
-      baseZIndex: 10000,
-      maximizable: true,
-      data: {
-        expositor: expositor
-      }
-    })
-    this.ref.onMaximize.subscribe((value) => {
-      this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
-    });
-  }
-  
   getImagenModelo(expositor: expositores): string | undefined {
     const atributoModelo: atributos_expositores | undefined = expositor.atributos_expositores.find((atributo) => atributo.categorias_elementos.id === 3);
     

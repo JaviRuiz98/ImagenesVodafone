@@ -11,12 +11,12 @@ import { Observable } from 'rxjs';
 })
 export class LoginService {
   
-  API_URI_LOGIN = 'http://localhost:3000/';
+  API_URI_LOGIN = 'http://localhost:3000/usuarios';
 
   constructor(private http: HttpClient) { }
 
   verificarUsuario(credenciales: credenciales): Observable<string>{
-    return this.http.post<string>(this.API_URI_LOGIN+'usuarios', credenciales);
+    return this.http.post<string>(this.API_URI_LOGIN, credenciales);
   }
 
   crearUsuario(parametros: nuevoUsuario): Observable<string>{

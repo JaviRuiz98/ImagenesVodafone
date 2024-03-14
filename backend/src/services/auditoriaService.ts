@@ -60,11 +60,12 @@ export const auditoriaService = {
         }
     },
 
-    async createPertenenciaElementosAuditoria(id_auditoria: number, mueble: muebles, elemento: elementos) {
+    async createPertenenciaElementosAuditoria(id_auditoria: number, mueble: muebles, id_expositor: number, elemento: elementos) {
         await db.pertenencia_elementos_auditoria.create({
             data: {
                 id_auditoria: id_auditoria,
                 id_mueble: mueble.id,
+                id_expositor: id_expositor,
                 id_elemento: elemento.id
             }
         });

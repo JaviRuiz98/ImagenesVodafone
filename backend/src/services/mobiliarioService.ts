@@ -6,28 +6,16 @@ import { muebleCreation } from "../interfaces/mueblesCreados";
 // import {expositoresConProcesados} from "../interfaces/expositoresProcesados"
 
 export const mobiliarioService = {
-    async getHuecosDisponibles (id_mueble: number)  {
+    async getHuecosDisponibles (id_expositor: number)  {
         try {
-           return await db.muebles.count(
-                { 
-                    where: { 
-                        id: id_mueble,
-                        expositores: {
-                            some: {
-                                atributos_expositores: {
-                                    some: {
-                                        pertenencia_elementos_atributos: {
-                                            some: {
-                                                elementos: {
-                                                    id_categoria: 3,
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }, 
+           return await db.atributos_expositores.count(
+                {
+                where: { 
+                    id_expositor: id_expositor,
+                    id_categoria: 2
+                }
+                            
+                        
                    
                 });
         } catch (error) {
@@ -36,6 +24,7 @@ export const mobiliarioService = {
             await db.$disconnect();
         }
     },
+    
     getFilteredMuebles: async (
         id?: number,
         _orden_clause:
@@ -100,7 +89,7 @@ export const mobiliarioService = {
                             await prisma.pertenencia_elementos_atributos.create({
                                 data: {
                                     id_atributo_expositor: newAtributo.id,
-                                    id_elemento: atributo.elemento?.id  
+                                    id_elemento: atributo.elemento?.id,
                                 }
                             })
                         }   
@@ -260,7 +249,6 @@ export const mobiliarioService = {
                     },
                 },
             });
-
 
             return muebles;
         } catch (error) {

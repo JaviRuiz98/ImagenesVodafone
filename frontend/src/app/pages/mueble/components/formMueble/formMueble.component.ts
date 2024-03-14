@@ -19,6 +19,8 @@ import { muebleCreation } from '../../interfaces/muebleCreacion';
 export class FormMuebleComponent implements OnInit {
 
   formulario: FormGroup;
+
+  editar_Expositor_Elementos_Index?: number = null;
   
   constructor( 
     private urlService: UrlService,
@@ -257,8 +259,12 @@ export class FormMuebleComponent implements OnInit {
 
       
       this.step_count = this.expositores.length+1;
-      console.log(this.mueble.value);
-  
+      const index_expositor_a_editar = this.dialogConfig.data.showing_asignar_expositores_index;
+
+      if (index_expositor_a_editar!= undefined ) {
+        this.index_expositor_actual = index_expositor_a_editar;
+      }
+
     }else{
       console.log ("nuevo");
       this.objetivo_form='crear';

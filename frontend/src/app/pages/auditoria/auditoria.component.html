@@ -29,7 +29,7 @@
               [procesados]="elemento.procesados_imagenes" 
               [cargando_procesamiento]="cargas_procesamiento[elemento.id]"
               [valueSelected]="modos_visualizacion[elemento.id] === 'historial'? 'historial':'new'"
-              (archivoSeleccionadoChange)="procesarImagen($event, elemento.id, mueble.id)">
+              (archivoSeleccionadoChange)="procesarImagen($event, elemento.id, elemento.id_expositor)">
             </app-paginador-procesamiento-subida>            
           </div>
         </div>
