@@ -20,6 +20,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { SelectorImagenesComponent } from 'src/app/componentes/selector-imagenes/selector-imagenes.component';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { StepsModule } from 'primeng/steps';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 import { FormMuebleComponent } from './components/formMueble/formMueble.component';
 import { AsignarHuecosComponent } from './components/asignarHuecos/asignarHuecos.component';
@@ -44,6 +45,7 @@ import { PasoAsignarElementoFormComponent } from './components/formMueble/PasoAs
 import { ArrastrarElementoComponent } from './components/arrastrarElemento/arrastrarElemento.component';
 import { EditarExpositorComponent } from './components/editarExpositor/editarExpositor.component';
 import { NuevoElementoComponent } from 'src/app/componentes/nuevo-elemento/nuevo-elemento.component';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -64,6 +66,8 @@ import { NuevoElementoComponent } from 'src/app/componentes/nuevo-elemento/nuevo
     ScrollPanelModule,
     DividerModule,
     StepsModule,
+    OverlayPanelModule,
+    
 
     ReactiveFormsModule,
     FormsModule,

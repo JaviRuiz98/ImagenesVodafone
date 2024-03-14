@@ -16,6 +16,7 @@ const app = express();
 app.use(bodyParser.json({ limit: '10mb' }));
 
 app.use(express.json());
+
 app.use(cors());
 
 app.use('/', tiendaRoutes);
