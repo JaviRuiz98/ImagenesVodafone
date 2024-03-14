@@ -54,10 +54,16 @@ body.scrolled .scrolling-bar::before {
 }
 .botonesVolverCerrarSesion {
   display: grid;
-  grid-template-columns: 10% 90%;
+  grid-template-columns: 50% 50%;
   background: white;
   background-color: white;
   margin: 0.2%;
   margin-bottom: 0;
   height: 40px;
+}
+.usuarioBotonCerrarSesion {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  background: white;
 }

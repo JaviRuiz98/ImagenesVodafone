@@ -5,6 +5,8 @@ import { auditorias } from '@prisma/client';
 import { tiendaService } from '../services/tiendasServices';
 import { muebleConElementos} from '../interfaces/muebleConElementos';
 import { per_ele_aud_extended } from '../interfaces/perEleAudExtended';
+import { mobiliarioService } from "../services/mobiliarioService";
+
 
 export async function getAuditorias(req: Request, res: Response) {
     try {
@@ -158,7 +160,30 @@ export async function getNumberArrayProgresoAuditoria(id_auditoria: number): Pro
 export async function createAuditoria(req: Request, res: Response) {
     try {
         const id_tienda = parseInt(req.body.id_tienda as string);
+        const promises = [];
+
+        // Actualizo la información de la auditoría anterior en caso de que esté caducada
+        const last_auditoria: auditorias | null = await auditoriaService.getLastAuditoriaByTienda(id_tienda);
+        if(last_auditoria?.id_estado == 1) {
+            promises.push( auditoriaService.marcarAuditoriaComoCaducada(last_auditoria.id) );
+        }
+
         const createdAuditoria: auditorias = await auditoriaService.createAuditoria(id_tienda);
+
+        // Almaceno todos los expositores que posee la auditoria en la tabla de auditoria_expositores
+        const muebles: any[] = await mobiliarioService.getMueblesAndElementosByIdTienda(id_tienda);
+
+        for (const mueble of muebles) {
+            for(const expositor of mueble.expositores) {
+                for (const atributos_expositores of expositor.atributos_expositores) {
+                    for (const elemento of atributos_expositores.pertenencia_elementos_atributos) {
+                        promises.push(auditoriaService.createPertenenciaElementosAuditoria(createdAuditoria.id, mueble, elemento));
+                    }
+                }
+            } 
+        }
+        await Promise.all(promises);
+
         res.status(201).json(createdAuditoria);
         console.log('Auditoria creada');
     } catch (error) {

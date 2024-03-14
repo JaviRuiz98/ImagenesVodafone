@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { credenciales } from '../../interfaces/login';
 import { LoginService } from 'src/app/servicios/login/login.service';
 import { MessageService } from 'primeng/api';

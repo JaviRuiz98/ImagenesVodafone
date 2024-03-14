@@ -13,9 +13,9 @@ import { PickListModule } from 'primeng/picklist';
 import { TableModule } from 'primeng/table';
 import { OrderListModule } from 'primeng/orderlist';
 import { ToggleButtonModule } from 'primeng/togglebutton';
-import { DialogNuevaTiendaComponent } from './component/dialog-nueva-tienda/dialog-nueva-tienda.component';
+import { DialogNuevaTiendaComponent } from './components/dialog-nueva-tienda/dialog-nueva-tienda.component';
 import { DialogService } from 'primeng/dynamicdialog';
-import { EditarTiendaComponent } from './component/editar-tienda/editar-tienda.component';
+import { EditarTiendaComponent } from './components/editar-tienda/editar-tienda.component';
 import { AgregarMuebleATiendaComponent } from 'src/app/componentes/agregar-mueble-a-tienda/agregar-mueble-a-tienda.component';
 
 @NgModule({

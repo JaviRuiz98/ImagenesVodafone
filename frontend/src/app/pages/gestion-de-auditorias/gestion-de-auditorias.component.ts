@@ -26,7 +26,6 @@ export class GestionDeAuditoriasComponent implements OnInit {
   tiendas: tienda[] = [];
   tiendaSeleccionada: tienda | undefined;
   auditorias: auditoria[] = [];
-
   cargando_auditorias: boolean = false;
 
   constructor(
@@ -70,12 +69,27 @@ export class GestionDeAuditoriasComponent implements OnInit {
     this.auditoriaService.getAuditorias(this.tiendaSeleccionada!=undefined? this.tiendaSeleccionada.id : 0).subscribe((data)=>{
       this.auditorias = data;
       this.cargando_auditorias = false;
+
     })
   }
 
+  goToAuditoriaOInforme(auditoria: auditoria){
+    if(auditoria.estados_auditoria.estado !== 'en progreso'){
+      this.goToTemplateInformeAuditoria(auditoria.id);
+    }else{
+      this.goToAuditoria(auditoria);
+    }
+  }
   goToAuditoria(auditoria: auditoria){
     this.localStorageService.setItem('auditoria_seleccionada', auditoria);
     this.router.navigate(['/auditoria']);
+  }
+  goToTemplateInformeAuditoria(id_auditoria: number){
+    this.informeService.getUrlIdAuditoriaCifrada(id_auditoria).subscribe(
+    (data)=>{
+      console.log('respuesta url encriptada', data);
+      this.router.navigate(['/templateInforme/'+ data]);
+    })
   }
 
   getSeverityEstadoAuditoria(estado: string): string {
@@ -104,6 +118,24 @@ export class GestionDeAuditoriasComponent implements OnInit {
       }
     });
   }
+
+  contenidoBotonAuditoriaInforme(estado: string) {
+    switch (estado) {
+      case 'en progreso':
+        return 'Ir Auditoría';
+      default:
+        return 'Ver Informe';
+    }
+  }
+  contenidoIconoAuditoriaInforme(estado: string) {
+    switch (estado) {
+      case 'en progreso':
+        return 'pi pi-pencil';
+      default:
+        return 'pi pi-file';
+    }
+  }
+
   enviarInforme(id_auditoria: number) {
 
     console.log(id_auditoria);
@@ -149,12 +181,6 @@ export class GestionDeAuditoriasComponent implements OnInit {
       });
   }
 
-  navegarTemplateInformeAuditoria(id_auditoria: number){
-    this.informeService.getUrlIdAuditoriaCifrada(id_auditoria).subscribe(
-    (data)=>{
-      console.log('respuesta url encriptada', data);
-      this.router.navigate(['/templateInforme/'+ data]);
-    })
-  }
+
 
 }

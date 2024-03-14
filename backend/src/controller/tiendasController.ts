@@ -51,7 +51,7 @@ export async function asignarPertenenciaMuebleTienda(req: Request, res: Response
 
 export async function desactivarMueblesTienda(id_tienda: number) {
     try{     
-       await tiendaService.deleteMueblesTienda(id_tienda);
+       await tiendaService.desactivarMueblesTienda(id_tienda);
     }catch (error) {
         console.error('Error al crear tienda:', error);
     }

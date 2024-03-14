@@ -7,12 +7,13 @@ import { DialogModule } from 'primeng/dialog';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { AgregarMuebleATiendaComponent } from 'src/app/componentes/agregar-mueble-a-tienda/agregar-mueble-a-tienda.component';
 
 
 
 @NgModule({
   declarations: [
-    PlanoTiendaComponent
+    PlanoTiendaComponent,
   ],
   imports: [
     CommonModule,
@@ -20,7 +21,8 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     ToolbarModule,
     DialogModule,
     ToastModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    AgregarMuebleATiendaComponent
   ],
   providers: [
     MessageService
