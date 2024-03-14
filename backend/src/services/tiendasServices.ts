@@ -100,9 +100,10 @@ export const tiendaService = {
             for (let i = 0; i < listaIdMuebles.length; i++) {
                 const insertarMuebles = await db.pertenencia_mueble_tienda.create({
                     data: {
-                        id_mueble: listaIdMuebles[i],
                         id_tienda: id_tienda,
-                    },
+                        id_mueble: listaIdMuebles[i],
+                        activo: true
+                    }
                 });
                 resultados.push(insertarMuebles);
             }

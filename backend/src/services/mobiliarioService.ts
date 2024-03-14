@@ -95,15 +95,12 @@ export const mobiliarioService = {
                                 angulo: atributo.angulo,
                             },
                         });
-                        //creo pertenencia atributo
-                        // console.log("atributo", atributo);
-                        // console.log ("pertenencia", atributo.elemento);
-                        // console.log ("pertenencia", atributo.elemento?.id);
+
                         if (atributo.elemento?.id) {
                             await prisma.pertenencia_elementos_atributos.create({
                                 data: {
-                                    id_atributos_expositores: newAtributo.id,
-                                    id_elementos: atributo.elemento?.id,
+                                    id_atributo_expositor: newAtributo.id,
+                                    id_elemento: atributo.elemento?.id,
                                 }
                             })
                         }
@@ -318,8 +315,8 @@ export const expositorService = {
                 if (atributo.id && atributo.elemento?.id) { 
                     await db.pertenencia_elementos_atributos.create({
                         data: {
-                            id_atributos_expositores: atributo.id,
-                            id_elementos: atributo.elemento.id
+                            id_atributo_expositor: atributo.id,
+                            id_elemento: atributo.elemento.id
                         }
                     })
                 }
