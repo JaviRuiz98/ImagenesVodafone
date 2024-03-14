@@ -6,24 +6,22 @@ import { muebleCreation } from "../interfaces/mueblesCreados";
 // import {expositoresConProcesados} from "../interfaces/expositoresProcesados"
 
 export const mobiliarioService = {
-    async getHuecosDisponibles (id_mueble: number)  {
+    async getHuecosDisponibles (id_expositor: number)  {
         try {
-           return await db.muebles.count(
-                { 
-                    where: { 
-                        id: id_mueble,
-                        expositores: {
-                            some: {
-                                atributos_expositores:{
-                                    some: {
-                                        categorias_elementos: {
-                                            id: 2
-                                        }
-                                    }
-                                }
+           return await db.expositores.count(
+                {
+                where: { 
+                    id: id_expositor,
+                    atributos_expositores:{
+                        some: {
+                            categorias_elementos: {
+                                id: 2
                             }
                         }
-                    }, 
+                    }
+                }
+                            
+                        
                    
                 });
         } catch (error) {

@@ -25,7 +25,7 @@ export async function procesarImagenes(req: Request, res: Response) {
     const file = req.file; //as { [fieldname: string]: Express.Multer.File[] };
     const id_elemento: number = parseInt(req.body.id_elemento); //ojo refactor
     const id_auditoria: number = parseInt(req.body.id_auditoria);
-    const id_mueble: number = parseInt(req.body.id_mueble);
+    const id_expositor: number = parseInt(req.body.id_expositor);
 
     console.log('id_auditoria: ',id_auditoria);
     console.log('id_elemento: ',id_elemento);
@@ -62,7 +62,7 @@ export async function procesarImagenes(req: Request, res: Response) {
     //la imagen de referencia  es necesaria para el procesado
     const [imagenReferencia, huecosEsperados] = await Promise.all([
       elementosService.getImage(existingElemento.id_imagen!),
-      mobiliarioService.getHuecosDisponibles(id_mueble)
+      mobiliarioService.getHuecosDisponibles(id_expositor)
     ]);
     
     
