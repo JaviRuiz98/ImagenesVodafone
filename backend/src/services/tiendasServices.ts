@@ -95,7 +95,6 @@ export const tiendaService = {
   },
 
   async asignarPertenenciaMuebleTienda(id_tienda: number, listaIdMuebles: number[]): Promise<any[]> {
-
         try {
             const resultados = [];
             for (let i = 0; i < listaIdMuebles.length; i++) {

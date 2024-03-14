@@ -46,7 +46,6 @@ export async function asignarPertenenciaMuebleTienda(req: Request, res: Response
         const listaIdMuebles: number[] = listaMuebles.map(mueble => mueble.id_mueble);
         const muebles = await tiendaService.asignarPertenenciaMuebleTienda(parseInt(req.params.id_tienda), listaIdMuebles);
         res.status(200).json(muebles);
-
     }catch (error) {
         console.error('Error al crear tienda:', error);
     }
