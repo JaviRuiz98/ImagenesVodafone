@@ -14,14 +14,10 @@ export const mobiliarioService = {
                         id: id_mueble,
                         expositores: {
                             some: {
-                                atributos_expositores: {
+                                atributos_expositores:{
                                     some: {
-                                        pertenencia_elementos_atributos: {
-                                            some: {
-                                                elementos: {
-                                                    id_categoria: 3,
-                                                }
-                                            }
+                                        categorias_elementos: {
+                                            id: 2
                                         }
                                     }
                                 }
@@ -101,8 +97,7 @@ export const mobiliarioService = {
                                 data: {
                                     id_atributo_expositor: newAtributo.id,
                                     id_elemento: atributo.elemento?.id,
-                                    id_atributo_expositor: newAtributo.id,
-                                    id_elemento: atributo.elemento?.id,
+                                 
                                 }
                             })
                         }   
@@ -353,8 +348,6 @@ export const expositorService = {
                 if (atributo.id && atributo.elemento?.id) { 
                     await db.pertenencia_elementos_atributos.create({
                         data: {
-                            id_atributo_expositor: atributo.id,
-                            id_elemento: atributo.elemento.id
                             id_atributo_expositor: atributo.id,
                             id_elemento: atributo.elemento.id
                         }

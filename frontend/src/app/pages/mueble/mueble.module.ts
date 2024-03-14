@@ -36,6 +36,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { DragDropModule } from 'primeng/dragdrop';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { DividerModule } from 'primeng/divider';
+import { DataViewModule } from 'primeng/dataview';
 //import {DragDropModule} from '@angular/cdk/drag-drop'
 
 
@@ -67,6 +68,7 @@ import { NuevoElementoComponent } from 'src/app/componentes/nuevo-elemento/nuevo
     DividerModule,
     StepsModule,
     OverlayPanelModule,
+    DataViewModule,
     
 
     ReactiveFormsModule,
