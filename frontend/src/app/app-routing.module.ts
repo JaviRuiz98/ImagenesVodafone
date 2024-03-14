@@ -61,11 +61,6 @@ const routes: Routes = [
     path: "uniformes", component: UniformesComponent, 
     data: { stateBarra: 'uniformes' },
    },
-
-
-  // { path:"expositores",}
-
-
    {
       path: '', redirectTo: '/login', pathMatch: 'full' 
     }

@@ -41,6 +41,18 @@ export async function getElementos(req: Request, res: Response) {
 }
 
 
+export async function getElementosActivos(__req: Request, res: Response) {
+    try{
+        const elementos = await elementosService.getAllActivos();
+        res.status(200).json(elementos);
+    }catch(error){
+        res.status(500).json({ error: 'Error interno del servidor' });
+        throw error;
+    }
+}
+
+
+
 export async function deleteElemento(req: Request, res: Response) {
     try{
         const id_elemento = req.params.id_elemento ? parseInt(req.params.id_elemento as string) : undefined;

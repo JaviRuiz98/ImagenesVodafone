@@ -8,6 +8,8 @@ import { MessageService } from 'primeng/api';
 import { posiciones_muebles_tienda } from 'src/app/interfaces/posiciones_muebles_tienda';
 import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { OverlayPanel } from 'primeng/overlaypanel';
+import { tienda } from 'src/app/interfaces/tienda';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-plano-tienda',
@@ -23,6 +25,7 @@ export class PlanoTiendaComponent implements OnInit {
   canvas: fabric.Canvas;
   posiciones_muebles: any[] = []; // Arreglo para almacenar los resúmenes de los muebles
   muebles: muebles[] = [];
+  tiendaSelected: tienda = {} as tienda;
 
   lista_todos_muebles: muebles[] = [];
   lista_todos_muebles_ordenados: muebles[] = [];
@@ -33,25 +36,24 @@ export class PlanoTiendaComponent implements OnInit {
   id_tienda: number = 0;
   anchura_barra: number = 0;
 
+  mostrar_cambiar_muebles = false;
+
   constructor(
     private localStorageService: LocalStorageService,
     private mueblesService: MueblesService,
     public urlService: UrlService,
     private messageService: MessageService,
-    private tiendasService: TiendasService
+    private tiendasService: TiendasService,
+    private router: Router
   ) {}
 
   ngOnInit() {
     this.id_tienda = this.localStorageService.getItem('id_tienda');
-    console.log('Id de la tienda:', this.id_tienda);
-
+    this.tiendaSelected = this.localStorageService.getItem('tienda');
     this.obtenerAnchuraBarra();
-
     this.inicializarCanvas();
     this.accionAlAsignarMueble();
-
-    this.getMueblesTienda(this.id_tienda);
-    this.obtenerListaTodosMueblesDisponibles();
+    this.getMueblesTienda();
   }
 
   obtenerAnchuraBarra() {
@@ -116,7 +118,7 @@ export class PlanoTiendaComponent implements OnInit {
       (data) => {
         console.log('Posición del mueble guardada en la base de datos:', data);
 
-        this.getMueblesTienda(this.id_tienda);
+        this.getMueblesTienda();
       }, (error) => {
         console.error('Error al guardar la posición del mueble en la base de datos:', error);
       }
@@ -179,12 +181,10 @@ export class PlanoTiendaComponent implements OnInit {
     });
   }
 
-  getMueblesTienda(id_tienda) {
+  getMueblesTienda() {
     this.mueblesService.getMueblesTiendaByIdTienda(this.id_tienda).subscribe(
       (muebles) => {
         this.muebles = muebles;
-        console.log('Muebles:', this.muebles);
-
         this.cargarMueblesAsignados();
       },
       (error) => {
@@ -300,7 +300,7 @@ export class PlanoTiendaComponent implements OnInit {
 
           this.canvas.remove(objetoAEliminar);
           this.canvas.renderAll();
-          this.getMueblesTienda(this.id_tienda);
+          this.getMueblesTienda();
 
         }, error => console.log(error)
       );
@@ -329,6 +329,8 @@ export class PlanoTiendaComponent implements OnInit {
   }
 
   cambiarMuebles() {
+    this.mostrar_cambiar_muebles = true;
+    this.obtenerListaTodosMueblesDisponibles();
     this.mostrar_dialog_asignar_muebles = true;
   }
 
@@ -349,5 +351,12 @@ export class PlanoTiendaComponent implements OnInit {
     const idsLista2 = new Set(listaMueblesSeleccionados.map(mueble => mueble.id));
     const listaFiltrada = listaCompleta.filter((mueble) => !idsLista2.has(mueble.id));
     return listaFiltrada;
+  }
+
+  editarListaMuebles(){
+    console.log(this.tiendaSelected);
+    this.tiendasService.editarTienda(this.tiendaSelected, this.muebles).subscribe((response) => {
+      window.location.reload(); 
+    })    
   }
 }

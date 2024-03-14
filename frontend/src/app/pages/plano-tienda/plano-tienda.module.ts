@@ -8,6 +8,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { AgregarMuebleATiendaComponent } from 'src/app/componentes/agregar-mueble-a-tienda/agregar-mueble-a-tienda.component';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
 
 
 
@@ -22,7 +23,8 @@ import { AgregarMuebleATiendaComponent } from 'src/app/componentes/agregar-muebl
     DialogModule,
     ToastModule,
     OverlayPanelModule,
-    AgregarMuebleATiendaComponent
+    AgregarMuebleATiendaComponent,
+    ScrollPanelModule
   ],
   providers: [
     MessageService

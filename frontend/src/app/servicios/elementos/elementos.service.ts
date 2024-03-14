@@ -21,7 +21,9 @@ export class ElementosService {
     return this.http.get<elementos[]>(url);
   }
 
-    
+  getElementosActivos(){
+    return this.http.get<elementos[]>(`${this.API_URI}/elementosActivos`);
+  }
 
   guardarElemento(nombre: string,  imageFile: File, categoria: number ): Observable<elementos> {
     const formData = new FormData();

@@ -97,7 +97,6 @@ export const mobiliarioService = {
                                 data: {
                                     id_atributo_expositor: newAtributo.id,
                                     id_elemento: atributo.elemento?.id,
-                                 
                                 }
                             })
                         }   
