@@ -1,7 +1,7 @@
 .paginaCompleta {
     display:flex;
     flex-direction: column;
-    align-items: center;
+    align-items: center; 
 }
 .botonesRutasHome {
     width: 100vw;
@@ -14,4 +14,183 @@
 .paginaCompleta ::ng-deep .p-button{
     background: linear-gradient(to bottom left, #ff0000, #c30808);
     border: none;
+    
 }
+
+#divIcono{
+    background-color:  rgb(255, 255, 255); 
+    border-radius: 50%; 
+    width: 90px; 
+    height: 90px; 
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+    margin-left: 20px;
+    transition: all 0.5s ease-in-out; /* Animación suave */
+}
+
+
+ 
+
+#Auditorias{
+    width: 80%; 
+    height: 200px;
+    margin-left: 10px;
+    background: linear-gradient(to right,  rgb(255, 225, 225),  rgb(205, 3, 3)); 
+    
+    padding: 10px; 
+    border-radius: 10px;
+    margin-bottom: 10px; 
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    text-align: center;
+    line-height: 100px;
+    transition: all 0.5s ease-in-out; /* Animación suave */
+}
+ 
+#Auditorias:hover {
+    background: linear-gradient(to right, rgb(225, 3, 3), rgb(192, 188, 188)); 
+    box-shadow: 10px 25px 20px rgba(0,0,0,0.2); /* Agrega una sombra al hacer hover sobre el div */
+
+    transform: scale(1.01); /* Aumenta ligeramente el tamaño */
+    #divIcono {
+        background-color: rgb(192, 188, 188); 
+    
+    }
+}
+
+
+
+
+#Tienda{
+    width: 80%; 
+    height: 200px;
+    margin-left: 10px;
+    background: linear-gradient(to right,  rgb(255, 225, 225),  rgb(205, 3, 3)); 
+    
+    padding: 10px; 
+    border-radius: 10px;
+    margin-bottom: 10px; 
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    text-align: center;
+    line-height: 100px;
+    transition: all 0.5s ease-in-out; /* Animación suave */
+}
+ 
+#Tienda:hover {
+    background: linear-gradient(to right, rgb(225, 3, 3), rgb(192, 188, 188)); 
+    box-shadow: 10px 25px 20px rgba(0,0,0,0.2); /* Agrega una sombra al hacer hover sobre el div */
+
+    transform: scale(1.01); /* Aumenta ligeramente el tamaño */
+    #divIcono {
+        background-color: rgb(192, 188, 188); 
+    
+    }
+}
+
+ 
+#Muebles{
+    width: 80%; 
+    height: 200px;
+    margin-left: 10px;
+    background: linear-gradient(to right,  rgb(255, 225, 225),  rgb(205, 3, 3)); 
+    
+    padding: 10px; 
+    border-radius: 10px;
+    margin-bottom: 10px; 
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    text-align: center;
+    line-height: 100px;
+    transition: all 0.5s ease-in-out; /* Animación suave */
+}
+ 
+#Muebles:hover {
+    background: linear-gradient(to right, rgb(225, 3, 3), rgb(192, 188, 188)); 
+    box-shadow: 10px 25px 20px rgba(0,0,0,0.2); /* Agrega una sombra al hacer hover sobre el div */
+
+    transform: scale(1.01); /* Aumenta ligeramente el tamaño */
+    #divIcono {
+        background-color: rgb(192, 188, 188); 
+    
+    }
+}
+
+
+
+
+
+
+
+
+#Elementos{
+    width: 80%; 
+    height: 200px;
+    margin-left: 10px;
+    background: linear-gradient(to right,  rgb(255, 225, 225),  rgb(205, 3, 3)); 
+    
+    padding: 10px; 
+    border-radius: 10px;
+    margin-bottom: 10px; 
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    text-align: center;
+    line-height: 100px;
+    transition: all 0.5s ease-in-out; /* Animación suave */
+}
+ 
+#Elementos:hover {
+    background: linear-gradient(to right, rgb(225, 3, 3), rgb(192, 188, 188)); 
+    box-shadow: 10px 25px 20px rgba(0,0,0,0.2); /* Agrega una sombra al hacer hover sobre el div */
+
+    transform: scale(1.01); /* Aumenta ligeramente el tamaño */
+    #divIcono {
+        background-color: rgb(192, 188, 188); 
+    
+    }
+}
+
+
+
+
+
+
+
+#Uniformes{
+    width: 80%; 
+    height: 200px;
+    margin-left: 10px;
+    background: linear-gradient(to right,  rgb(255, 225, 225),  rgb(205, 3, 3)); 
+    
+    padding: 10px; 
+    border-radius: 10px;
+    margin-bottom: 10px; 
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    text-align: center;
+    line-height: 100px;
+    transition: all 0.5s ease-in-out; /* Animación suave */
+}
+ 
+#Uniformes:hover {
+    background: linear-gradient(to right, rgb(225, 3, 3), rgb(192, 188, 188)); 
+    box-shadow: 10px 25px 20px rgba(0,0,0,0.2); /* Agrega una sombra al hacer hover sobre el div */
+
+    transform: scale(1.01); /* Aumenta ligeramente el tamaño */
+    #divIcono {
+        background-color: rgb(192, 188, 188); 
+    
+    }
+}
+
+
+
+
+
+ 

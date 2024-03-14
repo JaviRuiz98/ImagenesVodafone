@@ -1,10 +1,70 @@
-<div class="paginaCompleta">
+<!-- <div class="paginaCompleta">
     <p-button label="Auditorías" severity="danger" (onClick)="goTo('gestionAuditorias')" class="botonesRutasHome" [style]="{'width': '90%', 'height': '80%' }"></p-button>
-    <!-- <p-button label="Admin" severity="danger" (onClick)="goTo('validador')" class="botonesRutasHome" [style]="{'width': '90%', 'height': '80%' }"></p-button> -->
     <p-button label="Tienda" severity="danger" (onClick)="goTo('tiendas')" class="botonesRutasHome" [style]="{'width': '90%', 'height': '80%' }"></p-button>
     <p-button label="Mueble" severity="danger" (onClick)="goTo('muebles')" class="botonesRutasHome" [style]="{'width': '90%', 'height': '80%' }"></p-button>
     <p-button label="Elementos" severity="danger" (onClick)="goTo('elementos')" class="botonesRutasHome" [style]="{'width': '90%', 'height': '80%' }"></p-button>
     <p-button label="Uniformes" severity="danger" (onClick)="goTo('uniformes')" class="botonesRutasHome" [style]="{'width': '90%', 'height': '80%' }"></p-button>
+</div> -->
+
+
+
+<div class="paginaCompleta" >
+    
+    <div id="Auditorias" (click)="goTo('gestionAuditorias')" (mouseover)="highlightDiv()" (mouseout)="unhighlightDiv()">
+        <div id="divIcono">
+            <i class="pi pi-book" style="font-size: 40px; color: black;"></i>
+        </div>
+        <div style=" margin-left: 50px; display: flex; flex-direction: column;">
+            <h2 style="margin: 0;">Auditorias</h2>
+            <p style="margin: 0;"> Realiza tus auditorias y comprueba la actualización de las tiendas.</p>
+        </div>
+    </div>
+
+    <div id="Tienda" (click)="goTo('tiendas')" (mouseover)="highlightDiv()" (mouseout)="unhighlightDiv()">
+        <div id="divIcono">
+            <i class="pi pi-home" style="font-size: 40px; color: black;"></i>
+        </div>
+        <div style=" margin-left: 50px;">
+            <h2 style="margin: 0;">Tienda</h2>
+            <p style="margin: 0;"> Realiza tus auditorias y comprueba la actualización de las tiendas</p>
+        </div>
+    </div>
+
+
+    <div  id="Muebles"  (click)="goTo('muebles')" (mouseover)="highlightDiv()" (mouseout)="unhighlightDiv()">
+        <div id="divIcono">
+            <i class="pi pi-cog" style="font-size: 40px; color: black;"></i>
+        </div>
+        <div style=" margin-left: 50px; ">
+            <h2 style="margin: 0;">Muebles</h2>
+            <p style="margin: 0;"> Crea muebles y distribulle los elementos que lo componen.</p>
+        </div>
+    </div>
+
+    <div  id="Elementos"  (click)="goTo('elementos')" (mouseover)="highlightDiv()" (mouseout)="unhighlightDiv()">
+        
+        <div id="divIcono">
+            <i class="pi pi-box" style="font-size: 40px; color: black;"></i>
+        </div>
+        <div style=" margin-left: 50px;">
+            <h2 style="margin: 0;">Elementos</h2>
+            <p style="margin: 0;"> Realiza tus auditorias y comprueba la actualización de las tiendas</p>
+        </div>
+    </div>
+
+    <div  id="Uniformes"  (click)="goTo('uniformes')" (mouseover)="highlightDiv()" (mouseout)="unhighlightDiv()">
+        
+        <div id="divIcono">
+            <i class="pi pi-tag" style="font-size: 40px; color: black;"></i>
+        </div>
+        <div style=" margin-left: 50px;">
+            <h2 style="margin: 0;">Uniformes</h2>
+            <p style="margin: 0;"> Realiza los pedidos de uniformes para tus trabajadores </p>
+        </div>
+    </div>
+
+
+
+    
+
 </div>
-
-
