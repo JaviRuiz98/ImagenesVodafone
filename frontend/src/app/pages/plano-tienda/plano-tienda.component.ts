@@ -357,7 +357,6 @@ export class PlanoTiendaComponent implements OnInit {
     console.log(this.tiendaSelected);
     this.tiendasService.editarTienda(this.tiendaSelected, this.muebles).subscribe((response) => {
       window.location.reload(); 
-
     })    
   }
 }
