@@ -61,10 +61,10 @@
     display: flex;
     width: 100%;
 } 
-::ng-deep .p-password {
+.ajusteInput ::ng-deep .p-password {
     width: 100%;
 }
-::ng-deep .p-inputtext {
+.ajusteInput ::ng-deep .p-inputtext {
     width: 100%;
 }
 .resetPassword{
@@ -72,6 +72,7 @@
     justify-content: right;
     width: 100%;
 }
+
 .buttonInicioSesion {
     display: flex;
     justify-content: center;
@@ -82,11 +83,7 @@
     display: grid;
     grid-template-columns: 25% 50% 25%;
 }
-.botonVolver{
-    color: #be0303;
-    cursor: pointer;
-    width: 10%;
-}
+
 .paginaCompleta ::ng-deep .p-button.p-button-danger.p-button-text {
     margin: 0;
     padding: 0;

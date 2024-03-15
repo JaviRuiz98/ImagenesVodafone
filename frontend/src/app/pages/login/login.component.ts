@@ -21,21 +21,23 @@ export class LoginComponent {
   constructor(private LoginService: LoginService, private messageService: MessageService, private router: Router, private CookieService: CookieService) {}
 
   iniciarSesion(){
-    this.LoginService.verificarUsuario(this.credenciales).subscribe(usuarioVerificado => {
-      if (usuarioVerificado === 'El usuario no existe.'){ 
-        this.messageService.add({ severity: 'error', summary: 'ERROR!', detail: usuarioVerificado });
-      } else if(usuarioVerificado === 'Contraseña incorrecta!'){
-        this.messageService.add({ severity: 'error', summary: 'ERROR!', detail: usuarioVerificado });
-      } else{ 
-        // const decodedToken = jwt.decode(usuarioVerificado);
-        // console.log(decodedToken);
-        // // const decodedToken = JSON.parse(atob(usuarioVerificado.split('.')[1]));
-        // // console.log(decodedToken);
-        // this.CookieService.setCookie('token', usuarioVerificado, 1);
-        console.log('Usuario verificado:', usuarioVerificado);
-        this.router.navigate(['/home']);
-      }
-    })
+    if(this.credenciales.password !== undefined && this.credenciales.usuario !== undefined){
+      this.LoginService.verificarUsuario(this.credenciales).subscribe(usuarioVerificado => {
+        if (usuarioVerificado === 'El usuario no existe.'){ 
+          this.messageService.add({ severity: 'error', summary: 'ERROR!', detail: usuarioVerificado });
+        } else if(usuarioVerificado === 'Contraseña incorrecta!'){
+          this.messageService.add({ severity: 'error', summary: 'ERROR!', detail: usuarioVerificado });
+        } else{ 
+          // const decodedToken = jwt.decode(usuarioVerificado);
+          // console.log(decodedToken);
+          // // const decodedToken = JSON.parse(atob(usuarioVerificado.split('.')[1]));
+          // // console.log(decodedToken);
+          // this.CookieService.setCookie('token', usuarioVerificado, 1);
+          console.log('Usuario verificado:', usuarioVerificado);
+          this.router.navigate(['/home']);
+        }
+      })
+    }
   }
 
   //ESTAS DOS FUNCIONES POSIBLEMENTE SE ELIMINEN
