@@ -116,6 +116,8 @@ export class TemplateInformeComponent implements OnInit {
   generarDatosChart() {
     for (const dato of this.informeData.datos_barra_progreso) {
       switch (dato) {
+        case 0:
+          break;
         case 1:
           this.chartData[0]++;
           break;

@@ -127,29 +127,27 @@ export async function getNumberArrayProgresoAuditoria(id_auditoria: number): Pro
         if(!expositores_auditoria) {
             return [];
         }
-
-
-          // procedemos con la transformación.
-          const resultados_expositores: number[] = expositores_auditoria.map(pea => {
-            if(pea.procesados_imagenes.length == 0) {
-                return 0;
+        // procedemos con la transformación.
+        const resultados_expositores: number[] = expositores_auditoria.map(pea => {
+        if(pea.procesados_imagenes.length == 0) {
+            return 0;
+        }
+        switch (pea.elementos.id_categoria) {
+            case 1:
+            return pea.procesados_imagenes[0].id_probabilidad_cartel || 0;
+            case 3:
+            const dispositivos_contados = pea.procesados_imagenes[0].dispositivos_contados;
+            const huecos_esperados = pea.procesados_imagenes[0].huecos_esperados;
+            if (dispositivos_contados != undefined && huecos_esperados != undefined) {
+                return Math.abs(dispositivos_contados - huecos_esperados) + 1;             
+            } else {                 
+                return 0;                
             }
-            switch (pea.elementos.id_categoria) {
-              case 1:
-                return pea.procesados_imagenes[0].id_probabilidad_cartel || 0;
-              case 3:
-                const dispositivos_contados = pea.procesados_imagenes[0].dispositivos_contados;
-                const huecos_esperados = pea.procesados_imagenes[0].huecos_esperados;
-                if (dispositivos_contados != undefined && huecos_esperados != undefined) {
-                  return Math.abs(dispositivos_contados - huecos_esperados) + 1;             
-                } else {                 
-                  return 0;                
-                }
-              default:
-                // Ya hemos validado las categorías, por lo que este caso no debería ocurrir.
-                return 0;
-            }
-          });
+            default:
+            // Ya hemos validado las categorías, por lo que este caso no debería ocurrir.
+            return 0;
+        }
+        });
 
         return resultados_expositores;
     } catch (error) {
