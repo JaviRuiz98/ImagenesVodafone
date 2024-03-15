@@ -12,18 +12,18 @@
     height: 100%;
 }
 
-::ng-deep .p-card.p-component{
+.centrar ::ng-deep .p-card.p-component{
     display: flex;
     width: 25%;
     height: 70%;
     padding: 0;
 }
-::ng-deep .p-card-body {
+.centrar ::ng-deep .p-card-body {
     padding: 0;
     width: 100%;
     height: 100%;
 }
-::ng-deep .p-card-content {
+.centrar ::ng-deep .p-card-content {
     display: flex;
     justify-content: center;
     padding: 0;
@@ -61,10 +61,10 @@
     display: flex;
     width: 100%;
 } 
-::ng-deep .p-password {
+.ajusteInput ::ng-deep .p-password {
     width: 100%;
 }
-::ng-deep .p-inputtext {
+.ajusteInput ::ng-deep .p-inputtext {
     width: 100%;
 }
 .resetPassword{
@@ -72,6 +72,7 @@
     justify-content: right;
     width: 100%;
 }
+
 .buttonInicioSesion {
     display: flex;
     justify-content: center;
@@ -82,11 +83,7 @@
     display: grid;
     grid-template-columns: 25% 50% 25%;
 }
-.botonVolver{
-    color: #be0303;
-    cursor: pointer;
-    width: 10%;
-}
+
 .paginaCompleta ::ng-deep .p-button.p-button-danger.p-button-text {
     margin: 0;
     padding: 0;

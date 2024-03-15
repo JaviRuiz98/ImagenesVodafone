@@ -4,7 +4,7 @@
             <p-button class="botonNuevaTienda" label="+ Añadir Tienda" 
                 [text]="true" [raised]="true" severity="danger" [rounded]="true" 
                 (onClick)="verFormularioNuevaTienda = !verFormularioNuevaTienda" 
-                [style]="{'cursor': 'pointer', 'max-height': '40px', 'margin-left': '2%'}">
+                [style]="{'cursor': 'pointer', 'max-height': '40px', 'margin-left': '2%', 'color': 'rgb(195, 8, 8)'}">
             </p-button>
             <div class="filtro">
                 <span class="p-input-icon-left">
@@ -57,8 +57,8 @@
                 <td>{{ tiendas.tipo_distribuidor }}</td>
                 <td>{{ tiendas.canal }}</td>
                 <td>{{ tiendas.tipo_pdv }}</td>
-                <td style="padding: 0.4rem;"><p-button class="botonNuevaTienda" label="Editar Tienda" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="editarTienda(tiendas)" [style]="{'min-width': '130px'}" [disabled]="!tiendas.activo" ></p-button></td>
-                <td style="padding: 0.4rem;"><p-button class="botonNuevaTienda" label="Ver" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="abrirPlanoTienda(tiendas.id, tiendas)" [style]="{'min-width': '130px'}" [disabled]="!tiendas.activo" ></p-button></td>
+                <td style="padding: 0.4rem;"><p-button class="botonNuevaTienda" label="Editar Tienda" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="editarTienda(tiendas)" [style]="{'min-width': '130px', 'color': 'rgb(195, 8, 8)', 'padding': '5%'}" [disabled]="!tiendas.activo" ></p-button></td>
+                <td style="padding: 0.4rem;"><p-button class="botonNuevaTienda" label="Ver" [text]="true" [raised]="true" severity="danger" [rounded]="true" (onClick)="abrirPlanoTienda(tiendas.id, tiendas)" [style]="{'min-width': '130px', 'color': 'rgb(195, 8, 8)',  'padding': '5%'}" [disabled]="!tiendas.activo" ></p-button></td>
                 <td><p-button class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendas.activo, 'text-red-500 pi-times-circle': !tiendas.activo }" (click)="confirmarCambio(tiendas, 'activo')" [style]="{'border': 'none', 'background': 'none', 'cursor': 'pointer', 'padding': '0'}"></p-button></td>
                 <td><p-button class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendas.visible, 'text-red-500 pi-times-circle': !tiendas.visible }" (click)="confirmarCambio(tiendas, 'visible')" [style]="{'border': 'none', 'background': 'none', 'cursor': 'pointer', 'padding': '0'}"></p-button></td>
                 <td><p-button class="pi" [ngClass]="{ 'text-green-500 pi-check-circle': tiendas.vodafone, 'text-red-500 pi-times-circle': !tiendas.vodafone }" (click)="confirmarCambio(tiendas, 'vodafone')" [style]="{'border': 'none', 'background': 'none', 'cursor': 'pointer', 'padding': '0'}"></p-button></td>

@@ -66,6 +66,7 @@ export class BarraMenuComponent implements OnInit, AfterViewInit {
   initTiendas() {
     this.tiendasService.getAllTiendas().subscribe((data: tienda[]) => {
       this.tiendas = data;
+      console.log('tiendas', this.tiendas);
     })
   }
 

@@ -74,8 +74,8 @@
 
     </p-table>
      
-    <p-dialog [(visible)]="mostrarDialogoNuevoElemento" [style]="{height: '45%', width: '40%'  }" header="Crear un nuevo elemento" [modal]="true" [closable]="true" [draggable]="false"[resizable]="false" styleClass="p-fluid"
+    <p-dialog [(visible)]="mostrarDialogoNuevoElemento" [style]="{height: '480px', width: '40%'  }" header="Crear un nuevo elemento" [modal]="true" [closable]="true" [draggable]="false"[resizable]="false" styleClass="p-fluid"
     [closeOnEscape] = "false" (onHide)="onDialogHidden()"> 
-        <app-nuevo-elemento *ngIf="mostrarDialogoNuevoElemento == true"  (mostrarDialogoNuevoElemento)="manejarMostrarDialogo($event)" ></app-nuevo-elemento>        
+        <app-nuevo-elemento *ngIf="mostrarDialogoNuevoElemento == true" (archivoSeleccionadoChange)="recibirFile($event)" (mostrarDialogoNuevoElemento)="manejarMostrarDialogo($event)" ></app-nuevo-elemento>        
     </p-dialog>
 </p-panel>
