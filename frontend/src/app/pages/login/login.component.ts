@@ -27,18 +27,18 @@ export class LoginComponent {
       } else if(usuarioVerificado === 'Contraseña incorrecta!'){
         this.messageService.add({ severity: 'error', summary: 'ERROR!', detail: usuarioVerificado });
       } else{ 
-        
         // const decodedToken = jwt.decode(usuarioVerificado);
         // console.log(decodedToken);
         // // const decodedToken = JSON.parse(atob(usuarioVerificado.split('.')[1]));
         // // console.log(decodedToken);
-
-        console.log('Usuario verificado:', usuarioVerificado);
         // this.CookieService.setCookie('token', usuarioVerificado, 1);
+        console.log('Usuario verificado:', usuarioVerificado);
         this.router.navigate(['/home']);
       }
     })
   }
+
+  //ESTAS DOS FUNCIONES POSIBLEMENTE SE ELIMINEN
   vistaCrearNuevoUsuario(){
     this.crearUsuario = true;
     this.nuevoUsuario = {
