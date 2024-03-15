@@ -65,3 +65,12 @@
     display: none;
 }
 
+::ng-deep .p-dialog .p-dialog-footer button{
+    color: rgb(195, 8, 8);
+    background-color: white;
+    border: rgb(195, 8, 8);
+}
+::ng-deep .p-dialog .p-dialog-footer button:hover{
+    background-color: rgba(255, 0, 0, 0.267);
+}
+

@@ -86,7 +86,6 @@ export class TiendasComponent implements OnInit{
     });
   }
   mensajesActivarDesactivar(parametro: string, tienda: tienda){
-    console.log(parametro, tienda.activo);
     switch(parametro){
       case 'activa':
         if(tienda.activo){
