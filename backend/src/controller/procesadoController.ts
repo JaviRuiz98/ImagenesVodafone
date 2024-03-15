@@ -10,15 +10,15 @@ import { prompts } from '@prisma/client';
 import { promptService } from '../services/promptService';
 import { procesados_imagenes } from '@prisma/client';
 import { mobiliarioService } from '../services/mobiliarioService';
-
+import { downloadImageFtp } from '../config/ftpDownload';
 
 
 // Constantes y configuracion de procesado
 const IA_utilizada = 'openai';
 const max_tokens = 500;
 const temperature = 0;
-const id_prompt_carteles: number = 4; //prompt usado actualmente para carteles
-const id_prompt_dispositivos: number = 5; //prompt usado actualmente para dispositivos
+const id_prompt_carteles: number = 6; //prompt usado actualmente para carteles
+const id_prompt_dispositivos: number = 7; //prompt usado actualmente para dispositivos
 
 export async function procesarImagenes(req: Request, res: Response) {
   try {
@@ -99,9 +99,14 @@ export async function procesarImagenes(req: Request, res: Response) {
       return;
     }
 
+    // Descargar imagen de referencia del ftp en caso de existir y adjuntar su url local
+    if (imagenReferencia.url) {
+      imagenReferencia.url = await downloadImageFtp(imagenReferencia.url, imagenReferencia.nombre_archivo? imagenReferencia.nombre_archivo : 'imagen_referencia.jpg');
+    }
+    const filePaths = [imagenReferencia.url, imagenProcesada.path];
+
 
     //llamada a OpenAI
-    const filePaths = [imagenReferencia.url, imagenProcesada.path];
     const openAiResult = await getOpenAiResults(filePaths, promptObject.texto_prompt!);
     if (!openAiResult) {
       res.status(500).json({ error: 'No hay respuesta de openAI' });
