@@ -32,7 +32,6 @@ export class MuebleComponent implements OnInit {
  
   url_imagenes_referencias: string = this.urlService.url_imagenes_referencia;
 
-
   nombreFiltro: string = '';
   mueblesFiltrados: muebles[] = [];
 

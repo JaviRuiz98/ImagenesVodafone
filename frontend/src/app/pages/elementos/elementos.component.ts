@@ -142,6 +142,7 @@ export class ElementosComponent implements OnInit{
   }
 
   filterByNombre(event: Event) {
+    this.cambiarOpcionBusqueda(0);
     this.elementos = this.elementosTodos;
     if(this.imputSearch == ""){
       this.inicializaElementos();
@@ -159,29 +160,28 @@ export class ElementosComponent implements OnInit{
     this.mostrar = false; 
   }
 
-
   cambiarOpcionBusqueda($event: any) {
-     
     this.elementos = this.elementosTodos;
-    if(this.opcionesCatalogo.find((opcion) => opcion.estado === $event.value?.estado)){
-  //    this.opcionCatalogoSeleccionado.estado = $event.value.nombre; 
-    }else{
+    
+    const estadoSeleccionado = $event.value?.estado;
+    const nombreCategoriaSeleccionada = $event.value?.nombre;
 
-      if(this.categorias_elementos.find((opcion) => opcion.nombre === $event.value?.nombre)){
-        //  this.categoriaSeleccionada = $event.value?.nombre;
-      }
+    if (estadoSeleccionado) {
+        if (estadoSeleccionado === 'Catalogados') {
+            this.elementos = this.elementos.filter(elemento => elemento.activo == true);
+        } else if (estadoSeleccionado === 'Descatalogados') {
+            this.elementos = this.elementos.filter(elemento => elemento.activo == false);
+        }
+    } else if (nombreCategoriaSeleccionada) {
+        if (this.categorias_elementos.find(opcion => opcion.nombre === nombreCategoriaSeleccionada)) {
+            // this.categoriaSeleccionada = $event.value?.nombre;
+        }
     }
 
-    if(this.categoriaSeleccionada.nombre  == "Carteles"){ 
-      this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == "Carteles");
-    }else if(this.categoriaSeleccionada.nombre  == "Dispositivos"){
-      this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == "Dispositivos");
-    }else if(this.categoriaSeleccionada.nombre  == "Modelo"){
-      this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == "Modelo");
-    }else if(this.categoriaSeleccionada.nombre  == "Otros"){
-      this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == "Otros");
+    if (this.categoriaSeleccionada && this.categoriaSeleccionada.nombre) {
+        this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == this.categoriaSeleccionada.nombre);
     }
-  }
+}
  
 
   inicializaCategorias_elementos(){

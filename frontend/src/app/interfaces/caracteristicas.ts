@@ -7,6 +7,8 @@ export interface Opciones_caracteristicas{
     genero: string; // hombre, mujer, unisex
     talla: string;
     stock: number;
+
+    seleccionado: boolean;
     // constructor(valor: null){
     //     this.id = 0;
     //     this.id_producto = 0;
