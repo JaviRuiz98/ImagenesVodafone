@@ -11,6 +11,7 @@ import { atributos_expositores } from 'src/app/interfaces/atributos_expositores'
 import { EditarExpositorComponent } from './components/editarExpositor/editarExpositor.component';
 import { UrlService } from 'src/app/servicios/url/url.service';
 import { Subject } from 'rxjs';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 @Component({
   selector: 'app-mueble',
@@ -26,6 +27,7 @@ export class MuebleComponent implements OnInit {
   muebles: muebles[] = [];
 
   mostrarDialogoEditarElementosMueble: boolean[] = [];
+  overlayPanelMessage: string;
 
  
   url_imagenes_referencias: string = this.urlService.url_imagenes_referencia;
@@ -146,6 +148,16 @@ export class MuebleComponent implements OnInit {
   filterByNombre(muebles: muebles[]): muebles[] {
     return muebles.filter(muebles => muebles.nombre.toLowerCase().includes(this.nombreFiltro.toLowerCase()));
   }
+
+  showOverlayPanel(op: OverlayPanel, message: string) {
+    this.overlayPanelMessage = message;
+    op.toggle(event);
+  }
+
+  hideOverlayPanel(op: OverlayPanel) {
+    op.toggle(event);
+  }
+
   
 }
 
