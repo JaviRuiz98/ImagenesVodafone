@@ -16,7 +16,7 @@ const createStorageConfig = (folderPath: string) => {
 };
 
 function getDestination(folderPath: string): string {
- return  path.join(__dirname, '..', '..', 'assets', 'imagenes', folderPath);
+  return 'http://validador-vf.topdigital.local/imagenes/'+ folderPath + '/'
 }
 // Crear configuraciones de almacenamiento específicas
 const storageImagenReferencia = createStorageConfig('imagenesReferencia');
