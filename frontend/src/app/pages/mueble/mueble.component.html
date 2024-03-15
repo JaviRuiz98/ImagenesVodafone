@@ -32,19 +32,10 @@
                 <div class="col-12 sm:col-6 lg:col-3 xl:col-4 p-2">
                     <div class="p-4 border-1 surface-border surface-card border-round">
                         <div class="flex flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="text-2xl font-bold">{{ mueble.nombre }}</div>
+                            <div class="text-2xl font-bold overflow-hidden text-overflow-ellipsis">
+                                {{ mueble.nombre }}
+                            </div>
                             <div class="flex-inline">
-                                <p-button (mouseenter)="showOverlayPanel(op, 'Historial de mueble')"
-                                    (mouseleave)="hideOverlayPanel(op)" class="mr-2" [raised]="true" [text]="true"
-                                    [rounded]="true" severity="danger" icon="pi pi-history"
-                                    [disabled]="mueble.expositores.length < 1"
-                                    (click)="showHistorial(mueble)"></p-button>
-
-                                <p-button (mouseenter)="showOverlayPanel(op, 'Editar mueble')"
-                                    (mouseleave)="hideOverlayPanel(op)" severity="danger" class="mr-2" [raised]="true"
-                                    [text]="true" [rounded]="true" icon="pi pi-pencil"
-                                    (click)="editMueble(mueble)"></p-button>
-
                                 <p-overlayPanel #op>
                                     <ng-template pTemplate>
                                         <div style="display: flex;">
@@ -52,10 +43,18 @@
                                         </div>
                                     </ng-template>
                                 </p-overlayPanel>
-
+                        
+                                <p-button (mouseenter)="showOverlayPanel(op, 'Historial de mueble')"
+                                    (mouseleave)="hideOverlayPanel(op)" class="mr-2" [raised]="true" [text]="true" [rounded]="true"
+                                    severity="danger" icon="pi pi-history" [disabled]="mueble.expositores.length < 1"
+                                    (click)="showHistorial(mueble)"></p-button>
+                        
+                                <p-button (mouseenter)="showOverlayPanel(op, 'Editar mueble')" (mouseleave)="hideOverlayPanel(op)"
+                                    severity="danger" class="mr-2" [raised]="true" [text]="true" [rounded]="true" icon="pi pi-pencil"
+                                    (click)="editMueble(mueble)"></p-button>
                             </div>
-
                         </div>
+                        
                         <div class="flex flex-column align-items-center gap-3 py-5">
                             <div [ngClass]="{ 'flex-wrap-container': mueble.expositores.length > 1 }">
                                 <div *ngFor="let expositor of mueble.expositores; let i = index;" class="item-container">
@@ -69,15 +68,9 @@
                                             class="full-width-button"></p-button>
                                     </div>
                                     <ng-template #noModelo>
-                                        <div></div>
+                                     
                                     </ng-template>
-                                    <div *ngIf="!tieneModelo(expositor.atributos_expositores)" class="image-button-container">
-                                        <!-- Centra la imagen si no tiene modelo -->
-                                        <p-image [src]="url_imagenes_referencias + getImagenModelo(expositor)" height="200vh"
-                                            [alt]="getImagenModelo(expositor) ? getImagenModelo(expositor) : 'No disponible'" [preview]="true"
-                                            class="centered-image">
-                                        </p-image>
-                                    </div>
+                                  
                                 </div>
                             </div>
                         </div>

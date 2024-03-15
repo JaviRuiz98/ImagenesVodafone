@@ -29,6 +29,12 @@
 .flex-wrap-container .image-button-container {
  width: fit-content;
 }
+.text-overflow-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 
 .expositores-container {
     display: flex;
