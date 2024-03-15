@@ -9,11 +9,7 @@
     justify-content: center;
     align-items: center;
 }
-.filtro{
-    display: flex;
-    justify-content: end;
-    margin-right: 1%;
-}
+
 .cabeceraAñadirTienda{
     display: grid;
     grid-template-columns: 20% 80% ;
@@ -32,6 +28,11 @@
     font-size: 100%;
     display: flex;
     align-items: center;
+}
+.filtro{
+    display: flex;
+    justify-content: end;
+    margin-right: 1%;
 }
 
 .contenedorHistorialTiendas {

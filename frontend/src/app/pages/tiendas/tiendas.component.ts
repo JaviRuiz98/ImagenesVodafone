@@ -1,7 +1,6 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { ConfirmationService, MessageService, ConfirmEventType } from 'primeng/api';
 import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
-import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
 import { Router } from '@angular/router';
 
@@ -34,7 +33,6 @@ export class TiendasComponent implements OnInit{
 
   constructor(
     private TiendasService: TiendasService, 
-    private MueblesService: MueblesService, 
     private messageService: MessageService, 
     private ConfirmationService: ConfirmationService,
     private router: Router,
