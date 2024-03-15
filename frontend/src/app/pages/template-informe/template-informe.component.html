@@ -1,4 +1,4 @@
-<h1>Auditoría para la tienda - {{informeData.tiendas.sfid}}</h1>
+<h1>Auditoría para la tienda - {{informeData?.tiendas?.sfid}}</h1>
 
 <p-table [value]="resumen_auditoria">
     <ng-template pTemplate="header">
@@ -20,7 +20,7 @@
     <p-chart type="pie" [data]="data" [options]="chartOptions"></p-chart>
 </div>
 
-<p-table [value]="informeData.procesados_auditoria">
+<p-table [value]="informeData?.procesados_auditoria">
     <ng-template pTemplate="header">
         <tr>
             <th>Imagen Referencia</th>
