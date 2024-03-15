@@ -127,8 +127,8 @@ export const mobiliarioService = {
                    
                     for (const atributo of expositores.atributos_expositores) {
                        //Por cada atributo de cada expositor
-                        //creo una nueva pertenencia
-                       
+
+                       //Si existe el elemento creo uno nuevo
                         if (atributo.elemento?.id && !!atributo.id) {
                             //comprobar que no existe ya una pertenencia con ese id_atributos_expositores y id_elementos
                             const pertenencia = await prisma.pertenencia_elementos_atributos.findFirst({
@@ -137,6 +137,7 @@ export const mobiliarioService = {
                                     id_elemento: atributo.elemento?.id,
                                 }
                             });
+                            //si ya existe no debo crear una nueva
                             if (!pertenencia) {
                                 await prisma.pertenencia_elementos_atributos.create({
                                     data: {
@@ -144,9 +145,40 @@ export const mobiliarioService = {
                                         id_elemento: atributo.elemento?.id,
                                     }
                                 });
+                                //En caso de que exista pero esté desactivado, se debe poner a true
+                            } else if ( pertenencia.activo == false) {
+                                await prisma.pertenencia_elementos_atributos.update({
+                                    where: {
+                                        id: pertenencia.id
+                                    },
+                                    data: {
+                                        activo: true
+                                    }
+                                });
+
                             }
                           
-                        }  
+                        } else{ //si no existe elemento, debo comprobar si antes existia, y si existia, descativarla
+
+                            const pertenencia = await prisma.pertenencia_elementos_atributos.findFirst({
+                                where: {
+                                    id_atributo_expositor: atributo.id,
+                                    id_elemento: atributo.elemento?.id,
+                                }
+                            });
+                            if (pertenencia) {
+                                await prisma.pertenencia_elementos_atributos.update({
+                                    where: {
+                                        id: pertenencia.id
+                                    },
+                                    data: {
+                                        activo: false
+                                    }
+                                });
+                            }
+
+                        }
+                        
                     }
                    
                 }
@@ -173,6 +205,9 @@ export const mobiliarioService = {
                                     
                                     categorias_elementos:true,
                                     pertenencia_elementos_atributos: {
+                                        where: {
+                                            activo: true,
+                                        },
                                         include: {
                                             elementos: {
                                                 include: {
@@ -180,6 +215,7 @@ export const mobiliarioService = {
                                                     categorias_elementos: true
                                                 },
                                             },
+                                            
                                         },
                                         orderBy: {
                                             fecha: "desc",
@@ -235,6 +271,9 @@ export const mobiliarioService = {
                             atributos_expositores: {
                                 include: {
                                     pertenencia_elementos_atributos: {
+                                        where: {
+                                            activo: true,
+                                        },
                                         include: {
                                             elementos: true,
                                         },
@@ -293,6 +332,9 @@ export const mobiliarioService = {
                             atributos_expositores: {
                                 include: {
                                     pertenencia_elementos_atributos: {
+                                        where: {
+                                            activo: true,
+                                        },
                                         include: {
                                             elementos: {
                                                 include: {
