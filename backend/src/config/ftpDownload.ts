@@ -3,9 +3,10 @@ import fs from 'fs';
 import path from 'path';
 
 export const downloadImageFtp: (url_image_ftp: string) => Promise<string> = async function (url_image_ftp) {
+    // Configurar cliente FTP
+    const client = new Client();
+
     try {
-        // Configurar cliente FTP
-        const client = new Client();
         client.ftp.verbose = true;
 
         await client.access({
@@ -37,8 +38,8 @@ export const downloadImageFtp: (url_image_ftp: string) => Promise<string> = asyn
     } catch (error) {
         console.error("Error descargando la imagen del FTP:", error);
         throw error;
-    } /*finally {
+    } finally {
         // Cerrar la sesión FTP
         await client.close();
-    }*/
+    }
 }
