@@ -100,10 +100,10 @@ export async function procesarImagenes(req: Request, res: Response) {
     }
 
     // Descargar imagen de referencia del ftp en caso de existir y adjuntar su url local
-    if (imagenReferencia.url) {
-      imagenReferencia.url = await downloadImageFtp(imagenReferencia.url, imagenReferencia.nombre_archivo? imagenReferencia.nombre_archivo : 'imagen_referencia.jpg');
-    }
-    const filePaths = [imagenReferencia.url, imagenProcesada.path];
+    const url_imagen_referencia_ftp = imagenReferencia.url; //no debe ser con formato de internet si no de navegacion interna como si estuvieses en filezilla
+    const url_imagen_referencia_local = await downloadImageFtp(url_imagen_referencia_ftp);
+    
+    const filePaths = [url_imagen_referencia_local, imagenProcesada.path];
 
 
     //llamada a OpenAI
