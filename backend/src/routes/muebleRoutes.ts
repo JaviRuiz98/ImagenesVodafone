@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import { updateMuebleForm, getAllMuebles, getFilteredMuebles, getMueblesAndExpositoresActivosByIdTienda, updateExpositor } from '../controller/mobiliarioController';
+import { updateMuebleForm, getAllMuebles, getFilteredMuebles, getMueblesAndExpositoresActivosByIdTienda, updateExpositor } from '../controller/muebleController';
 import { uploadArrayImagenRepresentativa } from '../config/multer';
 import {  uploadMultipleFilesToFtp } from '../config/ftpUpload';
 

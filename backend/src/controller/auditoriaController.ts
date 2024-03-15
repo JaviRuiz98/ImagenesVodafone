@@ -5,7 +5,7 @@ import { auditorias } from '@prisma/client';
 import { tiendaService } from '../services/tiendasServices';
 import { muebleConElementos} from '../interfaces/muebleConElementos';
 import { per_ele_aud_extended } from '../interfaces/perEleAudExtended';
-import { mobiliarioService } from "../services/mobiliarioService";
+import { muebleService } from "../services/muebleService";
 
 
 export async function getAuditorias(req: Request, res: Response) {
@@ -171,7 +171,7 @@ async function createAuditoria(id_tienda: number): Promise<auditorias> {
         const createdAuditoria: auditorias = await auditoriaService.createAuditoria(id_tienda);
 
         // Almaceno todos los expositores que posee la auditoria en la tabla de auditoria_expositores
-        const muebles: any[] = await mobiliarioService.getMueblesAndElementosByIdTienda(id_tienda);
+        const muebles: any[] = await muebleService.getMueblesAndElementosByIdTienda(id_tienda);
 
         for (const mueble of muebles) {
             for(const expositor of mueble.expositores) {

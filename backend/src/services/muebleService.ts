@@ -5,7 +5,7 @@ import { muebleCreation } from "../interfaces/mueblesCreados";
 // import { ExpositorFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
 // import {expositoresConProcesados} from "../interfaces/expositoresProcesados"
 
-export const mobiliarioService = {
+export const muebleService = {
     async getHuecosDisponibles (id_expositor: number)  {
         try {
            return await db.atributos_expositores.count(

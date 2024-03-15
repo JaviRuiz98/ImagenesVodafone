@@ -19,12 +19,12 @@ export class HistorialExpositoresComponent implements OnInit {
 
 
 
-  constructor(public dialogConfig : DynamicDialogConfig, private elementosService: ElementosService,  private datePipe: DatePipe) { }
+  //constructor(public dialogConfig : DynamicDialogConfig, private muebleService: Mub,  private datePipe: DatePipe) { }
 
   ngOnInit() {
     // if (this.dialogConfig.data) {
     //   const id_mueble = this.dialogConfig.data.id_mueble;
-    //   this.expositorService.getPertenenciaExpositorMueblebyIdMueble(id_mueble).subscribe(
+    //   this.elementosService.getPertenenciaExpositorMueblebyIdMueble(id_mueble).subscribe(
     //     (pertenencias_expositor_mueble: pertenencia_expositor_mueble[]) => {
     //       this.pertenencias_expositor_mueble = pertenencias_expositor_mueble;
     //     }
@@ -34,9 +34,9 @@ export class HistorialExpositoresComponent implements OnInit {
   }
 
 
-  formatDate(date: Date): string | null {
-    return this.datePipe.transform(date, 'dd/MM/yyyy');
-  }
+  // formatDate(date: Date): string | null {
+  //   return this.datePipe.transform(date, 'dd/MM/yyyy');
+  // }
 
  
  
