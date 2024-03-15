@@ -73,9 +73,14 @@
                     </div>
                     <div class="flex flex-row gap-3">
                         <h3>Talla:</h3>
-                        <div class="flex flex-row gap-2" *ngFor="let item of producto.opciones_caracteristicas">
-                          <p-checkbox [label]="item.talla" name="talla" [value]="item.talla"></p-checkbox>
+
+                        <div  *ngIf=" producto.opciones_caracteristicas.length > 0 " else sinOpciones>
+                            <div class="flex flex-row gap-2" *ngFor="let item of producto.opciones_caracteristicas">
+                         
+                                <p-checkbox [label]="item.talla" name="talla" [value]="item.talla"></p-checkbox>
+                            </div>
                         </div>
+
                     </div>
                     <div class="flex align-items-center justify-content-between">
                         <span class="text-2xl font-semibold">{{producto.precio + '€ ud.' }}</span>

@@ -3,7 +3,7 @@ import { UniformesModule } from './uniformes.module';
 import { productos } from 'src/app/interfaces/productos';
 import { UniformesService } from 'src/app/servicios/uniformes/uniformes.service';
 import { Opciones_caracteristicas } from 'src/app/interfaces/caracteristicas';
-
+import { CarritoComponent } from 'src/app/componentes/carrito/carrito.component';
 
 @Component({
   selector: 'app-uniformes',

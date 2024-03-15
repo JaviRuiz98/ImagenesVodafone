@@ -41,7 +41,7 @@ export class ElementosComponent implements OnInit{
 
 
   opcionesCatalogo!: any[];
-  opcionCatalogoSeleccionado = {estado: 'Todos'};
+  opcionCatalogoSeleccionado = {estado: 'Catalogados'};
  
   mostrar: boolean = false;
 
@@ -71,6 +71,7 @@ export class ElementosComponent implements OnInit{
   inicializaElementos() {
     this.elementosService.getElementos().subscribe((elementos: elementos[]) => {
       this.elementos = elementos;
+      this.elementos = this.elementos.filter(elemento => elemento.activo == true);
       this.elementosTodos = elementos;
       console.log("elementos", elementos);
  //     this.resetTabla();
@@ -110,12 +111,10 @@ export class ElementosComponent implements OnInit{
   manejarMostrarDialogo(valor: boolean): void {
     this.mostrarDialogoNuevoElemento = false;
     console.log('Valor recibido: ', valor);
-    // Aquí haces algo con el valor recibido
   }
  
 
   activarDesactivarElementos(elemento: elementos) {
-    //this.opcionMostrarCambia
 
     this.elementosService.cambiarActivo(elemento.id, !elemento.activo).subscribe((elemento: elementos) => {
      this.inicializaElementos();
@@ -124,7 +123,6 @@ export class ElementosComponent implements OnInit{
       }else{
         this.messageService.add({ severity: 'success', summary: 'Modificado con exito', detail: 'Elemento añadido al catalogo' });
       }
-     // this.elementos.find(elementos => elementos.id === this.id_elemento_selected)?.activo = !this.elementos.find(elemento => elemento.id === this.id_elemento_selected)?.activo
       setInterval(() => {
         this.cambiarOpcionBusqueda(0);
       },100)
@@ -174,15 +172,6 @@ export class ElementosComponent implements OnInit{
       }
     }
 
-    if(this.opcionCatalogoSeleccionado.estado == "Todos"){
-   //   this.inicializaElementos();
-      this.elementos = this.elementosTodos;
-    }else if(this.opcionCatalogoSeleccionado.estado  == "Catalogados"){
-      this.elementos = this.elementosTodos.filter(elemento => elemento.activo == true);
-    }else if(this.opcionCatalogoSeleccionado.estado == "Descatalogados"){
-      this.elementos = this.elementosTodos.filter(elemento => elemento.activo == false);
-    }
-
     if(this.categoriaSeleccionada.nombre  == "Carteles"){ 
       this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == "Carteles");
     }else if(this.categoriaSeleccionada.nombre  == "Dispositivos"){
@@ -198,6 +187,8 @@ export class ElementosComponent implements OnInit{
   inicializaCategorias_elementos(){
     this.enumService.getCategorias_elementos().subscribe((elementos: categorias_elementos[]) => {
       this.categorias_elementos = elementos; 
+      const index = this.categorias_elementos.findIndex((elemento) => elemento.id == 3);
+      this.categorias_elementos.splice(index, 1);
     })
   }
 
@@ -208,7 +199,6 @@ export class ElementosComponent implements OnInit{
     this.inicializaCategorias_elementos(); 
 
     this.opcionesCatalogo = [
-      {estado: 'Todos'}, 
       {estado: 'Catalogados'}, 
       {estado: 'Descatalogados'}
     ]
