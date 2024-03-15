@@ -20,6 +20,7 @@ import { Subject } from 'rxjs';
 export class MuebleComponent implements OnInit {
 
 
+
   constructor( private urlService: UrlService, private muebleService: MueblesService, public dialogService: DialogService, public messageService: MessageService, private config: PrimeNGConfig) { }
   
   muebles: muebles[] = [];
@@ -31,6 +32,7 @@ export class MuebleComponent implements OnInit {
 
 
   nombreFiltro: string = '';
+  mueblesFiltrados: muebles[] = [];
 
   
 
@@ -59,11 +61,11 @@ export class MuebleComponent implements OnInit {
    this.muebleService.getAllMuebles().subscribe(muebles => {
      console.log(muebles);
      this.muebles = muebles; 
+     this.mueblesFiltrados = muebles;
    })
   }
 
   editMueble(mueble: muebles, showing_asignar_expositores_index?:number) {
-    
     this.ref = this.dialogService.open(FormMuebleComponent, {
       header: 'Editar mueble ' + mueble.nombre ,
       width: '70%',
@@ -72,7 +74,7 @@ export class MuebleComponent implements OnInit {
       maximizable: true,
       data: {
         mueble: mueble, 
-        showing_asignar_expositores_index: showing_asignar_expositores_index
+        showing_asignar_expositores_index: showing_asignar_expositores_index!= undefined? showing_asignar_expositores_index : undefined
       }
     });
     
@@ -134,6 +136,15 @@ export class MuebleComponent implements OnInit {
   tieneModelo(atributos_expositores: atributos_expositores[]): boolean {
     const atributoModelo: atributos_expositores | undefined = atributos_expositores.find((atributo) => atributo.categorias_elementos.id === 3);
     return atributoModelo !== undefined;
+  }
+
+  filtrarPorNombreDeMueble() {
+    this.mueblesFiltrados = this.filterByNombre(this.muebles);
+  }
+
+  
+  filterByNombre(muebles: muebles[]): muebles[] {
+    return muebles.filter(muebles => muebles.nombre.toLowerCase().includes(this.nombreFiltro.toLowerCase()));
   }
   
 }

@@ -54,9 +54,9 @@ export class UniformesComponent implements OnInit {
   inicializaProductos() {
     this.uniformesService.getProductos().subscribe((productos: productos[]) => {
       this.productos = productos;
-
+      this.inicializaCaracteristicasProducto();
     });
-    this.inicializaCaracteristicasProducto();
+
   }
 
   inicializaCaracteristicasProducto() {

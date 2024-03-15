@@ -1,16 +1,25 @@
-<p-steps [model]="steps" [(activeIndex)]="activeIndex" [readonly]="true"></p-steps>
-<p-scrollPanel [style]="{'height':'calc(100vh - 300px )'}">
+<p-steps [hidden]="editar_expositor_elementos_index != undefined" [model]="steps" [(activeIndex)]="activeIndex" [readonly]="true"></p-steps>
+<!--Editar elementos de expositor directamente-->
+<div *ngIf="editar_expositor_elementos_index != undefined; else crearOEditarMuebleCompleto"> 
+  <app-PasoAsignarElementoForm [expositorFormulario]="getExpositorFormGroup(editar_expositor_elementos_index)"></app-PasoAsignarElementoForm>
 
-  <div class="flex flex-column" *ngIf="activeIndex == 0">
-    <app-Paso1Form (formularioPaso1AddedImage)="onFormularioPaso1AddedImage($event)" (formularioPaso1DeletedExpositor)="onFormularioPaso1DeletedExpositor($event)" [objetivo_form]="objetivo_form" [formulario]="mueble"></app-Paso1Form>
-  </div>
-  <!-- CREAR -->
-  <div *ngIf="objetivo_form=='crear'; else editar">
-    <!-- Asumiendo que activeIndex determina el paso actual y qué componente mostrar -->
-    <div *ngIf="activeIndex > 0">
+</div>
 
-      <!-- En caso de tener imagenes seleccionadas para el modelo -->
-      <div *ngIf="imagenesExpositores.length > 0; else no_imagenes">
+<!--Formulario para crear o editar-->
+<ng-template #crearOEditarMuebleCompleto>
+  <p-scrollPanel [style]="{'height':'calc(100vh - 300px )'}">
+    <div class="flex flex-column" *ngIf="activeIndex == 0">
+      <app-Paso1Form (formularioPaso1AddedImage)="onFormularioPaso1AddedImage($event)"
+        (formularioPaso1DeletedExpositor)="onFormularioPaso1DeletedExpositor($event)" [objetivo_form]="objetivo_form"
+        [formulario]="mueble"></app-Paso1Form>
+    </div>
+    <!-- CREAR -->
+    <div *ngIf="objetivo_form=='crear'; else editar">
+      <!-- Asumiendo que activeIndex determina el paso actual y qué componente mostrar -->
+      <div *ngIf="activeIndex > 0">
+
+        <!-- En caso de tener imagenes seleccionadas para el modelo -->
+        <div *ngIf="imagenesExpositores.length > 0; else no_imagenes">
 
           <!-- Verifica si el paso actual requiere el componente app-PasoHuecosForm -->
           <ng-container *ngIf="!activeIndexIsPair()">
@@ -19,45 +28,46 @@
 
           <!-- Verifica si el paso actual requiere el componente app-PasoAsignarElementoForm -->
           <ng-container *ngIf="activeIndexIsPair()">
-            <app-PasoAsignarElementoForm 
-            (formularioPasoAsignarAtributoSinHuecos)="onCrearAtributoExpositor($event)" 
-            [expositorFormulario]="getExpositorFormGroup()"
-            ></app-PasoAsignarElementoForm>
+            <app-PasoAsignarElementoForm (formularioPasoAsignarAtributoSinHuecos)="onCrearAtributoExpositor($event)"
+              [expositorFormulario]="getExpositorFormGroup()"></app-PasoAsignarElementoForm>
           </ng-container>
         </div>
 
       </div>
       <!-- No tengo imágenes, diractemente asigno elemento -->
       <ng-template #no_imagenes>
-        <app-PasoAsignarElementoForm 
-        (formularioPasoAsignarAtributoSinHuecos)="onCrearAtributoExpositor($event)" 
-        [expositorFormulario]="getExpositorFormGroup()"></app-PasoAsignarElementoForm>
+        <app-PasoAsignarElementoForm (formularioPasoAsignarAtributoSinHuecos)="onCrearAtributoExpositor($event)"
+          [expositorFormulario]="getExpositorFormGroup()"></app-PasoAsignarElementoForm>
       </ng-template>
 
-  </div>
-
-  <!-- EDITAR -->
-  <ng-template #editar>
-    <div *ngIf="activeIndex > 0">
-     
-        <app-PasoAsignarElementoForm [expositorFormulario]="getExpositorFormGroup()"></app-PasoAsignarElementoForm>
-   
     </div>
-  </ng-template>
- 
 
-</p-scrollPanel>
+    <!-- EDITAR -->
+    <ng-template #editar>
+
+
+      <div *ngIf="activeIndex > 0">
+        <app-PasoAsignarElementoForm [expositorFormulario]="getExpositorFormGroup()"></app-PasoAsignarElementoForm>
+      </div>
+
+
+    </ng-template>
+
+
+  </p-scrollPanel>
+</ng-template>
+
 
 
 <footer>
   <div class="flex align-items-center justify-content-center mt-2">
-    <p-button label="Volver" icon="pi pi-arrow-left" class="m-2" severity="danger" [disabled]="activeIndex == 0"
-      (onClick)="previousStep()"></p-button>
-    <p-button [label]="activeIndex == step_count-1 ? 'Guardar' : 'Siguiente'" icon="pi pi-arrow-right" class="m-2"
-      severity="danger" [disabled]="!isValidNextStep"
-      (onClick)="activeIndex == step_count-1? onSubmit() : nextStep()">
+    <p-button [hidden]="editar_expositor_elementos_index != undefined" label="Volver" icon="pi pi-arrow-left"
+      class="m-2" severity="danger" [disabled]="activeIndex == 0" (onClick)="previousStep()"></p-button>
+    <p-button  [hidden]="editar_expositor_elementos_index != undefined" [label]="activeIndex == step_count-1 ? 'Guardar' : 'Siguiente'" icon="pi pi-arrow-right" class="m-2"
+      severity="danger" [disabled]="!isValidNextStep" (onClick)="activeIndex == step_count-1? onSubmit() : nextStep()">
     </p-button>
+    <p-button icon="pi pi-arrow-right" class="m-2" [hidden]="editar_expositor_elementos_index == undefined" severity="danger" label = 'Guardar' (onClick)="onSubmit()"></p-button>
+
   </div>
 
 </footer>
-

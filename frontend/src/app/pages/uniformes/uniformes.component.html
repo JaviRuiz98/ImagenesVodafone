@@ -71,6 +71,12 @@
                         <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" [src]="url_imagenes_productos + producto.imagenes.url" [alt]="producto.nombre" />
                         <div class="text-2xl font-bold">{{ producto.nombre }}</div>
                     </div>
+                    <div class="flex flex-row gap-3">
+                        <h3>Talla:</h3>
+                        <div class="flex flex-row gap-2" *ngFor="let item of producto.opciones_caracteristicas">
+                          <p-checkbox [label]="item.talla" name="talla" [value]="item.talla"></p-checkbox>
+                        </div>
+                    </div>
                     <div class="flex align-items-center justify-content-between">
                         <span class="text-2xl font-semibold">{{producto.precio + '€ ud.' }}</span>
                         <button pButton icon="pi pi-cart-plus" class="p-button-rounded" (click)="anadirCarrito(producto)" [disabled]="producto.inventoryStatus === 'OUTOFSTOCK'"></button>
