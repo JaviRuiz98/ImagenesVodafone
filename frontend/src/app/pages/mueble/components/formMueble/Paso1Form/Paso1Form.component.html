@@ -47,9 +47,9 @@
             Añade si es necesario a lo sumo 2 imagenes que sirvan como modelo para el mueble
           </small>
         </div>
-        <div class="flex" style="height: 30vh"  *ngIf="objetivo_form=='crear'; else editar">
+        <div class="flex" style="height: 50vh;"  *ngIf="objetivo_form=='crear'; else editar">
           
-          <div class="flex-1 m-2" style="height: 30vh; width:auto" >
+          <div class="flex-1 m-2  ">
             <app-selector-imagenes [button_disabled]="imagenesExpositores.length >= 2" (archivoSeleccionadoChange)="onArchivoSeleccionadoChange($event)"></app-selector-imagenes>
           </div>
 

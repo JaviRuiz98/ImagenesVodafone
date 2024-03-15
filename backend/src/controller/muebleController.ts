@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import {
     expositorService,
-    mobiliarioService,
-} from "../services/mobiliarioService";
+    muebleService,
+} from "../services/muebleService";
 import { imagenes, muebles } from "@prisma/client";
 import { muebleCreation } from "../interfaces/mueblesCreados";
 import { fetchGuardarElemento } from "./elementoController";
@@ -29,7 +29,7 @@ export async function getFilteredMuebles(req: Request, res: Response) {
                 comprobar que dispositivos es un array de dos números y el segundo número es mayor que el primero
     
             */
-        const mobiliario: muebles[] = await mobiliarioService.getFilteredMuebles(
+        const mobiliario: muebles[] = await muebleService.getFilteredMuebles(
             id_tienda,
             orden_clause,
             prompts_clause,
@@ -71,11 +71,11 @@ export async function updateMuebleForm (req: Request, res: Response) {
 
 async function editarMueble(muebleDat:muebleCreation) {
     try {
-       const mueble = await mobiliarioService.getMuebleById(muebleDat.id!);
+       const mueble = await muebleService.getMuebleById(muebleDat.id!);
         if (!mueble) {
             throw new Error('Mueble no encontrado');
         }
-        const muebleEditado =  await mobiliarioService.updateMueble(muebleDat);
+        const muebleEditado =  await muebleService.updateMueble(muebleDat);
         if (!muebleEditado) {
             throw new Error('Error al editar el mueble');
         }
@@ -111,7 +111,7 @@ async function createMueble(muebleDat:muebleCreation, imagenes: any) {
             }
         } 
         
-        return await mobiliarioService.createMueble(muebleDat);
+        return await muebleService.createMueble(muebleDat);
     } catch (error) {
         console.error(error);
         throw error;
@@ -145,7 +145,7 @@ function encontrarArchivoPorNombre(imagenes:
 
 export async function getAllMuebles(_req: Request, res: Response) {
     try {
-        const muebles = await mobiliarioService.getAllMuebles();
+        const muebles = await muebleService.getAllMuebles();
         if (!muebles) {
             res.status(204).send();
         }
@@ -163,7 +163,7 @@ export async function getMueblesAndExpositoresActivosByIdTienda(
     try {
         const id_tienda = parseInt(req.params.id_tienda);
         const muebles: any[] =
-            await mobiliarioService.getMueblesAndExpositoresActivosByIdTienda(id_tienda);
+            await muebleService.getMueblesAndExpositoresActivosByIdTienda(id_tienda);
         if (!muebles) {
             res.status(204).send();
         }

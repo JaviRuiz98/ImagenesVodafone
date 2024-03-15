@@ -9,7 +9,7 @@ import { imagenService } from '../services/imagenService';
 import { prompts } from '@prisma/client';
 import { promptService } from '../services/promptService';
 import { procesados_imagenes } from '@prisma/client';
-import { mobiliarioService } from '../services/mobiliarioService';
+import { muebleService } from '../services/muebleService';
 import { downloadImageFtp } from '../config/ftpDownload';
 
 
@@ -62,7 +62,7 @@ export async function procesarImagenes(req: Request, res: Response) {
     //la imagen de referencia  es necesaria para el procesado
     const [imagenReferencia, huecosEsperados] = await Promise.all([
       elementosService.getImage(existingElemento.id_imagen!),
-      mobiliarioService.getHuecosDisponibles(id_expositor)
+      muebleService.getHuecosDisponibles(id_expositor)
     ]);
     
     

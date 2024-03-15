@@ -5,7 +5,7 @@ import { muebleCreation } from "../interfaces/mueblesCreados";
 // import { ExpositorFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
 // import {expositoresConProcesados} from "../interfaces/expositoresProcesados"
 
-export const mobiliarioService = {
+export const muebleService = {
     async getHuecosDisponibles (id_expositor: number)  {
         try {
            return await db.atributos_expositores.count(
@@ -13,10 +13,7 @@ export const mobiliarioService = {
                 where: { 
                     id_expositor: id_expositor,
                     id_categoria: 2
-                }
-                            
-                        
-                   
+                } 
                 });
         } catch (error) {
             throw error;
@@ -138,25 +135,26 @@ export const mobiliarioService = {
                                 }
                             });
                             //si ya existe no debo crear una nueva
-                            if (!pertenencia) {
+                            if (!pertenencia || pertenencia.activo == false) {
                                 await prisma.pertenencia_elementos_atributos.create({
                                     data: {
                                         id_atributo_expositor: atributo.id,
                                         id_elemento: atributo.elemento?.id,
                                     }
                                 });
-                                //En caso de que exista pero esté desactivado, se debe poner a true
-                            } else if ( pertenencia.activo == false) {
-                                await prisma.pertenencia_elementos_atributos.update({
-                                    where: {
-                                        id: pertenencia.id
-                                    },
-                                    data: {
-                                        activo: true
-                                    }
-                                });
-
                             }
+                                
+                            // } else if ( pertenencia.activo == false) {
+                            //     await prisma.pertenencia_elementos_atributos.update({
+                            //         where: {
+                            //             id: pertenencia.id
+                            //         },
+                            //         data: {
+                            //             activo: true
+                            //         }
+                            //     });
+
+                            // }
                           
                         } else{ //si no existe elemento, debo comprobar si antes existia, y si existia, descativarla
 

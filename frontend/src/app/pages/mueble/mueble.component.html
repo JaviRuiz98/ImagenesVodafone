@@ -31,11 +31,11 @@
 
                 <div class="col-12 sm:col-6 lg:col-3 xl:col-4 p-2">
                     <div class="p-4 border-1 surface-border surface-card border-round">
-                        <div class="flex flex-wrap align-items-center justify-content-between gap-2">
-                            <div class="text-2xl font-bold overflow-hidden text-overflow-ellipsis">
+                        <div class="grid">
+
+                            <div class="text-2xl col-9 font-bold overflow-hidden text-overflow-ellipsis">
                                 {{ mueble.nombre }}
                             </div>
-                            <div class="flex-inline">
                                 <p-overlayPanel #op>
                                     <ng-template pTemplate>
                                         <div style="display: flex;">
@@ -43,16 +43,21 @@
                                         </div>
                                     </ng-template>
                                 </p-overlayPanel>
-                        
-                                <p-button (mouseenter)="showOverlayPanel(op, 'Historial de mueble')"
+
+                            <div class="col-3">
+                                <div class="flex-inline">
+                                    <p-button (mouseenter)="showOverlayPanel(op, 'Historial de mueble')"
                                     (mouseleave)="hideOverlayPanel(op)" class="mr-2" [raised]="true" [text]="true" [rounded]="true"
                                     severity="danger" icon="pi pi-history" [disabled]="mueble.expositores.length < 1"
                                     (click)="showHistorial(mueble)"></p-button>
-                        
-                                <p-button (mouseenter)="showOverlayPanel(op, 'Editar mueble')" (mouseleave)="hideOverlayPanel(op)"
-                                    severity="danger" class="mr-2" [raised]="true" [text]="true" [rounded]="true" icon="pi pi-pencil"
-                                    (click)="editMueble(mueble)"></p-button>
+                            
+                                    <p-button (mouseenter)="showOverlayPanel(op, 'Editar mueble')" (mouseleave)="hideOverlayPanel(op)"
+                                        severity="danger" class="mr-2" [raised]="true" [text]="true" [rounded]="true" icon="pi pi-pencil"
+                                        (click)="editMueble(mueble)"></p-button>
+                                </div>
+                                
                             </div>
+
                         </div>
                         
                         <div class="flex flex-column align-items-center gap-3 py-5">
