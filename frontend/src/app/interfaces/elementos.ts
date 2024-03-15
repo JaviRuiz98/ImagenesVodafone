@@ -1,7 +1,6 @@
 
 import { imagenes } from "./imagenes";
 import { procesados_imagenes } from "./procesados_imagenes";
-import { regiones } from "./regiones";
 import { categorias_elementos } from "./categoria";
 
 export interface elementos {

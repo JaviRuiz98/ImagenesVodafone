@@ -15,7 +15,6 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormControl, Validators  } from '@angular/forms';
 import { categorias_elementos } from 'src/app/interfaces/categoria';
 
-import { regiones } from 'src/app/interfaces/regiones';
 import { EnumService } from 'src/app/servicios/enum/enum.service';
 
 
@@ -49,7 +48,6 @@ export class NuevoElementoComponent implements OnInit {
 
   nuevoElemento_form: FormGroup = this.formBuilder.group({
     nombre: new FormControl('', [Validators.required, Validators.minLength(2)]),
-    region: new FormControl('', [Validators.required, Validators.minLength(2)]), 
     imagen: new FormControl(0, [Validators.required, this.fileValidator]), 
     categoria: new FormControl('', Validators.required ),
   
@@ -67,8 +65,6 @@ export class NuevoElementoComponent implements OnInit {
   archivoSeleccionado!: File;
  
   bloqueaCategoria: boolean = false;
-  regiones: regiones[] = [];
-  Dropdown_regiones: string[] = [];
 
   categorias_elementos: categorias_elementos[] = [];
   Dropdown_categorias: string[] = [];
@@ -88,10 +84,6 @@ export class NuevoElementoComponent implements OnInit {
     this.archivoSeleccionadoChange.emit({ archivo: imagenAProcesar });
   }
 
-  onRegionChange(event: any) {
-    const selectedRegionValue = this.regiones.find((region) => region.nombre === event.value);
-    this.nuevoElemento_form.patchValue({ region: selectedRegionValue });
-  }
 
   onCategoriaChange(event: any) {
     const selectedCategoriaValue = this.categorias_elementos.find((categoria) => categoria.nombre === event.value);
@@ -101,7 +93,7 @@ export class NuevoElementoComponent implements OnInit {
 
   nuevoGuardar() {
     console.log(this.nuevoElemento_form.get('nombre')?.value);
-    if(this.nombre?.invalid || this.region?.invalid || this.imagen?.invalid || this.categoria?.invalid ) {
+    if(this.nombre?.invalid || this.imagen?.invalid || this.categoria?.invalid ) {
       this.messageService.add({severity:'error', summary: 'Error', detail: 'Elemento no guardado'});
       this.submitted = true;
     }else{
@@ -131,14 +123,6 @@ export class NuevoElementoComponent implements OnInit {
     this.mostrarDialogoNuevoElemento.emit(this.mostrar);
   }
 
-
-  inicializaDropDownZonas(){
-    this.enumService.getAllRegiones().subscribe((regiones)=>{
-      this.regiones = regiones;
-  //    this.Dropdown_regiones = regiones.map((region) => region.nombre);
-    })
-  }
-
   inicializaCategorias_elementos(){
     this.enumService.getCategorias_elementos().subscribe((categorias: categorias_elementos[])=>{
      // this.Dropdown_categorias = categorias.map((categorias) => categorias.nombre);
@@ -149,7 +133,6 @@ export class NuevoElementoComponent implements OnInit {
 
   ngOnInit(): void {
     this.AbrirnuevoElemento();
-    this.inicializaDropDownZonas();
     this.inicializaCategorias_elementos();
   }
 
@@ -157,7 +140,6 @@ export class NuevoElementoComponent implements OnInit {
 
   get categoria() { return this.nuevoElemento_form.get('categoria')}
   get nombre() { return this.nuevoElemento_form.get('nombre') }
-  get region() { return this.nuevoElemento_form.get('region') }
   get numero_dispositivos() { return this.nuevoElemento_form.get('numero_dispositivos') }
   get imagen() { return this.nuevoElemento_form.get('imagen') }
 
