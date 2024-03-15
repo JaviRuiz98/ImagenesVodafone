@@ -11,6 +11,7 @@ import { BarraDeBarrasComponent } from '../barra-de-barras/barra-de-barras.compo
 import { DialogModule } from 'primeng/dialog';
 import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
 import { IrArribaComponent } from '../ir-arriba/ir-arriba.component';
+import { InformeService } from 'src/app/servicios/informe/informe.service';
 
 @Component({
   selector: 'app-progreso-auditoria',
@@ -33,6 +34,8 @@ import { IrArribaComponent } from '../ir-arriba/ir-arriba.component';
 })
 export class ProgresoAuditoriaComponent implements OnInit {
 
+  usuario: string = 'usuario_prueba';
+
   id_auditoria_seleccionada: number | undefined;
   auditoria_seleccionada: auditoria | undefined;
   verDialogInforme: boolean = false;
@@ -43,7 +46,8 @@ export class ProgresoAuditoriaComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private router: Router,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private informeService: InformeService
   ) {}  
 
   ngOnInit(): void {
@@ -123,13 +127,47 @@ export class ProgresoAuditoriaComponent implements OnInit {
   }
 
   enviarInforme(){
-    if(this.auditoria_seleccionada !== undefined){
-
+    const id_auditoria = this.id_auditoria_seleccionada;
+    console.log(id_auditoria);
+    const body = {
+      id_auditoria: id_auditoria,
+      usuario: this.usuario
     }
+
+    this.messageService.add({ severity: 'info', summary: 'Enviando informe', detail: 'Enviando informe...' });
+
+    this.informeService.enviarInforme(body).subscribe(
+      (data)=>{
+        this.messageService.add({ severity: 'success', summary: 'Enviado', detail: 'Informe enviado correctamente ' });
+      }, (error)=>{
+        console.error(error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al enviar el informe' });
+      }
+    )
   }
   descargarInforme(){
-    if(this.auditoria_seleccionada !== undefined){
-      
+    const id_auditoria = this.id_auditoria_seleccionada;
+
+    const body = {
+      id_auditoria: id_auditoria,
+      usuario: this.usuario
     }
+
+    this.messageService.add({ severity: 'info', summary: 'Descargando informe', detail: 'Descargando informe...' });
+
+    this.informeService.descargarInforme(body).subscribe(
+      (blob)=>{
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'informe-auditoria.pdf'; // Nombre de archivo deseado
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }, error => {
+        console.error('Error al descargar el informe:', error);
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al descargar el informe' });
+      });
   }
 }

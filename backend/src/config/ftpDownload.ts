@@ -7,7 +7,7 @@ export const downloadImageFtp: (url_image_ftp: string) => Promise<string> = asyn
     const client = new Client();
 
     try {
-        client.ftp.verbose = true;
+        //client.ftp.verbose = true;
 
         await client.access({
             host: process.env.HOST_FTP,
