@@ -1,7 +1,7 @@
 
 .paginaCompleta {
-    padding-left: 10%;
-    padding-right: 10%;   
+    padding-left: 15%;
+    padding-right: 15%;   
 }
 
 .table{
@@ -9,10 +9,11 @@
  
 }
 .toolClass{
-   margin-right:10%;
-   margin-left: 10%;
-   margin-bottom: 2%;
+  padding-left: 15%;
+  padding-right: 15%;   
 }
+
+
 :host::ng-deep {
     .p-button.p-highlight.optionColorVodafone {
        background: red;
@@ -20,6 +21,14 @@
     }
 }
 
+.flex-wrap-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.flex-wrap-container .image-button-container {
+ width: fit-content;
+}
 
 .expositores-container {
     display: flex;

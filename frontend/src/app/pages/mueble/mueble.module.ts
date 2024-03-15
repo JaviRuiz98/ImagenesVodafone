@@ -46,7 +46,6 @@ import { Paso1FormComponent } from './components/formMueble/Paso1Form/Paso1Form.
 import { PasoHuecosFormComponent } from './components/formMueble/PasoHuecosForm/PasoHuecosForm.component';
 import { PasoAsignarElementoFormComponent } from './components/formMueble/PasoAsignarElementoForm/PasoAsignarElementoForm.component';
 import { ArrastrarElementoComponent } from './components/arrastrarElemento/arrastrarElemento.component';
-import { EditarExpositorComponent } from './components/editarExpositor/editarExpositor.component';
 import { NuevoElementoComponent } from 'src/app/componentes/nuevo-elemento/nuevo-elemento.component';
 
 @NgModule({
@@ -90,7 +89,7 @@ import { NuevoElementoComponent } from 'src/app/componentes/nuevo-elemento/nuevo
      HistorialExpositoresComponent,
      AsignarHuecosComponent,
      ArrastrarElementoComponent,
-     EditarExpositorComponent,
+   
      Paso1FormComponent,
      PasoHuecosFormComponent, 
      PasoAsignarElementoFormComponent
