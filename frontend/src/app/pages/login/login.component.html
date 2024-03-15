@@ -12,8 +12,7 @@
             </div>
             <div class="card flex justify-content-center ajusteInput">
                 <span class="p-float-label input">
-                    <p-password [(ngModel)]="credenciales.password" [toggleMask]="true" [feedback]="false" class="input" (keyup.enter)="iniciarSesion()"
-                    ></p-password>
+                    <p-password [(ngModel)]="credenciales.password" [toggleMask]="true" [feedback]="false" class="input" (keyup.enter)="iniciarSesion()"></p-password>
                     <label for="username">Contraseña</label>
                 </span>
             </div>
@@ -23,8 +22,7 @@
             <div class="input">
                 <p-button label="Iniciar Sesión" 
                 class="buttonInicioSesion" 
-                [style]="{'cursor': (!credenciales.usuario || !credenciales.password) ? 'no-drop' : 'pointer', 
-                'padding': '0', 'background-color': '#be0303', 'border-color': '#be0303', 'width': '100%', 'height': '50%'}"
+                [style]="{'cursor': 'pointer', 'padding': '0', 'background-color': '#be0303', 'border-color': '#be0303', 'width': '100%', 'height': '50%'}"
                 [disabled]="!credenciales.usuario || !credenciales.password"
                 (onClick)="iniciarSesion()"
                 (keyup.enter)="iniciarSesion()"
@@ -46,7 +44,7 @@
             <div class="divImagen">
                 <img class="anchoAltoMax" src="assets/images/icono.png">
             </div>
-            <p-button icon="pi pi-arrow-left" [rounded]="true" [text]="true" severity="danger " class="botonVolver" (onClick)="crearUsuario = !crearUsuario"></p-button>
+            <p-button icon="pi pi-arrow-left" [rounded]="true" [text]="true" severity="danger "  (onClick)="crearUsuario = !crearUsuario"></p-button>
             <div class="card flex justify-content-center ajusteInput">
                 <span class="p-float-label input">
                     <input pInputText id="usuario" class="input" [(ngModel)]="nuevoUsuario.usuario" />
@@ -74,8 +72,7 @@
             <div class="input">
                 <p-button label="Registrarme" 
                 class="buttonInicioSesion" 
-                [style]="{'cursor': 'pointer', 
-                'padding': '0', 'background-color': '#be0303', 'border-color': '#be0303', 'width': '100%', 'height': '50%'}"
+                [style]="{'cursor': 'pointer','padding': '0', 'background-color': '#be0303', 'border-color': '#be0303', 'width': '100%', 'height': '50%'}"
                 (onClick)="registrarNuevoUsuario()"
                 (keyup.enter)="registrarNuevoUsuario()">
                 </p-button>

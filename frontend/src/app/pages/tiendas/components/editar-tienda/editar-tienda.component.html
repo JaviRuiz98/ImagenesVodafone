@@ -1,4 +1,5 @@
 <p-dialog 
+    [modal]="true"
     [header]="" 
     [(visible)]="verFormularioEditarTienda"
     (onHide)="verFormularioEditarTiendaChange.emit(false)"
@@ -54,8 +55,8 @@
     <div>
         <p-steps [model]="parametrosSteps" [readonly]="true" [activeIndex]="activeIndex" [style]="{'margin-top': '5%'}"></p-steps>
         <div class="botonesAtrasSiguiente">
-            <p-button (click)="activeIndex = (activeIndex > 0) ? activeIndex - 1 : activeIndex" label="Atrás" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px'}" [disabled]="activeIndex === 0"></p-button>
-            <p-button (click)="botonSiguiente()" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px', 'justify-content': 'center'}"
+            <p-button (click)="activeIndex = (activeIndex > 0) ? activeIndex - 1 : activeIndex" label="Atrás" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px', 'color': 'rgb(195, 8, 8)'}" [disabled]="activeIndex === 0"></p-button>
+            <p-button (click)="botonSiguiente()" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px', 'justify-content': 'center', 'color': 'rgb(195, 8, 8)'}"
             [label]="(activeIndex === 2) ? contenidoBotonCrearEditarTienda: 'Siguiente'"></p-button>
         </div>
     </div>

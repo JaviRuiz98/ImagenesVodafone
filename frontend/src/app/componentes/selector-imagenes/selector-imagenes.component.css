@@ -49,3 +49,14 @@
     justify-content: center;
     overflow: hidden;
 }
+
+.delete-button {
+    
+    position: absolute;
+    top: 60px;
+    right: 32px;
+    border: none;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
