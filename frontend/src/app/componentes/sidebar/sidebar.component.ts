@@ -34,7 +34,7 @@ export class SidebarComponent implements OnInit {
 
         this.estadisticaPrompts = this.estadisticaPrompts.map((estadistica) => ({
           ...estadistica,
-          porcentaje_exito: parseFloat(estadistica.porcentaje_exito.toFixed(2))
+          porcentaje_exito: estadistica.porcentaje_exito? parseFloat(estadistica.porcentaje_exito.toFixed(2)) : 0
         }))
       }
     })
