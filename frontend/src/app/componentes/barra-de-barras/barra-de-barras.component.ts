@@ -27,7 +27,7 @@ export class BarraDeBarrasComponent implements OnChanges {
   getColorByValue(value: number): string {
     if(value == 0) return 'rgba(0, 0, 0, 0)'; // Transparente
     else if(value == 1) return 'rgba(152, 251, 152, 0.5)'; // Verde claro
-    else if(value == 2) return 'rgba(255, 255, 224, 0.5)'; // Amarillo claro
+    else if(value == 2) return 'rgba(255, 235, 59, 1)'; // Amarillo sólido
     else if(value == 3) return 'rgba(255, 165, 0, 0.5)'; // Naranja claro
     else return 'rgba(255, 99, 71, 0.6)'; // Rojo claro
 
