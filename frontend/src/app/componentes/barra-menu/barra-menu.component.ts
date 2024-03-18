@@ -57,7 +57,7 @@ export class BarraMenuComponent implements OnInit, AfterViewInit {
   }
 
   obtenerYAlmacenarAnchuraBarra() {
-    const anchura_componente_barra = 120; // anchura de 120px fijada a partir de los estilos
+    const anchura_componente_barra = this.barraMenu.nativeElement.offsetHeight;
     console.log('Anchura de la barra:', anchura_componente_barra);
 
     this.localStorageService.setItem('anchura_componente_barra', anchura_componente_barra);
