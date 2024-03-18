@@ -103,7 +103,6 @@ export class TemplateInformeComponent implements OnInit {
     this.porcentaje_procesados = (this.informeData.num_expositores_procesados / this.informeData.num_expositores) * 100;
     this.porcentaje_procesados = parseFloat(this.porcentaje_procesados.toFixed(2));
     
-    console.log(this.resumen_auditoria);
   }
 
   getSeverityCartel(procesado: string): string {
@@ -117,6 +116,8 @@ export class TemplateInformeComponent implements OnInit {
   generarDatosChart() {
     for (const dato of this.informeData.datos_barra_progreso) {
       switch (dato) {
+        case 0:
+          break;
         case 1:
           this.chartData[0]++;
           break;

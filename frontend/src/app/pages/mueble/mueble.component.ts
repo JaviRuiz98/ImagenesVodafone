@@ -8,10 +8,10 @@ import { HistorialExpositoresComponent } from './components/historialExpositores
 import { PrimeNGConfig } from 'primeng/api';
 import { expositores } from 'src/app/interfaces/expositores';
 import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
-import { EditarExpositorComponent } from './components/editarExpositor/editarExpositor.component';
 import { UrlService } from 'src/app/servicios/url/url.service';
 import { Subject } from 'rxjs';
 import { OverlayPanel } from 'primeng/overlaypanel';
+import { ViewExpositorComponent } from './components/viewExpositor/viewExpositor.component';
 
 @Component({
   selector: 'app-mueble',
@@ -19,6 +19,7 @@ import { OverlayPanel } from 'primeng/overlaypanel';
   styleUrls: ['./mueble.component.css']
 })
 export class MuebleComponent implements OnInit {
+
 
 
 
@@ -88,6 +89,26 @@ export class MuebleComponent implements OnInit {
       this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
     });
   }
+
+  showViewExpositor( expositor:expositores) {
+    this.ref = this.dialogService.open(ViewExpositorComponent, {
+      header: 'Visualización de elementos' ,
+      width: '70%',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 10000,
+      maximizable: true,
+      data: {
+        expositor: expositor, 
+      }
+    });
+    
+   
+    
+    this.ref.onMaximize.subscribe((value) => {
+      this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
+    });
+  }
+    
   
   nuevoMueble() {
     this.ref = this.dialogService.open(FormMuebleComponent, {
@@ -156,6 +177,20 @@ export class MuebleComponent implements OnInit {
 
   hideOverlayPanel(op: OverlayPanel) {
     op.toggle(event);
+  }
+  shouldOpenFirstAccordion(mueble: muebles): boolean {
+    let res: boolean = false;
+    //en caso de que tenga un expositor sin modelo devuelvo true, en otro caso false
+    if (mueble.expositores && mueble.expositores.length === 1 ) {
+     
+        if (!this.tieneModelo(mueble.expositores[0].atributos_expositores)) {
+          res = true;
+        
+        }
+      
+    
+    }
+    return res;
   }
 
   

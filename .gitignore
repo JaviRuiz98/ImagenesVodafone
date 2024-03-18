@@ -8,6 +8,8 @@ backend/.dockerignore
 backend/docker-compose.debug.yml
 backend/Dockerfile
 backend/assets/imagenes
+backend/assets/temp
+backend/imagenes
 backend/reporte.pdf
 
 .env

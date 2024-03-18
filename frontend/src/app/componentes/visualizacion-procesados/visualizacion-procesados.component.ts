@@ -68,6 +68,7 @@ export class VisualizacionProcesadosComponent implements OnInit{
 
   ngOnInit(): void {
     this.auditoria_seleccionada = this.LocalStorageService.getItem('auditoria_seleccionada');
+    console.log('auditoria_seleccionada', this.auditoria_seleccionada)
   }
   getElementosPaginados(): procesados_imagenes[] | undefined {
     return this.procesados.slice(this.indice_paginador, this.indice_paginador + this.items_per_page);

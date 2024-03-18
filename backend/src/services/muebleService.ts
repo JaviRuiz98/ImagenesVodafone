@@ -5,7 +5,7 @@ import { muebleCreation } from "../interfaces/mueblesCreados";
 // import { ExpositorFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
 // import {expositoresConProcesados} from "../interfaces/expositoresProcesados"
 
-export const mobiliarioService = {
+export const muebleService = {
     async getHuecosDisponibles (id_expositor: number)  {
         try {
            return await db.atributos_expositores.count(
@@ -13,10 +13,7 @@ export const mobiliarioService = {
                 where: { 
                     id_expositor: id_expositor,
                     id_categoria: 2
-                }
-                            
-                        
-                   
+                } 
                 });
         } catch (error) {
             throw error;
@@ -127,8 +124,8 @@ export const mobiliarioService = {
                    
                     for (const atributo of expositores.atributos_expositores) {
                        //Por cada atributo de cada expositor
-                        //creo una nueva pertenencia
-                       
+
+                       //Si existe el elemento creo uno nuevo
                         if (atributo.elemento?.id && !!atributo.id) {
                             //comprobar que no existe ya una pertenencia con ese id_atributos_expositores y id_elementos
                             const pertenencia = await prisma.pertenencia_elementos_atributos.findFirst({
@@ -137,7 +134,8 @@ export const mobiliarioService = {
                                     id_elemento: atributo.elemento?.id,
                                 }
                             });
-                            if (!pertenencia) {
+                            //si ya existe no debo crear una nueva
+                            if (!pertenencia || pertenencia.activo == false) {
                                 await prisma.pertenencia_elementos_atributos.create({
                                     data: {
                                         id_atributo_expositor: atributo.id,
@@ -145,8 +143,40 @@ export const mobiliarioService = {
                                     }
                                 });
                             }
+                                
+                            // } else if ( pertenencia.activo == false) {
+                            //     await prisma.pertenencia_elementos_atributos.update({
+                            //         where: {
+                            //             id: pertenencia.id
+                            //         },
+                            //         data: {
+                            //             activo: true
+                            //         }
+                            //     });
+
+                            // }
                           
-                        }  
+                        } else{ //si no existe elemento, debo comprobar si antes existia, y si existia, descativarla
+
+                            const pertenencia = await prisma.pertenencia_elementos_atributos.findFirst({
+                                where: {
+                                    id_atributo_expositor: atributo.id,
+                                    id_elemento: atributo.elemento?.id,
+                                }
+                            });
+                            if (pertenencia) {
+                                await prisma.pertenencia_elementos_atributos.update({
+                                    where: {
+                                        id: pertenencia.id
+                                    },
+                                    data: {
+                                        activo: false
+                                    }
+                                });
+                            }
+
+                        }
+                        
                     }
                    
                 }
@@ -173,6 +203,9 @@ export const mobiliarioService = {
                                     
                                     categorias_elementos:true,
                                     pertenencia_elementos_atributos: {
+                                        where: {
+                                            activo: true,
+                                        },
                                         include: {
                                             elementos: {
                                                 include: {
@@ -180,6 +213,7 @@ export const mobiliarioService = {
                                                     categorias_elementos: true
                                                 },
                                             },
+                                            
                                         },
                                         orderBy: {
                                             fecha: "desc",
@@ -226,6 +260,7 @@ export const mobiliarioService = {
                             tiendas: {
                                 id: id_tienda,
                             },
+                            activo: true
                         },
                     },
                 },
@@ -235,6 +270,9 @@ export const mobiliarioService = {
                             atributos_expositores: {
                                 include: {
                                     pertenencia_elementos_atributos: {
+                                        where: {
+                                            activo: true,
+                                        },
                                         include: {
                                             elementos: true,
                                         },
@@ -293,6 +331,9 @@ export const mobiliarioService = {
                             atributos_expositores: {
                                 include: {
                                     pertenencia_elementos_atributos: {
+                                        where: {
+                                            activo: true,
+                                        },
                                         include: {
                                             elementos: {
                                                 include: {
