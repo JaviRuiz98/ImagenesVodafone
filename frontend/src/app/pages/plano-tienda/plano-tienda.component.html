@@ -6,7 +6,7 @@
   </div>
   <div class="panelDerechoAsignarMueblesToolbar">
     <p-toolbar class="toolbar" [style]="{'width': '100%'}">
-      <p-button (click)="anadirRectangulo()" label="Añadir posición mueble" icon="pi pi-plus" severity="danger"></p-button>
+      <p-button (click)="anadirRectangulo()" label="Añadir posición mueble" icon="pi pi-plus" severity="danger" [disabled]="!this.boton_anadir_posicion_mueble"></p-button>
       <p-button icon="pi pi-pencil" severity="secondary" label="Cambiar muebles" (click)="cambiarMuebles()" ></p-button>
       <p-dialog [(visible)]="this.mostrar_dialog_asignar_muebles" [style]="{width: '95vw', height: '80vh'}" [draggable]="false" (onHide)="mostrar_cambiar_muebles = false">
         <div class="cambiarMuebles">

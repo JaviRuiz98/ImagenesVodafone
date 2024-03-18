@@ -8,7 +8,6 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 
-import { ValidadorModule } from './pages/validador/validador.module';
 import { HomeModule } from './pages/home/home.module';
 import { BarraMenuComponent } from './componentes/barra-menu/barra-menu.component';
 import { TiendasModule } from './pages/tiendas/tiendas.module';
@@ -31,7 +30,6 @@ import { ButtonModule } from 'primeng/button';
     BarraMenuComponent,
     RemarcarExpositorComponent,
     MuebleModule,
-    ValidadorModule,
     AppRoutingModule,
     HomeModule,
     TiendasModule,

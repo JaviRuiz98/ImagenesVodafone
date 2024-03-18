@@ -42,6 +42,7 @@ export class PlanoTiendaComponent implements OnInit {
   anchura_plano: number = 0;
 
   mostrar_cambiar_muebles = false;
+  boton_anadir_posicion_mueble = true;
 
   constructor(
     private localStorageService: LocalStorageService,
@@ -179,7 +180,7 @@ export class PlanoTiendaComponent implements OnInit {
     )
   }
 
-  async anadirIconoDentroRectangulo(targetRect: any, id_posicion_mueble: number, mueble: muebles) {
+  async anadirIconoDentroRectangulo(targetRect: fabric.Rect, id_posicion_mueble: number, mueble: muebles) {
     fabric.Image.fromURL(this.urlService.url_imagenes_referencia + mueble.imagen_representativa[0].url, (img) => {
       const scaleX = targetRect.width / img.width;
       const scaleY = targetRect.height / img.height;
@@ -246,6 +247,7 @@ export class PlanoTiendaComponent implements OnInit {
 
   async cargarMueblesAsignados() {
     await this.vaciarMueblesDelCanvas();
+    this.boton_anadir_posicion_mueble = true;
 
     this.muebles.forEach(mueble => {
       mueble.pertenencia_mueble_tienda.forEach(pertenencia => {
@@ -298,6 +300,7 @@ export class PlanoTiendaComponent implements OnInit {
   }
 
   anadirRectangulo() {
+    this.boton_anadir_posicion_mueble = false;
     this.id++;
 
     const rect = new fabric.Rect({
