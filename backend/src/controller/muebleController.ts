@@ -210,8 +210,8 @@ const buscarImagenCualquierElemento = (expositores: any) : imagenes[]  => {
     for (let expositor of expositores) {
         for (let atributo of expositor.atributos_expositores) {
                            //solo hay una pertenencia (la mas reciente si el servicio es correcto) y siempre habrá un único elemento asociado a pertenencia 
-        if (!!atributo.pertenencia_elementos_atributos[0].elementos.imagenes) {
-                imagenes.push(atributo.pertenencia_elementos_atributos[0].elementos.imagenes);
+        if (!!atributo.pertenencia_elementos_atributos[0].elementos?.imagenes) {
+                imagenes.push(atributo.pertenencia_elementos_atributos[0].elementos?.imagenes);
                 break; //solo necesito una
             }
         }

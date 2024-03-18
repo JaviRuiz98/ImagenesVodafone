@@ -42,10 +42,10 @@
             <ng-container>
               <div
                 [style.position]="'absolute'" 
-                [style.left.px]="getPosicionMuebleDadoMueble(mueble).x_start"
-                [style.top.px]="getPosicionMuebleDadoMueble(mueble).y_start + anchura_barra"
-                [style.width.px]="getPosicionMuebleDadoMueble(mueble).ancho" 
-                [style.height.px]="getPosicionMuebleDadoMueble(mueble).alto" 
+                [style.left.px]="getPosicionMuebleDadoMueble(mueble).x_start * anchura_plano"
+                [style.top.px]="getPosicionMuebleDadoMueble(mueble).y_start * altura_plano + anchura_barra"
+                [style.width.px]="getPosicionMuebleDadoMueble(mueble).ancho * anchura_plano" 
+                [style.height.px]="getPosicionMuebleDadoMueble(mueble).alto * altura_plano" 
                 [style.transform]="getPosicionMuebleDadoMueble(mueble).angulo ? 'rotate(' + getPosicionMuebleDadoMueble(mueble).angulo + 'deg)' : ''"
                 [style.transform-origin]="getPosicionMuebleDadoMueble(mueble).angulo ? '0% 0%' : ''"
                 style="border: 1px solid transparent; z-index: 2;"

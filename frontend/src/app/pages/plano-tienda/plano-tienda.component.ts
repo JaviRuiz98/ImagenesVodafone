@@ -20,6 +20,8 @@ export class PlanoTiendaComponent implements OnInit {
 
   @ViewChild('op') op: OverlayPanel;
 
+  imagen_plano_tienda: string = '/assets/images/planoTienda.png';
+
   mostrar_dialog_asignar_muebles = false;
 
   canvas: fabric.Canvas;
@@ -36,6 +38,9 @@ export class PlanoTiendaComponent implements OnInit {
   id_tienda: number = 0;
   anchura_barra: number = 0;
 
+  altura_plano: number = 0;
+  anchura_plano: number = 0;
+
   mostrar_cambiar_muebles = false;
 
   constructor(
@@ -50,13 +55,16 @@ export class PlanoTiendaComponent implements OnInit {
   ngOnInit() {
     this.id_tienda = this.localStorageService.getItem('id_tienda');
     this.tiendaSelected = this.localStorageService.getItem('tienda');
-    this.obtenerAnchuraBarra();
     this.inicializarCanvas();
     this.accionAlAsignarMueble();
     this.getMueblesTienda();
     window.addEventListener('resize', () => {
       this.editarCanvas();
     });
+  }
+
+  ngAfterViewInit() {
+    this.obtenerAnchuraBarra();
   }
 
   obtenerAnchuraBarra() {
@@ -71,10 +79,14 @@ export class PlanoTiendaComponent implements OnInit {
       height: parametrosAlturaAnchura.height,
     });
 
-    fabric.Image.fromURL('/assets/images/planoTienda.png', (img) => {
+    fabric.Image.fromURL(this.imagen_plano_tienda, (img) => {
       const scaleX = this.canvas.width / img.width;
       const scaleY = this.canvas.height / img.height;
       const scale = Math.min(scaleX, scaleY);
+
+      this.anchura_plano = img.width;
+      this.altura_plano = img.height;
+      console.log('Anchura:', this.anchura_plano, 'Altura:', this.altura_plano);
 
       const offsetX = (this.canvas.width - img.width * scale) / 2;
       const offsetY = (this.canvas.height - img.height * scale) / 2;
@@ -91,7 +103,7 @@ export class PlanoTiendaComponent implements OnInit {
     const parametrosAlturaAnchura = this.obtenerAlturaAnchuraCanvas(100, 100);
     this.canvas.setWidth(parametrosAlturaAnchura.width);
     this.canvas.setHeight(parametrosAlturaAnchura.height);
-    fabric.Image.fromURL('/assets/images/planoTienda.png', (img) => {
+    fabric.Image.fromURL(this.imagen_plano_tienda, (img) => {
       const scaleX = this.canvas.width / img.width;
       const scaleY = this.canvas.height / img.height;
       const scale = Math.min(scaleX, scaleY);
@@ -141,10 +153,10 @@ export class PlanoTiendaComponent implements OnInit {
       } else { // estamos sobre un rectangulo
         const datos_posicion_mueble: posiciones_muebles_tienda = {
           id_pertenencia_mueble_tienda: mueblesData.pertenencia_mueble_tienda[0].id,
-          x_start: targetRect.left,
-          y_start: targetRect.top,
-          ancho: targetRect.width,
-          alto: targetRect.height,
+          x_start: targetRect.left / this.anchura_plano,
+          y_start: targetRect.top / this.altura_plano,
+          ancho: targetRect.width / this.anchura_plano,
+          alto: targetRect.height / this.altura_plano,
           angulo: targetRect.angle
         }
         console.log('datos_posicion_mueble: ', datos_posicion_mueble);
@@ -252,12 +264,14 @@ export class PlanoTiendaComponent implements OnInit {
   }
 
   inicializarRectanguloConMueble(posicion, id_posicion_mueble, mueble) {
+    console.log('posicion', posicion);
+
     const rect = new fabric.Rect({
-        left: posicion.x_start,
-        top: posicion.y_start,
+        left: posicion.x_start * this.anchura_plano,
+        top: posicion.y_start * this.altura_plano,
         fill: 'red', // Asumiendo que quieres un color específico para los rectángulos con muebles
-        width: posicion.ancho,
-        height: posicion.alto,
+        width: posicion.ancho * this.anchura_plano,
+        height: posicion.alto * this.altura_plano,
         angle: posicion.angulo,
         cornerStyle: 'circle',
         borderColor: 'red',
@@ -270,6 +284,8 @@ export class PlanoTiendaComponent implements OnInit {
 
     // Añade el rectángulo al canvas
     this.canvas.add(rect);
+
+    console.log('Datos rectangulo:', rect);
 
     // Opcional: Añadir icono o texto para representar el mueble dentro del rectángulo
     this.anadirIconoDentroRectangulo(rect, id_posicion_mueble, mueble);
