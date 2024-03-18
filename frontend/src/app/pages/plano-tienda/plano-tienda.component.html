@@ -24,53 +24,54 @@
     <div *ngIf="!mostrar_cambiar_muebles">
       <div class="scrollable-div">
         <div *ngFor="let mueble of this.muebles">
-        <div class="muebleSinAsignar" *ngIf="mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda.length == 0"
-            draggable="true"
-            (dragstart)="onDragStart($event, mueble)"
-            [attr.data-id]="mueble.id">
+          <div class="muebleSinAsignar" *ngIf="mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda.length == 0"
+          draggable="true"
+          (dragstart)="onDragStart($event, mueble)"
+          [attr.data-id]="mueble.id">
+          <div *ngFor="let imagen of mueble.imagen_representativa">
+            <img [src]="this.urlService.url_imagenes_referencia + imagen.url" class="imagenRepresentativaMueble">
+          </div>                
+          <h3>{{ mueble.nombre }}</h3>
+        </div>
+          <div class="muebleAsignado" *ngIf="mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda.length != 0">
             <div *ngFor="let imagen of mueble.imagen_representativa">
                 <img [src]="this.urlService.url_imagenes_referencia + imagen.url" class="imagenRepresentativaMueble">
             </div>                
             <h3>{{ mueble.nombre }}</h3>
-        </div>
-        <div class="muebleAsignado" *ngIf="mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda.length != 0">
-          <div *ngFor="let imagen of mueble.imagen_representativa">
-              <img [src]="this.urlService.url_imagenes_referencia + imagen.url" class="imagenRepresentativaMueble">
-          </div>                
-          <h3>{{ mueble.nombre }}</h3>
-          <p-button icon="pi pi-times" [text]="true" severity="danger" [size]="'large'" (onClick)="eliminarPosicionMueble(mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].id)"></p-button>
-          <ng-container>
-            <div
-              [style.position]="'absolute'" 
-              [style.left.px]="getPosicionMuebleDadoMueble(mueble).x_start"
-              [style.top.px]="getPosicionMuebleDadoMueble(mueble).y_start + anchura_barra"
-              [style.width.px]="getPosicionMuebleDadoMueble(mueble).ancho" 
-              [style.height.px]="getPosicionMuebleDadoMueble(mueble).alto" 
-              [style.transform]="getPosicionMuebleDadoMueble(mueble).angulo ? 'rotate(' + getPosicionMuebleDadoMueble(mueble).angulo + 'deg)' : ''"
-              [style.transform-origin]="getPosicionMuebleDadoMueble(mueble).angulo ? '0% 0%' : ''"
-              style="border: 1px solid transparent; z-index: 2;"
-              (mouseenter)="op.toggle($event)" (mouseleave)="op.toggle($event)">
-              <p-overlayPanel #op >
-                <ng-template pTemplate>
-                  <div style="display: flex;">
-                    <div *ngFor="let imagen of mueble.imagen_representativa">
-                      <img [src]="this.urlService.url_imagenes_referencia + imagen.url" class="imagenRepresentativaMueble">
-                    </div>                                          
-                  </div>
-                  <h3>{{ mueble.nombre }}</h3>
-                </ng-template>
-              </p-overlayPanel>
-              <div class="corner-buttons" style="position: absolute; right: -24px; top: -24px; width: 48px; height: 48px;">
-                <p-button type="button" severity="danger" [rounded]="true" icon="pi pi-times" 
-                    [size]="'small'"
-                    (click)="eliminarPosicionMueble(mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].id)" 
-                    class="deleteButton corner-button corner-top-right">
-                </p-button>
+            <p-button icon="pi pi-times" [text]="true" severity="danger" [size]="'large'" (onClick)="eliminarPosicionMueble(mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].id)"></p-button>
+            <ng-container>
+              <div
+                [style.position]="'absolute'" 
+                [style.left.px]="getPosicionMuebleDadoMueble(mueble).x_start"
+                [style.top.px]="getPosicionMuebleDadoMueble(mueble).y_start + anchura_barra"
+                [style.width.px]="getPosicionMuebleDadoMueble(mueble).ancho" 
+                [style.height.px]="getPosicionMuebleDadoMueble(mueble).alto" 
+                [style.transform]="getPosicionMuebleDadoMueble(mueble).angulo ? 'rotate(' + getPosicionMuebleDadoMueble(mueble).angulo + 'deg)' : ''"
+                [style.transform-origin]="getPosicionMuebleDadoMueble(mueble).angulo ? '0% 0%' : ''"
+                style="border: 1px solid transparent; z-index: 2;"
+                (mouseenter)="op.toggle($event)" (mouseleave)="op.toggle($event)">
+                <p-overlayPanel #op >
+                  <ng-template pTemplate>
+                    <div style="display: flex;">
+                      <div *ngFor="let imagen of mueble.imagen_representativa">
+                        <img [src]="this.urlService.url_imagenes_referencia + imagen.url" class="imagenRepresentativaMueble">
+                      </div>                                          
+                    </div>
+                    <h3>{{ mueble.nombre }}</h3>
+                  </ng-template>
+                </p-overlayPanel>
+                <div class="corner-buttons" style="position: absolute; right: -24px; top: -24px; width: 48px; height: 48px;">
+                  <p-button type="button" severity="danger" [rounded]="true" icon="pi pi-times" 
+                      [size]="'small'"
+                      (click)="eliminarPosicionMueble(mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].id)" 
+                      class="deleteButton corner-button corner-top-right">
+                  </p-button>
+                </div>
               </div>
-            </div>
-          </ng-container>  
+            </ng-container>  
+          </div>
         </div>
-      </div>
+      </div> 
     </div>
   </div>
 </div>
