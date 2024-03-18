@@ -362,6 +362,15 @@ export const muebleService = {
 }
 
 export const expositorService = {
+    async getById(id_expositor: number): Promise<expositores | null> {
+        try {
+            return db.expositores.findUnique({ where: { id: id_expositor } });
+        } catch (error) {
+            throw error;
+        } finally {
+            await db.$disconnect();
+        }
+    },
     async updateExpositor(id_expositor: number, nombre:string, atributos_expositores: 
         {
             id?: number;
