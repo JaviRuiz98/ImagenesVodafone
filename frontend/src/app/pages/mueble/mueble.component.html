@@ -33,7 +33,7 @@
                     <div class="p-4 border-1 surface-border surface-card border-round">
                         <div class="grid">
 
-                            <div class="text-2xl col-9 font-bold overflow-hidden text-overflow-ellipsis">
+                            <div class="text-2xl col-11 font-bold overflow-hidden text-overflow-ellipsis">
                                 {{ mueble.nombre }}
                             </div>
                                 <p-overlayPanel #op>
@@ -43,13 +43,13 @@
                                         </div>
                                     </ng-template>
                                 </p-overlayPanel>
-
-                            <div class="col-3">
+                                <!-- En caso de tener los dos botones poner col-3 -->
+                            <div class="col-1"> 
                                 <div class="flex-inline">
-                                    <p-button (mouseenter)="showOverlayPanel(op, 'Historial de mueble')"
+                                    <!-- <p-button (mouseenter)="showOverlayPanel(op, 'Historial de mueble')"
                                     (mouseleave)="hideOverlayPanel(op)" class="mr-2" [raised]="true" [text]="true" [rounded]="true"
                                     severity="danger" icon="pi pi-history" [disabled]="mueble.expositores.length < 1"
-                                    (click)="showHistorial(mueble)"></p-button>
+                                    (click)="showHistorial(mueble)"></p-button> -->
                             
                                     <p-button (mouseenter)="showOverlayPanel(op, 'Editar mueble')" (mouseleave)="hideOverlayPanel(op)"
                                         severity="danger" class="mr-2" [raised]="true" [text]="true" [rounded]="true" icon="pi pi-pencil"
@@ -64,9 +64,12 @@
                             <div [ngClass]="{ 'flex-wrap-container': mueble.expositores.length > 1 }">
                                 <div *ngFor="let expositor of mueble.expositores; let i = index;" class="item-container">
                                     <div *ngIf="tieneModelo(expositor.atributos_expositores); else noModelo" class="image-button-container">
-                                        <p-image [src]="url_imagenes_referencias + getImagenModelo(expositor)" height="200vh"
-                                            [alt]="getImagenModelo(expositor) ? getImagenModelo(expositor) : 'No disponible'" [preview]="true">
-                                        </p-image>
+                                        <img [src]="url_imagenes_referencias + getImagenModelo(expositor)" height="200vh"
+                                            [alt]="getImagenModelo(expositor) ? getImagenModelo(expositor) : 'No disponible'" class="imagenDestacada"
+                                            (click)="showViewExpositor(expositor)" 
+                                            
+                                            />
+                                   
                                         <p-button [raised]="true" [text]="true" [rounded]="true" severity="danger"
                                             label="Asignación de elementos" icon="pi pi-plus-circle"
                                             [disabled]="!tieneModelo(expositor.atributos_expositores)" (onClick)="editMueble(mueble,i)"
@@ -81,7 +84,7 @@
                         </div>
                         
                         <div class="m-2">
-                            <p-accordion [multiple]="true" [style]="{'width':'100% '}">
+                            <p-accordion [multiple]="true" [style]="{'width':'100% '}" [activeIndex]="!!shouldOpenFirstAccordion(mueble)? [0] : null">
                                 <p-accordionTab header="Elementos del mueble">
                                     <div *ngFor="let expositor of mueble.expositores; let i = index;">
                                         <div *ngFor="let attr of expositor.atributos_expositores; let j = index;">

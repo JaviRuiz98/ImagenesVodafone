@@ -21,7 +21,7 @@ import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/p
 export class PasoAsignarElementoFormComponent implements AfterViewInit {
 
 
-  constructor(private imagenService: ProcesamientoService, private fb: FormBuilder, private urlService: UrlService, public dialogConfig : DynamicDialogConfig, private cdr: ChangeDetectorRef, public messageService : MessageService) { }
+  constructor(private imagenService: ProcesamientoService, private fb: FormBuilder, private urlService: UrlService, private cdr: ChangeDetectorRef, public messageService : MessageService) { }
 
   canvas: fabric.Canvas;
   

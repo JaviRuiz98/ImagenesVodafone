@@ -5,6 +5,7 @@ import { muebles } from '../../interfaces/muebles';
 import { filtro_procesados } from 'src/app/interfaces/filtro_procesados';
 import { muebleCreation } from 'src/app/pages/mueble/interfaces/muebleCreacion';
 import { expositores } from 'src/app/interfaces/expositores';
+import { pertenencia_elementos_atributos } from 'src/app/interfaces/pertenencia_elementos_atributos';
 
 @Injectable({
   providedIn: 'root'
@@ -92,6 +93,11 @@ export class MueblesService {
     }
     return this.http.put<expositores>(this.API_URI_EXPOSITORES  + expositor.id, data, this.options);
   }
+  getPertenenciaExpositorElementobyIdExpositor(id_expositor: number): Observable<pertenencia_elementos_atributos[]> {
+    //no funciona todavia
+    return this.http.get<pertenencia_elementos_atributos[]>(this.API_URI + 'pertenencia_elementos_atributos/' + id_expositor);
+  }
+
 }
 
 

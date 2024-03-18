@@ -54,6 +54,9 @@ export class PlanoTiendaComponent implements OnInit {
     this.inicializarCanvas();
     this.accionAlAsignarMueble();
     this.getMueblesTienda();
+    window.addEventListener('resize', () => {
+      this.editarCanvas();
+    });
   }
 
   obtenerAnchuraBarra() {
@@ -62,19 +65,58 @@ export class PlanoTiendaComponent implements OnInit {
   }
 
   inicializarCanvas() {
+    const parametrosAlturaAnchura = this.obtenerAlturaAnchuraCanvas(100, 100);
     this.canvas = new fabric.Canvas('canvas_plano', {
-      width: 1100,
-      height: 700,
-      backgroundColor: 'lightgrey',
+      width: parametrosAlturaAnchura.width,
+      height: parametrosAlturaAnchura.height,
     });
-    fabric.Image.fromURL('/assets/images/plano_tienda.jpg', (img) => {
-      img.scaleToWidth(this.canvas.getWidth());
-      img.scaleToHeight(this.canvas.getHeight());
+
+    fabric.Image.fromURL('/assets/images/planoTienda.png', (img) => {
+      const scaleX = this.canvas.width / img.width;
+      const scaleY = this.canvas.height / img.height;
+      const scale = Math.min(scaleX, scaleY);
+
+      const offsetX = (this.canvas.width - img.width * scale) / 2;
+      const offsetY = (this.canvas.height - img.height * scale) / 2;
+
       this.canvas.setBackgroundImage(img, this.canvas.renderAll.bind(this.canvas), {
-        scaleX: this.canvas.width / img.width,
-        scaleY: this.canvas.height / img.height,
+        scaleX: scale,
+        scaleY: scale,
+        left: offsetX,
+        top: offsetY
       });
     });
+  }
+  editarCanvas(){
+    const parametrosAlturaAnchura = this.obtenerAlturaAnchuraCanvas(100, 100);
+    this.canvas.setWidth(parametrosAlturaAnchura.width);
+    this.canvas.setHeight(parametrosAlturaAnchura.height);
+    fabric.Image.fromURL('/assets/images/planoTienda.png', (img) => {
+      const scaleX = this.canvas.width / img.width;
+      const scaleY = this.canvas.height / img.height;
+      const scale = Math.min(scaleX, scaleY);
+
+      const offsetX = (this.canvas.width - img.width * scale) / 2;
+      const offsetY = (this.canvas.height - img.height * scale) / 2;
+
+      this.canvas.setBackgroundImage(img, this.canvas.renderAll.bind(this.canvas), {
+        scaleX: scale,
+        scaleY: scale,
+        left: offsetX,
+        top: offsetY
+      });
+    });
+  }
+
+  obtenerAlturaAnchuraCanvas(altura: number, anchura: number) {
+    let canvasContainer = document.querySelector('.divPlanoTienda') as HTMLElement;     
+    if (!canvasContainer) {
+        console.error('No se encontró el contenedor del canvas.');
+        return null;
+    }
+    let canvasWidth = canvasContainer.offsetWidth * (anchura / 100); 
+    let canvasHeight = canvasContainer.offsetHeight * (altura / 100);    
+    return { height: canvasHeight, width: canvasWidth };
   }
 
   async accionAlAsignarMueble() {
@@ -174,10 +216,7 @@ export class PlanoTiendaComponent implements OnInit {
 
       if(targetRect) {
         this.canvas.remove(targetRect); // Eliminar el rectángulo para que no se duplique
-        console.log('Rectangulo eliminado: ', targetRect);
       }
-
-      console.log('group: ', group);
     });
   }
 

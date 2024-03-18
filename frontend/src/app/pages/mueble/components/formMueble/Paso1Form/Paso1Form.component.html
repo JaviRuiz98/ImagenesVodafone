@@ -38,13 +38,13 @@
     
      
 
-    <div class="flex align-items-center justify-content-center mt-4">
-      <p-card [style]="{'width':'130vh'}" header="Subir modelo">
-        <div>
+    <div class="flex align-items-center justify-content-center mt-4" *ngIf ="objetivo_form=='crear' || (objetivo_form=='editar' && !!imagenesExpositores && imagenesExpositores.length > 0)" >
+      <p-card [style]="{'width':'130vh'}" [header]=" (objetivo_form=='editar') ? 'Modelo' : 'Subir modelo' ">
+        <div *ngIf="objetivo_form=='crear'" >
           <span class="pi pi-exclamation-triangle text-xl" style="color: orange"></span>
 
-          <small class="text-500"  *ngIf="objetivo_form=='crear'" >
-            Añade si es necesario a lo sumo 2 imagenes que sirvan como modelo para el mueble
+          <small class="text-500"  >
+            Añade si es necesario a lo sumo 2 imagenes que sirvan como <span class="font-bold">modelo </span> para el mueble
           </small>
         </div>
         <div class="flex" style="height: 50vh;"  *ngIf="objetivo_form=='crear'; else editar">
