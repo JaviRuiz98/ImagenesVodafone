@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { tiendaService } from '../services/tiendasServices';
-import { muebles, tiendas } from '@prisma/client';
+import { imagenes, muebles, tiendas } from '@prisma/client';
+import { imagenService } from '../services/imagenService';
  
  
 
@@ -19,10 +20,33 @@ export async function getAllTiendas(req: Request, res: Response) {
 
 export async function newTienda(req: Request, res: Response) {
     try{     
-        const tienda: tiendas = await tiendaService.newTienda(req.body.parametros);
-        const listaIdMuebles = req.body.listaNuevosMuebles.map((mueble: muebles) => mueble.id);
-        await tiendaService.asignarPertenenciaMuebleTienda(tienda.id, listaIdMuebles);
-        getAllTiendas(req, res);
+        const file = req.file; //es opcional
+        const parametros = JSON.parse(req.body.parametros);
+        const listaMuebles = JSON.parse(req.body.listaNuevosMuebles);
+        
+        let imagen:imagenes | undefined; 
+        if (file) {
+            imagen = await imagenService.create(file.filename, file.originalname); 
+        }
+
+        const tienda: tiendas = await tiendaService.newTienda(parametros, imagen);
+
+        const listaIdMuebles = listaMuebles.map((mueble: muebles) => mueble.id);
+
+        const resultados = await tiendaService.asignarPertenenciaMuebleTienda(tienda.id, listaIdMuebles);
+
+       if (resultados) { //si el resultado es correcto, devuelvo todas las tiendas
+            const tienda = await tiendaService.getAllById(undefined);
+            if (!tienda) {
+                //Contenido vacio
+                res.status(204).send();
+                return;
+            }else {
+                res.status(200).json(tienda);
+            }
+       }
+       
+
     }catch (error) {
         console.error('Error al crear tienda:', error);
     }
@@ -30,9 +54,22 @@ export async function newTienda(req: Request, res: Response) {
 
 export async function updateTienda(req: Request, res: Response) {
     try{     
+
+        const file = req.file; //es opcional
         const id_tienda = parseInt(req.params.id_tienda);
-        desactivarMueblesTienda(id_tienda);
-        const listaIdMuebles = req.body.map((mueble: muebles) => mueble.id);
+        const listaMuebles = JSON.parse(req.body);
+        
+        let imagen:imagenes | undefined; 
+        if (file) {
+            imagen = await imagenService.create(file.filename, file.originalname); 
+        }
+        //si existe imagen, actualizamos el plano
+        if (imagen){
+            await tiendaService.updatePlanoTienda(id_tienda, imagen);
+        }
+
+        desactivarMueblesTienda(id_tienda); //no se que hace pero me fio del lila
+        const listaIdMuebles = listaMuebles.map((mueble: muebles) => mueble.id);
         await tiendaService.asignarPertenenciaMuebleTienda(id_tienda, listaIdMuebles);
         res.status(200).json(id_tienda);
     }catch (error) {
