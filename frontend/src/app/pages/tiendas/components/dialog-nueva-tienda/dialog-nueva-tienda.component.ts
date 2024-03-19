@@ -3,7 +3,7 @@ import { Component, Input, OnInit, Output, EventEmitter, SimpleChanges  } from '
 import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 
-import { tienda } from 'src/app/interfaces/tienda';
+import { tienda, tiendaCreacion } from 'src/app/interfaces/tienda';
 import { muebles } from 'src/app/interfaces/muebles';
 
 @Component({
@@ -13,6 +13,7 @@ import { muebles } from 'src/app/interfaces/muebles';
 })
 
 export class DialogNuevaTiendaComponent{
+
 
   @Input() verFormularioNuevaTienda: boolean = false;
   @Input() vistaCrearMueble: boolean = false;
@@ -28,7 +29,7 @@ export class DialogNuevaTiendaComponent{
   editarTiendaCreada: boolean = false;
   crearTienda: boolean = false;
 
-  nuevaTienda: tienda = {} as tienda;
+  nuevaTienda: tiendaCreacion = {} as tienda;
   
   listaTodosMueblesDisponiblesOrdenados: muebles[] = [];
   listaMueblesNuevaTienda: muebles[] = [];
@@ -119,5 +120,8 @@ export class DialogNuevaTiendaComponent{
     const idsLista2 = new Set(listaMueblesSeleccionados.map(mueble => mueble.id));
     const listaFiltrada = listaCompleta.filter((mueble) => !idsLista2.has(mueble.id));
     return listaFiltrada;
+  }
+  onArchivoSeleccionadoChange($event: { archivo: File; }) {
+    this.nuevaTienda.archivo_imagen = $event.archivo;
   }
 }
