@@ -45,16 +45,23 @@
                                 </div>
                                
                             </div>
-                            <div class="flex flex-column align-items-center gap-3 py-5">
-                                <div *ngFor="let expositor of mueble.expositores; let i = index;" class="item-container ">
-                                    <div *ngIf="tieneModelo(expositor.atributos_expositores)"  class="image-button-container">
-                                        
-                                        <p-image class="imagenSimple" [src]="url_imagenes_referencias + getImagenModelo(expositor)" height="200vh" [alt]="getImagenModelo(expositor) ? getImagenModelo(expositor) : 'No disponible'" [preview]="true"></p-image>
-                                        
-                                        <p-button [raised]="true" [text]="true" [rounded]="true" severity="danger" label="Asignación de elementos" icon="pi pi-plus-circle" [disabled]="!tieneModelo(expositor.atributos_expositores)" (onClick)="editMueble(mueble,i)" class="full-width-button"></p-button>
-                                    
-                                    </div>
-                                    <div *ngIf="!tieneModelo(expositor.atributos_expositores)" class="flex align-items-center justify-content-center">
+
+                        </div>
+                        
+                        <div class="flex flex-column align-items-center gap-3 py-5">
+                            <div [ngClass]="{ 'flex-wrap-container': mueble.expositores.length > 1 }">
+                                <div *ngFor="let expositor of mueble.expositores; let i = index;" class="item-container">
+                                    <div *ngIf="tieneModelo(expositor.atributos_expositores); else noModelo" class="image-button-container">
+                                        <img [src]="url_imagenes_referencias + getImagenModelo(expositor)" height="200vh"
+                                            [alt]="getImagenModelo(expositor) ? getImagenModelo(expositor) : 'No disponible'" class="imagenDestacada"
+                                            (click)="showViewExpositor(expositor)" 
+                                            
+                                            />
+                                   
+                                        <p-button [raised]="true" [text]="true" [rounded]="true" severity="danger"
+                                            label="Asignar elementos" icon="pi pi-plus-circle"
+                                            [disabled]="!tieneModelo(expositor.atributos_expositores)" (onClick)="editMueble(mueble,i)"
+                                            class="full-width-button"></p-button>
                                     </div>
                                 </div>
                             </div>

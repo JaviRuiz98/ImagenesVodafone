@@ -11,11 +11,13 @@
         <input #inputFile type="file"  (change)="listenChange($event)" hidden>
 
 </div>
-<div *ngIf="archivoSeleccionado && opcion_multiple==false" class="drop-area">
-    <p-image [src]="getImagenUrl()" alt="Imagen del elemento" height="300"></p-image>
- 
-    <p-button class="delete-button"  icon="pi pi-times" (click)="borrarImagen()" [rounded]="true" severity="danger"></p-button>
+<div class="drop-area" *ngIf="archivoSeleccionado && opcion_multiple==false">
+    <div class="image-container">
+        <img [src]="getImagenUrl()" alt="Imagen del elemento" class="full-width-height" />
+        <p-button class="delete-button" icon="pi pi-times" (click)="borrarImagen()" [rounded]="true" severity="danger"></p-button>
+    </div>
 </div>
+
 
 <div *ngIf="isCargando()" class="drop-area">
     <p-progressSpinner></p-progressSpinner>

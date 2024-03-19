@@ -26,10 +26,12 @@ const uploadFile = async (localPath: string, remotePath: string) => {
    
 }
 
-export const  uploadFileToFtp = (foldername:string) => async (req: Request, res: Response, next: NextFunction) => {
+export const  uploadFileToFtp = (foldername:string, opcional: boolean = false) => async (req: Request, res: Response, next: NextFunction) => {
     
     const file: any = req.file;
+    console.log(file);
     if (!file) {
+        if (opcional) return next();
         return res.status(400).json({ error: 'Imagen no encontrado' });
         
     }else{
