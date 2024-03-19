@@ -3,7 +3,6 @@ import { HttpClient,HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { auditoria } from '../../interfaces/auditoria';
 import { muebles } from 'src/app/interfaces/muebles';
-import { muebles_auditoria } from 'src/app/interfaces/muebles_auditoria';
 
 
 @Injectable({
@@ -40,9 +39,9 @@ export class AuditoriaService {
   }
 
   //No funciona esta ahora, tengo que cambiar el back
-  getMueblesAndExpositoresWithProcesadosByIdAuditoria(id_auditoria: number): Observable<muebles_auditoria[]> {
+  getMueblesAndExpositoresWithProcesadosByIdAuditoria(id_auditoria: number): Observable<muebles[]> {
 
-    return this.http.get<muebles_auditoria[]>(`${this.API_URI}/auditoria_elementos_procesados/${id_auditoria}`);
+    return this.http.get<muebles[]>(`${this.API_URI}/auditoria_elementos_procesados/${id_auditoria}`);
   }
 
   terminarAuditoria(id_auditoria: number): Observable<any> {

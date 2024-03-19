@@ -1,9 +1,5 @@
 @media print{
-  .barra{
-    display: none;
-  }
-} 
-
-.pages {
-  position: relative;
-}
+    .barra{
+      display: none;
+    }
+  } 

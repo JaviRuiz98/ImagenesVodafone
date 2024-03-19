@@ -59,7 +59,7 @@ body.scrolled .scrolling-bar::before {
   background-color: white;
   margin: 0.2%;
   margin-bottom: 0;
-  height: 45px;
+  height: 40px;
 }
 .usuarioBotonCerrarSesion {
   display: flex;

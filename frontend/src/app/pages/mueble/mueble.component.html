@@ -1,120 +1,91 @@
-<p-toast [key]="'general'"></p-toast>
 
-<div class="px-6">
-    <p-toolbar>
-        <div class="flex align-items-start justify-content-between mt-2 w-full">
-            <div class="flex align-items-center">
-                <h2>Muebles</h2>
-                <span class="p-input-icon-left ml-2">
-                    <i class="pi pi-search"></i>
-                    <input pInputText type="text" [(ngModel)]="nombreFiltro" (input)="filtrarPorNombreDeMueble()"
-                        placeholder="Filtrar por nombre de mueble" />
-                </span>
-
-
+  
+    <p-toast [key]="'general'"></p-toast>
+    <div>
+        <p-toolbar class="w-90">
+            <div class="flex align-items-start justify-content-between mt-2 w-full">  
+                <div class="flex align-items-center">
+                    <h2>Muebles</h2>
+                    <span class="p-input-icon-left ml-2">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" [(ngModel)]="nombreFiltro" (input)="filtrarPorNombreDeMueble()" placeholder="Filtrar por nombre de mueble" /> 
+                    </span> 
+                    
+                    
+                </div>         
+                <p-button severity="danger"  label="Nuevo" icon="pi pi-plus" (onClick)="nuevoMueble()"></p-button>
+                
             </div>
-            <p-button severity="danger" label="Nuevo" icon="pi pi-plus" (onClick)="nuevoMueble()"></p-button>
+            
+            <p-progressSpinner *ngIf="(muebles.length == 0 )"   fill="var(--surface-ground)" [style]="{'width': '5%', 'height': '5%'}" animationDuration=".6s"  class="fadein animation-duration-1000 "></p-progressSpinner>
+        </p-toolbar>
+        <p-scrollPanel [style]="{'height':'calc(100vh - 300px )'}">
 
-        </div>
-
-        <p-progressSpinner *ngIf="(muebles.length == 0 )" fill="var(--surface-ground)"
-            [style]="{'width': '5%', 'height': '5%'}" animationDuration=".6s"
-            class="fadein animation-duration-1000 "></p-progressSpinner>
-    </p-toolbar>
-</div>
-<div class="px-6">
-    <p-scrollPanel [style]="{'height':'calc(100vh - 300px )'}">
-
-        <p-dataView #dv [value]="mueblesFiltrados" [rows]="6" [paginator]="true">
-
-            <ng-template let-mueble pTemplate="listItem">
-
-                <div class="col-12 sm:col-6 lg:col-3 xl:col-4 p-2">
-                    <div class="p-4 border-1 surface-border surface-card border-round">
-                        <div class="grid">
-
-                            <div class="text-2xl col-11 font-bold overflow-hidden text-overflow-ellipsis">
-                                {{ mueble.nombre }}
-                            </div>
-                                <p-overlayPanel #op>
-                                    <ng-template pTemplate>
-                                        <div style="display: flex;">
-                                            {{ overlayPanelMessage }}
-                                        </div>
-                                    </ng-template>
-                                </p-overlayPanel>
-                                <!-- En caso de tener los dos botones poner col-3 -->
-                            <div class="col-1"> 
+            <p-dataView #dv [value]="mueblesFiltrados" [rows]="3" [paginator]="true">
+                
+                <ng-template let-mueble pTemplate="listItem">
+                    
+                    <div class="col-12 sm:col-6 lg:col-3 xl:col-4 p-2">
+                        <div class="p-4 border-1 surface-border surface-card border-round">
+                            <div class="flex flex-wrap align-items-center justify-content-between gap-2">
+                                <div class="text-2xl font-bold">{{ mueble.nombre }}</div>
                                 <div class="flex-inline">
-                                    <!-- <p-button (mouseenter)="showOverlayPanel(op, 'Historial de mueble')"
-                                    (mouseleave)="hideOverlayPanel(op)" class="mr-2" [raised]="true" [text]="true" [rounded]="true"
-                                    severity="danger" icon="pi pi-history" [disabled]="mueble.expositores.length < 1"
-                                    (click)="showHistorial(mueble)"></p-button> -->
-                            
-                                    <p-button (mouseenter)="showOverlayPanel(op, 'Editar mueble')" (mouseleave)="hideOverlayPanel(op)"
-                                        severity="danger" class="mr-2" [raised]="true" [text]="true" [rounded]="true" icon="pi pi-pencil"
-                                        (click)="editMueble(mueble)"></p-button>
-                                </div>
-                                
-                            </div>
+                                    <p-button  (mouseenter)="showOverlayPanel(op, 'Historial de mueble')" (mouseleave)="hideOverlayPanel(op)" class="mr-2" [raised]="true" [text]="true" [rounded]="true" severity="danger" icon="pi pi-history" [disabled]="mueble.expositores.length < 1" (click)="showHistorial(mueble)"></p-button>
 
-                        </div>
-                        
-                        <div class="flex flex-column align-items-center gap-3 py-5">
-                            <div [ngClass]="{ 'flex-wrap-container': mueble.expositores.length > 1 }">
-                                <div *ngFor="let expositor of mueble.expositores; let i = index;" class="item-container">
-                                    <div *ngIf="tieneModelo(expositor.atributos_expositores); else noModelo" class="image-button-container">
-                                        <img [src]="url_imagenes_referencias + getImagenModelo(expositor)" height="200vh"
-                                            [alt]="getImagenModelo(expositor) ? getImagenModelo(expositor) : 'No disponible'" class="imagenDestacada"
-                                            (click)="showViewExpositor(expositor)" 
-                                            
-                                            />
-                                   
-                                        <p-button [raised]="true" [text]="true" [rounded]="true" severity="danger"
-                                            label="Asignación de elementos" icon="pi pi-plus-circle"
-                                            [disabled]="!tieneModelo(expositor.atributos_expositores)" (onClick)="editMueble(mueble,i)"
-                                            class="full-width-button"></p-button>
+                                    <p-button  (mouseenter)="showOverlayPanel(op, 'Editar mueble')" (mouseleave)="hideOverlayPanel(op)" severity="danger" class="mr-2" [raised]="true" [text]="true" [rounded]="true"  icon="pi pi-pencil"  (click)="editMueble(mueble)"></p-button>
+                                    
+                                    <p-overlayPanel #op>
+                                        <ng-template pTemplate>
+                                            <div style="display: flex;">
+                                                {{ overlayPanelMessage }}
+                                            </div>                                          
+                                        </ng-template>
+                                    </p-overlayPanel>
+                                    
+                                </div>
+                               
+                            </div>
+                            <div class="flex flex-column align-items-center gap-3 py-5">
+                                <div *ngFor="let expositor of mueble.expositores; let i = index;" class="item-container ">
+                                    <div *ngIf="tieneModelo(expositor.atributos_expositores)"  class="image-button-container">
+                                        
+                                        <p-image class="imagenSimple" [src]="url_imagenes_referencias + getImagenModelo(expositor)" height="200vh" [alt]="getImagenModelo(expositor) ? getImagenModelo(expositor) : 'No disponible'" [preview]="true"></p-image>
+                                        
+                                        <p-button [raised]="true" [text]="true" [rounded]="true" severity="danger" label="Asignación de elementos" icon="pi pi-plus-circle" [disabled]="!tieneModelo(expositor.atributos_expositores)" (onClick)="editMueble(mueble,i)" class="full-width-button"></p-button>
+                                    
                                     </div>
-                                    <ng-template #noModelo>
-                                     
-                                    </ng-template>
-                                  
+                                    <div *ngIf="!tieneModelo(expositor.atributos_expositores)" class="flex align-items-center justify-content-center">
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="m-2">
-                            <p-accordion [multiple]="true" [style]="{'width':'100% '}" [activeIndex]="!!shouldOpenFirstAccordion(mueble)? [0] : null">
-                                <p-accordionTab header="Elementos del mueble">
-                                    <div *ngFor="let expositor of mueble.expositores; let i = index;">
-                                        <div *ngFor="let attr of expositor.atributos_expositores; let j = index;">
-                                            <div *ngIf="attr.categorias_elementos.id!= 3 && attr.elemento">
-                                                <h3>{{attr.elemento.nombre}}</h3>
-
-                                                <p-image class="imagenSimple"
-                                                    [src]="url_imagenes_referencias + attr.elemento.imagenes.url"
-                                                    height="200vh"
-                                                    [alt]="getImagenModelo(expositor) ? getImagenModelo(expositor) : 'No disponible'"
-                                                    [preview]="true"></p-image>
-
-
-                                            </div>
+                            <div class="m-2">
+                                <p-accordion  [multiple]="true" [style]="{'width':'100% '}" >
+                                    <p-accordionTab header="Elementos del mueble">
+                                        <div *ngFor="let expositor of mueble.expositores; let i = index;">
+                                            <div *ngFor ="let attr of expositor.atributos_expositores; let j = index;">
+                                                <div *ngIf="attr.categorias_elementos.id!= 3 && attr.elemento" >
+                                                    <h3>{{attr.elemento.nombre}}</h3>
+                                                    
+                                                    <p-image class="imagenSimple" [src]="url_imagenes_referencias + attr.elemento.imagenes.url" height="200vh" [alt]="getImagenModelo(expositor) ? getImagenModelo(expositor) : 'No disponible'" [preview]="true"></p-image>
+                                                    
+                                                    
+                                                </div>
                                         </div>
                                     </div>
                                 </p-accordionTab>
                             </p-accordion>
-
-
+                            
+                            
                         </div>
-                        <div class="flex align-items-center justify-content-between">
-
+                            <div class="flex align-items-center justify-content-between">
+                               
+                            </div>
                         </div>
                     </div>
-                </div>
-            </ng-template>
-        </p-dataView>
-    </p-scrollPanel>
-
+                </ng-template>
+            </p-dataView> 
+        </p-scrollPanel>
+            
 
 </div>
 
@@ -194,3 +165,4 @@
         </ng-template>
         
     </p-table>  -->
+  

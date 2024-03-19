@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import {
     expositorService,
-    muebleService,
-} from "../services/muebleService";
+    mobiliarioService,
+} from "../services/mobiliarioService";
 import { imagenes, muebles } from "@prisma/client";
 import { muebleCreation } from "../interfaces/mueblesCreados";
 import { fetchGuardarElemento } from "./elementoController";
@@ -24,8 +24,12 @@ export async function getFilteredMuebles(req: Request, res: Response) {
         const ia_clause: string | null = req.body.ia;
 
         //validador
-       
-        const mobiliario: muebles[] = await muebleService.getFilteredMuebles(
+        /*
+                comprobar que id_mobiliario es numérico si existe
+                comprobar que dispositivos es un array de dos números y el segundo número es mayor que el primero
+    
+            */
+        const mobiliario: muebles[] = await mobiliarioService.getFilteredMuebles(
             id_tienda,
             orden_clause,
             prompts_clause,
@@ -67,11 +71,11 @@ export async function updateMuebleForm (req: Request, res: Response) {
 
 async function editarMueble(muebleDat:muebleCreation) {
     try {
-       const mueble = await muebleService.getMuebleById(muebleDat.id!);
+       const mueble = await mobiliarioService.getMuebleById(muebleDat.id!);
         if (!mueble) {
             throw new Error('Mueble no encontrado');
         }
-        const muebleEditado =  await muebleService.updateMueble(muebleDat);
+        const muebleEditado =  await mobiliarioService.updateMueble(muebleDat);
         if (!muebleEditado) {
             throw new Error('Error al editar el mueble');
         }
@@ -107,7 +111,7 @@ async function createMueble(muebleDat:muebleCreation, imagenes: any) {
             }
         } 
         
-        return await muebleService.createMueble(muebleDat);
+        return await mobiliarioService.createMueble(muebleDat);
     } catch (error) {
         console.error(error);
         throw error;
@@ -141,7 +145,7 @@ function encontrarArchivoPorNombre(imagenes:
 
 export async function getAllMuebles(_req: Request, res: Response) {
     try {
-        const muebles = await muebleService.getAllMuebles();
+        const muebles = await mobiliarioService.getAllMuebles();
         if (!muebles) {
             res.status(204).send();
         }
@@ -159,7 +163,7 @@ export async function getMueblesAndExpositoresActivosByIdTienda(
     try {
         const id_tienda = parseInt(req.params.id_tienda);
         const muebles: any[] =
-            await muebleService.getMueblesAndExpositoresActivosByIdTienda(id_tienda);
+            await mobiliarioService.getMueblesAndExpositoresActivosByIdTienda(id_tienda);
         if (!muebles) {
             res.status(204).send();
         }
@@ -210,8 +214,8 @@ const buscarImagenCualquierElemento = (expositores: any) : imagenes[]  => {
     for (let expositor of expositores) {
         for (let atributo of expositor.atributos_expositores) {
                            //solo hay una pertenencia (la mas reciente si el servicio es correcto) y siempre habrá un único elemento asociado a pertenencia 
-        if (!!atributo.pertenencia_elementos_atributos[0].elementos?.imagenes) {
-                imagenes.push(atributo.pertenencia_elementos_atributos[0].elementos?.imagenes);
+        if (!!atributo.pertenencia_elementos_atributos[0].elementos.imagenes) {
+                imagenes.push(atributo.pertenencia_elementos_atributos[0].elementos.imagenes);
                 break; //solo necesito una
             }
         }

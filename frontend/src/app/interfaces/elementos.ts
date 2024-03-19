@@ -10,7 +10,5 @@ export interface elementos {
     activo: boolean;
     categorias_elementos: categorias_elementos;
     procesados_imagenes?: procesados_imagenes[];
-
-    id_expositor?: number; //por comodidad en el procesado dentro de auditorias
 }
 

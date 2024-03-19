@@ -1,7 +1,7 @@
 
 .paginaCompleta {
-    padding-left: 15%;
-    padding-right: 15%;   
+    padding-left: 10%;
+    padding-right: 10%;   
 }
 
 .table{
@@ -9,11 +9,10 @@
  
 }
 .toolClass{
-  padding-left: 15%;
-  padding-right: 15%;   
+   margin-right:10%;
+   margin-left: 10%;
+   margin-bottom: 2%;
 }
-
-
 :host::ng-deep {
     .p-button.p-highlight.optionColorVodafone {
        background: red;
@@ -21,24 +20,6 @@
     }
 }
 
-.flex-wrap-container {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.flex-wrap-container .image-button-container {
- width: fit-content;
-}
-.text-overflow-ellipsis {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.imagenDestacada:hover {
-  filter: brightness(0.8); 
-  transition: filter 0.3s ease;
-}
 
 .expositores-container {
     display: flex;

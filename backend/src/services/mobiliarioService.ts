@@ -5,7 +5,7 @@ import { muebleCreation } from "../interfaces/mueblesCreados";
 // import { ExpositorFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
 // import {expositoresConProcesados} from "../interfaces/expositoresProcesados"
 
-export const muebleService = {
+export const mobiliarioService = {
     async getHuecosDisponibles (id_expositor: number)  {
         try {
            return await db.atributos_expositores.count(
@@ -13,7 +13,10 @@ export const muebleService = {
                 where: { 
                     id_expositor: id_expositor,
                     id_categoria: 2
-                } 
+                }
+                            
+                        
+                   
                 });
         } catch (error) {
             throw error;
@@ -124,8 +127,8 @@ export const muebleService = {
                    
                     for (const atributo of expositores.atributos_expositores) {
                        //Por cada atributo de cada expositor
-
-                       //Si existe el elemento creo uno nuevo
+                        //creo una nueva pertenencia
+                       
                         if (atributo.elemento?.id && !!atributo.id) {
                             //comprobar que no existe ya una pertenencia con ese id_atributos_expositores y id_elementos
                             const pertenencia = await prisma.pertenencia_elementos_atributos.findFirst({
@@ -134,8 +137,7 @@ export const muebleService = {
                                     id_elemento: atributo.elemento?.id,
                                 }
                             });
-                            //si ya existe no debo crear una nueva
-                            if (!pertenencia || pertenencia.activo == false) {
+                            if (!pertenencia) {
                                 await prisma.pertenencia_elementos_atributos.create({
                                     data: {
                                         id_atributo_expositor: atributo.id,
@@ -143,40 +145,8 @@ export const muebleService = {
                                     }
                                 });
                             }
-                                
-                            // } else if ( pertenencia.activo == false) {
-                            //     await prisma.pertenencia_elementos_atributos.update({
-                            //         where: {
-                            //             id: pertenencia.id
-                            //         },
-                            //         data: {
-                            //             activo: true
-                            //         }
-                            //     });
-
-                            // }
                           
-                        } else{ //si no existe elemento, debo comprobar si antes existia, y si existia, descativarla
-
-                            const pertenencia = await prisma.pertenencia_elementos_atributos.findFirst({
-                                where: {
-                                    id_atributo_expositor: atributo.id,
-                                    id_elemento: atributo.elemento?.id,
-                                }
-                            });
-                            if (pertenencia) {
-                                await prisma.pertenencia_elementos_atributos.update({
-                                    where: {
-                                        id: pertenencia.id
-                                    },
-                                    data: {
-                                        activo: false
-                                    }
-                                });
-                            }
-
-                        }
-                        
+                        }  
                     }
                    
                 }
@@ -203,9 +173,6 @@ export const muebleService = {
                                     
                                     categorias_elementos:true,
                                     pertenencia_elementos_atributos: {
-                                        where: {
-                                            activo: true,
-                                        },
                                         include: {
                                             elementos: {
                                                 include: {
@@ -213,7 +180,6 @@ export const muebleService = {
                                                     categorias_elementos: true
                                                 },
                                             },
-                                            
                                         },
                                         orderBy: {
                                             fecha: "desc",
@@ -260,7 +226,6 @@ export const muebleService = {
                             tiendas: {
                                 id: id_tienda,
                             },
-                            activo: true
                         },
                     },
                 },
@@ -270,9 +235,6 @@ export const muebleService = {
                             atributos_expositores: {
                                 include: {
                                     pertenencia_elementos_atributos: {
-                                        where: {
-                                            activo: true,
-                                        },
                                         include: {
                                             elementos: true,
                                         },
@@ -331,9 +293,6 @@ export const muebleService = {
                             atributos_expositores: {
                                 include: {
                                     pertenencia_elementos_atributos: {
-                                        where: {
-                                            activo: true,
-                                        },
                                         include: {
                                             elementos: {
                                                 include: {
@@ -362,15 +321,6 @@ export const muebleService = {
 }
 
 export const expositorService = {
-    async getById(id_expositor: number): Promise<expositores | null> {
-        try {
-            return db.expositores.findUnique({ where: { id: id_expositor } });
-        } catch (error) {
-            throw error;
-        } finally {
-            await db.$disconnect();
-        }
-    },
     async updateExpositor(id_expositor: number, nombre:string, atributos_expositores: 
         {
             id?: number;

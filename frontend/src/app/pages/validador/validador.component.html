@@ -1,0 +1,69 @@
+<!-- <div class="paginaCompleta">
+  <app-filtro-procesados (enviar_filtros)="enviarFiltroProcesados($event)" class="filtro"></app-filtro-procesados>
+  <p-toast></p-toast>
+  <div *ngFor="let mueble of this.muebles" class="contornoPanel">
+    <p-panel [style]="{'border': '1px solid black', 'margin-bottom': '20px'}">
+      <ng-template pTemplate="header">
+        <div class="custom-header" >
+          Elemento/mueble {{mueble.nombre_mueble !== undefined ? ' - ' + mueble.nombre_mueble : mueble.id_mueble}}
+          
+           <p-progressSpinner *ngIf="mueble.expositores[0] != undefined? cargas_procesamiento[mueble.expositores[0].id_expositor]: false" 
+            class="spinner" strokeWidth="6" fill="var(--surface-ground)" animationDuration=".6s"
+            [style]="{'width': '30px', 'height': '30px'}"></p-progressSpinner> 
+        </div>
+      </ng-template>
+        <div class="panelCompleto " *ngIf="mueble.expositores != undefined">
+          <div class="panelIzquierda" >
+            <div *ngIf=" mueble.expositores.length == 1 "  class="anchoAltoFotoReferencia" >
+              <div>
+                <p-image [src]="url_imagenes_referencias + mueble.expositores[0].imagenes.url" [alt]="mueble.expositores[0].imagenes.url" class="imagenSimple" [width]="'100%'" [height]="'100%'" [preview]="true"></p-image>
+              </div>
+            </div>
+
+            <div *ngIf="mueble.expositores.length == 2 && mueble.expositores[0] != undefined && mueble.expositores[1] != undefined" class="grid anchoAltoFotoReferencia">
+           
+                <div style="margin-right: 5px;">
+                  <img [src]="url_imagenes_referencias + mueble.expositores[0].imagenes.url" [alt]="mueble.expositores[0].imagenes.url" class="imagenDoble">
+                </div>
+
+                <div> 
+                  <img [src]="url_imagenes_referencias + mueble.expositores[1].imagenes.url" [alt]="mueble.expositores[1].imagenes.url" class="imagenDoble">
+                </div>
+            
+            </div> 
+          </div>
+          <div class="panelDerecha">
+            <div *ngIf="mueble.expositores.length == 1 && mueble.expositores[0] != undefined" class="anchoAltoSubirFoto">              
+              <app-paginador-procesamiento-subida  
+                class="anchoAltoPaginador"
+                [id_expositor_selected]="mueble.expositores[0].id_expositor"
+                [procesados]="mueble.expositores[0].procesados_imagenes" 
+                [cargando_procesamiento]="cargas_procesamiento[mueble.expositores[0].id_expositor]"
+                [valueSelected]="modos_visualizacion[mueble.expositores[0].id_expositor] === 'historial'? 'historial':'new'"
+                (archivoSeleccionadoChange)="recibirFile($event, mueble.expositores[0].id_expositor, mueble.id_mueble)">
+              </app-paginador-procesamiento-subida>            
+            </div>
+        
+              <div *ngIf="mueble.expositores.length == 2 && mueble.expositores[0] != undefined && mueble.expositores[1] != undefined" class="gridDoble" >
+                <app-paginador-procesamiento-subida 
+                  [id_expositor_selected]="mueble.expositores[0].id_expositor"
+                  [procesados]="mueble.expositores[0].procesados_imagenes" 
+                  [cargando_procesamiento]="cargas_procesamiento[mueble.expositores[0].id_expositor]"
+                  [valueSelected]="modos_visualizacion[mueble.expositores[0].id_expositor] === 'historial'? 'historial':'new'"
+                  (archivoSeleccionadoChange)="recibirFile($event, mueble.expositores[0].id_expositor, mueble.id_mueble)">
+                </app-paginador-procesamiento-subida> 
+                <app-paginador-procesamiento-subida
+                  [id_expositor_selected]="mueble.expositores[1].id_expositor"
+                  [procesados]="mueble.expositores[1].procesados_imagenes" 
+                  [cargando_procesamiento]="cargas_procesamiento[mueble.expositores[1].id_expositor]"
+                  [valueSelected]="modos_visualizacion[mueble.expositores[1].id_expositor] === 'historial'? 'historial':'new'"                
+                  (archivoSeleccionadoChange)="recibirFile($event, mueble.expositores[1].id_expositor, mueble.id_mueble)">
+                </app-paginador-procesamiento-subida>                    
+              </div>
+   
+          </div>
+        </div>
+    </p-panel>
+  </div>
+  <app-ir-arriba></app-ir-arriba>
+</div> -->

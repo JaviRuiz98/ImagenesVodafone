@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { ValidadorComponent } from './pages/validador/validador.component';
 import { HomeComponent } from './pages/home/home.component';
 import { GestionDeAuditoriasComponent } from './pages/gestion-de-auditorias/gestion-de-auditorias.component';
 import { AuditoriaComponent } from './pages/auditoria/auditoria.component';
@@ -36,6 +37,10 @@ const routes: Routes = [
   { 
     path: "elementos", component: ElementosComponent ,
     data: { stateBarra: 'elementos' },
+  },
+  { 
+    path : "validator", component: ValidadorComponent, 
+    data: { stateBarra: 'admin' },
   },
   { 
     path: "gestionAuditorias", component: GestionDeAuditoriasComponent, 

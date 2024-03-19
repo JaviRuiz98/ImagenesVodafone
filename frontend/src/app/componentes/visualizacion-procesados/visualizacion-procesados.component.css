@@ -29,11 +29,37 @@
     width: 100%;
     height: 100%;
 }
+.contenedorImagen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: auto;
+}
 .posicionDialog{
     position: absolute;
     right: 0;
     margin-right: 5%;
 }
+.respuestaProcesado{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 2%;
+}
+
+.promptBotones{
+    display: grid;
+    grid-template-columns: 60% 40%;
+    width: 100%;
+    height: 100%;
+}
+.valoracionBorrar{
+    display: flex;
+    justify-content: center;
+}
+
 .anchoAltoImagenProcesada ::ng-deep .p-galleria-content {
     width: 100%;
     height: 100%;
@@ -73,9 +99,4 @@
 
 ::ng-deep .p-galleria .p-galleria-indicators .p-galleria-indicator.p-highlight button {
     background-color: red;
-}
-
-.imagenProcesadaDentroGaleria ::ng-deep .p-image-preview-container{
-    display: flex;
-    justify-content: center;
 }
