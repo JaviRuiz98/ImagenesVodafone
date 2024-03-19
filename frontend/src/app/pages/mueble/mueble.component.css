@@ -1,77 +1,96 @@
 
 .paginaCompleta {
-    padding-left: 10%;
-    padding-right: 10%;   
+  padding-left: 15%;
+  padding-right: 15%;   
 }
 
 .table{
-    width: 100%;
- 
+  width: 100%;
+
 }
 .toolClass{
-   margin-right:10%;
-   margin-left: 10%;
-   margin-bottom: 2%;
-}
-:host::ng-deep {
-    .p-button.p-highlight.optionColorVodafone {
-       background: red;
-       border: rgb(87, 11, 11);
-    }
+padding-left: 15%;
+padding-right: 15%;   
 }
 
+
+:host::ng-deep {
+  .p-button.p-highlight.optionColorVodafone {
+     background: red;
+     border: rgb(87, 11, 11);
+  }
+}
+
+.flex-wrap-container {
+display: flex;
+flex-wrap: wrap;
+}
+
+.flex-wrap-container .image-button-container {
+width: fit-content;
+}
+.text-overflow-ellipsis {
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+
+.imagenDestacada:hover {
+filter: brightness(0.8); 
+transition: filter 0.3s ease;
+}
 
 .expositores-container {
-    display: flex;
-    flex-direction: row;
-    align-items: start;
+  display: flex;
+  flex-direction: row;
+  align-items: start;
 }
 
 
 .expositores-item {
-    margin-right: 2%; 
+  margin-right: 2%; 
 }
 
 
 
 .marginTop{
-    margin-top: 10%;
+  margin-top: 10%;
 }
 
 ::ng-deep .p-datatable .p-datatable-header{
-    padding: 0.75rem 1rem;
+  padding: 0.75rem 1rem;
 }
 
 .default-imagen{
-    width: auto;
-    object-fit: cover; 
-    border-radius: 15%;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
+  width: auto;
+  object-fit: cover; 
+  border-radius: 15%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
 
-  .item-container {
-    display: flex;
-    flex-direction: row;
-    align-items: start;
-  }
-  
-  .image-button-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    width: 100%; /* Asegura que el contenedor tome toda la anchura disponible */
-  }
+.item-container {
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+}
 
-  
-  .full-width-button {
-    width: 100%; /* Hace que el botón se ajuste a la anchura del contenedor */
-    margin-top: 2%; /* Espacio entre la imagen y el botón */
+.image-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%; /* Asegura que el contenedor tome toda la anchura disponible */
+}
 
-  }
-  
- /* .full-width-button   ::ng-deep .p-button{
-    font-size:10px;  
-    padding: 0.5rem 1rem;
-  }  */
+
+.full-width-button {
+  width: 100%; /* Hace que el botón se ajuste a la anchura del contenedor */
+  margin-top: 2%; /* Espacio entre la imagen y el botón */
+
+}
+
+/* .full-width-button   ::ng-deep .p-button{
+  font-size:10px;  
+  padding: 0.5rem 1rem;
+}  */

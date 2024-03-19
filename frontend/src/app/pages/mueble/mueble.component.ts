@@ -8,7 +8,6 @@ import { HistorialExpositoresComponent } from './components/historialExpositores
 import { PrimeNGConfig } from 'primeng/api';
 import { expositores } from 'src/app/interfaces/expositores';
 import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
-import { EditarExpositorComponent } from './components/editarExpositor/editarExpositor.component';
 import { UrlService } from 'src/app/servicios/url/url.service';
 import { Subject } from 'rxjs';
 import { OverlayPanel } from 'primeng/overlaypanel';
