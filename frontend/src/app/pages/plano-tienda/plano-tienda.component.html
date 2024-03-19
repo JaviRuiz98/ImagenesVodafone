@@ -1,12 +1,13 @@
 <p-toast></p-toast>
-<div class="paginaCompleta">
-  <div class="divPlanoTienda">
-    <canvas id="canvas_plano"></canvas>
-    <p-button icon="pi pi-times" styleClass="btn-eliminar" [ngStyle]="{position: 'absolute', display: 'none'}"></p-button>
+
+<div style="display: flex;">
+  <div style="width: 65%">
+      <canvas id="canvas_plano"></canvas>
+      <p-button icon="pi pi-times" styleClass="btn-eliminar" [ngStyle]="{position: 'absolute', display: 'none'}"></p-button>
   </div>
-  <div class="panelDerechoAsignarMueblesToolbar">
-    <p-toolbar class="toolbar" [style]="{'width': '100%'}">
-      <p-button (click)="anadirRectangulo()" label="Añadir posición mueble" icon="pi pi-plus" severity="danger" [disabled]="!this.boton_anadir_posicion_mueble"></p-button>
+  <div style="margin-left: 15px; width: 30%; margin-top: 2%;">
+    <p-toolbar>
+      <p-button (click)="anadirRectangulo()" label="Añadir posición mueble" icon="pi pi-plus" severity="danger"></p-button>
       <p-button icon="pi pi-pencil" severity="secondary" label="Cambiar muebles" (click)="cambiarMuebles()" ></p-button>
       <p-dialog [(visible)]="this.mostrar_dialog_asignar_muebles" [style]="{width: '95vw', height: '80vh'}" [draggable]="false" (onHide)="mostrar_cambiar_muebles = false">
         <div class="cambiarMuebles">
@@ -22,57 +23,63 @@
       </p-dialog>
     </p-toolbar>
     <div *ngIf="!mostrar_cambiar_muebles">
-      <div class="scrollable-div">
+    <div class="scrollable-div">
         <div *ngFor="let mueble of this.muebles">
-          <div class="muebleSinAsignar" *ngIf="mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda.length == 0"
-          draggable="true"
-          (dragstart)="onDragStart($event, mueble)"
-          [attr.data-id]="mueble.id">
-          <div *ngFor="let imagen of mueble.imagen_representativa">
-            <img [src]="this.urlService.url_imagenes_referencia + imagen.url" class="imagenRepresentativaMueble">
-          </div>                
-          <h3>{{ mueble.nombre }}</h3>
-        </div>
-          <div class="muebleAsignado" *ngIf="mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda.length != 0">
+        <div class="muebleSinAsignar" *ngIf="mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda.length == 0"
+            draggable="true"
+            (dragstart)="onDragStart($event, mueble)"
+            [attr.data-id]="mueble.id">
             <div *ngFor="let imagen of mueble.imagen_representativa">
                 <img [src]="this.urlService.url_imagenes_referencia + imagen.url" class="imagenRepresentativaMueble">
             </div>                
             <h3>{{ mueble.nombre }}</h3>
-            <p-button icon="pi pi-times" [text]="true" severity="danger" [size]="'large'" (onClick)="eliminarPosicionMueble(mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].id)"></p-button>
-            <ng-container>
-              <div
-                [style.position]="'absolute'" 
-                [style.left.px]="getPosicionMuebleDadoMueble(mueble).x_start * anchura_plano"
-                [style.top.px]="getPosicionMuebleDadoMueble(mueble).y_start * altura_plano + anchura_barra"
-                [style.width.px]="getPosicionMuebleDadoMueble(mueble).ancho * anchura_plano" 
-                [style.height.px]="getPosicionMuebleDadoMueble(mueble).alto * altura_plano" 
-                [style.transform]="getPosicionMuebleDadoMueble(mueble).angulo ? 'rotate(' + getPosicionMuebleDadoMueble(mueble).angulo + 'deg)' : ''"
-                [style.transform-origin]="getPosicionMuebleDadoMueble(mueble).angulo ? '0% 0%' : ''"
-                style="border: 1px solid transparent; z-index: 2;"
-                (mouseenter)="op.toggle($event)" (mouseleave)="op.toggle($event)">
-                <p-overlayPanel #op >
-                  <ng-template pTemplate>
-                    <div style="display: flex;">
-                      <div *ngFor="let imagen of mueble.imagen_representativa">
-                        <img [src]="this.urlService.url_imagenes_referencia + imagen.url" class="imagenRepresentativaMueble">
-                      </div>                                          
-                    </div>
-                    <h3>{{ mueble.nombre }}</h3>
-                  </ng-template>
-                </p-overlayPanel>
-                <div class="corner-buttons" style="position: absolute; right: -24px; top: -24px; width: 48px; height: 48px;">
-                  <p-button type="button" severity="danger" [rounded]="true" icon="pi pi-times" 
-                      [size]="'small'"
-                      (click)="eliminarPosicionMueble(mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].id)" 
-                      class="deleteButton corner-button corner-top-right">
-                  </p-button>
-                </div>
-              </div>
-            </ng-container>  
-          </div>
         </div>
-      </div> 
+        <div class="muebleAsignado" *ngIf="mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda.length != 0">
+          <div *ngFor="let imagen of mueble.imagen_representativa">
+              <img [src]="this.urlService.url_imagenes_referencia + imagen.url" class="imagenRepresentativaMueble">
+          </div>                
+          <h3>{{ mueble.nombre }}</h3>
+          <p-button icon="pi pi-times" [text]="true" severity="danger" [size]="'large'" (onClick)="eliminarPosicionMueble(mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].id)"></p-button>
+          <ng-container>
+            <!-- Crear un div en html para cada mueble asignado -->
+            <div
+              [style.position]="'absolute'" 
+              [style.left.px]="getPosicionMuebleDadoMueble(mueble).x_start"
+              [style.top.px]="getPosicionMuebleDadoMueble(mueble).y_start + anchura_barra"
+              [style.width.px]="getPosicionMuebleDadoMueble(mueble).ancho" 
+              [style.height.px]="getPosicionMuebleDadoMueble(mueble).alto" 
+              [style.transform]="getPosicionMuebleDadoMueble(mueble).angulo ? 'rotate(' + getPosicionMuebleDadoMueble(mueble).angulo + 'deg)' : ''"
+              [style.transform-origin]="getPosicionMuebleDadoMueble(mueble).angulo ? '0% 0%' : ''"
+              style="border: 1px solid transparent; z-index: 2;"
+              (mouseenter)="op.toggle($event)" (mouseleave)="op.toggle($event)">
+              <!-- Overlay panel con la información básica del mueble -->
+              <p-overlayPanel #op >
+                <ng-template pTemplate>
+                  <div style="display: flex;">
+                    <div *ngFor="let imagen of mueble.imagen_representativa">
+                      <img [src]="this.urlService.url_imagenes_referencia + imagen.url" class="imagenRepresentativaMueble">
+                    </div>                                          
+                  </div>
+                  <h3>{{ mueble.nombre }}</h3>
+                </ng-template>
+              </p-overlayPanel>
+              <!-- Contenedor para los botones de esquina -->
+              <div class="corner-buttons" style="position: absolute; right: -24px; top: -24px; width: 48px; height: 48px;">
+                <!-- Botón de esquina superior derecha -->
+                <p-button type="button" severity="danger" [rounded]="true" icon="pi pi-times" 
+                    [size]="'small'"
+                    (click)="eliminarPosicionMueble(mueble.pertenencia_mueble_tienda[0].posiciones_muebles_tienda[0].id)" 
+                    class="deleteButton corner-button corner-top-right">
+                </p-button>
+                <!-- Aquí puedes agregar más botones para otras esquinas siguiendo el mismo patrón -->
+              </div>
+            </div>
+          </ng-container>  
+        </div>
+      </div>
     </div>
   </div>
+  </div>
 </div>
-
+  
+  

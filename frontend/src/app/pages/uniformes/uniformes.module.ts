@@ -1,4 +1,4 @@
-import { NgModule  } from '@angular/core';
+import { NgModule  } from '@angular/core'; 
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -35,7 +35,8 @@ import { FormsModule } from '@angular/forms';
     providers: [
         MessageService,        
         DataView,
-        DataViewLayoutOptions
+        DataViewLayoutOptions,
+        
     ], 
  
 })

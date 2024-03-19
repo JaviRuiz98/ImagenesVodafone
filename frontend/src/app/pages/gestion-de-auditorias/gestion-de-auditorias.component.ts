@@ -86,12 +86,10 @@ export class GestionDeAuditoriasComponent implements OnInit {
   }
   goToTemplateInformeAuditoria(id_auditoria: number){
     this.informeService.getUrlIdAuditoriaCifrada(id_auditoria).subscribe(
-      (data)=>{
-        console.log('respuesta url encriptada', data);
-        this.router.navigate(['/templateInforme/'+ data]);
-      }, (error)=>{
-        console.error(error);
-      })
+    (data)=>{
+      console.log('respuesta url encriptada', data);
+      this.router.navigate(['/templateInforme/'+ data]);
+    })
   }
 
   getSeverityEstadoAuditoria(estado: string): string {
@@ -151,6 +149,7 @@ export class GestionDeAuditoriasComponent implements OnInit {
     this.informeService.enviarInforme(body).subscribe(
       (data)=>{
         this.messageService.add({ severity: 'success', summary: 'Enviado', detail: 'Informe enviado correctamente ' });
+        console.log(data);
       }, (error)=>{
         console.error(error);
         this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Error al enviar el informe' });

@@ -45,32 +45,32 @@
 }
 
 /*PARAMETROS PARA PICKLIST DE EDITAR Y CREAR TIENDA*/
-.paginaTiendaCompleta ::ng-deep .p-picklist-list{
-    height: 300px;
+::ng-deep .p-picklist-list{
+    max-height: 300px;
 }
 
-.paginaTiendaCompleta ::ng-deep .p-steps .p-steps-item.p-highlight .p-steps-number {
+::ng-deep .p-steps .p-steps-item.p-highlight .p-steps-number {
     background-color: #f70802a1;
     color: white;
 }
-.paginaTiendaCompleta ::ng-deep .pi{
+::ng-deep .pi{
     cursor: pointer;
 }
 
-.paginaTiendaCompleta ::ng-deep .p-orderlist .p-orderlist-controls .p-button {
+::ng-deep .p-orderlist .p-orderlist-controls .p-button {
     background: red;
     border: red;
 }
-.paginaTiendaCompleta ::ng-deep .p-orderlist .p-orderlist-controls{
+::ng-deep .p-orderlist .p-orderlist-controls{
     display: none;
 }
 
-.paginaTiendaCompleta ::ng-deep .p-dialog .p-dialog-footer button{
+::ng-deep .p-dialog .p-dialog-footer button{
     color: rgb(195, 8, 8);
     background-color: white;
     border: rgb(195, 8, 8);
 }
-.paginaTiendaCompleta ::ng-deep .p-dialog .p-dialog-footer button:hover{
+::ng-deep .p-dialog .p-dialog-footer button:hover{
     background-color: rgba(255, 0, 0, 0.267);
 }
 

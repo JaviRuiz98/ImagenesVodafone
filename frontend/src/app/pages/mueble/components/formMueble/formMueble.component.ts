@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 import { expositores } from 'src/app/interfaces/expositores';
@@ -9,24 +9,11 @@ import { UrlService } from 'src/app/servicios/url/url.service';
 import { elementoCreacion } from '../../interfaces/elementoCreacion';
 import { muebleCreation } from '../../interfaces/muebleCreacion';
 
-
-//validador para que el id no sea 0 en categoria
-export function idNotZeroValidator(): ValidatorFn {
-  return (control: AbstractControl): { [key: string]: any } | null => {
-    const categoriaElementos = control.value;
-    if (categoriaElementos && categoriaElementos.id === 0) {
-      return { 'idNotZero': { value: control.value } };
-    }
-    return null;
-  };
-}
-
 @Component({
   selector: 'app-formMueble',
   templateUrl: './formMueble.component.html',
   styleUrls: ['./formMueble.component.css']
 })
-
 
 export class FormMuebleComponent implements OnInit {
 
@@ -164,7 +151,7 @@ export class FormMuebleComponent implements OnInit {
     if (expositor && expositor.atributos_expositores) {
       const index = this.expositores.length - 1;
       expositor.atributos_expositores.forEach((atributo) => {
-        this.agregarAtributoAExpositor(index, atributo);
+        this.agregarAtributoAExpositor(index, undefined, atributo);
       });
     }
   }
@@ -203,32 +190,37 @@ export class FormMuebleComponent implements OnInit {
         nombre: [ atributo.elemento.nombre , Validators.required],
         categorias_elementos: [atributo.elemento.categorias_elementos],
       }): null, 
-      categorias_elementos: [atributo && atributo.categorias_elementos ? atributo.categorias_elementos : null, [Validators.required, idNotZeroValidator()]],
+      categorias_elementos: [atributo && atributo.categorias_elementos ? atributo.categorias_elementos : null],
     });
   }
   
 
-  agregarAtributoAExpositor(expositorIndex: number,  atributo?: atributos_expositores, ) {
+  agregarAtributoAExpositor(expositorIndex: number, atributo_index?:number, atributo?: atributos_expositores, ) {
 
+    // si me pasan el index de la posicion del atributo, se actualiza
+    if  (atributo_index!= undefined ) {
+      this.actualizarAtributoExpositor(expositorIndex, atributo_index, atributo);
    
-    //creo formGroup para el atributoExpositor
-    const atributoExpositorGroup = this.crearGrupoAtributoExpositor(atributo);
-    //Obtengo el expositor correspondiente
-    let expositor = this.expositores.at(expositorIndex) as FormGroup; 
-    //En caso de que no exista lo creo, debería existir siempre según la lógica, pero por si acaso 
-    if (!expositor) {
-      this.crearExpositor(false,atributo?.elemento?.categorias_elementos.id);
-      expositor = this.expositores.at(expositorIndex) as FormGroup;
+      // si no me pasan el index de la posicion del atributo, se crea un nuevo atributo_expositor y se inserta
+    }else {
+      //creo formGroup para el atributoExpositor
+      const atributoExpositorGroup = this.crearGrupoAtributoExpositor(atributo);
+      //Obtengo el expositor correspondiente
+      let expositor = this.expositores.at(expositorIndex) as FormGroup; 
+      //En caso de que no exista lo creo, debería existir siempre según la lógica, pero por si acaso 
+      if (!expositor) {
+        this.crearExpositor(false,atributo?.elemento?.categorias_elementos.id);
+        expositor = this.expositores.at(expositorIndex) as FormGroup;
+      }
+      //Obtengo los atributos expositores, por definición no debería ser nulo, pero por si acaso en caso de que no exista, lo creo
+      let atributosExpositores = expositor.get('atributos_expositores') as FormArray;
+      if (!atributosExpositores) {
+        atributosExpositores = new FormArray([]);
+        expositor.setControl('atributos_expositores', atributosExpositores);
+      }
+      //inserto el atributo en el array
+      atributosExpositores.push(atributoExpositorGroup);
     }
-    //Obtengo los atributos expositores, por definición no debería ser nulo, pero por si acaso en caso de que no exista, lo creo
-    let atributosExpositores = expositor.get('atributos_expositores') as FormArray;
-    if (!atributosExpositores) {
-      atributosExpositores = new FormArray([]);
-      expositor.setControl('atributos_expositores', atributosExpositores);
-    }
-    //inserto el atributo en el array
-    atributosExpositores.push(atributoExpositorGroup);
-  
    
   }
 
@@ -337,8 +329,10 @@ export class FormMuebleComponent implements OnInit {
   }
 
   updateIsValidNextStepForAsignarElementos(): void {
-    const controlExpositor:FormGroup = this.expositores.at(this.index_expositor_actual) as FormGroup;
+    const controlExpositor = this.expositores.at(this.index_expositor_actual);
     const atributo = controlExpositor ? controlExpositor.get('atributos_expositores') : null;
+    console.log(atributo);
+    
     this.isValidNextStep = !!atributo && atributo.valid;
 }
 
@@ -377,21 +371,8 @@ export class FormMuebleComponent implements OnInit {
    
   }
   
-  deleteExpositoresSiEsNecesario() {
-    // Será necesario si ya existen expositores pero no existen modelos
  
-
-    
-    if (this.imagenesExpositores.length === 0 && this.expositores && this.expositores.length > 0) {
-
-        this.expositores.removeAt(0); // no debería haber mas de uno 𝒸ℴ𝓃𝒸ℯ𝓅𝓉𝓊𝒶𝓁𝓂ℯ𝓃𝓉ℯ
-      
-    }
-  }
-  
   onFormularioPaso1AddedImage( $event: { imagenes: string, archivos_imagenes: File }) {
-    this.deleteExpositoresSiEsNecesario();
-
     this.crearExpositor(true,this.categoriaID, $event);
     this.updateStepCount();
     this.generateSteps();
@@ -405,7 +386,9 @@ export class FormMuebleComponent implements OnInit {
   }
 
 
- 
+  onCrearAtributoExpositor($event:{index:number, atributo: atributos_expositores}) {
+    this.agregarAtributoAExpositor(this.index_expositor_actual , $event.index, $event.atributo, );
+  }
 
   
   updateStepCount(){
@@ -445,6 +428,8 @@ export class FormMuebleComponent implements OnInit {
         }
 
       //seleccion de huecos  
+      }else{
+
       }
     }
   }

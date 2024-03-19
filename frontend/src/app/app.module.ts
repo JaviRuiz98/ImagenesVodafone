@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 
+import { ValidadorModule } from './pages/validador/validador.module';
 import { HomeModule } from './pages/home/home.module';
 import { BarraMenuComponent } from './componentes/barra-menu/barra-menu.component';
 import { TiendasModule } from './pages/tiendas/tiendas.module';
@@ -19,8 +20,7 @@ import { ElementosModule } from './pages/elementos/elementos.modules';
 import { RemarcarExpositorComponent } from './componentes/remarcar-expositor/remarcar-expositor.component';
 import { PlanoTiendaModule } from './pages/plano-tienda/plano-tienda.module';
 import { LoginModule } from './pages/login/login.module';
-import { UniformesModule } from './pages/uniformes/uniformes.module'; 
-
+import { UniformesModule } from './pages/uniformes/uniformes.module';  
 import { ButtonModule } from 'primeng/button';
 @NgModule({
   declarations: [
@@ -30,6 +30,7 @@ import { ButtonModule } from 'primeng/button';
     BarraMenuComponent,
     RemarcarExpositorComponent,
     MuebleModule,
+    ValidadorModule,
     AppRoutingModule,
     HomeModule,
     TiendasModule,
@@ -46,7 +47,7 @@ import { ButtonModule } from 'primeng/button';
   ],
   providers: [   
     PrimeIcons,
-    DatePipe
+    DatePipe, 
   ],
   
   bootstrap: [AppComponent]

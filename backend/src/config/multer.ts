@@ -16,12 +16,13 @@ const createStorageConfig = (folderPath: string) => {
 };
 
 function getDestination(folderPath: string): string {
-  return 'imagenes/'+ folderPath
+  return 'http://validador-vf.topdigital.local/imagenes/'+ folderPath + '/'
 }
 // Crear configuraciones de almacenamiento específicas
 const storageImagenReferencia = createStorageConfig('imagenesReferencia');
 const storageImagenProcesada = createStorageConfig('imagenesProcesamiento');
 const storageImagenProducto = createStorageConfig('imagenesProducto');
+const storagePlanoImagen = createStorageConfig('imagenesPlanos');
 // Middleware de Multer
 
 
@@ -29,8 +30,9 @@ const uploadImagenRepresentativa = multer({ storage: storageImagenReferencia }).
 const uploadArrayImagenRepresentativa = multer({ storage: storageImagenReferencia }).array('imagenesReferencia');
 const uploadImagenProcesada = multer({ storage: storageImagenProcesada }).single('imagenesProcesamiento');
 const uploadImagenProducto = multer({ storage: storageImagenProducto }).single('imagenesProducto'); //almacenamiento para los productos de uniforme
+const uploadPlanoImagen = multer({ storage: storagePlanoImagen }).single('imagenesPlano');
 const uploadNone = multer().none();
 
 // Exportar los middleware
-export { uploadImagenRepresentativa, uploadArrayImagenRepresentativa, uploadImagenProcesada,uploadImagenProducto,uploadNone, getDestination };
+export { uploadImagenRepresentativa, uploadArrayImagenRepresentativa, uploadImagenProcesada,uploadImagenProducto,uploadNone, uploadPlanoImagen ,getDestination };
 
