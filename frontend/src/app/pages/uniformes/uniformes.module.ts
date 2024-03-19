@@ -11,8 +11,9 @@ import{ DataViewLayoutOptions } from 'primeng/dataview';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { SidebarModule } from 'primeng/sidebar'; 
-import { CheckboxModule } from 'primeng/checkbox';
 import { DataView } from 'primeng/dataview';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
@@ -28,7 +29,8 @@ import { DataView } from 'primeng/dataview';
         CardModule,
         TagModule,
         SidebarModule,
-        CheckboxModule,
+        RadioButtonModule,
+        FormsModule
     ],
     providers: [
         MessageService,        

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UniformesModule } from './uniformes.module';
 import { productos } from 'src/app/interfaces/productos';
 import { UniformesService } from 'src/app/servicios/uniformes/uniformes.service';
-import { Opciones_caracteristicas } from 'src/app/interfaces/caracteristicas';
+import { caracteristicas_productos } from 'src/app/interfaces/caracteristicas';
 
 
 @Component({
@@ -16,11 +16,9 @@ import { Opciones_caracteristicas } from 'src/app/interfaces/caracteristicas';
 
 export class UniformesComponent implements OnInit {
 
-  layout: any = 'list';
-
   productos!: productos[];
 
-  opciones_caracteristicas!: Opciones_caracteristicas[];
+  caracteristicas_productos!: caracteristicas_productos[];
   sidebarVisible: boolean = false;
 
   verOpcionesProducto: boolean = false;
@@ -60,10 +58,10 @@ export class UniformesComponent implements OnInit {
   }
 
   inicializaCaracteristicasProducto() {
-    this.uniformesService.getCaracteristicas().subscribe((caracteristicas: any[]) => {
-      this.opciones_caracteristicas = caracteristicas;
+    this.uniformesService.getCaracteristicas().subscribe((caracteristicas: caracteristicas_productos[]) => {
+      this.caracteristicas_productos = caracteristicas;
       this.productos.map(producto => {
-        producto.opciones_caracteristicas = this.opciones_caracteristicas.filter(caracteristica => caracteristica.id_producto === producto.id);
+        producto.caracteristicas_productos = this.caracteristicas_productos.filter(caracteristica => caracteristica.id_producto === producto.id);
 
       })
       console.log(this.productos);
