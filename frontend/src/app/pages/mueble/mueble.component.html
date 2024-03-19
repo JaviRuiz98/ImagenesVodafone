@@ -42,6 +42,40 @@
                                         </ng-template>
                                     </p-overlayPanel>
                                     
+        <p-dataView #dv [value]="mueblesFiltrados" [rows]="6" [paginator]="true">
+
+            <ng-template let-mueble pTemplate="listItem">
+
+                <div class="col-12 sm:col-6 lg:col-3 xl:col-4 p-2">
+                    <div class="p-4 border-1 surface-border surface-card border-round">
+                        <div class="grid">
+
+                            <div class="text-2xl col-9 font-bold overflow-hidden text-overflow-ellipsis">
+                                {{ mueble.nombre }}
+                            </div>
+                                <p-overlayPanel #op>
+                                    <ng-template pTemplate>
+                                        <div style="display: flex;">
+                                            {{ overlayPanelMessage }}
+                                        </div>
+                                    </ng-template>
+                                </p-overlayPanel>
+                              
+                            <div class="col-3"> 
+                                <div class="flex-inline">
+                                    <!-- <p-button (mouseenter)="showOverlayPanel(op, 'Historial de mueble')"
+                                    (mouseleave)="hideOverlayPanel(op)" class="mr-2" [raised]="true" [text]="true" [rounded]="true"
+                                    severity="danger" icon="pi pi-history" [disabled]="mueble.expositores.length < 1"
+                                    (click)="showHistorial(mueble)"></p-button> -->
+
+                                     
+                            
+                                    <p-button (mouseenter)="showOverlayPanel(op, 'Editar mueble')" (mouseleave)="hideOverlayPanel(op)"
+                                        severity="danger" class="mr-2" [raised]="true" [text]="true" [rounded]="true" icon="pi pi-pencil"
+                                        (click)="editMueble(mueble)"></p-button>
+                                        <p-button (mouseenter)="showOverlayPanel(op, 'Eliminar')"
+                                    (mouseleave)="hideOverlayPanel(op)" class="mr-2" [raised]="true" [text]="true" [rounded]="true"
+                                    severity="danger" icon="pi pi-trash"></p-button> 
                                 </div>
                                
                             </div>
