@@ -1,4 +1,4 @@
-import {  tiendas, posiciones_muebles_tienda } from "@prisma/client";
+import {  tiendas, posiciones_muebles_tienda, imagenes } from "@prisma/client";
 import db  from "../config/database";
 
 export const tiendaService = {
@@ -65,7 +65,7 @@ export const tiendaService = {
       }
   },
       
-  async newTienda(parametros: tiendas): Promise<tiendas> {
+  async newTienda(parametros: tiendas, imagen?: imagenes): Promise<tiendas> {
     try{
         return await db.tiendas.create({
             data: ({
@@ -83,7 +83,8 @@ export const tiendaService = {
                 zona_geografica: parametros.zona_geografica,
                 provincia: parametros.provincia,
                 poblacion: parametros.poblacion,
-                cp: parametros.cp
+                cp: parametros.cp, 
+                id_imagen_plano: imagen?.id,
             })
         });
     } catch (error) {
@@ -92,7 +93,24 @@ export const tiendaService = {
     } finally{
         db.$disconnect();
     }
-  },
+  }, 
+   async updatePlanoTienda (id_tienda:number, imagen: imagenes){
+       try{
+           return await db.tiendas.update({
+               where: {
+                   id: id_tienda
+               },
+               data: ({
+                   id_imagen_plano: imagen.id
+               })
+           });
+       } catch (error) {
+           console.log(error);
+           throw error;
+       } finally{
+           db.$disconnect();
+       }
+   },
 
   async asignarPertenenciaMuebleTienda(id_tienda: number, listaIdMuebles: number[]): Promise<any[]> {
         try {

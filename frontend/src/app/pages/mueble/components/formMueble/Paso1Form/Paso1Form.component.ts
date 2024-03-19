@@ -64,9 +64,6 @@ export class Paso1FormComponent implements OnInit {
     this.enumService.getAllRegiones().subscribe((regiones: regiones[]) => {
       this.regiones = regiones;
     });
-   
-
-
   }
 
  
