@@ -9,6 +9,11 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { timeout } from 'rxjs';
 import { EnumService } from 'src/app/servicios/enum/enum.service';
 
+
+
+import { productos } from 'src/app/interfaces/productos';
+
+
 @Component({
   selector: 'app-elementos',
   templateUrl: './elementos.component.html',
@@ -17,10 +22,9 @@ import { EnumService } from 'src/app/servicios/enum/enum.service';
 
 
 
-
 export class ElementosComponent implements OnInit{
 
-
+  
   @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
   @Input() id_elemento_selected: number = 0;
   @Input() mostrarDialogoNuevoElemento: boolean = false;
@@ -49,9 +53,6 @@ export class ElementosComponent implements OnInit{
   tableStateOption: any[] = [{label:'Dispositivos', icon: 'pi pi-mobile', value: 'dispositivos',  styleClass: "optionColorVodafone" }, {label:'Carteles' ,icon: 'pi pi-book', value: 'cartel', styleClass: "optionColorVodafone" }];
   tableSelected:string = 'dispositivos';
 
-
-
-////7
   verRemarcado: boolean = false;
 
 
