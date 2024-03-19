@@ -25,7 +25,6 @@ export class PlanoTiendaComponent implements OnInit {
   mostrar_dialog_asignar_muebles = false;
 
   canvas: fabric.Canvas;
-  posiciones_muebles: any[] = []; // Arreglo para almacenar los resúmenes de los muebles
   muebles: muebles[] = [];
   tiendaSelected: tienda = {} as tienda;
 
@@ -179,7 +178,7 @@ export class PlanoTiendaComponent implements OnInit {
     )
   }
 
-  async anadirIconoDentroRectangulo(targetRect: any, id_posicion_mueble: number, mueble: muebles) {
+  async anadirIconoDentroRectangulo(targetRect: fabric.Rect, id_posicion_mueble: number, mueble: muebles) {
     fabric.Image.fromURL(this.urlService.url_imagenes_referencia + mueble.imagen_representativa[0].url, (img) => {
       const scaleX = targetRect.width / img.width;
       const scaleY = targetRect.height / img.height;
@@ -321,17 +320,6 @@ export class PlanoTiendaComponent implements OnInit {
     // Hace que el rectángulo añadido sea el objeto activo para su edición inmediata
     this.canvas.setActiveObject(rect);
 
-    // Añadir objeto mueble al arreglo con la información inicial
-    this.posiciones_muebles.push({
-      id: this.id,
-      descripcion: `Mueble ${this.id}`,
-      left: rect.left,
-      top: rect.top,
-      width: rect.width,
-      height: rect.height,
-      angle: rect.angle,
-    });
-
     // Escuchar eventos de modificación en el rectángulo
     rect.on('modified', () => {
       rect.set({
@@ -397,7 +385,7 @@ export class PlanoTiendaComponent implements OnInit {
     });
   }
 
-  ordenarListaAlfabeticamente(lista: any[], campo: string) {
+  ordenarListaAlfabeticamente(lista: muebles[], campo: string) {
     const listaOrdenada = lista.sort((a, b) => a[campo].localeCompare(b[campo]));
     return listaOrdenada;
   }
