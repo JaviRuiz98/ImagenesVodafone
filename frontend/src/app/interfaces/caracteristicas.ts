@@ -9,11 +9,5 @@ export interface Opciones_caracteristicas{
     stock: number;
 
     seleccionado: boolean;
-    // constructor(valor: null){
-    //     this.id = 0;
-    //     this.id_producto = 0;
-    //     this.genero = '';
-    //     this.talla = '';
-    //     this.stock = 0;
-    // }
+ 
 }
