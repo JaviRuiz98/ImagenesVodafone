@@ -19,3 +19,6 @@ export interface tienda {
     cp: string;
     pertenencia_mueble_tienda: pertenencia_mueble_tienda[];
 }
+export interface tiendaCreacion extends tienda {
+    archivo_imagen?: File;
+}

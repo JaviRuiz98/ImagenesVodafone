@@ -1,0 +1,48 @@
+
+<div class="flex" *ngIf="this.huecos && this.huecos.length > 0">
+  <div  class=" flex-1 mt-2">
+    <div style="display: flex; justify-content: center" >
+      <div class="position: relative">
+        <canvas id="funciona_please" width="500%"  height="500%"></canvas>
+        <ng-container *ngFor="let attr of huecos ?? []; let i = index">
+  
+          <div *ngIf="attr.elemento && attr.elemento.id" 
+            [style.position]="'absolute'" 
+            [style.left.px]="attr.x_start"
+            [style.top.px]="attr.y_start" 
+            [style.width.px]="attr.ancho" 
+            [style.height.px]="attr.alto" 
+            [style.transform]="attr.angulo ? 'rotate(' + attr.angulo + 'deg)' : ''"
+            [style.transform-origin]="attr.angulo? '0% 0%' : ''"
+            (mouseenter)="op.toggle($event)" (mouseleave)="op.toggle($event)"
+    
+            style="border: 1px solid transparent; z-index: 2;">
+    
+              <p-overlayPanel #op >
+                <ng-template pTemplate>
+                  <div style="display: flex;">
+                      <div *ngIf="attr.elemento?.imagenes.id_imagen">
+                      <img [src]=" getImageSrc(attr.elemento?.imagenes.url)"  style="width: 64px; height: 64px; object-fit: cover;" class="imagenRepresentativaMueble">
+                    </div>                                          
+                  </div>
+                  <h3>{{ attr.elemento?.nombre }}</h3>
+                </ng-template>
+              </p-overlayPanel>
+              
+              <!-- Contenedor para los botones de esquina -->
+              <div class="corner-buttons" style="position: absolute; right: -24px; top: -24px; width: 48px; height: 48px;">
+               
+                
+                <!-- Aquí puedes agregar más botones para otras esquinas siguiendo el mismo patrón -->
+              </div>
+            </div>
+        </ng-container> 
+
+      </div>
+
+     
+    </div>
+   
+
+  </div>
+ 
