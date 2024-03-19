@@ -84,14 +84,12 @@ onDragLeave(event: DragEvent) {
   if (this.button_disabled != true){
     event.preventDefault();
     event.stopPropagation();
-    this.dropAreaRef.nativeElement.classList.remove('active');
+    this.dropAreaRef.nativeElement.classList.remove('dragover');
     this.mouseSobre = false;
   }
 }
  
   onDrop(event: DragEvent) {
-    this.dropAreaRef.nativeElement.classList.remove('active');
-
       event.preventDefault();
       event.stopPropagation();
       this.mouseSobre = false;

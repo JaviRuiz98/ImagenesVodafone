@@ -9,7 +9,7 @@ import { imagenService } from '../services/imagenService';
 import { prompts } from '@prisma/client';
 import { promptService } from '../services/promptService';
 import { procesados_imagenes } from '@prisma/client';
-import { muebleService } from '../services/muebleService';
+import { mobiliarioService } from '../services/mobiliarioService';
 import { downloadImageFtp } from '../config/ftpDownload';
 
 
@@ -62,7 +62,7 @@ export async function procesarImagenes(req: Request, res: Response) {
     //la imagen de referencia  es necesaria para el procesado
     const [imagenReferencia, huecosEsperados] = await Promise.all([
       elementosService.getImage(existingElemento.id_imagen!),
-      muebleService.getHuecosDisponibles(id_expositor)
+      mobiliarioService.getHuecosDisponibles(id_expositor)
     ]);
     
     
@@ -100,10 +100,10 @@ export async function procesarImagenes(req: Request, res: Response) {
     }
 
     // Descargar imagen de referencia del ftp en caso de existir y adjuntar su url local
-    const url_imagen_referencia_ftp = imagenReferencia.url; //no debe ser con formato de internet si no de navegacion interna como si estuvieses en filezilla
-    const url_imagen_referencia_local = await downloadImageFtp(url_imagen_referencia_ftp);
-    
-    const filePaths = [url_imagen_referencia_local, imagenProcesada.path];
+    if (imagenReferencia.url) {
+      imagenReferencia.url = await downloadImageFtp(imagenReferencia.url, imagenReferencia.nombre_archivo? imagenReferencia.nombre_archivo : 'imagen_referencia.jpg');
+    }
+    const filePaths = [imagenReferencia.url, imagenProcesada.path];
 
 
     //llamada a OpenAI

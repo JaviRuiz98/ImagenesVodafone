@@ -23,7 +23,6 @@ export class PlanoTiendaComponent implements OnInit {
   mostrar_dialog_asignar_muebles = false;
 
   canvas: fabric.Canvas;
-  posiciones_muebles: any[] = []; // Arreglo para almacenar los resúmenes de los muebles
   muebles: muebles[] = [];
   tiendaSelected: tienda = {} as tienda;
 
@@ -54,9 +53,6 @@ export class PlanoTiendaComponent implements OnInit {
     this.inicializarCanvas();
     this.accionAlAsignarMueble();
     this.getMueblesTienda();
-    window.addEventListener('resize', () => {
-      this.editarCanvas();
-    });
   }
 
   obtenerAnchuraBarra() {
@@ -65,58 +61,19 @@ export class PlanoTiendaComponent implements OnInit {
   }
 
   inicializarCanvas() {
-    const parametrosAlturaAnchura = this.obtenerAlturaAnchuraCanvas(100, 100);
     this.canvas = new fabric.Canvas('canvas_plano', {
-      width: parametrosAlturaAnchura.width,
-      height: parametrosAlturaAnchura.height,
+      width: 1100,
+      height: 700,
+      backgroundColor: 'lightgrey',
     });
-
-    fabric.Image.fromURL('/assets/images/planoTienda.png', (img) => {
-      const scaleX = this.canvas.width / img.width;
-      const scaleY = this.canvas.height / img.height;
-      const scale = Math.min(scaleX, scaleY);
-
-      const offsetX = (this.canvas.width - img.width * scale) / 2;
-      const offsetY = (this.canvas.height - img.height * scale) / 2;
-
+    fabric.Image.fromURL('/assets/images/plano_tienda.jpg', (img) => {
+      img.scaleToWidth(this.canvas.getWidth());
+      img.scaleToHeight(this.canvas.getHeight());
       this.canvas.setBackgroundImage(img, this.canvas.renderAll.bind(this.canvas), {
-        scaleX: scale,
-        scaleY: scale,
-        left: offsetX,
-        top: offsetY
+        scaleX: this.canvas.width / img.width,
+        scaleY: this.canvas.height / img.height,
       });
     });
-  }
-  editarCanvas(){
-    const parametrosAlturaAnchura = this.obtenerAlturaAnchuraCanvas(100, 100);
-    this.canvas.setWidth(parametrosAlturaAnchura.width);
-    this.canvas.setHeight(parametrosAlturaAnchura.height);
-    fabric.Image.fromURL('/assets/images/planoTienda.png', (img) => {
-      const scaleX = this.canvas.width / img.width;
-      const scaleY = this.canvas.height / img.height;
-      const scale = Math.min(scaleX, scaleY);
-
-      const offsetX = (this.canvas.width - img.width * scale) / 2;
-      const offsetY = (this.canvas.height - img.height * scale) / 2;
-
-      this.canvas.setBackgroundImage(img, this.canvas.renderAll.bind(this.canvas), {
-        scaleX: scale,
-        scaleY: scale,
-        left: offsetX,
-        top: offsetY
-      });
-    });
-  }
-
-  obtenerAlturaAnchuraCanvas(altura: number, anchura: number) {
-    let canvasContainer = document.querySelector('.divPlanoTienda') as HTMLElement;     
-    if (!canvasContainer) {
-        console.error('No se encontró el contenedor del canvas.');
-        return null;
-    }
-    let canvasWidth = canvasContainer.offsetWidth * (anchura / 100); 
-    let canvasHeight = canvasContainer.offsetHeight * (altura / 100);    
-    return { height: canvasHeight, width: canvasWidth };
   }
 
   async accionAlAsignarMueble() {
@@ -216,7 +173,10 @@ export class PlanoTiendaComponent implements OnInit {
 
       if(targetRect) {
         this.canvas.remove(targetRect); // Eliminar el rectángulo para que no se duplique
+        console.log('Rectangulo eliminado: ', targetRect);
       }
+
+      console.log('group: ', group);
     });
   }
 
@@ -305,17 +265,6 @@ export class PlanoTiendaComponent implements OnInit {
     // Hace que el rectángulo añadido sea el objeto activo para su edición inmediata
     this.canvas.setActiveObject(rect);
 
-    // Añadir objeto mueble al arreglo con la información inicial
-    this.posiciones_muebles.push({
-      id: this.id,
-      descripcion: `Mueble ${this.id}`,
-      left: rect.left,
-      top: rect.top,
-      width: rect.width,
-      height: rect.height,
-      angle: rect.angle,
-    });
-
     // Escuchar eventos de modificación en el rectángulo
     rect.on('modified', () => {
       rect.set({
@@ -381,7 +330,7 @@ export class PlanoTiendaComponent implements OnInit {
     });
   }
 
-  ordenarListaAlfabeticamente(lista: any[], campo: string) {
+  ordenarListaAlfabeticamente(lista: muebles[], campo: string) {
     const listaOrdenada = lista.sort((a, b) => a[campo].localeCompare(b[campo]));
     return listaOrdenada;
   }

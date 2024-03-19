@@ -5,7 +5,6 @@ import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 
 import { tienda, tiendaCreacion } from 'src/app/interfaces/tienda';
 import { muebles } from 'src/app/interfaces/muebles';
-
 @Component({
   selector: 'app-dialog-nueva-tienda',
   templateUrl: './dialog-nueva-tienda.component.html',
@@ -24,7 +23,6 @@ export class DialogNuevaTiendaComponent{
 
   parametrosSteps: any; 
   activeIndex: number = 0;
-  maxStep: number = 5;
   contenidoBotonCrearEditarTienda: string = 'Siguiente';
   editarTiendaCreada: boolean = false;
   crearTienda: boolean = false;
@@ -83,21 +81,15 @@ export class DialogNuevaTiendaComponent{
         }
       },
       {
-        label: 'Plano Tienda',
-        command: (event: any) => {
-          this.activeIndex = 4;
-        }
-      },
-      {
         label: 'Confirmar',
         command: (event: any) => {
-          this.activeIndex = this.maxStep;
+          this.activeIndex = 4;
         }
       }
     ];
   }
   botonSiguiente(){
-    if(this.activeIndex < this.maxStep){
+    if(this.activeIndex < 4){
       this.activeIndex++;
     } else{
       if(this.contenidoBotonCrearEditarTienda == 'Crear Tienda'){
