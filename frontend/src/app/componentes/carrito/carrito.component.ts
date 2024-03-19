@@ -2,7 +2,7 @@
 import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import { productos } from 'src/app/interfaces/productos';
-// import { carrito } from 'src/app/interfaces/carrito';
+import { Carrito } from 'src/app/interfaces/carrito';
 import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
 import { SelectorImagenesComponent } from './../../componentes/selector-imagenes/selector-imagenes.component';
 import { InputTextModule } from 'primeng/inputtext';
