@@ -12,6 +12,7 @@ import { EditarExpositorComponent } from './components/editarExpositor/editarExp
 import { UrlService } from 'src/app/servicios/url/url.service';
 import { Subject } from 'rxjs';
 import { OverlayPanel } from 'primeng/overlaypanel';
+import { ViewExpositorComponent } from './components/viewExpositor/viewExpositor.component';
 
 @Component({
   selector: 'app-mueble',
