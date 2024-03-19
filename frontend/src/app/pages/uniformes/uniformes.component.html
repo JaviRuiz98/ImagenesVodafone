@@ -63,19 +63,19 @@
                                                     <div class="flex flex-row gap-3 align-items-center">
                                                         <h3>Talla:</h3>
                                                         <div class="flex flex-row gap-2">
-                                                            <form class="flex flex-column gap-3" [formGroup]="formGroup">
+                                                            <!-- <form class="flex flex-column gap-3" [formGroup]="formGroup"> -->
                                                                 <div *ngFor="let item of producto.opciones_caracteristicas" class="field-checkbox">
                                                                     <!-- <p-checkbox [label]="item.talla" name="talla" (onChange)="deseleccionarOtrasTallas(item)" [(ngModel)]="item.seleccionado"></p-checkbox> -->
-                                                                    <!-- <p-radioButton name="producto" [(ngModel)]="item.seleccionado"  (onClick)="deseleccionarOtrasTallas(item)" inputId=""></p-radioButton> -->
+                                                                    <p-radioButton name="producto" [label]="item.talla" [(ngModel)]="item.seleccionado"  (onClick)="deseleccionarOtrasTallas(item)" inputId=""></p-radioButton>
                                                                     <!-- <p-radioButton name="item.id_producto" [(ngModel)]="item.talla"  (onClick)="deseleccionarOtrasTallas(item)" [inputId]="item.id"></p-radioButton>
                                                                     <label for="ingredient1" class="ml-2">{{item.talla}}</label> -->
 
-                                                                    <p-radioButton [inputId]="item.id" [value]="item" formControlName="{{item.id_producto}}"></p-radioButton>
-                                                                    <label [for]="item.id" class="ml-2">{{ item.talla }}</label>
+                                                                    <!-- <p-radioButton [inputId]="item.id" [value]="item" formControlName="{{item.id_producto}}"></p-radioButton>
+                                                                    <label [for]="item.id" class="ml-2">{{ item.talla }}</label> -->
 
-                                                                    {{item.seleccionado}}
+                                                                    <!-- {{item.seleccionado}} -->
                                                                 </div>
-                                                            </form>
+                                                            <!-- </form> -->
                                                         </div>
                                                     </div>
                                                         <ng-template #sinOpciones>
