@@ -1,7 +1,8 @@
  
 import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
-import { elementos } from 'src/app/interfaces/elementos';
+import { productos } from 'src/app/interfaces/productos';
+// import { carrito } from 'src/app/interfaces/carrito';
 import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
 import { SelectorImagenesComponent } from './../../componentes/selector-imagenes/selector-imagenes.component';
 import { InputTextModule } from 'primeng/inputtext';
@@ -14,7 +15,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormControl, Validators  } from '@angular/forms';
 import { categorias_elementos } from 'src/app/interfaces/categoria';
-
+import { SidebarModule } from 'primeng/sidebar';
 import { regiones } from 'src/app/interfaces/regiones';
 import { EnumService } from 'src/app/servicios/enum/enum.service';
 
@@ -29,16 +30,19 @@ import { EnumService } from 'src/app/servicios/enum/enum.service';
     DialogModule,
     SelectorImagenesComponent,
     InputTextModule,
+    SidebarModule,
   ]
-
-
 })
 
 
 
 export class CarritoComponent implements OnInit{
 
-
+  @Input() sidebarVisible: boolean = false; //sin implementar
+  // @Input() elemento: elementos = {} as elementos;
+  @Output() mostrarDialogoNuevoElemento = new EventEmitter<boolean>();
+  // @Output() nuevoElementoCreado = new EventEmitter<elementos>();
+ 
 
 
 
