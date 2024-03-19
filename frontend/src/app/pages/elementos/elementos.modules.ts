@@ -31,6 +31,9 @@ import { NuevoElementoComponent } from 'src/app/componentes/nuevo-elemento/nuevo
 import { ElementosComponent } from './elementos.component';
 
 // import { RemarcarExpositorComponent } from 'src/app/componentes/remarcar-expositor/remarcar-expositor.component';
+import { CarritoComponent } from 'src/app/componentes/carrito/carrito.component';
+import { SidebarModule } from 'primeng/sidebar';
+
 @NgModule({
   declarations: [
     ElementosComponent
@@ -58,6 +61,8 @@ import { ElementosComponent } from './elementos.component';
     OverlayPanelModule,
     DropdownModule,
     SelectButtonModule,
+    CarritoComponent,
+    SidebarModule
 ]
 })
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { productos } from '../../interfaces/productos';
-import { Opciones_caracteristicas } from 'src/app/interfaces/caracteristicas';
+import { Caracteristicas_productos } from 'src/app/interfaces/caracteristicas';
 
 
 @Injectable({
@@ -26,8 +26,8 @@ export class UniformesService {
     return this.http.get<productos[]>(`${this.API_URI}/productos`);
   }
 
-  getCaracteristicas(): Observable<Opciones_caracteristicas[]> {
-    return this.http.get<Opciones_caracteristicas[]>(`${this.API_URI}/caracteristicas`);
+  getCaracteristicas(): Observable<Caracteristicas_productos[]> {
+    return this.http.get<Caracteristicas_productos[]>(`${this.API_URI}/caracteristicas`);
   }
 
   

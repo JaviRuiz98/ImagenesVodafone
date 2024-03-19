@@ -2,23 +2,14 @@
 import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import { productos } from 'src/app/interfaces/productos';
+import { Caracteristicas_productos } from 'src/app/interfaces/caracteristicas';
 import { Carrito } from 'src/app/interfaces/carrito';
-import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
+
 import { SelectorImagenesComponent } from './../../componentes/selector-imagenes/selector-imagenes.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { Message } from 'primeng/api';
-import { ToastModule } from 'primeng/toast';
-import { CommonModule } from '@angular/common';
-import { DropdownModule } from 'primeng/dropdown';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormControl, Validators  } from '@angular/forms';
-import { categorias_elementos } from 'src/app/interfaces/categoria';
 import { SidebarModule } from 'primeng/sidebar';
-import { regiones } from 'src/app/interfaces/regiones';
-import { EnumService } from 'src/app/servicios/enum/enum.service';
-
+import { DataViewModule } from 'primeng/dataview';
 
 @Component({
   selector: 'app-carrito',
@@ -31,6 +22,8 @@ import { EnumService } from 'src/app/servicios/enum/enum.service';
     SelectorImagenesComponent,
     InputTextModule,
     SidebarModule,
+    DataViewModule,
+
   ]
 })
 
@@ -39,13 +32,21 @@ import { EnumService } from 'src/app/servicios/enum/enum.service';
 export class CarritoComponent implements OnInit{
 
   @Input() sidebarVisible: boolean = false; //sin implementar
-  // @Input() elemento: elementos = {} as elementos;
+  @Input() productos_carrito: productos[] = [] as productos[];
+   
   @Output() mostrarDialogoNuevoElemento = new EventEmitter<boolean>();
   // @Output() nuevoElementoCreado = new EventEmitter<elementos>();
  
+  url_imagenes_productos: string = 'http://validador-vf.topdigital.local/imagenes/imagenesProducto/';
+ 
 
+  constructor( private messageService: MessageService, private confirmationService: ConfirmationService) { }
 
-
+ 
+  eliminarProducto(producto: productos){
+    this.productos_carrito.splice(this.productos_carrito.indexOf(producto), 1);
+  }
+  
 
   ngOnInit(): void {
  

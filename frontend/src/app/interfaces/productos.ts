@@ -1,5 +1,5 @@
 import { imagenes } from './imagenes';
-import { Opciones_caracteristicas } from './caracteristicas';
+import { Caracteristicas_productos } from './caracteristicas';
 
 export class productos{
 
@@ -8,11 +8,11 @@ export class productos{
     precio: number;
     descripcion: string;
     imagenes: imagenes;
-    opciones_caracteristicas: Opciones_caracteristicas[]
+    opciones_caracteristicas: Caracteristicas_productos[]
 
     visible: boolean;
 
-    constructor(id: number, nombre: string, precio: number, descripcion: string, imagenes: imagenes, opciones_caracteristicas: Opciones_caracteristicas[]){
+    constructor(id: number, nombre: string, precio: number, descripcion: string, imagenes: imagenes, opciones_caracteristicas: Caracteristicas_productos[]){
         this.id = id;
         this.nombre = nombre;
         this.precio = precio;

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UniformesModule } from './uniformes.module';
 import { productos } from 'src/app/interfaces/productos';
 import { UniformesService } from 'src/app/servicios/uniformes/uniformes.service';
-import { Opciones_caracteristicas } from 'src/app/interfaces/caracteristicas';
+import { Caracteristicas_productos } from 'src/app/interfaces/caracteristicas';
 import { CarritoComponent } from 'src/app/componentes/carrito/carrito.component';
 import { FormGroup, FormBuilder, FormControl, Validators  } from '@angular/forms';
 
@@ -29,13 +29,13 @@ export class UniformesComponent implements OnInit {
   layout: any = 'list';
 
   productos!: productos[];
-  opciones_caracteristicas!: Opciones_caracteristicas[];
+  opciones_caracteristicas!: Caracteristicas_productos[];
   sidebarVisible: boolean = false;
 
   verOpcionesProducto: boolean = false;
   opciones_producto!: productos[];
   url_imagenes_productos: string = 'http://validador-vf.topdigital.local/imagenes/imagenesProducto/';
-
+  
   constructor(private formBuilder: FormBuilder, private uniformesService: UniformesService,private fb: FormBuilder ) {
     // this.formulario = this.fb.group({
     //   mueble: this.fb.group({
@@ -69,7 +69,7 @@ export class UniformesComponent implements OnInit {
     })
   }
 
-  deseleccionarOtrasTallas(opcion_caracteristica: Opciones_caracteristicas) {
+  deseleccionarOtrasTallas(opcion_caracteristica: Caracteristicas_productos) {
     const index = this.productos.findIndex(productito => productito.id === opcion_caracteristica.id_producto);
 
     this.productos[index].opciones_caracteristicas.forEach(item => {

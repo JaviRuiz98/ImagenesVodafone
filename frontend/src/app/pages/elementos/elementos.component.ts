@@ -25,6 +25,7 @@ export class ElementosComponent implements OnInit{
   @Input() id_elemento_selected: number = 0;
   @Input() mostrarDialogoNuevoElemento: boolean = false;
 
+  carritoVisible: boolean = false;
   cargando_procesamiento: boolean = false;
   imputSearch!: string;
   elementos!: elementos[];
