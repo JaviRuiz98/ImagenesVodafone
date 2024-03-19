@@ -10,6 +10,7 @@ import { expositores } from 'src/app/interfaces/expositores';
   providedIn: 'root'
 })
 export class MueblesService {
+ 
 
   constructor(private http: HttpClient) { }
 
@@ -91,6 +92,10 @@ export class MueblesService {
       atributos_expositores: expositor.atributos_expositores
     }
     return this.http.put<expositores>(this.API_URI_EXPOSITORES  + expositor.id, data, this.options);
+  }
+
+  getPertenenciaExpositorElementobyIdExpositor(id_expositor: any) {
+    throw new Error('Method not implemented.');
   }
 }
 

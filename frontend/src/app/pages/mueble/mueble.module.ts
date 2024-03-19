@@ -93,8 +93,7 @@ import { ViewExpositorComponent } from './components/viewExpositor/viewExpositor
      ViewExpositorComponent,
      Paso1FormComponent,
      PasoHuecosFormComponent, 
-     PasoAsignarElementoFormComponent,
-     
+     PasoAsignarElementoFormComponent
     ], 
   providers: [MessageService, DialogService],
 })
