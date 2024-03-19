@@ -56,7 +56,18 @@
             [listaMueblesAsignadosTablaDerecha]="listaMueblesNuevaTienda"
         ></app-agregar-mueble-a-tienda>
     </div>
-    <div class="resumentNuevaTienda" *ngIf="activeIndex === 4">
+    <div *ngIf="activeIndex === 4" >
+        <div>
+            <small class="text-gray-700">Para asignar un plano seleccione una imagen acorde que represente la tienda vista desde arriba</small>
+        </div>
+        <div class="centrarContenido m-2" >
+            <div style="height: 50vh; width: 50vh ">
+
+                <app-selector-imagenes [opcion_multiple]="false" (archivoSeleccionadoChange)="onArchivoSeleccionadoChange($event)"></app-selector-imagenes>
+            </div>
+        </div>
+      </div>
+    <div class="resumentNuevaTienda" *ngIf="activeIndex === this.maxStep">
         <div>
             <p><strong>Resumen de la tienda:</strong></p>
             <p><strong>Nombre: </strong>{{nuevaTienda.nombre}}</p>
@@ -90,7 +101,7 @@
         <div class="botonesAtrasSiguiente">
             <p-button (click)="activeIndex = (activeIndex > 0) ? activeIndex - 1 : activeIndex" label="Atrás" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px'}" [disabled]="activeIndex === 0"></p-button>
             <p-button (click)="botonSiguiente()" [text]="true" [raised]="true" severity="danger" [rounded]="true" [style]="{'cursor': 'pointer', 'min-width': '200px', 'min-height': '80px', 'justify-content': 'center'}"
-            [label]="(activeIndex === 4) ? contenidoBotonCrearEditarTienda: 'Siguiente'"></p-button>
+            [label]="(activeIndex === this.maxStep) ? contenidoBotonCrearEditarTienda: 'Siguiente'"></p-button>
         </div>
     </div>
 </p-dialog>

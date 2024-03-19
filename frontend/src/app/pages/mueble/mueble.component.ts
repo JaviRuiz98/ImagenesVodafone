@@ -8,10 +8,10 @@ import { HistorialExpositoresComponent } from './components/historialExpositores
 import { PrimeNGConfig } from 'primeng/api';
 import { expositores } from 'src/app/interfaces/expositores';
 import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
-import { EditarExpositorComponent } from './components/editarExpositor/editarExpositor.component';
 import { UrlService } from 'src/app/servicios/url/url.service';
 import { Subject } from 'rxjs';
 import { OverlayPanel } from 'primeng/overlaypanel';
+import { ViewExpositorComponent } from './components/viewExpositor/viewExpositor.component';
 
 @Component({
   selector: 'app-mueble',
@@ -122,6 +122,24 @@ export class MuebleComponent implements OnInit {
     });
   }
 
+  showViewExpositor( expositor:expositores) {
+    this.ref = this.dialogService.open(ViewExpositorComponent, {
+      header: 'Visualización de elementos' ,
+      width: '70%',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 10000,
+      maximizable: true,
+      data: {
+        expositor: expositor, 
+      }
+    });
+    
+   
+    
+    this.ref.onMaximize.subscribe((value) => {
+      this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
+    });
+  }
 
   getImagenModelo(expositor: expositores): string | undefined {
     const atributoModelo: atributos_expositores | undefined = expositor.atributos_expositores.find((atributo) => atributo.categorias_elementos.id === 3);
@@ -156,7 +174,28 @@ export class MuebleComponent implements OnInit {
   hideOverlayPanel(op: OverlayPanel) {
     op.toggle(event);
   }
+ 
+
+  shouldShowOverlayPanel(): boolean {
+    return this.overlayPanelMessage !== undefined;
+  }
+
+  shouldOpenFirstAccordion(mueble: muebles) {
+    let res:boolean = false;
+    if (mueble.expositores.length > 0) {
+      //Para que tenga sentido, si tiene seleccionado un elemento pero no tiene elementos, no deberá tener mas de un expositor 𝓒𝓸𝓷𝓬𝓮𝓹𝓽𝓾𝓪𝓵𝓶𝓮𝓷𝓽𝓮
+      if (!this.tieneModelo(mueble.expositores[0].atributos_expositores) ) {
+        //será true si tiene al menos un elementos
+        if (mueble.expositores[0].atributos_expositores.length > 0) {
+          res = true;
+        }
+      }
+    } 
+    return res;
+}
+    
 
   
+
 }
 

@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
 import { DatePipe } from '@angular/common';
+import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
+import { pertenencia_elementos_atributos } from 'src/app/interfaces/pertenencia_elementos_atributos';
 
 @Component({
   selector: 'app-historialExpositores',
@@ -16,20 +17,20 @@ export class HistorialExpositoresComponent implements OnInit {
 
 
   nombreFiltro: string = '';
+  pertenencias_expositor_mueble: pertenencia_elementos_atributos[] = [];
 
 
-
-  constructor(public dialogConfig : DynamicDialogConfig, private elementosService: ElementosService,  private datePipe: DatePipe) { }
+  constructor(public dialogConfig : DynamicDialogConfig, private muebleService: MueblesService,  private datePipe: DatePipe) { }
 
   ngOnInit() {
-    // if (this.dialogConfig.data) {
-    //   const id_mueble = this.dialogConfig.data.id_mueble;
-    //   this.expositorService.getPertenenciaExpositorMueblebyIdMueble(id_mueble).subscribe(
-    //     (pertenencias_expositor_mueble: pertenencia_expositor_mueble[]) => {
-    //       this.pertenencias_expositor_mueble = pertenencias_expositor_mueble;
-    //     }
-    //   )
-    // }
+    if (this.dialogConfig.data) {
+      // const id_expositor = this.dialogConfig.data.id_expositor;
+      // this.muebleService.getPertenenciaExpositorElementobyIdExpositor(id_expositor).subscribe(
+      //   (pertenencias_expositor_mueble: pertenencia_elementos_atributos[]) => {
+      //     this.pertenencias_expositor_mueble = pertenencias_expositor_mueble;
+      //   }
+      // )
+    }
   
   }
 

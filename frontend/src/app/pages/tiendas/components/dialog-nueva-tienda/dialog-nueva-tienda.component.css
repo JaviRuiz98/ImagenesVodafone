@@ -30,3 +30,18 @@
     background: red;
     border-color: red;
 }
+.asignarPlano {
+    display: flex ;
+    flex-direction: column;
+      
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+  }
+  
+  .centrarContenido {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
