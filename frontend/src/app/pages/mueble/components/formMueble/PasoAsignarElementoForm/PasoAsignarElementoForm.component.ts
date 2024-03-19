@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ChangeDetectorRef } from '@angular/core';
 import { fabric } from 'fabric';
 
@@ -11,6 +11,7 @@ import { UrlService } from 'src/app/servicios/url/url.service';
 import { MessageService } from 'primeng/api';
 import { HttpRequest } from '@angular/common/http';
 import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
+import { elementoCreacion } from '../../../interfaces/elementoCreacion';
 
 
 @Component({
@@ -31,10 +32,36 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
   categoria_id_modelo: number = 3;
 
   @Input () expositorFormulario: FormGroup; 
-  @Output () formularioPasoAsignarAtributoSinHuecos = new EventEmitter<{index:number, atributo: atributos_expositores} >();
-
+  url_imagenes_referencias: string = this.urlService.url_imagenes_referencia;
   
-
+  crearGrupoAtributoExpositor(atributo: atributos_expositores): FormGroup {
+    let imagen:string ='';
+    let archivo: File | undefined;
+    
+    // Verificar y preparar la imagen y el archivo si el atributo viene con un elemento
+    if (atributo && atributo.elemento) {
+      if (!(atributo.elemento as elementoCreacion).archivos_imagenes) {  
+        imagen = this.getImageSrc(atributo.elemento.imagenes.url);
+      }
+    }
+    
+    return this.fb.group({
+      id: [atributo && atributo.id ? atributo.id : null],
+      x_start: [atributo && atributo.x_start ? atributo.x_start : null],
+      y_start: [atributo && atributo.y_start ? atributo.y_start : null],
+      alto: [atributo && atributo.alto ? atributo.alto : null],
+      ancho: [atributo && atributo.ancho ? atributo.ancho : null],
+      angulo: [atributo && atributo.angulo ? atributo.angulo : null],
+      elemento: atributo && atributo.elemento ?  this.fb.group({
+        id: [ atributo.elemento.id ],
+        imagen: [imagen, Validators.required],
+        archivos_imagenes: [null], //siempre será null al escoger un elemento
+        nombre: [ atributo.elemento.nombre , Validators.required],
+        categorias_elementos: [atributo.elemento.categorias_elementos],
+      }): null, 
+      categorias_elementos: [atributo && atributo.categorias_elementos ? atributo.categorias_elementos : null],
+    });
+  }
   get nombre_expositor() {
     return this.expositorFormulario? this.expositorFormulario.get('nombre_expositor'): undefined;
   }
@@ -124,18 +151,58 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
   }
   
   
-  
-  onSeleccionadoSinHuecos($event: elementos){
-    
+  addElementoToAtributoForm(elemento:elementos, atributoForm:FormGroup){
+    const image_url = this.getImageSrc(elemento.imagenes.url);
+    if (!atributoForm.get('elemento')) {
+      atributoForm.setControl('elemento', this.fb.group({
+        id: [elemento.id],
+        imagen: [image_url],
+        categorias_elementos: [elemento.categorias_elementos],
+        nombre: [elemento.nombre]
+
+      }));
+    }else{
+      atributoForm.patchValue({
+        elemento: {
+          id: elemento.id,
+          imagen: image_url,
+          
+        }
+      });
+    }
+  }
+onSeleccionadoSinHuecos($event: elementos) {
+ 
+  const atributosFormsArray: FormArray = this.expositorFormulario.get('atributos_expositores') as FormArray; //obtengo sus atributos
+  const atributo_index = this.indexAtributoFirstElementoSinModeloExpositor;
+ 
+  if (atributo_index === -1) { //debo crear el atributo
     const atributo: atributos_expositores = {
-      categorias_elementos: $event.categorias_elementos, // por defecto será la del elemento
+      categorias_elementos: $event.categorias_elementos,
       elemento: $event,
     };
-    if (this.indexAtributoFirstElementoSinModeloExpositor != -1){
-      this.formularioPasoAsignarAtributoSinHuecos.emit( {index:this.indexAtributoFirstElementoSinModeloExpositor,  atributo:atributo}); 
-    }
+    const grupoAtributo: FormGroup = this.crearGrupoAtributoExpositor(atributo); 
+    atributosFormsArray.push(grupoAtributo); 
 
+  }else { //editar el atributo
+    const atributoFormulario: FormGroup = atributosFormsArray.at(atributo_index) as FormGroup; //obtengo el form del atributo correspondionte
+   atributoFormulario.patchValue({
+     categorias_elementos: $event.categorias_elementos
+   })
+    this.addElementoToAtributoForm($event, atributoFormulario);
+    
   }
+
+  // if (this.indexAtributoFirstElementoSinModeloExpositor !== -1) {
+   
+
+  //   this.formularioPasoAsignarAtributoSinHuecos.emit({index: this.indexAtributoFirstElementoSinModeloExpositor, atributo: atributo});
+
+  // }else {
+  //   this.formularioPasoAsignarAtributoSinHuecos.emit({index:undefined, atributo: atributo});
+  // }
+}
+
 
    onDragEnd(event:{dragEvent:  CdkDragDrop<string[]>}) {
      console.log("terminar");
@@ -286,8 +353,8 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
 
   addImageOnGroup(index_hueco	: number, imagen: string) {
 
-    let imagenUrl : string = imagen
-    !imagen.startsWith(this.urlService.url_imagenes_referencia) ?  imagenUrl = this.urlService.url_imagenes_referencia + imagen: imagenUrl = imagen;
+    let imagenUrl : string = this.getImageSrc(imagen);
+    
     const grupo = this.groupRefs[index_hueco];
 
     this.deleteImageFromCanvas(grupo);
@@ -417,24 +484,9 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
     
       const image_url: string = this.dragged_elemento.imagenes.url;
       const atributo = this.huecos[indiceSoltado];
+      this.addElementoToAtributoForm(this.dragged_elemento, atributo);
 
-      if (!atributo.get('elemento')) {
-        atributo.setControl('elemento', this.fb.group({
-          id: [this.dragged_elemento.id],
-          imagen: [image_url],
-          categorias_elementos: [this.dragged_elemento.categorias_elementos],
-          nombre: [this.dragged_elemento.nombre]
-
-        }));
-      }else{
-        atributo.patchValue({
-          elemento: {
-            id: this.dragged_elemento.id,
-            imagen: image_url,
-            
-          }
-        });
-      }
+    
       
      
       console.log (atributo.value);
@@ -455,7 +507,7 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
 
   getImageSrc(imagen: string) {
     let imagenUrl : string = imagen
-    !imagen.startsWith(this.urlService.url_imagenes_referencia) ?  imagenUrl = this.urlService.url_imagenes_referencia + imagen: imagenUrl = imagen;
+    !imagen.startsWith(this.url_imagenes_referencias) ?  imagenUrl = this.url_imagenes_referencias + imagen: imagenUrl = imagen;
     return imagenUrl;
 
   }

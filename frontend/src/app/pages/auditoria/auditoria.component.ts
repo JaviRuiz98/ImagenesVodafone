@@ -9,6 +9,7 @@ import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 import { ProgresoAuditoriaComponent } from 'src/app/componentes/progreso-auditoria/progreso-auditoria.component';
 import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
 import { UrlService } from 'src/app/servicios/url/url.service';
+import { muebles_auditoria } from 'src/app/interfaces/muebles_auditoria';
 
 @Component({
   selector: 'auditoria',
@@ -23,7 +24,7 @@ export class AuditoriaComponent implements OnInit{
   url_imagenes: string = '';
   carpeta_imagenes_referencias: string = 'imagenesReferencia/';
 
-  muebles: any[] = [];
+  muebles: muebles_auditoria[] = [];
 
   auditoria_seleccionada: auditoria = new auditoria(null);
 
@@ -64,7 +65,7 @@ export class AuditoriaComponent implements OnInit{
 
     async inicializaImagenesReferencia() {
       this.auditoriaService.getMueblesAndExpositoresWithProcesadosByIdAuditoria(this.auditoria_seleccionada.id).subscribe(
-        (data: any[]) => {
+        (data: muebles_auditoria[]) => {
           this.muebles = data;
           console.log('muebles', this.muebles);
         }, 

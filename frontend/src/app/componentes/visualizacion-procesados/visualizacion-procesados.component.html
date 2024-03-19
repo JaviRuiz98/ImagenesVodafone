@@ -10,7 +10,7 @@
             [showIndicators]="verFlechasIndicadorGaleria()"
             >
                 <ng-template pTemplate="item" let-item>
-                    <p-image [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" [preview]="true" [imageStyle]="{'width': '100%', 'height': '100%'}" class="imagenProcesadaDentroGaleria"></p-image>
+                    <p-image [src]="url_imagenes_procesadas + item.imagenes.url" alt="Vista previa de la imagen seleccionada" [preview]="true" [imageStyle]="{'width': 'auto', 'height': 'auto', 'max-height': '100%', 'max-width': '100%'}" class="imagenProcesadaDentroGaleria"></p-image>
                 </ng-template>
             </p-galleria>
             <app-dialog-informacion-procesado [procesado]="procesados" [posicionGaleria]="posicionGaleria" class="posicionDialog"></app-dialog-informacion-procesado> 

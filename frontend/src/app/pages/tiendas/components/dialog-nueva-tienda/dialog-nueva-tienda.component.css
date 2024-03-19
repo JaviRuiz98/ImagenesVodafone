@@ -30,3 +30,8 @@
     background: red;
     border-color: red;
 }
+.asignarPlano{
+    display: flex;
+    height: 300px;
+    width: 50%;
+}

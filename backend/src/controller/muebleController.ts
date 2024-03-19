@@ -24,11 +24,7 @@ export async function getFilteredMuebles(req: Request, res: Response) {
         const ia_clause: string | null = req.body.ia;
 
         //validador
-        /*
-                comprobar que id_mobiliario es numérico si existe
-                comprobar que dispositivos es un array de dos números y el segundo número es mayor que el primero
-    
-            */
+       
         const mobiliario: muebles[] = await muebleService.getFilteredMuebles(
             id_tienda,
             orden_clause,

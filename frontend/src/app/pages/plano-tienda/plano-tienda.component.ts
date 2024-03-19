@@ -41,6 +41,7 @@ export class PlanoTiendaComponent implements OnInit {
   anchura_plano: number = 0;
 
   mostrar_cambiar_muebles = false;
+  boton_anadir_posicion_mueble = true;
 
   constructor(
     private localStorageService: LocalStorageService,
@@ -245,6 +246,7 @@ export class PlanoTiendaComponent implements OnInit {
 
   async cargarMueblesAsignados() {
     await this.vaciarMueblesDelCanvas();
+    this.boton_anadir_posicion_mueble = true;
 
     this.muebles.forEach(mueble => {
       mueble.pertenencia_mueble_tienda.forEach(pertenencia => {
@@ -297,6 +299,7 @@ export class PlanoTiendaComponent implements OnInit {
   }
 
   anadirRectangulo() {
+    this.boton_anadir_posicion_mueble = false;
     this.id++;
 
     const rect = new fabric.Rect({
