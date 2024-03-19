@@ -57,7 +57,7 @@ export async function updateTienda(req: Request, res: Response) {
 
         const file = req.file; //es opcional
         const id_tienda = parseInt(req.params.id_tienda);
-        const listaMuebles = JSON.parse(req.body);
+        const listaMuebles = JSON.parse(req.body.listaNuevosMuebles);
         
         let imagen:imagenes | undefined; 
         if (file) {
@@ -131,26 +131,6 @@ export async function desactivarPosicionMueble(req: Request, res: Response) {
         res.status(500).json({ error: 'Error guardando posicion mueble' });
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 export async function getTiendaBySfid(req: Request, res: Response) {

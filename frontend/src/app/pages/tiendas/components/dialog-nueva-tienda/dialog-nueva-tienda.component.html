@@ -63,7 +63,7 @@
         <div class="centrarContenido m-2" >
             <div style="height: 50vh; width: 50vh ">
 
-                <app-selector-imagenes [opcion_multiple]="false"></app-selector-imagenes>
+                <app-selector-imagenes [opcion_multiple]="false" (archivoSeleccionadoChange)="onArchivoSeleccionadoChange($event)"></app-selector-imagenes>
             </div>
         </div>
       </div>

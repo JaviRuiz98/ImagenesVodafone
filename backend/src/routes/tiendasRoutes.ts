@@ -8,10 +8,9 @@ const router = express.Router();
 router.get('/tiendas',getAllTiendas);
 
 router.post('/tiendas', uploadPlanoImagen, uploadFileToFtp('imagenesPlano', true), newTienda);
-router.put('/tiendas/:id_tienda',  updateTienda);
-router.post('/posicion_mueble',  uploadPlanoImagen, uploadFileToFtp('imagenesPlano', true), guardarPosicionMueble);
+router.post('/posicion_mueble', guardarPosicionMueble);
 
-
+router.put('/tiendas/:id_tienda', uploadPlanoImagen, uploadFileToFtp('imagenesPlano', true),  updateTienda);
 router.put('/tiendas/', activarDesactivarBooleanoTienda);
 router.put('/desactivar_mueble_tienda/', desactivarPosicionMueble);
 
