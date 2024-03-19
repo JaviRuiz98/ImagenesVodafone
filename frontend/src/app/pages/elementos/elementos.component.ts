@@ -109,6 +109,7 @@ export class ElementosComponent implements OnInit{
   }
  
   manejarMostrarDialogo(valor: boolean): void {
+    this.inicializaElementos();
     this.mostrarDialogoNuevoElemento = false;
     console.log('Valor recibido: ', valor);
   }
