@@ -1,3 +1,4 @@
+import { imagenes } from "./imagenes";
 import { pertenencia_mueble_tienda } from "./pertenencia_muebles_tienda";
 
 export interface tienda {
@@ -18,6 +19,7 @@ export interface tienda {
     poblacion: string;
     cp: string;
     pertenencia_mueble_tienda: pertenencia_mueble_tienda[];
+    imagen_plano?: imagenes;
 }
 export interface tiendaCreacion extends tienda {
     archivo_imagen?: File;

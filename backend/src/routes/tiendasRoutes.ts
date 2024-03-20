@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.get('/tiendas',getAllTiendas);
 
-router.post('/tiendas', uploadPlanoImagen, uploadFileToFtp('imagenesPlano', true), newTienda);
+router.post('/tiendas',  uploadPlanoImagen, uploadFileToFtp('imagenesPlano', true), newTienda);
 router.post('/posicion_mueble', guardarPosicionMueble);
 
 router.put('/tiendas/:id_tienda', uploadPlanoImagen, uploadFileToFtp('imagenesPlano', true),  updateTienda);
