@@ -3,13 +3,14 @@ backend/.env
 backend/prisma
 backend/build
 backend/assets/imagenes
+backend/assets/http:
+backend/http:
+backend/imagenes
 
 backend/.dockerignore
 backend/docker-compose.debug.yml
 backend/Dockerfile
-backend/assets/imagenes
 backend/assets/temp
-backend/imagenes
 backend/reporte.pdf
 
 .env

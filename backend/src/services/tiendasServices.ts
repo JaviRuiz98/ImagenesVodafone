@@ -1,9 +1,22 @@
 import {  tiendas, posiciones_muebles_tienda, imagenes } from "@prisma/client";
 import db  from "../config/database";
+import { tiendasConPlano } from "../interfaces/tiendasConPlano";
 
+
+/*Tipar si es posible*/
+function addPlanoToTienda( tiendas: any ) : tiendasConPlano[] {
+    const tiendaConPlano = tiendas.map((tienda:any) => {
+        return {
+            ...tienda,
+            imagen_plano: tienda.imagenes ? tienda.imagenes : undefined,
+        };
+    });
+
+    return tiendaConPlano;
+}
 export const tiendaService = {
     
-    async getAllById(idTienda?: number): Promise<tiendas[]> {
+    async getAllById(idTienda?: number): Promise<tiendasConPlano[]> {
         try{
             const whereClause =  idTienda? {id:idTienda} : {};
             const tiendas = await db.tiendas.findMany(
@@ -13,6 +26,7 @@ export const tiendaService = {
                     },
                     where : whereClause,
                     include:{
+                        imagenes: true,
                         pertenencia_mueble_tienda:{
                             include:{
                                 muebles:{
@@ -27,7 +41,10 @@ export const tiendaService = {
                     }
                 }
             );
-            return tiendas as tiendas[];
+
+            const tiendasConPlano: tiendasConPlano[] =  addPlanoToTienda(tiendas);
+            
+            return tiendasConPlano;
         }  catch(error){
             console.log(error);
             throw error;
@@ -38,13 +55,16 @@ export const tiendaService = {
 
 
 
-    async getBySfid(sfid: string): Promise<tiendas | null> {
+    async getBySfid(sfid: string): Promise<tiendasConPlano | null> {
         try {       
-            return await db.tiendas.findUnique({
+            const tienda =  await db.tiendas.findUnique({
                 where: {
                     sfid: sfid
                 },
                 include: {
+                    
+                    imagenes: true,
+                   
                     pertenencia_mueble_tienda:{
                         include:{
                             muebles:{
@@ -57,6 +77,9 @@ export const tiendaService = {
                     }
                 }
             });
+            const tiendasConPlano: tiendasConPlano[] =  addPlanoToTienda([tienda]);
+            
+            return tiendasConPlano[0];
       } catch (error) {
           console.log(error);
           throw error;
@@ -111,7 +134,23 @@ export const tiendaService = {
            db.$disconnect();
        }
    },
-
+   async deletePlanoTienda (id_tienda:number){
+       try{
+           return await db.tiendas.update({
+               where: {
+                   id: id_tienda
+               },
+               data: ({
+                   id_imagen_plano: null
+               })
+           });
+       } catch (error) {
+           console.log(error);
+           throw error;
+       } finally{
+           db.$disconnect();
+       }
+   },
   async asignarPertenenciaMuebleTienda(id_tienda: number, listaIdMuebles: number[]): Promise<any[]> {
         try {
             const resultados = [];

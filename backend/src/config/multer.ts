@@ -30,7 +30,7 @@ const uploadImagenRepresentativa = multer({ storage: storageImagenReferencia }).
 const uploadArrayImagenRepresentativa = multer({ storage: storageImagenReferencia }).array('imagenesReferencia');
 const uploadImagenProcesada = multer({ storage: storageImagenProcesada }).single('imagenesProcesamiento');
 const uploadImagenProducto = multer({ storage: storageImagenProducto }).single('imagenesProducto'); //almacenamiento para los productos de uniforme
-const uploadPlanoImagen = multer({ storage: storagePlanoImagen }).single('imagenesPlano');
+const uploadPlanoImagen = multer({ storage: storagePlanoImagen }).single('imagenesPlanos');
 const uploadNone = multer().none();
 
 // Exportar los middleware
