@@ -14,7 +14,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormControl, Validators  } from '@angular/forms';
 
-import { Opciones_caracteristicas } from 'src/app/interfaces/caracteristicas';
+import { caracteristicas_productos } from 'src/app/interfaces/caracteristicas';
 
 
 @Component({
@@ -55,7 +55,7 @@ export class NuevoProductoComponent implements OnInit {
         precio: new FormControl('', [Validators.required, Validators.minLength(2)]), 
         descripcion: new FormControl('', [Validators.required, Validators.minLength(2)]),
         imagen: new FormControl(0, [Validators.required, this.fileValidator]), 
-        Opciones_caracteristicas: this.fb.array([]) // Ahora es un FormArray
+        caracteristicas_productos: this.fb.array([]) // Ahora es un FormArray
       }),
      
     });

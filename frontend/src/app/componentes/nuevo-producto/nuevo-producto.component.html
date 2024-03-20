@@ -3,10 +3,10 @@
 <div style="display: flex; flex-direction: row; width: 100%" height="100%">
     <form [formGroup]="formulario" style="width: 50%">
         <input type="text" pInputText pKeyFilter="int" placeholder="Nombre del producto" [formControlName]="'nombre'" style="margin-top: 10px;"/>
-        <p-dropdown name="genero"  [options]="dropdownGeneros" optionLabel="Genero" value="#genero" [placeholder]="'Seleccione región'" [formControlName]="'Opciones_caracteristicas.genero'" [style]="{marginTop: '10px'}" ></p-dropdown>
+        <p-dropdown name="genero"  [options]="dropdownGeneros" optionLabel="Genero" value="#genero" [placeholder]="'Seleccione región'" [formControlName]="'caracteristicas_productos.genero'" [style]="{marginTop: '10px'}" ></p-dropdown>
 
         
-        <input *ngIf="formulario.Opciones_caracteristicas.genero?.value == 'Dispositivos'" id="disabled-input" type="text" pInputText [disabled]="true" [value]="categoriaPredefinida" />
+        <input *ngIf="formulario.caracteristicas_productos.genero?.value == 'Dispositivos'" id="disabled-input" type="text" pInputText [disabled]="true" [value]="categoriaPredefinida" />
 
 
         <div *ngIf="categoria?.value == 'Dispositivos'" style="margin-top: 10px;">

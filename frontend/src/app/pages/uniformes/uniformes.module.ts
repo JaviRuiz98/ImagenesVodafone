@@ -11,13 +11,10 @@ import{ DataViewLayoutOptions } from 'primeng/dataview';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { SidebarModule } from 'primeng/sidebar'; 
-import { CheckboxModule } from 'primeng/checkbox';
-import { DataView } from 'primeng/dataview'; 
-import { InputNumberModule } from 'primeng/inputnumber';
+import { DataView } from 'primeng/dataview';
 import { RadioButtonModule } from 'primeng/radiobutton';
-import { SelectButtonModule } from 'primeng/selectbutton';
-import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormControl, Validators  } from '@angular/forms';
- 
+import { FormsModule } from '@angular/forms';
+
 @NgModule({
     declarations: [
         UniformesComponent
@@ -32,15 +29,8 @@ import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormControl, 
         CardModule,
         TagModule,
         SidebarModule,
-        CheckboxModule, 
-        FormsModule,
-        ReactiveFormsModule,
-        InputNumberModule,
         RadioButtonModule,
-        SelectButtonModule, 
-        
-        
-
+        FormsModule
     ],
     providers: [
         MessageService,        
