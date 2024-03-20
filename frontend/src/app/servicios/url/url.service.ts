@@ -9,6 +9,7 @@ export class UrlService {
   url_en_uso = "http://validador-vf.topdigital.local/imagenes/";
   url_imagenes_procesadas = this.url_en_uso + 'imagenesProcesamiento/';
   url_imagenes_referencia = this.url_en_uso + 'imagenesReferencia/';
+  url_imagenes_plano = this.url_en_uso + 'imagenesPlano/';
 
   api_uri = 'http://localhost:3000';
 
