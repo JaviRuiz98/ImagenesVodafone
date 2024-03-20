@@ -22,6 +22,8 @@ import { PlanoTiendaModule } from './pages/plano-tienda/plano-tienda.module';
 import { LoginModule } from './pages/login/login.module';
 import { UniformesModule } from './pages/uniformes/uniformes.module';  
 import { ButtonModule } from 'primeng/button';
+  
+
 @NgModule({
   declarations: [
     AppComponent, 

@@ -1,5 +1,5 @@
 import { productos } from "./productos";
-import { Caracteristicas_productos } from "./caracteristicas";
+import { caracteristicas_productos } from "./caracteristicas";
 
 
 export interface Carrito {

@@ -19,10 +19,11 @@ export class UniformesComponent implements OnInit {
 
   constructor( private uniformesService: UniformesService ) { }
 
-  productos!: productos[];
-
+  productos: productos[];
+  productos_carrito: productos[] = [] as productos[];
+  producto_seleccionado: productos;
   caracteristicas_productos!: caracteristicas_productos[];
-  sidebarVisible: boolean = false;
+  carritoVisible: boolean = false;
 
   verOpcionesProducto: boolean = false;
   opciones_producto!: productos[];
@@ -37,13 +38,17 @@ export class UniformesComponent implements OnInit {
 
   }
 
-  toggleSidebar() {
-    this.sidebarVisible = !this.sidebarVisible;
-  }
+ 
 
  
   anadirCarrito(producto: productos){
+    this.productos_carrito.push(producto);
 
+  }
+
+  seleccionarOpcionesProducto(producto: productos){
+    this.verOpcionesProducto = true;
+    this.producto_seleccionado = producto;
   }
 
   ngOnInit() {
@@ -54,6 +59,7 @@ export class UniformesComponent implements OnInit {
     this.uniformesService.getProductos().subscribe(
       (productos: productos[]) => {
         this.productos = productos;
+        this.producto_seleccionado = this.productos[0];
         this.inicializaCaracteristicasProducto();
       }
     );

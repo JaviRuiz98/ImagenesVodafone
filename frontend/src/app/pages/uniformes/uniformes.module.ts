@@ -14,6 +14,8 @@ import { SidebarModule } from 'primeng/sidebar';
 import { DataView } from 'primeng/dataview';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { FormsModule } from '@angular/forms';
+import { CarritoComponent } from 'src/app/componentes/carrito/carrito.component';
+
 
 @NgModule({
     declarations: [
@@ -30,7 +32,8 @@ import { FormsModule } from '@angular/forms';
         TagModule,
         SidebarModule,
         RadioButtonModule,
-        FormsModule
+        FormsModule, 
+        CarritoComponent
     ],
     providers: [
         MessageService,        
