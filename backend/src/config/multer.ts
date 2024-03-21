@@ -16,8 +16,9 @@ const createStorageConfig = (folderPath: string) => {
 };
 
 function getDestination(folderPath: string): string {
-  return 'imagenes/'+ folderPath
+  return path.join('src', 'assets', 'temp', 'imagenes', folderPath);
 }
+
 // Crear configuraciones de almacenamiento específicas
 const storageImagenReferencia = createStorageConfig('imagenesReferencia');
 const storageImagenProcesada = createStorageConfig('imagenesProcesamiento');

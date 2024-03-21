@@ -1,5 +1,5 @@
 import { Client } from 'basic-ftp';
-import fs from 'fs';
+// import fs from 'fs';
 import path from 'path';
 
 export const downloadImageFtp: (url_image_ftp: string) => Promise<string> = async function (url_image_ftp) {
@@ -19,15 +19,15 @@ export const downloadImageFtp: (url_image_ftp: string) => Promise<string> = asyn
         const file_name = path.basename(url_image_ftp);
 
         // Definir la ruta donde se guardará la imagen temporalmente
-        const filePath = path.join(__dirname, '..', '..', 'assets', 'temp', file_name);
+        const filePath = path.join(__dirname, '..', '..', 'src', 'assets', 'temp', 'imagenes', 'imagenesReferencia', file_name);
         console.log('tempDownloadPath:', filePath);
         console.log('url_image_ftp:', url_image_ftp);
 
         // Asegurarse de que la carpeta temp existe
-        const tempDir = path.join(__dirname, '..', '..', 'assets', 'temp');
-        if (!fs.existsSync(tempDir)) {
-            fs.mkdirSync(tempDir);
-        }
+        // const tempDir = path.join(__dirname, '..', '..', 'assets', 'temp');
+        // if (!fs.existsSync(tempDir)) {
+        //     fs.mkdirSync(tempDir);
+        // }
 
         // Descargar la imagen del servidor FTP
         await client.downloadTo(filePath, url_image_ftp);
@@ -42,4 +42,8 @@ export const downloadImageFtp: (url_image_ftp: string) => Promise<string> = asyn
         // Cerrar la sesión FTP
         await client.close();
     }
+}
+
+export function getFtpDestination(folderPath: string): string {
+    return path.join('imagenes', folderPath);
 }

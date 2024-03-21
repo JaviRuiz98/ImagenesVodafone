@@ -3,13 +3,6 @@
     flex-direction: column;
     align-items: center; 
 }
-.botonesRutasHome {
-    width: 100vw;
-    height: 10vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
 .paginaCompleta ::ng-deep .p-button{
     background: linear-gradient(to bottom left, #ff0000, #c30808);

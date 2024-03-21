@@ -1,0 +1,13 @@
+<div class="menubar-container">
+    <p-menubar [model]="apartados"></p-menubar>
+</div>
+
+<div [ngSwitch]="apartado_seleccionado">
+    <app-estadisticas-auditoria *ngSwitchCase="'auditorias'"></app-estadisticas-auditoria>
+    <app-estadisticas-tiendas *ngSwitchCase="'tiendas'"></app-estadisticas-tiendas>
+    <app-estadisticas-muebles *ngSwitchCase="'muebles'"></app-estadisticas-muebles>
+    <app-estadisticas-elementos *ngSwitchCase="'elementos'"></app-estadisticas-elementos>
+    <app-estadisticas-uniformes *ngSwitchCase="'uniformes'"></app-estadisticas-uniformes>
+    <app-estadisticas-ia *ngSwitchCase="'ia'"></app-estadisticas-ia>
+    <div *ngSwitchDefault> No válido </div>
+</div>
