@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { UniformesModule } from './uniformes.module';
 import { productos } from 'src/app/interfaces/productos';
 import { UniformesService } from 'src/app/servicios/uniformes/uniformes.service';
-import { Opciones_caracteristicas } from 'src/app/interfaces/caracteristicas';
+import { CarritoComponent } from 'src/app/componentes/carrito/carrito.component';
+
+import { caracteristicas_productos } from 'src/app/interfaces/caracteristicas';
 
 
 @Component({
@@ -16,18 +17,17 @@ import { Opciones_caracteristicas } from 'src/app/interfaces/caracteristicas';
 
 export class UniformesComponent implements OnInit {
 
-  layout: any = 'list';
+  constructor( private uniformesService: UniformesService ) { }
 
-  productos!: productos[];
-
-  opciones_caracteristicas!: Opciones_caracteristicas[];
-  sidebarVisible: boolean = false;
+  productos: productos[];
+  productos_carrito: productos[] = [] as productos[];
+  producto_seleccionado: productos;
+  caracteristicas_productos!: caracteristicas_productos[];
+  carritoVisible: boolean = false;
 
   verOpcionesProducto: boolean = false;
   opciones_producto!: productos[];
   url_imagenes_productos: string = 'http://validador-vf.topdigital.local/imagenes/imagenesProducto/';
-
-  constructor(private uniformesService: UniformesService) { }
 
 
   nuevoProducto(){
@@ -38,13 +38,17 @@ export class UniformesComponent implements OnInit {
 
   }
 
-  toggleSidebar() {
-    this.sidebarVisible = !this.sidebarVisible;
-  }
+ 
 
  
   anadirCarrito(producto: productos){
-    
+    this.productos_carrito.push(producto);
+
+  }
+
+  seleccionarOpcionesProducto(producto: productos){
+    this.verOpcionesProducto = true;
+    this.producto_seleccionado = producto;
   }
 
   ngOnInit() {
@@ -52,24 +56,25 @@ export class UniformesComponent implements OnInit {
   }
 
   inicializaProductos() {
-    this.uniformesService.getProductos().subscribe((productos: productos[]) => {
-      this.productos = productos;
-      this.inicializaCaracteristicasProducto();
-    });
+    this.uniformesService.getProductos().subscribe(
+      (productos: productos[]) => {
+        this.productos = productos;
+        this.producto_seleccionado = this.productos[0];
+        this.inicializaCaracteristicasProducto();
+      }
+    );
 
   }
 
   inicializaCaracteristicasProducto() {
-    this.uniformesService.getCaracteristicas().subscribe((caracteristicas: any[]) => {
-      this.opciones_caracteristicas = caracteristicas;
-      this.productos.map(producto => {
-        producto.opciones_caracteristicas = this.opciones_caracteristicas.filter(caracteristica => caracteristica.id_producto === producto.id);
-
-      })
-      console.log(this.productos);
-    });
-    
+    this.uniformesService.getCaracteristicas().subscribe(
+      (caracteristicas: caracteristicas_productos[]) => {
+        this.caracteristicas_productos = caracteristicas;
+        this.productos.map(producto => {
+          producto.caracteristicas_productos = this.caracteristicas_productos.filter(caracteristica => caracteristica.id_producto === producto.id);
+        })
+        console.log(this.productos);
+      }
+    );
   }
-
-
 }

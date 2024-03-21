@@ -1,0 +1,13 @@
+.radio-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .radio-container .flex {
+    display: flex;
+    align-items: center;
+  }
+  
+  .radio-container p-radioButton {
+    margin-right: 10px;
+  }

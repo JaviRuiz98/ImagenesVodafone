@@ -1,4 +1,4 @@
-import { NgModule  } from '@angular/core';
+import { NgModule  } from '@angular/core'; 
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -11,8 +11,11 @@ import{ DataViewLayoutOptions } from 'primeng/dataview';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { SidebarModule } from 'primeng/sidebar'; 
-import { CheckboxModule } from 'primeng/checkbox';
 import { DataView } from 'primeng/dataview';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { FormsModule } from '@angular/forms';
+import { CarritoComponent } from 'src/app/componentes/carrito/carrito.component';
+
 
 @NgModule({
     declarations: [
@@ -28,12 +31,15 @@ import { DataView } from 'primeng/dataview';
         CardModule,
         TagModule,
         SidebarModule,
-        CheckboxModule,
+        RadioButtonModule,
+        FormsModule, 
+        CarritoComponent
     ],
     providers: [
         MessageService,        
         DataView,
-        DataViewLayoutOptions
+        DataViewLayoutOptions,
+        
     ], 
  
 })
