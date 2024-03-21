@@ -1,5 +1,5 @@
 
-import { producto, carrito, imagenes, opciones_caracteristicas } from "@prisma/client";
+import { producto, carrito, imagenes, caracteristicas_productos } from "@prisma/client";
 
 import db from "../config/database";
 
@@ -41,9 +41,9 @@ export const uniformesService = {
       },
       
 
-    async getCaracteristicas(): Promise<opciones_caracteristicas[]> {
+    async getCaracteristicas(): Promise<caracteristicas_productos[]> {
         try {
-            return await db.opciones_caracteristicas.findMany();
+            return await db.caracteristicas_productos.findMany();
         } catch (error) {
             throw error;
         } finally {
@@ -83,7 +83,7 @@ export const uniformesService = {
 
     async postCaracteristicaProducto(caracteristica: any): Promise<any> {
         try {
-            return await db.opciones_caracteristicas.create({ 
+            return await db.caracteristicas_productos.create({ 
                 data: caracteristica 
             });
         }catch (error) {
