@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class EstadisticasAuditoriaComponent {
 
+  data: any;
+  chartData = [0, 0, 0, 0]; //Cantidad de resultados por bueno, notable, medio y malo
+  chartOptions: any;
+  
 }

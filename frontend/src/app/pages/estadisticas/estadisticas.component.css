@@ -1,7 +1,8 @@
 /* Estilos para el contenedor del menubar */
 .menubar-container {
-    display: flex;
     justify-content: center; /* Centra el contenido horizontalmente */
+    margin-left: 5%;
+    margin-right: 5%;
   }
   
   .p-menubar {

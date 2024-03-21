@@ -1,4 +1,5 @@
 <div class="menubar-container">
+    <h1>Estadísticas de la aplicación</h1>
     <p-menubar [model]="apartados"></p-menubar>
 </div>
 
@@ -9,5 +10,5 @@
     <app-estadisticas-elementos *ngSwitchCase="'elementos'"></app-estadisticas-elementos>
     <app-estadisticas-uniformes *ngSwitchCase="'uniformes'"></app-estadisticas-uniformes>
     <app-estadisticas-ia *ngSwitchCase="'ia'"></app-estadisticas-ia>
-    <div *ngSwitchDefault> No válido </div>
+    <div *ngSwitchDefault></div>
 </div>
