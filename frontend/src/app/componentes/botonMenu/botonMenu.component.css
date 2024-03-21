@@ -1,0 +1,62 @@
+.divIcono{
+    background-color:  rgb(255, 255, 255); 
+    border-radius: 50%; 
+    width: 90px; 
+    height: 90px; 
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+    margin-left: 20px;
+    transition: all 0.5s ease-in-out; /* Animación suave */
+}
+
+
+
+
+ 
+
+.EstiloBoton{
+    width: 80%; 
+    height: 200px;
+    margin-left: 10px;
+    background: linear-gradient(to right,  rgb(255, 225, 225),  rgb(205, 3, 3)); 
+    
+    padding: 10px; 
+    border-radius: 10px;
+    margin-bottom: 10px; 
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    text-align: center;
+    line-height: 100px;
+    transition: all 0.5s ease-in-out; /* Animación suave */
+}
+ 
+.EstiloBoton:hover {
+    background: linear-gradient(to right, rgb(225, 3, 3), rgb(192, 188, 188)); 
+    box-shadow: 10px 25px 20px rgba(0,0,0,0.2); /* Agrega una sombra al hacer hover sobre el div */
+
+    transform: scale(1.01); /* Aumenta ligeramente el tamaño */
+    #divIcono {
+        background-color: rgb(192, 188, 188); 
+    
+    }
+}
+.botonesRutasHome {
+    width: 80vw;
+    height: 17vh;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+
+
+
+
+
+
+
+
+
+ 

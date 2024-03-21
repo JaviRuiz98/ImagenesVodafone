@@ -14,7 +14,12 @@
     margin-top: 5%;
     width: 100%;
 }
-
+.centrarContenido {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
 .contenedorMuebleArrastras{
     display: grid;
     grid-template-columns: 40% 60%;

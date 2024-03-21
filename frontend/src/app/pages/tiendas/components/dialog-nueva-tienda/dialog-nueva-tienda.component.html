@@ -56,9 +56,17 @@
             [listaMueblesAsignadosTablaDerecha]="listaMueblesNuevaTienda"
         ></app-agregar-mueble-a-tienda>
     </div>
-    <div *ngIf="activeIndex === 4" class="asignarPlano">
-        <app-selector-imagenes style="height: 100%; width: 100%;"></app-selector-imagenes>
-    </div>
+    <div *ngIf="activeIndex === 4" >
+        <div>
+            <small class="text-gray-700">Para asignar un plano seleccione una imagen acorde que represente la tienda vista desde arriba</small>
+        </div>
+        <div class="centrarContenido m-2" >
+            <div style="height: 50vh; width: 50vh ">
+
+                <app-selector-imagenes [opcion_multiple]="false" (archivoSeleccionadoChange)="onArchivoSeleccionadoChange($event)"></app-selector-imagenes>
+            </div>
+        </div>
+      </div>
     <div class="resumentNuevaTienda" *ngIf="activeIndex === this.maxStep">
         <div>
             <p><strong>Resumen de la tienda:</strong></p>

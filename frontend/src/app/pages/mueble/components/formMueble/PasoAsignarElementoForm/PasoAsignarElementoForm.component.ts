@@ -1,15 +1,13 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AfterViewInit, Component,  Input,  } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder,  FormGroup, Validators } from '@angular/forms';
 import { ChangeDetectorRef } from '@angular/core';
 import { fabric } from 'fabric';
 
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { atributos_expositores } from 'src/app/interfaces/atributos_expositores';
 import { elementos } from 'src/app/interfaces/elementos';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { UrlService } from 'src/app/servicios/url/url.service';
 import { MessageService } from 'primeng/api';
-import { HttpRequest } from '@angular/common/http';
 import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
 import { elementoCreacion } from '../../../interfaces/elementoCreacion';
 
@@ -30,6 +28,9 @@ export class PasoAsignarElementoFormComponent implements AfterViewInit {
   private groupRefs: fabric.Group[] = []; // Almacenar referencias a los grupos
   rectangulos_creados: boolean = false;
   categoria_id_modelo: number = 3;
+
+  altura_plano: number = 0;
+  anchura_plano: number = 0;
 
   @Input () expositorFormulario: FormGroup; 
   url_imagenes_referencias: string = this.urlService.url_imagenes_referencia;
@@ -193,14 +194,6 @@ onSeleccionadoSinHuecos($event: elementos) {
     
   }
 
-  // if (this.indexAtributoFirstElementoSinModeloExpositor !== -1) {
-   
-
-  //   this.formularioPasoAsignarAtributoSinHuecos.emit({index: this.indexAtributoFirstElementoSinModeloExpositor, atributo: atributo});
-
-  // }else {
-  //   this.formularioPasoAsignarAtributoSinHuecos.emit({index:undefined, atributo: atributo});
-  // }
 }
 
 
@@ -241,10 +234,10 @@ onSeleccionadoSinHuecos($event: elementos) {
   }
 
   createGroup(atributo: FormGroup, fillColor: string = 'white', strokeColor: string = 'black', lineStrokeColor: string = 'black'): fabric.Group {
-    const x = atributo.get('x_start')?.value || 0;
-    const y = atributo.get('y_start')?.value || 0;
-    const w = atributo.get('ancho')?.value || 0;
-    const h = atributo.get('alto')?.value || 0;
+    const x = atributo.get('x_start')?.value*this.anchura_plano || 0;
+    const y = atributo.get('y_start')?.value*this.altura_plano || 0;
+    const w = atributo.get('ancho')?.value*this.anchura_plano || 0;
+    const h = atributo.get('alto')?.value*this.altura_plano || 0;
     const angulo = atributo.get('angulo')?.value || 0;
   
     const rect = new fabric.Rect({
@@ -259,6 +252,8 @@ onSeleccionadoSinHuecos($event: elementos) {
       strokeDashArray: [5, 5],
       selectable: false,
       evented: false,
+      scaleX: 1,
+      scaleY: 1,
     });
   
     // Ajustar la longitud de las líneas para hacerlas más pequeñas
@@ -351,57 +346,60 @@ onSeleccionadoSinHuecos($event: elementos) {
 
   
 
-  addImageOnGroup(index_hueco	: number, imagen: string) {
+  addImageOnGroup(index_hueco: number, imagen: string) {
+    let imagenUrl = this.getImageSrc(imagen);
 
-    let imagenUrl : string = this.getImageSrc(imagen);
-    
     const grupo = this.groupRefs[index_hueco];
 
-    this.deleteImageFromCanvas(grupo);
-    fabric.Image.fromURL(imagenUrl, (img) => {
+    //obtener el primer objeto rectángulo del grupo
+    const targetRect = grupo.getObjects()
+      .filter(obj => obj.type === 'rect')[0] as fabric.Rect;
+      if (!targetRect) {
+        console.log("rectángulo no encontrado chavalito");
+        return;
+      }
 
-      const scaleRatio = Math.min(
-        grupo.getScaledWidth() / img.width,
-        grupo.getScaledHeight() / img.height
-      );
+
   
-      // Calcular la posición central del rectángulo dentro del grupo
-      const centroRectX = grupo.left + grupo.width / 2;
-      const centroRectY = grupo.top + grupo.height / 2;
+    this.deleteImageFromCanvas(grupo);
   
-      // Configurar la imagen para que su centro coincida con el centro del rectángulo
-      img.scale(scaleRatio).set({
-        left: centroRectX - img.getScaledWidth() / 2,
-        top: centroRectY - img.getScaledHeight() / 2,
+    fabric.Image.fromURL(imagenUrl, (img) => {
+      const scaleX = targetRect.width / img.width;
+      const scaleY = targetRect.height / img.height;
+      const scale = Math.min(scaleX, scaleY);
+  
+     
+      // Configura la posición y escala de la imagen
+      img.set({
+        left: targetRect.left + targetRect.width / 2 - (img.width * scale) / 2,
+        top: targetRect.top + targetRect.height / 2 - (img.height * scale) / 2,
         originX: 'center',
         originY: 'center',
+        scaleX: scale,
+        scaleY: scale,
       });
 
-      //Rotación
-      img.rotate(grupo.angle);
- 
-      const cosAngle = Math.cos(fabric.util.degreesToRadians(grupo.angle));
-      const sinAngle = Math.sin(fabric.util.degreesToRadians(grupo.angle));
- 
-      const dx = (grupo.width / 2) * cosAngle - (grupo.height / 2) * sinAngle;
-      const dy = (grupo.width / 2) * sinAngle + (grupo.height / 2) * cosAngle;
   
+      // Añade la imagen al grupo y actualiza
+      img.rotate(targetRect.angle);
+  
+      const cosAngle = Math.cos(fabric.util.degreesToRadians(targetRect.angle));
+      const sinAngle = Math.sin(fabric.util.degreesToRadians(targetRect.angle));
+
+      const dx = (targetRect.width / 2) * cosAngle - (targetRect.height / 2) * sinAngle;
+      const dy = (targetRect.width / 2) * sinAngle + (targetRect.height / 2) * cosAngle;
+
       img.set({
-        left: grupo.left + dx,
-        top: grupo.top + dy,
+        left: targetRect.left + dx,
+        top: targetRect.top + dy,
       });
 
-      // Añadir la imagen al grupo y actualizar
-      const topAnterior = grupo.top;
-      const leftAnterior = grupo.left;
-      grupo.addWithUpdate(img);
-      grupo.set({
-        top: topAnterior,
-        left: leftAnterior
-      })
+      grupo.add(img);
+
       this.canvas.renderAll();
     });
   }
+  
     
   updateGroupProperties(groupIndex: number,  fillColor: string, strokeColor: string, lineStrokeColor: string): void {
     const group = this.groupRefs[groupIndex];
@@ -517,6 +515,8 @@ onSeleccionadoSinHuecos($event: elementos) {
   if (this.huecos && this.huecos.length > 0) {
     console.log(this.huecos.values);
     this.initCanvas();
+    this.altura_plano = this.canvas.height;
+    this.anchura_plano = this.canvas.width;
     this.drawRectangles();
     this.configurarEventosCanvas();
   }else{
@@ -524,5 +524,7 @@ onSeleccionadoSinHuecos($event: elementos) {
   }
  
  }
+
+ 
 
 }

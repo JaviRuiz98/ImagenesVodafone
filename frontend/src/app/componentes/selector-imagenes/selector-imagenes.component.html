@@ -1,22 +1,36 @@
 
+<div class="image-container"                                            
+    *ngIf="initialImageSelected!=null && nuncaSeleccionado ==true; else comportamientoNormalSelector">
+    <img [src]="initialImageSelected" alt="Imagen del elemento" class="full-width-height" />
+    <p-button class="delete-button" icon="pi pi-times" (click)="nuncaSeleccionado=false" [rounded]="true"
+        severity="danger"></p-button>
+</div>
+                <!-- No soy el mejor con los nombres -->
+<ng-template #comportamientoNormalSelector>
+    <div #dropArea class="drop-area" (dragover)="onDragOver($event)" (dragenter)="onDragEnter($event)"
+        (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" *ngIf="!archivoSeleccionado || opcion_multiple==true">
 
-
-<div #dropArea class="drop-area" (dragover)="onDragOver($event)" (dragenter)="onDragEnter($event)" 
-(dragleave)="onDragLeave($event)" (drop)="onDrop($event)" *ngIf="!archivoSeleccionado || opcion_multiple==true">
-        
         <h2 [class]="button_disabled ? 'font-light text-500' : ''" #dragText>Arrastra y suelta imagenes</h2>
         <span [class]="button_disabled ? 'font-light text-500' : ''">O</span>
 
-        <p-button  [disabled]="button_disabled" (click)="seleccionarArchivo($event)" [outlined]="true" label="Seleccionar una imagen" severity="danger" ></p-button>
-        <input #inputFile type="file"  (change)="listenChange($event)" hidden>
+        <p-button [disabled]="button_disabled" (click)="seleccionarArchivo($event)" [outlined]="true"
+            label="Seleccionar una imagen" severity="danger"></p-button>
+        <input #inputFile type="file" (change)="listenChange($event)" hidden>
 
-</div>
-<div *ngIf="archivoSeleccionado && opcion_multiple==false" class="drop-area">
-    <p-image [src]="getImagenUrl()" alt="Imagen del elemento" height="300"></p-image>
- 
-    <p-button class="delete-button"  icon="pi pi-times" (click)="borrarImagen()" [rounded]="true" severity="danger"></p-button>
-</div>
+    </div>
 
-<div *ngIf="isCargando()" class="drop-area">
-    <p-progressSpinner></p-progressSpinner>
-</div>
+    <div class="drop-area" *ngIf="archivoSeleccionado && opcion_multiple==false">
+
+
+        <div class="image-container">
+            <img [src]="getImagenUrl()" alt="Imagen del elemento" class="full-width-height" />
+            <p-button class="delete-button" icon="pi pi-times" (click)="borrarImagen()" [rounded]="true"
+                severity="danger"></p-button>
+        </div>
+    </div>
+
+
+    <div *ngIf="isCargando()" class="drop-area">
+        <p-progressSpinner></p-progressSpinner>
+    </div>
+</ng-template>

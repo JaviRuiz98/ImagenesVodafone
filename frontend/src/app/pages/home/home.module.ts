@@ -7,6 +7,7 @@ import { SharedModule } from 'primeng/api';
 import { BarraMenuComponent } from 'src/app/componentes/barra-menu/barra-menu.component';
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
+import { BotonMenuComponent } from 'src/app/componentes/botonMenu/botonMenu.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { PanelModule } from 'primeng/panel';
     SharedModule,
     BarraMenuComponent,
     ButtonModule,
-    PanelModule
+    PanelModule,
+    BotonMenuComponent
   ]
 })
 export class HomeModule { }

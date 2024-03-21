@@ -19,12 +19,12 @@ export class HomeComponent {
     this.router.navigate([url]);
   }
 
-
   highlightDiv() {
-    
   }
 
   unhighlightDiv() {
-    
   }
+
+
+ 
 }
