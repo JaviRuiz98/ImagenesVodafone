@@ -8,6 +8,7 @@ import { EstadisticasMueblesComponent } from './estadisticas-muebles/estadistica
 import { EstadisticasElementosComponent } from './estadisticas-elementos/estadisticas-elementos.component';
 import { EstadisticasIaComponent } from './estadisticas-ia/estadisticas-ia.component';
 import { EstadisticasUniformesComponent } from './estadisticas-uniformes/estadisticas-uniformes.component';
+import { ChartModule } from 'primeng/chart';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { EstadisticasUniformesComponent } from './estadisticas-uniformes/estadis
   ],
   imports: [
     CommonModule,
-    MenubarModule
+    MenubarModule,
+    ChartModule
   ]
 })
 export class EstadisticasModule { }
