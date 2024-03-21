@@ -1,11 +1,12 @@
 /* Estilos para el contenedor del menubar */
 .menubar-container {
-    justify-content: center; /* Centra el contenido horizontalmente */
-    margin-left: 5%;
-    margin-right: 5%;
-  }
-  
-  .p-menubar {
-    width: 100%;
+  display: block;  
+ 
+}
+
+
+
+  ::ng-deep .p-menubar {
+    width: 100%; 
   }
   
