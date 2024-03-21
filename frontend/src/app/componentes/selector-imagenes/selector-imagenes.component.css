@@ -6,15 +6,15 @@
 }
 
 .drop-area {
-    border: 5px dashed #ddd;    
+    border: 5px dashed #ddd;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     height: 100%;
     width: 100%;
+    position: relative; 
 }
-
 .drop-area.active {
     background: #ddd;
     color: black;
@@ -43,6 +43,9 @@
     margin: 1%;
 }
 
+.image-container {
+    position: relative; /* Agregamos posicionamiento relativo */
+}
 .imagenSimple{
     height: 400px;
     width: auto;
@@ -52,12 +55,13 @@
 }
 
 .delete-button {
-    
     position: absolute;
-    top: 60px;
-    right: 32px;
-    border: none;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
+    top: 5px;
+    right: 5px;
+    z-index: 1; 
+}
+.full-width-height {
+    height: 100%;
+    width: 100%;
+    object-fit: cover; 
 }

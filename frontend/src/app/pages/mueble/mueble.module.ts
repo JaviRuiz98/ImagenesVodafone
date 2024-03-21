@@ -48,6 +48,7 @@ import { PasoAsignarElementoFormComponent } from './components/formMueble/PasoAs
 import { ArrastrarElementoComponent } from './components/arrastrarElemento/arrastrarElemento.component';
 import { NuevoElementoComponent } from 'src/app/componentes/nuevo-elemento/nuevo-elemento.component';
 import { ViewExpositorComponent } from './components/viewExpositor/viewExpositor.component';
+import { InverseRotateDirective } from 'src/app/directivas/buttonRotation/inverseButtonRotation.component';
 
 @NgModule({
   imports: [
@@ -85,6 +86,7 @@ import { ViewExpositorComponent } from './components/viewExpositor/viewExpositor
     
   ],
   declarations: [
+    InverseRotateDirective,
      MuebleComponent,
      FormMuebleComponent,
      HistorialExpositoresComponent,
@@ -93,8 +95,10 @@ import { ViewExpositorComponent } from './components/viewExpositor/viewExpositor
      ViewExpositorComponent,
      Paso1FormComponent,
      PasoHuecosFormComponent, 
-     PasoAsignarElementoFormComponent
+     PasoAsignarElementoFormComponent, 
+     
     ], 
   providers: [MessageService, DialogService],
+  
 })
 export class MuebleModule { }

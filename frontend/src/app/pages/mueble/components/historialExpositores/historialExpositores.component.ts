@@ -24,12 +24,12 @@ export class HistorialExpositoresComponent implements OnInit {
 
   ngOnInit() {
     if (this.dialogConfig.data) {
-      const id_expositor = this.dialogConfig.data.id_expositor;
-      this.muebleService.getPertenenciaExpositorElementobyIdExpositor(id_expositor).subscribe(
-        (pertenencias_expositor_mueble: pertenencia_elementos_atributos[]) => {
-          this.pertenencias_expositor_mueble = pertenencias_expositor_mueble;
-        }
-      )
+      // const id_expositor = this.dialogConfig.data.id_expositor;
+      // this.muebleService.getPertenenciaExpositorElementobyIdExpositor(id_expositor).subscribe(
+      //   (pertenencias_expositor_mueble: pertenencia_elementos_atributos[]) => {
+      //     this.pertenencias_expositor_mueble = pertenencias_expositor_mueble;
+      //   }
+      // )
     }
   
   }

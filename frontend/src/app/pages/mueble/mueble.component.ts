@@ -22,7 +22,6 @@ export class MuebleComponent implements OnInit {
 
 
 
-
   constructor( private urlService: UrlService, private muebleService: MueblesService, public dialogService: DialogService, public messageService: MessageService, private config: PrimeNGConfig) { }
   
   muebles: muebles[] = [];
@@ -32,7 +31,6 @@ export class MuebleComponent implements OnInit {
 
  
   url_imagenes_referencias: string = this.urlService.url_imagenes_referencia;
-
 
   nombreFiltro: string = '';
   mueblesFiltrados: muebles[] = [];
@@ -89,26 +87,6 @@ export class MuebleComponent implements OnInit {
       this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
     });
   }
-
-  showViewExpositor( expositor:expositores) {
-    this.ref = this.dialogService.open(ViewExpositorComponent, {
-      header: 'Visualización de elementos' ,
-      width: '70%',
-      contentStyle: { overflow: 'auto' },
-      baseZIndex: 10000,
-      maximizable: true,
-      data: {
-        expositor: expositor, 
-      }
-    });
-    
-   
-    
-    this.ref.onMaximize.subscribe((value) => {
-      this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
-    });
-  }
-    
   
   nuevoMueble() {
     this.ref = this.dialogService.open(FormMuebleComponent, {
@@ -144,6 +122,24 @@ export class MuebleComponent implements OnInit {
     });
   }
 
+  showViewExpositor( expositor:expositores) {
+    this.ref = this.dialogService.open(ViewExpositorComponent, {
+      header: 'Visualización de elementos' ,
+      width: '70%',
+      contentStyle: { overflow: 'auto' },
+      baseZIndex: 10000,
+      maximizable: true,
+      data: {
+        expositor: expositor, 
+      }
+    });
+    
+   
+    
+    this.ref.onMaximize.subscribe((value) => {
+      this.messageService.add({ severity: 'info', summary: 'Pantalla completa' });
+    });
+  }
 
   getImagenModelo(expositor: expositores): string | undefined {
     const atributoModelo: atributos_expositores | undefined = expositor.atributos_expositores.find((atributo) => atributo.categorias_elementos.id === 3);
@@ -178,21 +174,28 @@ export class MuebleComponent implements OnInit {
   hideOverlayPanel(op: OverlayPanel) {
     op.toggle(event);
   }
-  shouldOpenFirstAccordion(mueble: muebles): boolean {
-    let res: boolean = false;
-    //en caso de que tenga un expositor sin modelo devuelvo true, en otro caso false
-    if (mueble.expositores && mueble.expositores.length === 1 ) {
-     
-        if (!this.tieneModelo(mueble.expositores[0].atributos_expositores)) {
-          res = true;
-        
-        }
-      
-    
-    }
-    return res;
+ 
+
+  shouldShowOverlayPanel(): boolean {
+    return this.overlayPanelMessage !== undefined;
   }
 
+  shouldOpenFirstAccordion(mueble: muebles) {
+    let res:boolean = false;
+    if (mueble.expositores.length > 0) {
+      //Para que tenga sentido, si tiene seleccionado un elemento pero no tiene elementos, no deberá tener mas de un expositor 𝓒𝓸𝓷𝓬𝓮𝓹𝓽𝓾𝓪𝓵𝓶𝓮𝓷𝓽𝓮
+      if (!this.tieneModelo(mueble.expositores[0].atributos_expositores) ) {
+        //será true si tiene al menos un elementos
+        if (mueble.expositores[0].atributos_expositores.length > 0) {
+          res = true;
+        }
+      }
+    } 
+    return res;
+}
+    
+
   
+
 }
 

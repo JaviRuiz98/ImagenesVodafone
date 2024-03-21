@@ -9,10 +9,10 @@
   
           <div *ngIf="attr.value.elemento && attr.value.elemento.id" 
             [style.position]="'absolute'" 
-            [style.left.px]="attr.value.x_start"
-            [style.top.px]="attr.value.y_start" 
-            [style.width.px]="attr.value.ancho" 
-            [style.height.px]="attr.value.alto" 
+            [style.left.px]="attr.value.x_start*anchura_plano"
+            [style.top.px]="attr.value.y_start*altura_plano" 
+            [style.width.px]="attr.value.ancho*anchura_plano" 
+            [style.height.px]="attr.value.alto*altura_plano" 
             [style.transform]="attr.value.angulo ? 'rotate(' + attr.value.angulo + 'deg)' : ''"
             [style.transform-origin]="attr.value.angulo? '0% 0%' : ''"
             (mouseenter)="op.toggle($event)" (mouseleave)="op.toggle($event)"
@@ -33,7 +33,7 @@
               <!-- Contenedor para los botones de esquina -->
               <div class="corner-buttons" style="position: absolute; right: -24px; top: -24px; width: 48px; height: 48px;">
                 <!-- Botón de esquina superior derecha -->
-                <p-button type="button" severity="danger" [rounded]="true" icon="pi pi-times" 
+                <p-button appInverseRotate [rotationAngle] ="90" severity="danger" [rounded]="true" icon="pi pi-times" 
                     [size]="'small'"
                     (click)="eliminarImagen(i)" 
                     class="deleteButton corner-button corner-top-right"></p-button>
