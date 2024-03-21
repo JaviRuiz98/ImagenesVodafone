@@ -1,7 +1,7 @@
 
 import { Request, Response, NextFunction } from 'express';
 import { tiendaService } from '../services/tiendasServices';
-import { expositorService } from '../services/muebleService';
+import { expositorService, muebleService } from '../services/muebleService';
 
 export async function validateGetFilteredMuebles(req: Request, res: Response, next: NextFunction) {
 
@@ -56,9 +56,29 @@ export async function validateUpdateExpositor( req: Request, res: Response, next
     }
     next();
 }
-export async function validateIdExistsAndIsValidInteger(id: number) {
+export async function validateIdMueble( req: Request, res: Response, next: NextFunction ) {
+
+    const id_mueble = parseInt(req.params.id as string);
+    const idCorrect = validateIdExistsAndIsValidInteger(id_mueble); 
+
+    if (!idCorrect) {
+        res.status(400).json({ error: 'id_mueble debe ser un numero' });
+        return;
+    }
+    const mueble = await muebleService.getMuebleById(id_mueble);
+    if (!mueble) {
+        res.status(400).json({ error: 'mueble no existe' });
+        console.log(321);
+        return;
+    }
+
+    next();
+
+}
+ function validateIdExistsAndIsValidInteger(id: number) {
     if (isNaN(id) || id <= 0) {
         return false;
     }
     return true;
 }
+

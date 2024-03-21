@@ -5,15 +5,16 @@ import { HttpClient } from '@angular/common/http';
 import { credenciales } from '../../interfaces/login';
 import { nuevoUsuario } from '../../interfaces/login';
 import { Observable } from 'rxjs';
+import { UrlService } from '../url/url.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
   
-  API_URI_LOGIN = 'http://localhost:3000/usuarios';
-
-  constructor(private http: HttpClient) { }
+  
+  constructor(private http: HttpClient, private urlService: UrlService) { }
+  API_URI_LOGIN = this.urlService.api_uri + '/usuarios';
 
   verificarUsuario(credenciales: credenciales): Observable<string>{
     return this.http.post<string>(this.API_URI_LOGIN, credenciales);

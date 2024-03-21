@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { tienda, tiendaCreacion } from '../../interfaces/tienda';  
 import { muebles } from 'src/app/interfaces/muebles';
 import { posiciones_muebles_tienda } from 'src/app/interfaces/posiciones_muebles_tienda';
+import { UrlService } from '../url/url.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +12,10 @@ import { posiciones_muebles_tienda } from 'src/app/interfaces/posiciones_muebles
 
 export class TiendasService {
 
-  API_URI = 'http://localhost:3000';
+ 
 
-  constructor(private http: HttpClient){ }
-
+  constructor(private http: HttpClient, private urlService: UrlService){ }
+  API_URI:string = this.urlService.api_uri;
   getAllTiendas(): Observable<tienda[]> {
     return this.http.get<tienda[]>(`${this.API_URI}/tiendas`);
   }

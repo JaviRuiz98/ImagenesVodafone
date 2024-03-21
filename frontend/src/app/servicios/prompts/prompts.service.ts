@@ -3,15 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { Prompt } from '../../interfaces/prompts';
 import { estadisticaPrompts } from 'src/app/interfaces/estadistica';
+import { UrlService } from '../url/url.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PromptsService {
 
-  API_URI = 'http://localhost:3000';
-
-  constructor(private http: HttpClient){ }
+  
+  constructor(private http: HttpClient, private urlService: UrlService){ }
+  API_URI = this.urlService.api_uri;
 
   getAllPrompts(): Observable<Prompt[]> {
 

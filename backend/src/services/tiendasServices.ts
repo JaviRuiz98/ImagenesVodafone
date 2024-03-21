@@ -199,6 +199,24 @@ export const tiendaService = {
         }
     },
 
+    async desactivarUnaPertenenciaMuebleTienda (id_pertenencia: number): Promise<void> {
+         try {
+             await db.pertenencia_mueble_tienda.update({
+                 where: {
+                     id: id_pertenencia
+                 },
+                 data: {
+                     activo: false
+                 }
+             })
+         } catch (error) {
+             console.log(error);
+             throw error;
+         } finally {
+             await db.$disconnect();
+         }
+    },
+    
     async activarDesactivarBooleanoTienda(tienda: tiendas, parametro: string): Promise<any> {
         try {
             let data_clause = {};
