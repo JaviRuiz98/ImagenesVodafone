@@ -11,6 +11,7 @@ import { TemplateInformeComponent } from './pages/template-informe/template-info
 import { PlanoTiendaComponent } from './pages/plano-tienda/plano-tienda.component';
 import { LoginComponent } from './pages/login/login.component';
 import { UniformesComponent } from './pages/uniformes/uniformes.component';
+import { EstadisticasComponent } from './pages/estadisticas/estadisticas.component';
 
 const routes: Routes = [
   {
@@ -55,6 +56,10 @@ const routes: Routes = [
    {
     path: "uniformes", component: UniformesComponent, 
     data: { stateBarra: 'uniformes' },
+   },
+   {
+    path: "estadisticas", component: EstadisticasComponent,
+    data: { stateBarra: 'estadisticas' },
    },
    {
       path: '', redirectTo: '/login', pathMatch: 'full' 

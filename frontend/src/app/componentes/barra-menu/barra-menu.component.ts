@@ -39,12 +39,10 @@ export class BarraMenuComponent implements OnInit, AfterViewInit {
 
   constructor(
     private localStorageService: LocalStorageService,
-    private tiendasService: TiendasService,
     private router: Router) 
   {}
 
   ngOnInit(): void {
-    this.initTiendas();
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.contenidoBotonVolverAtras();
@@ -61,21 +59,6 @@ export class BarraMenuComponent implements OnInit, AfterViewInit {
     console.log('Anchura de la barra:', anchura_componente_barra);
 
     this.localStorageService.setItem('anchura_componente_barra', anchura_componente_barra);
-  }
-
-  initTiendas() {
-    this.tiendasService.getAllTiendas().subscribe((data: tienda[]) => {
-      this.tiendas = data;
-      console.log('tiendas', this.tiendas);
-    })
-  }
-
-  getTiendaTitle(): string {
-    if (this.tiendaSeleccionada) {
-      return this.tiendaSeleccionada.sfid;
-    }else{
-      return '';
-    }
   }
 
   contenidoBotonVolverAtras() {
