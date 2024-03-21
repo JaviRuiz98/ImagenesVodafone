@@ -24,9 +24,11 @@ import { UniformesModule } from './pages/uniformes/uniformes.module';
 import { ButtonModule } from 'primeng/button';
 import { EstadisticasComponent } from './pages/estadisticas/estadisticas.component';
 import { EstadisticasModule } from './pages/estadisticas/estadisticas.module';
+import { SuperPieComponent } from './componentes/super-pie/super-pie.component';
 @NgModule({
   declarations: [
     AppComponent,
+    SuperPieComponent,
   ],
   imports: [
     BarraMenuComponent,
