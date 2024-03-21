@@ -3,8 +3,14 @@
     display: flex;
     justify-content: center; /* Centra el contenido horizontalmente */
   }
+
+
   
   .p-menubar {
     width: 100%;
   }
+  ::ng-deep .p-menubar {
+    width: 100%;
+    
+}
   

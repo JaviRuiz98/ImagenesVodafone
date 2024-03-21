@@ -1,8 +1,8 @@
 <div class="menubar-container">
-    <p-menubar [model]="apartados"></p-menubar>
+    <p-menubar [model]="apartados" ></p-menubar>
 </div>
 
-<div [ngSwitch]="apartado_seleccionado">
+<div [ngSwitch]="apartado_seleccionado" >
     <app-estadisticas-auditoria *ngSwitchCase="'auditorias'"></app-estadisticas-auditoria>
     <app-estadisticas-tiendas *ngSwitchCase="'tiendas'"></app-estadisticas-tiendas>
     <app-estadisticas-muebles *ngSwitchCase="'muebles'"></app-estadisticas-muebles>
