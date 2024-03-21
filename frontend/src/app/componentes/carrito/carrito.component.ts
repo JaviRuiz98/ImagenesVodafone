@@ -36,8 +36,8 @@ import { FormsModule } from '@angular/forms';
 export class CarritoComponent implements OnInit{
 
   @Input() sidebarVisible: boolean = false; //sin implementar
-  //@Input() productos_carrito: productos[] = [];
-  productos_carrito: productos[] = [];
+  @Input() productos_carrito: productos[] = [];
+ // productos_carrito: productos[] = [];
    
   @Output() mostrarDialogoNuevoElemento = new EventEmitter<boolean>();
   // @Output() nuevoElementoCreado = new EventEmitter<elementos>();
@@ -59,7 +59,8 @@ export class CarritoComponent implements OnInit{
   
 
   ngOnInit(): void {
-    this.productos_carrito = this.localStorageService.getItem('carrito');
+  //  this.productos_carrito = this.localStorageService.getItem('carrito');
+    
     this.calcularTotalCarrito();
 
     console.log('carrito', this.productos_carrito)

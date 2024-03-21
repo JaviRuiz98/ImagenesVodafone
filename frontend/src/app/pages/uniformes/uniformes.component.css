@@ -13,3 +13,13 @@
   }
 
  
+
+  .cards-container {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente (opcional, en caso de que quieras alineación vertical) */
+    gap: 20px; /* Espacio entre los p-card */
+    width: 100%;
+    height: 100%; /* O un valor específico, dependiendo de tus necesidades */
+}
+

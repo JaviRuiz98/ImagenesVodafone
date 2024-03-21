@@ -84,6 +84,7 @@ export class UniformesComponent implements OnInit {
   seleccionarOpcionesProducto(producto: productos){
     this.verOpcionesProducto = true;
     this.producto_seleccionado = producto;
+    this.producto_seleccionado.cantidad = 0;
   }
 
   ngOnInit() {

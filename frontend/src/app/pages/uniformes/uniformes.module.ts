@@ -15,7 +15,8 @@ import { DataView } from 'primeng/dataview';
 import { RadioButtonModule } from 'primeng/radiobutton'; 
 import { CarritoComponent } from 'src/app/componentes/carrito/carrito.component';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormControl, Validators  } from '@angular/forms';
+import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormControl, Validators  } from '@angular/forms'; 
+import { PanelModule } from 'primeng/panel';
 
 @NgModule({
     declarations: [
@@ -35,7 +36,8 @@ import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormControl, 
         FormsModule, 
         CarritoComponent,
         ReactiveFormsModule,
-        InputNumberModule
+        InputNumberModule, 
+        PanelModule
     ],
     providers: [
         MessageService,        
