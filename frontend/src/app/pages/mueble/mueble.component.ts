@@ -192,7 +192,14 @@ export class MuebleComponent implements OnInit {
       }
     } 
     return res;
-}
+  }
+  onBorrarPressed (mueble: muebles) {
+  
+    this.muebleService.desactivarMueble(mueble.id).subscribe(() => {
+      this.loadMuebles();
+      this.messageService.add({ key:'general',  severity: 'success', summary: 'Mueble eliminado', detail: 'El mueble ha sido eliminado correctamente' });
+    });
+  }
     
 
   
