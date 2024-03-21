@@ -1,6 +1,6 @@
 import { elementos,  muebles } from "@prisma/client";
 import db  from "../config/database";
-import { getDestination } from "../config/multer";
+import { getFtpDestination } from "../config/ftpDownload";
 import { imagenes, regiones, pertenencia_elementos_auditoria, categorias_elementos } from "@prisma/client";
 
 
@@ -49,7 +49,7 @@ export const elementosService = {
             throw new Error(`No se encontró ninguna imagen con ID ${id_imagen}`);
           }
       
-          image.url = `${getDestination('imagenesReferencia')}/${image.url}`;
+          image.url = `${getFtpDestination('imagenesReferencia')}/${image.url}`;
           return image;
         } catch (error) {
           console.log("Error:", error);

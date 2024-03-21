@@ -10,20 +10,9 @@ import { Router } from '@angular/router';
 export class HomeComponent {
 
 
-  divAuditoria = '.sinCursor'
-
   constructor(private router: Router ) { }
 
-  goTo(pagina: string) {
-    const url = `/${pagina}`;
-    this.router.navigate([url]);
-  }
 
-  highlightDiv() {
-  }
-
-  unhighlightDiv() {
-  }
 
 
  
