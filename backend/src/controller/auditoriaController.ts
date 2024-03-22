@@ -6,6 +6,7 @@ import { tiendaService } from '../services/tiendasServices';
 import { muebleConElementos} from '../interfaces/muebleConElementos';
 import { per_ele_aud_extended } from '../interfaces/perEleAudExtended';
 import { muebleService } from "../services/muebleService";
+import { estados_extended } from '../interfaces/estadosExtended';
 
 
 export async function getAuditorias(req: Request, res: Response) {
@@ -233,6 +234,21 @@ export async function terminarAuditoria(req: Request, res: Response) {
         console.log('actualizando datos de la auditoria:', id_auditoria);
         await auditoriaService.terminarAuditoria(id_auditoria);
         res.status(200).json({ message: 'Auditoria terminada' });
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+export async function getEstadisticasEstadosAuditoria(_req: Request, res: Response) {
+    try {
+        const estados: estados_extended[] = await auditoriaService.getAllEstadosParaAuditorias();
+
+        estados.map((estado) => {
+            estado.num_auditorias = estado.auditorias?.length;
+            estado.auditorias = [];
+        })
+
+        res.status(200).json(estados);
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     }

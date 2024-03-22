@@ -8,6 +8,7 @@ import { EstadisticasMueblesComponent } from './estadisticas-muebles/estadistica
 import { EstadisticasElementosComponent } from './estadisticas-elementos/estadisticas-elementos.component';
 import { EstadisticasIaComponent } from './estadisticas-ia/estadisticas-ia.component';
 import { EstadisticasUniformesComponent } from './estadisticas-uniformes/estadisticas-uniformes.component';
+import { SuperPieComponent } from 'src/app/componentes/super-pie/super-pie.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { EstadisticasUniformesComponent } from './estadisticas-uniformes/estadis
   imports: [
     CommonModule,
     MenubarModule,
+    SuperPieComponent
   ]
 })
 export class EstadisticasModule { }
