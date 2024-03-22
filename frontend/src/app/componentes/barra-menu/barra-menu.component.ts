@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, ChangeDetectorRef, Input } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { tienda } from 'src/app/interfaces/tienda';
@@ -27,9 +27,12 @@ export class BarraMenuComponent implements OnInit, AfterViewInit {
 
   @ViewChild('barraMenu') barraMenu!: ElementRef;
 
+
   tiendas: tienda[] = [] ;
   tiendaSeleccionada: tienda | undefined;
   currentState: string = '/home';
+  title?: string;
+  icono:string='';
   contenidoBotonVolver: string = '';
   iconoBotonVolver: string = '';
   volverHome: string = 'Volver a inicio';
@@ -39,6 +42,7 @@ export class BarraMenuComponent implements OnInit, AfterViewInit {
 
   constructor(
     private localStorageService: LocalStorageService,
+    private route: ActivatedRoute,
     private router: Router) 
   {}
 
@@ -46,6 +50,8 @@ export class BarraMenuComponent implements OnInit, AfterViewInit {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.contenidoBotonVolverAtras();
+        this.initTitleAndIcono();
+      
       }
     })
   }
@@ -59,6 +65,16 @@ export class BarraMenuComponent implements OnInit, AfterViewInit {
     console.log('Anchura de la barra:', anchura_componente_barra);
 
     this.localStorageService.setItem('anchura_componente_barra', anchura_componente_barra);
+  }
+
+  initTitleAndIcono() { 
+    const childRoute = this.route.firstChild;
+    if (childRoute) {
+      childRoute.data.subscribe(data => {
+        this.title = data['title'] || undefined;
+        this.icono = data['icono'] || '';
+      });
+    }
   }
 
   contenidoBotonVolverAtras() {
