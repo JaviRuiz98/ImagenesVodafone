@@ -16,12 +16,13 @@ export async function getProductos(__req: Request, res: Response) {
             const imagen: imagenes = await uniformesService.getImage(producto.id_imagen);
 
             return {
+                ...producto,
                 id: producto.id, 
                 nombre: producto.nombre,
                 precio: producto.precio,
                 descripcion: producto.descripcion,
                 imagenes: imagen, // Asumiendo que esto devuelve un único resultado o un array de imágenes.
-                opciones_caracteristicas: [] // Esto se deja vacío, asumiendo que se llenará en otro lugar.
+                caracteristicas_productos: [] // Esto se deja vacío, asumiendo que se llenará en otro lugar.
             };
         }));
         
@@ -86,3 +87,20 @@ export async function postCaracteristicaProducto(req: Request, res: Response) {
     }
 }
 
+
+
+export async function tramitarPedido(req: Request, res: Response) {
+    try {
+        const productos_carrito = req.body.productos_carrito;
+        const id_tienda = req.body.id_tienda;
+
+        const row_pedido = await uniformesService.crearPedido(id_tienda);
+
+        await uniformesService.asignarCarrito(productos_carrito, row_pedido.id);
+
+        res.status(200).json( );
+    }catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}

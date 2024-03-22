@@ -4,7 +4,7 @@ import { DialogModule } from 'primeng/dialog';
 import { productos } from 'src/app/interfaces/productos';
 import { caracteristicas_productos } from 'src/app/interfaces/caracteristicas';
 import { Carrito } from 'src/app/interfaces/carrito';
-
+import { CommonModule } from '@angular/common';
 import { SelectorImagenesComponent } from './../../componentes/selector-imagenes/selector-imagenes.component';
 import { InputTextModule } from 'primeng/inputtext';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -13,7 +13,10 @@ import { DataViewModule } from 'primeng/dataview';
 import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FormsModule } from '@angular/forms';
-
+import { ButtonModule } from 'primeng/button';
+import { UniformesService } from 'src/app/servicios/uniformes/uniformes.service';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @Component({
   selector: 'app-carrito',
   templateUrl: './carrito.component.html',
@@ -21,13 +24,17 @@ import { FormsModule } from '@angular/forms';
   providers: [ MessageService, ConfirmationService],
   standalone: true,
   imports: [
+    CommonModule,
     DialogModule,
     SelectorImagenesComponent,
     InputTextModule,
     SidebarModule,
     DataViewModule,
     InputNumberModule,
-    FormsModule
+    FormsModule,
+    ButtonModule,
+    ToastModule,
+    ConfirmDialogModule
   ]
 })
 
@@ -36,8 +43,8 @@ import { FormsModule } from '@angular/forms';
 export class CarritoComponent implements OnInit{
 
   @Input() sidebarVisible: boolean = false; //sin implementar
-  //@Input() productos_carrito: productos[] = [];
-  productos_carrito: productos[] = [];
+  @Input() productos_carrito: productos[] = [];
+ // productos_carrito: productos[] = [];
    
   @Output() mostrarDialogoNuevoElemento = new EventEmitter<boolean>();
   // @Output() nuevoElementoCreado = new EventEmitter<elementos>();
@@ -46,7 +53,11 @@ export class CarritoComponent implements OnInit{
  
   total_carrito: number = 0;
 
+
+  id_tienda: number = 0;                                                //TO DO: obtener id desde las coockies del navegador 
+
   constructor( 
+    private UniformesService: UniformesService,
     private messageService: MessageService, 
     private confirmationService: ConfirmationService,
     private localStorageService: LocalStorageService
@@ -54,14 +65,22 @@ export class CarritoComponent implements OnInit{
 
  
   eliminarProducto(producto: productos){
+    this.total_carrito -= (producto.precio * producto.cantidad);
     this.productos_carrito.splice(this.productos_carrito.indexOf(producto), 1);
+    this.total_carrito = Math.round(this.total_carrito * 100) / 100; 
   }
+
+  cambiarTotal(producto: productos){
+    this.calcularTotalCarrito();
+  }
+
+  // tramitarPedido(){
+  //   this.
+  // }
   
 
   ngOnInit(): void {
-    this.productos_carrito = this.localStorageService.getItem('carrito');
     this.calcularTotalCarrito();
-
     console.log('carrito', this.productos_carrito)
   }
 
@@ -74,6 +93,34 @@ export class CarritoComponent implements OnInit{
     for (let i = 0; i < this.productos_carrito.length; i++) {
       this.total_carrito += this.productos_carrito[i].precio * this.productos_carrito[i].cantidad;
     }
+    this.total_carrito = Math.round(this.total_carrito * 100) / 100; 
+  }
+
+
+  confirmaCompra(event){
+    this.confirmationService.confirm({
+      message: '¿Seguro que quieres confirmar la compra?',
+      accept: () => {
+        this.tramitarPedido();
+        this.messageService.add({severity:'info', summary: 'Confirmed', detail: 'Tramitando pedido...'});
+      },
+      reject: () => {
+        this.messageService.add({severity:'info', summary: 'Rejected', detail: 'Tramitando pedido...'});
+      }
+
+    })
+  }
+
+
+  tramitarPedido(){
+
+    this.UniformesService.tramitarPedido(this.productos_carrito, this.id_tienda).subscribe(
+      res => {
+        if(res.status == 'ok'){
+          this.productos_carrito = [];
+          this.messageService.add({severity:'success', summary: 'Confirmado', detail: 'Tramitado con exito'});
+        }
+    })
   }
 
 

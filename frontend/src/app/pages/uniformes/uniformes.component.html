@@ -1,118 +1,130 @@
- 
 
-<div class="flex ">
+<p-toast></p-toast>
+<div class="flex">
     <p-button class="ml-auto" [style]="{'margin-right': '20px'}" (onClick)="carritoVisible = true" icon="pi pi-shopping-cart"></p-button>
 </div>
 
 <p-sidebar [(visible)]="carritoVisible" [style]="{width: '35%'}" position="right">
-   <app-carrito></app-carrito> 
+   <app-carrito *ngIf="carritoVisible" [productos_carrito] ="productos_carrito"  ></app-carrito>
 </p-sidebar>
 
-
-
-
-<p-card  [style]="{width: '70%', margin: '0 auto'}">
-
-    <div style="display: flex; justify-content: space-between; align-items: center;">
+ 
+       
+    <p-card  [style]="{width: '45%', margin: '0 auto'}">
+ 
         <h2>Catalogo de uniformes</h2>
-        <!-- <p-button (click)="nuevoProducto()" icon="pi pi-plus" severity="success" label="Nuevo producto"></p-button>  -->
-    </div>
 
 
-    <hr style="border: 1px solid black;">
-    <p-dataView #dv [value]="productos" [rows]="5" [paginator]="true" [layout]="'grid'">
-        <ng-template pTemplate="header">
-            <div class="flex justify-content-end">
-                <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
-            </div>
-        </ng-template>
-        <ng-template let-producto pTemplate="gridItem">
-            <div class="col-12 sm:col-6 lg:col-3 xl:col-4 p-2">
-                <div class="p-4 border-1 surface-border surface-card border-round">
-                    <div class="flex flex-wrap align-items-center justify-content-between gap-2">
-                        <span class="flex align-items-center gap-2">
-                            <i class="pi pi-tag"></i>
-                            <span class="font-semibold">{{ producto.descripcion }}</span>
-                        </span>
-                    </div>
-                    <div class="flex flex-column align-items-center gap-3 py-5">
-                        <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" [src]="url_imagenes_productos + producto.imagenes.url" [alt]="producto.nombre" />
-                        <div class="text-2xl font-bold">{{ producto.nombre }}</div>
-                    </div>
-                    <div class="flex flex-row gap-3">
-                        <h3>Talla:</h3>
-                        <div class="flex flex-row gap-2" *ngFor="let caracteristica of producto.caracteristicas_productos">
-                            <p-radioButton name="talla_{{producto}}" [label]="caracteristica.talla" [(ngModel)]="producto.caracteristica_seleccionada" [value]="[caracteristica.talla]"></p-radioButton>
+
+        <hr style="border: 1px solid black;">
+        <p-dataView #dv [value]="productos" [rows]="5" [paginator]="true" [layout]="'grid'">
+            <ng-template pTemplate="header">
+                <div class="flex justify-content-end">
+                    <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+                </div>
+            </ng-template>
+            <ng-template let-producto pTemplate="gridItem">
+                <div class="col-12 sm:col-6 lg:col-3 xl:col-4 p-2 width-card">
+                    <div class="p-4 border-1 surface-border surface-card border-round">
+                        <div class="flex flex-wrap align-items-center justify-content-between gap-2">
+                            <span class="flex align-items-center gap-2">
+                                <i class="pi pi-tag"></i>
+                                <span class="font-semibold">{{ producto.descripcion }}</span>
+                            </span>
                         </div>
-                        <!-- {{producto.caracteristica_seleccionada}} -->
-                    </div>
-                    <div class="flex align-items-center justify-content-between">
-                        <span class="text-2xl font-semibold">{{producto.precio + '€ ud.' }}</span>
-                        <button pButton icon="pi pi-cart-plus" class="p-button-rounded" (click)="seleccionarOpcionesProducto(producto)" [disabled]="producto.inventoryStatus === 'OUTOFSTOCK'"></button>
+                        <div class="flex flex-column align-items-center gap-3 py-5">
+                            <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round " [src]="url_imagenes_productos + producto.imagenes.url" [alt]="producto.nombre" />
+                            <div class="text-2xl font-bold">{{ producto.nombre }}</div>
+                        </div>
+
+                        <div class="flex align-items-center justify-content-between">
+                            <span class="text-2xl font-semibold">{{producto.precio + '€ ud.' }}</span>
+                            <button pButton icon="pi pi-cart-plus" class="p-button-rounded" (click)="seleccionarOpcionesProducto(producto)" [disabled]="producto.inventoryStatus === 'OUTOFSTOCK'"></button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </ng-template>
-        <ng-template let-producto pTemplate="listItem"> 
-      
-            <div class="col-12">
-                <div class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4" >
+            </ng-template>
+            <ng-template let-producto pTemplate="listItem"   >
 
+                <div class="col-12" style="width: 100%;">
+                    <div class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4 width-full" >
 
-                    <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" [src]="url_imagenes_productos + producto.imagenes.url" [alt]="producto.nombre" />
-                    <div class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
-                        <div class="flex flex-column align-items-center sm:align-items-start gap-3">
-                            <div class="text-2xl font-bold text-900">{{ producto.nombre }}</div>
+                        <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round" [src]="url_imagenes_productos + producto.imagenes.url" [alt]="producto.nombre" />
+                        <div class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">
+                            <div class="flex flex-column align-items-center sm:align-items-start gap-3">
+                                <div class="text-2xl font-bold text-900">{{ producto.nombre }}</div>
 
-                            <div class="flex align-items-center gap-3">
-                                <span class="flex align-items-center gap-2">
-                                    <i class="pi pi-tag"></i>
-                                    <span class="font-semibold">{{ producto.descripcion }}</span>
-                                </span>
-                            </div>
-                        </div> 
-                      
-                        <div class="flex flex-row gap-3">
-                            <h3>Talla:</h3>
-                            <div *ngIf="caracteristicas_productos.length > 0; else sinOpciones" class="radio-container">
-                                <div class="flex flex-row gap-2" *ngFor="let caracteristica of producto.caracteristicas_productos">
-                                    <p-radioButton name="talla_{{producto}}" [label]="caracteristica.talla" [(ngModel)]="producto.caracteristica_seleccionada" [value]="[caracteristica.talla]"></p-radioButton>
+                                <div class="flex align-items-center gap-3">
+                                    <span class="flex align-items-center gap-2">
+                                        <i class="pi pi-tag"></i>
+                                        <span class="font-semibold">{{ producto.descripcion }}</span>
+                                    </span>
                                 </div>
                             </div>
-                            <ng-template #sinOpciones>
-                                <span class="text-2xl font-semibold">{{ producto.talla}}</span>
-                            </ng-template>
-                        </div>
+                            <div class="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
+                                <span class="text-2xl font-semibold">{{ producto.precio + '€ ud.' }}</span>
+                                <button pButton icon="pi pi-cart-plus" class="md:align-self-end mb-2 p-button-rounded" (click)="seleccionarOpcionesProducto(producto)" [disabled]="producto.inventoryStatus === 'OUTOFSTOCK'"></button>
+                            </div>
 
-                        <div class="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">
-                            <span class="text-2xl font-semibold">{{ producto.precio + '€ ud.' }}</span>
-                            <button pButton icon="pi pi-cart-plus" class="md:align-self-end mb-2 p-button-rounded" (click)="seleccionarOpcionesProducto(producto)" [disabled]="producto.inventoryStatus === 'OUTOFSTOCK'"></button>
                         </div>
-
                     </div>
                 </div>
-            </div>
-        </ng-template>
-    </p-dataView>
+            </ng-template>
+        </p-dataView>
 
-</p-card>
+    </p-card>
+
+ 
 
 <p-dialog [(visible)]="verOpcionesProducto" [style]="{width: '60vw'}" >
     <div class="flex">
-          <!-- Imagen en la esquina superior izquierda -->
-        <img [style]="{'max-width': '250px', 'max-height': '250px'}" [src]="url_imagenes_productos + producto_seleccionado.imagenes.url" [alt]="producto_seleccionado.nombre" style="margin-right: 2rem;"/>
+
+        <img [style]="{'max-width': '250px', 'max-height': '250px'}" [src]="url_imagenes_productos + producto_seleccionado?.imagenes.url" [alt]="producto_seleccionado?.nombre" style="margin-right: 2rem;"/>
         <div class="flex flex-column justify-content-between" style="width: 100%;">
-            <div class="text-2xl font-bold">{{ producto_seleccionado.nombre }}</div>
+            <div class="text-2xl font-bold">{{ producto_seleccionado?.nombre }}</div>
             <span class="flex align-items-center gap-2">
                 <i class="pi pi-tag"></i>
-                <span class="font-semibold">{{ producto_seleccionado.descripcion }}</span>
+                <span class="font-semibold">{{ producto_seleccionado?.descripcion }}</span>
             </span>
- 
+            <div class="flex flex-row gap-3 justify-center">
+                <h3>Talla:</h3>
+                <div style="display: flex; align-items: center;" *ngIf="producto_seleccionado?.caracteristicas_productos?.length > 1; else sinOpciones" class="radio-container">
+                  <div class="flex flex-row gap-2" *ngFor="let caracteristica of producto_seleccionado?.caracteristicas_productos" >
+                    <p-radioButton name="talla_{{producto_seleccionado}}" [label]="caracteristica.talla" [(ngModel)]="producto_seleccionado.caracteristica_seleccionada" (onClick)="seleccionarTalla(caracteristica)" 
+                    [value]="[caracteristica.talla]"></p-radioButton>
+                  </div>
+                </div>
+                <ng-template #sinOpciones>
+                    <span class="text-1xl font-semibold" *ngIf="producto_seleccionado && producto_seleccionado.caracteristicas_productos && producto_seleccionado.caracteristicas_productos.length > 0">
+                        <!-- {{producto_seleccionado.caracteristicas_productos[0]?.talla}} -->
+                        <h3>Unica</h3>
+                      </span>
+                </ng-template>
+            </div>
+            <small class="p-error" *ngIf="!talla_valida">* Seleccione una talla* <br></small>
+            <small class="p-error" *ngIf="!cantidad_valida">* Seleccione una cantidad * <br></small> 
 
             <div class="flex justify-content-end">
                 <div class="flex align-items-center">
-                  <span class="text-2xl font-semibold" style="margin-right: 1rem;">{{producto_seleccionado.precio + '€ ud.' }}</span>
-                  <button pButton   class="p-button-rounded p-button-success" (click)="anadirCarrito(producto_seleccionado)"> Añadir al Carrito</button>
+                    <p-inputNumber
+                    [(ngModel)]="producto_seleccionado.cantidad"
+                    [showButtons]="true"
+                    buttonLayout="horizontal"
+                    inputId="horizontal"
+                    spinnerMode="horizontal"
+                    [style]="{ 'margin-right': '50px'}"
+                    [step]="1"
+                    [min]="1"
+                    decrementButtonClass="p-button-secondary"
+                    incrementButtonClass="p-button-danger"
+                    incrementButtonIcon="pi pi-plus"
+                    decrementButtonIcon="pi pi-minus"
+                    [size]="1"
+                ></p-inputNumber>
+                  <span class="text-2xl font-semibold" style="margin-right: 1rem;">{{producto_seleccionado?.precio + '€ ud.' }}</span>
+                  <button pButton class="p-button-rounded p-button-success" (click)="anadirCarrito(producto_seleccionado)" > Añadir al Carrito</button>
+
+
                 </div>
             </div>
         </div>
