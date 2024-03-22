@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { auditoria } from '../../interfaces/auditoria';
 import { muebles } from 'src/app/interfaces/muebles';
 import { muebles_auditoria } from 'src/app/interfaces/muebles_auditoria';
+import { UrlService } from '../url/url.service';
 
 
 @Injectable({
@@ -12,7 +13,6 @@ import { muebles_auditoria } from 'src/app/interfaces/muebles_auditoria';
 
 export class AuditoriaService {
 
-  API_URI = 'http://localhost:3000';
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -22,7 +22,8 @@ export class AuditoriaService {
     headers: this.headers
   }
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private urlService: UrlService) { }
+  API_URI = this.urlService.api_uri;
 
   nuevaAuditoria(id_tienda: number): Observable<any> {
     const body_data = {

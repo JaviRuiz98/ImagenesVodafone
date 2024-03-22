@@ -1,9 +1,20 @@
-import {  tiendas, posiciones_muebles_tienda } from "@prisma/client";
+import {  tiendas, posiciones_muebles_tienda, imagenes } from "@prisma/client";
 import db  from "../config/database";
+import { tiendasConPlano } from "../interfaces/tiendasConPlano";
 
+function addPlanoToTienda( tiendas: any ) : tiendasConPlano[] {
+    const tiendaConPlano = tiendas.map((tienda:any) => {
+        return {
+            ...tienda,
+            imagen_plano: tienda.imagenes ? tienda.imagenes : undefined,
+        };
+    });
+
+    return tiendaConPlano;
+}
 export const tiendaService = {
     
-    async getAllById(idTienda?: number): Promise<tiendas[]> {
+    async getAllById(idTienda?: number): Promise<tiendasConPlano[]> {
         try{
             const whereClause =  idTienda? {id:idTienda} : {};
             const tiendas = await db.tiendas.findMany(
@@ -13,6 +24,7 @@ export const tiendaService = {
                     },
                     where : whereClause,
                     include:{
+                        imagenes: true,
                         pertenencia_mueble_tienda:{
                             include:{
                                 muebles:{
@@ -27,7 +39,10 @@ export const tiendaService = {
                     }
                 }
             );
-            return tiendas as tiendas[];
+
+            const tiendasConPlano: tiendasConPlano[] =  addPlanoToTienda(tiendas);
+            
+            return tiendasConPlano;
         }  catch(error){
             console.log(error);
             throw error;
@@ -38,13 +53,16 @@ export const tiendaService = {
 
 
 
-    async getBySfid(sfid: string): Promise<tiendas | null> {
+    async getBySfid(sfid: string): Promise<tiendasConPlano | null> {
         try {       
-            return await db.tiendas.findUnique({
+            const tienda =  await db.tiendas.findUnique({
                 where: {
                     sfid: sfid
                 },
                 include: {
+                    
+                    imagenes: true,
+                   
                     pertenencia_mueble_tienda:{
                         include:{
                             muebles:{
@@ -57,6 +75,9 @@ export const tiendaService = {
                     }
                 }
             });
+            const tiendasConPlano: tiendasConPlano[] =  addPlanoToTienda([tienda]);
+            
+            return tiendasConPlano[0];
       } catch (error) {
           console.log(error);
           throw error;
@@ -65,7 +86,7 @@ export const tiendaService = {
       }
   },
       
-  async newTienda(parametros: tiendas): Promise<tiendas> {
+  async newTienda(parametros: tiendas, imagen?: imagenes): Promise<tiendas> {
     try{
         return await db.tiendas.create({
             data: ({
@@ -83,7 +104,8 @@ export const tiendaService = {
                 zona_geografica: parametros.zona_geografica,
                 provincia: parametros.provincia,
                 poblacion: parametros.poblacion,
-                cp: parametros.cp
+                cp: parametros.cp, 
+                id_imagen_plano: imagen?.id,
             })
         });
     } catch (error) {
@@ -92,8 +114,41 @@ export const tiendaService = {
     } finally{
         db.$disconnect();
     }
-  },
-
+  }, 
+   async updatePlanoTienda (id_tienda:number, imagen: imagenes){
+       try{
+           return await db.tiendas.update({
+               where: {
+                   id: id_tienda
+               },
+               data: ({
+                   id_imagen_plano: imagen.id
+               })
+           });
+       } catch (error) {
+           console.log(error);
+           throw error;
+       } finally{
+           db.$disconnect();
+       }
+   },
+   async deletePlanoTienda (id_tienda:number){
+       try{
+           return await db.tiendas.update({
+               where: {
+                   id: id_tienda
+               },
+               data: ({
+                   id_imagen_plano: null
+               })
+           });
+       } catch (error) {
+           console.log(error);
+           throw error;
+       } finally{
+           db.$disconnect();
+       }
+   },
   async asignarPertenenciaMuebleTienda(id_tienda: number, listaIdMuebles: number[]): Promise<any[]> {
         try {
             const resultados = [];
@@ -144,6 +199,24 @@ export const tiendaService = {
         }
     },
 
+    async desactivarUnaPertenenciaMuebleTienda (id_pertenencia: number): Promise<void> {
+         try {
+             await db.pertenencia_mueble_tienda.update({
+                 where: {
+                     id: id_pertenencia
+                 },
+                 data: {
+                     activo: false
+                 }
+             })
+         } catch (error) {
+             console.log(error);
+             throw error;
+         } finally {
+             await db.$disconnect();
+         }
+    },
+    
     async activarDesactivarBooleanoTienda(tienda: tiendas, parametro: string): Promise<any> {
         try {
             let data_clause = {};

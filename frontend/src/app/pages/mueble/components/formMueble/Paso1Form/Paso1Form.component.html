@@ -47,23 +47,24 @@
             Añade si es necesario a lo sumo 2 imagenes que sirvan como <span class="font-bold">modelo </span> para el mueble
           </small>
         </div>
-        <div class="flex" style="height: 50vh;"  *ngIf="objetivo_form=='crear'; else editar">
+        <div style= "height: 30vh;" class = "flex "  *ngIf="objetivo_form=='crear'; else editar">
           
-          <div class="flex-1 m-2  ">
-            <app-selector-imagenes [button_disabled]="imagenesExpositores.length >= 2" (archivoSeleccionadoChange)="onArchivoSeleccionadoChange($event)"></app-selector-imagenes>
+          <div class="m-2 flex-2" >
+            <app-selector-imagenes  [button_disabled]="imagenesExpositores.length >= 2" (archivoSeleccionadoChange)="onArchivoSeleccionadoChange($event)"></app-selector-imagenes>
           </div>
 
 
-          <div class="flex-1 m-2 flex flex-wrap">
-
-           
-            <div *ngFor="let imagen of imagenesExpositores; let i = index"  class="image-container">
+          <div class="flex-1  m-2">
+            <div class="inline-flex">
+              <div *ngFor="let imagen of imagenesExpositores; let i = index"  class="image-container">
                 <img class="flex m-2 default-imagen" 
                   [src]="imagen" height="200vh"
                   [alt]="imagen" />
-                  <p-button icon="pi pi-trash" class="delete-button" severity="danger"  [rounded]="true" (click)="deleteImage(i)"></p-button>
+                 <p-button icon="pi pi-trash" class="delete-button" severity="danger"  [rounded]="true" (click)="deleteImage(i)"></p-button>
              
             </div>
+            </div>          
+            
 
           </div>
         </div>

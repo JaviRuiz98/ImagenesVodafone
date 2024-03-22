@@ -3,6 +3,7 @@ import { HttpClient,HttpParams } from '@angular/common/http';
 import { Observable, catchError, map, of } from "rxjs";
 
 import { procesados_imagenes } from '../../interfaces/procesados_imagenes';
+import { UrlService } from '../url/url.service';
 
  
 @Injectable({
@@ -10,12 +11,13 @@ import { procesados_imagenes } from '../../interfaces/procesados_imagenes';
 })
 
 export class ProcesamientoService {
-  API_URI = 'http://localhost:3000';
-
+  
   constructor(
-    private http: HttpClient
-  ){ }
-
+    private http: HttpClient, 
+    private urlService: UrlService
+    ){ }
+    
+    API_URI = this.urlService.api_uri;
   postProcesamientoImagenes(id_elemento:number, id_expositor_selected: number, id_auditoria: number, imageFile: File  ): Observable<procesados_imagenes> {
     const formData = new FormData();
     console.log('datos', id_elemento, id_expositor_selected, id_auditoria, imageFile);

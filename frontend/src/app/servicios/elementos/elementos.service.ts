@@ -3,15 +3,18 @@ import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { elementos } from '../../interfaces/elementos';
 import { regiones } from 'src/app/interfaces/regiones';
+import { UrlService } from '../url/url.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ElementosService {
 
-  private API_URI = 'http://localhost:3000';
   
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private urlService: UrlService) { }
+
+  API_URI = this.urlService.api_uri;
+
   
   getElementos(categoria?: number): Observable<elementos[]> {
     let url = `${this.API_URI}/elementos`;

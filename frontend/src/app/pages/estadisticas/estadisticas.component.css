@@ -1,0 +1,12 @@
+/* Estilos para el contenedor del menubar */
+.menubar-container {
+  display: block;  
+ 
+}
+
+
+
+  ::ng-deep .p-menubar {
+    width: 100%; 
+  }
+  

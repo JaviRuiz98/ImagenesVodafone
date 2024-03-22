@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Observable } from "rxjs";
-import { tienda } from '../../interfaces/tienda';  
+import { tienda, tiendaCreacion } from '../../interfaces/tienda';  
 import { muebles } from 'src/app/interfaces/muebles';
 import { posiciones_muebles_tienda } from 'src/app/interfaces/posiciones_muebles_tienda';
+import { UrlService } from '../url/url.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,26 +12,28 @@ import { posiciones_muebles_tienda } from 'src/app/interfaces/posiciones_muebles
 
 export class TiendasService {
 
-  API_URI = 'http://localhost:3000';
+ 
 
-  constructor(private http: HttpClient){ }
-
+  constructor(private http: HttpClient, private urlService: UrlService){ }
+  API_URI:string = this.urlService.api_uri;
   getAllTiendas(): Observable<tienda[]> {
     return this.http.get<tienda[]>(`${this.API_URI}/tiendas`);
   }
 
-  newTienda(nuevaTienda: tienda, listaNuevosMuebles: muebles[]): Observable<boolean> {
-    const datosNuevaTienda = {
-      parametros: nuevaTienda,
-      listaNuevosMuebles: listaNuevosMuebles
-    }
-    return this.http.post<boolean>(`${this.API_URI}/tiendas`, datosNuevaTienda);
+  newTienda(nuevaTienda: tiendaCreacion, listaNuevosMuebles: muebles[]): Observable<boolean> {
+    const formData = new FormData();
+    formData.append('parametros', JSON.stringify(nuevaTienda)); 
+    formData.append('listaNuevosMuebles', JSON.stringify(listaNuevosMuebles));
+    formData.append('imagenesPlanos', nuevaTienda.archivo_imagen);
+    return this.http.post<boolean>(`${this.API_URI}/tiendas`, formData);
   }
 
-  editarTienda(tienda: tienda, listaNuevosMuebles: muebles[]): Observable<boolean> {
-    return this.http.post<boolean>(`${this.API_URI}/tiendas/` + tienda.id, listaNuevosMuebles);
+  editarTienda(tienda: tiendaCreacion, listaNuevosMuebles: muebles[]): Observable<boolean> {
+    const formData = new FormData();
+    formData.append('listaNuevosMuebles', JSON.stringify(listaNuevosMuebles));
+    formData.append('imagenesPlanos', tienda.archivo_imagen);
+    return this.http.put<boolean>(`${this.API_URI}/tiendas/` + tienda.id, formData);
   }
-
   activarDesactivarTienda(tienda: tienda, parametro: string): Observable<tienda> {
     const datos = {
       tienda: tienda,

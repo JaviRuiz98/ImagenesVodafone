@@ -33,7 +33,7 @@
                     <div class="p-4 border-1 surface-border surface-card border-round">
                         <div class="grid">
 
-                            <div class="text-2xl col-11 font-bold overflow-hidden text-overflow-ellipsis">
+                            <div class="text-2xl col-9 font-bold overflow-hidden text-overflow-ellipsis">
                                 {{ mueble.nombre }}
                             </div>
                                 <p-overlayPanel #op>
@@ -43,17 +43,20 @@
                                         </div>
                                     </ng-template>
                                 </p-overlayPanel>
-                                <!-- En caso de tener los dos botones poner col-3 -->
-                            <div class="col-1"> 
-                                <div class="flex-inline">
+                              
+                            <div class="col-3"> 
+                                <div class="flex-inline">   
                                     <!-- <p-button (mouseenter)="showOverlayPanel(op, 'Historial de mueble')"
                                     (mouseleave)="hideOverlayPanel(op)" class="mr-2" [raised]="true" [text]="true" [rounded]="true"
                                     severity="danger" icon="pi pi-history" [disabled]="mueble.expositores.length < 1"
-                                    (click)="showHistorial(mueble)"></p-button> -->
-                            
+                                    (click)="showHistorial(mueble)"></p-button> -->                       
                                     <p-button (mouseenter)="showOverlayPanel(op, 'Editar mueble')" (mouseleave)="hideOverlayPanel(op)"
                                         severity="danger" class="mr-2" [raised]="true" [text]="true" [rounded]="true" icon="pi pi-pencil"
                                         (click)="editMueble(mueble)"></p-button>
+
+                                    <p-button (mouseenter)="showOverlayPanel(op, 'Eliminar')" (click)="onBorrarPressed(mueble)"
+                                    (mouseleave)="hideOverlayPanel(op)" class="mr-2" [raised]="true" [text]="true" [rounded]="true"
+                                    severity="danger" icon="pi pi-trash"></p-button> 
                                 </div>
                                 
                             </div>
@@ -71,7 +74,7 @@
                                             />
                                    
                                         <p-button [raised]="true" [text]="true" [rounded]="true" severity="danger"
-                                            label="Asignación de elementos" icon="pi pi-plus-circle"
+                                            label="Asignar elementos" icon="pi pi-plus-circle"
                                             [disabled]="!tieneModelo(expositor.atributos_expositores)" (onClick)="editMueble(mueble,i)"
                                             class="full-width-button"></p-button>
                                     </div>
@@ -117,80 +120,3 @@
 
 
 </div>
-
-
-
-<!-- 
-    <p-table 
-    #miTabla
-            class="table"
-            [value]="muebles"
-            [paginator]="true"
-            [rows]="10"
-            [scrollable]="true"
-            [scrollHeight]="'calc(100vh - 300px )'"
-            
-            paginatorStyleClass="background-color: rgba(232, 232, 232, 0.9);"
-            [showCurrentPageReport]="true"
-            [tableStyle]="{ 'min-width': '50rem' }"
-            currentPageReportTemplate="Enseñando {first} de {last} de en total {totalRecords} muebles"
-            [rowsPerPageOptions]="[10, 25, 50]"
-            [globalFilterFields]="['nombre' ]"
-        >
-         <ng-template pTemplate="caption" >
-             <div class="flex align-items-center justify-content-between">
-                 <p class="p-m-0 text-2xl"> Muebles</p>
-                 <p-button severity="danger"  label="Nuevo" icon="pi pi-plus" (onClick)="nuevoMueble()"></p-button>
-                </div>
-            <p-progressSpinner *ngIf="(muebles.length == 0 )"   fill="var(--surface-ground)" [style]="{'width': '5%', 'height': '5%'}" animationDuration=".6s"  class="fadein animation-duration-1000 "></p-progressSpinner>
-        </ng-template> 
-        <ng-template pTemplate="header">
-            <tr>
-                <th pSortableColumn="nombre">Nombre <p-sortIcon field="nombre"></p-sortIcon></th>
-                <th> Expositor</th>
-                <th>Editar</th>
-                <th>Historial de elementos</th>
-            </tr>
-            <tr>
-                <th>
-                    <p-columnFilter type="text" field="nombre"></p-columnFilter>
-                </th>
-                <th></th>
-                <th></th>
-                <th></th>
-                
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-mueble>
-            <tr>
-                <td>{{ mueble.nombre }}</td>
-                
-                <td [ngClass]="mueble.expositores.length > 1 ? 'expositores-container' : ''">
-                    <div *ngFor="let expositor of mueble.expositores; let i = index;" class="item-container m-4">
-                      <div *ngIf="tieneModelo(expositor.atributos_expositores)" class="image-button-container">
-                          <p-image class="imagenSimple" [src]="url_imagenes_referencias + getImagenModelo(expositor)" height="200vh" [alt]="getImagenModelo(expositor) ? getImagenModelo(expositor) : 'No disponible'" [preview]="true"></p-image>
-                          <p-button [raised]="true" [text]="true" [rounded]="true" severity="danger" label="Elementos" icon="pi pi-plus-circle" [disabled]="!tieneModelo(expositor.atributos_expositores)" (onClick)="showEditarExpositor(expositor)" class="full-width-button"></p-button>
-                        </div>
-                        <div *ngIf="!tieneModelo(expositor.atributos_expositores)" class="flex align-items-center justify-content-center">-</div>
-                    </div>
-                </td>
-                
-                <td>
-                    
-                    <p-button severity="danger" class="mr-2" [raised]="true" [text]="true" [rounded]="true" label="Editar" icon="pi pi-pencil"  (click)="editMueble(mueble)"></p-button>
-                </td>
-                <td>
-                    
-                    <p-button  [raised]="true"  [text]="true" [rounded]="true" severity="danger" label="Ver historial" icon="pi pi-history" [disabled]="mueble.expositores.length < 1" (click) ="showHistorial(mueble)"></p-button>
-                    
-                </td>
-            </tr>
-        </ng-template>
-        
-        <ng-template pTemplate="emptymessage">
-            <tr>
-                <td colspan="3">No hay muebles</td>
-            </tr>
-        </ng-template>
-        
-    </p-table>  -->

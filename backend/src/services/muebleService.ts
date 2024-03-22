@@ -44,6 +44,7 @@ export const muebleService = {
         }
     },
 
+    //devolverá aunque esté desactivado
     async getMuebleById(id_mueble: number): Promise<muebles | null> {
         return await db.muebles.findUnique({ where: { id: id_mueble } });
     },
@@ -194,6 +195,9 @@ export const muebleService = {
         try {
             
             const muebles = await db.muebles.findMany({
+                where : {
+                    activo: true,
+                },
                 include: {   
                     regiones: true,
                     expositores: {
@@ -255,6 +259,7 @@ export const muebleService = {
         try {
             const muebles = await db.muebles.findMany({
                 where: {
+                    activo: true,
                     pertenencia_mueble_tienda: {
                         some: {
                             tiendas: {
@@ -304,6 +309,7 @@ export const muebleService = {
         try {
             const muebles = await db.muebles.findMany({
                 where: {
+                    activo: true,
                     pertenencia_mueble_tienda: {
                         some: {
                             tiendas: {
@@ -358,6 +364,22 @@ export const muebleService = {
         } finally {
             await db.$disconnect();
         }
+    },
+    async desactivarMueble(id: number)  {
+        try {
+            return await db.muebles.update({
+                where: { id: id },
+                data: { activo: false }, 
+                include: {
+                    pertenencia_mueble_tienda:true,
+                }
+            });
+        } catch (error) {
+            throw error;
+        } finally {
+            await db.$disconnect();
+        }   
+
     }
 }
 

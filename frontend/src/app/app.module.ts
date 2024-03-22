@@ -22,9 +22,12 @@ import { LoginModule } from './pages/login/login.module';
 import { UniformesModule } from './pages/uniformes/uniformes.module'; 
 
 import { ButtonModule } from 'primeng/button';
+import { EstadisticasComponent } from './pages/estadisticas/estadisticas.component';
+import { EstadisticasModule } from './pages/estadisticas/estadisticas.module';
+import { SuperPieComponent } from './componentes/_grafica/super-pie/super-pie.component';
 @NgModule({
   declarations: [
-    AppComponent, 
+    AppComponent,
   ],
   imports: [
     BarraMenuComponent,
@@ -42,7 +45,8 @@ import { ButtonModule } from 'primeng/button';
     ElementosModule,
     LoginModule,
     UniformesModule,
-    ButtonModule
+    ButtonModule,
+    EstadisticasModule
   ],
   providers: [   
     PrimeIcons,

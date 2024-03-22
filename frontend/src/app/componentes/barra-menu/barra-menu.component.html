@@ -5,8 +5,8 @@
     </button>
     <div>
       <h1 class="titulo">
-        Validación de Imagenes Vodafone 
-        {{tiendaSeleccionada?  getTiendaTitle() : ''}}
+        Validación de Imagenes Vodafone {{(title!= undefined) ? (" - " + title ) : ''}} 
+        <span class ='pi pi-{{icono}} ml-2 text-3xl' ></span>
       </h1>
     </div>
     <div *ngIf="currentState === '/gestionAuditorias'" class ="estadisticasSidebar" >        

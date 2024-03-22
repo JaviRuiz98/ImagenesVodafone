@@ -2,8 +2,9 @@ import { Component, Input, OnInit, Output, EventEmitter  } from '@angular/core';
 import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { MueblesService } from 'src/app/servicios/muebles/muebles.service';
 
-import { tienda } from 'src/app/interfaces/tienda';
+import { tienda, tiendaCreacion } from 'src/app/interfaces/tienda';
 import { muebles } from 'src/app/interfaces/muebles';
+import { UrlService } from 'src/app/servicios/url/url.service';
 @Component({
   selector: 'app-editar-tienda',
   templateUrl: './editar-tienda.component.html',
@@ -11,19 +12,20 @@ import { muebles } from 'src/app/interfaces/muebles';
 })
 export class EditarTiendaComponent implements OnInit {
 
+
   @Input() verFormularioEditarTienda: boolean = false;
   @Input() tiendaSelected: tienda = {} as tienda;
+  @Output() actualizarListadoTiendasChange: EventEmitter<void> = new EventEmitter<void>();
 
   @Output() verFormularioEditarTiendaChange = new EventEmitter<boolean>();
-
+  
   parametrosSteps: any; 
   activeIndex: number = 0;
   contenidoBotonCrearEditarTienda: string = 'Siguiente';
-
+  archivoSeleccionadoImagen: File | null = null;
   listaMueblesDisponiblesTablaIzquierda: muebles[] = [];
   listaMueblesAsignadosTablaDerecha:  muebles[] = [];
-
-  constructor(private TiendasService: TiendasService, private MueblesService: MueblesService) { }
+  constructor(private TiendasService: TiendasService, private MueblesService: MueblesService, private urlService: UrlService) { }
 
   ngOnInit(): void {
     this.iniciarFormularioEditarTienda();
@@ -31,6 +33,8 @@ export class EditarTiendaComponent implements OnInit {
     this.getMueblesTienda();
   }
   ngOnChanges(): void {
+    console.log( this.tiendaSelected);
+
     if (this.verFormularioEditarTienda && this.verFormularioEditarTienda === true) {
       this.inicializarSteps();
       this.iniciarFormularioEditarTienda();
@@ -67,19 +71,30 @@ export class EditarTiendaComponent implements OnInit {
         }
       },
       {
-        label: 'Confirmar',
+        label: 'Asignar Plano Tienda',
         command: (event: any) => {
           this.activeIndex = 2;
+        }
+      }, 
+      {
+        label: 'Confirmar',
+        command: (event: any) => {
+          this.activeIndex = 3;
         }
       }
     ];
   }
   botonSiguiente(){
-    if(this.activeIndex < 2){
+    if(this.activeIndex < 3){
       this.activeIndex++;
     } else{
-      this.TiendasService.editarTienda(this.tiendaSelected, this.listaMueblesAsignadosTablaDerecha).subscribe((response: any) => {
+      const tienda: tiendaCreacion = {
+        ...this.tiendaSelected, 
+        archivo_imagen: this.archivoSeleccionadoImagen
+      }
+      this.TiendasService.editarTienda(tienda, this.listaMueblesAsignadosTablaDerecha).subscribe((response: any) => {
         this.verFormularioEditarTienda = false;
+        this.actualizarListadoTiendasChange.emit();
       })
     }
   }
@@ -91,5 +106,17 @@ export class EditarTiendaComponent implements OnInit {
     const idsLista2 = new Set(listaMueblesSeleccionados.map(mueble => mueble.id));
     const listaFiltrada = listaCompleta.filter((mueble) => !idsLista2.has(mueble.id));
     return listaFiltrada;
+  }
+  onArchivoSeleccionadoChange($event: { archivo: File; }) {
+    this.archivoSeleccionadoImagen = $event.archivo;
+  }
+  getImageTiendaSelected(): string | null {
+    let res:string | null; 
+
+    if (!!this.tiendaSelected.imagen_plano) {
+      res = this.urlService.url_imagenes_planos+ this.tiendaSelected.imagen_plano.url;
+    }
+    return res;
+
   }
 }

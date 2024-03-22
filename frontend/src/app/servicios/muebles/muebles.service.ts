@@ -6,19 +6,21 @@ import { filtro_procesados } from 'src/app/interfaces/filtro_procesados';
 import { muebleCreation } from 'src/app/pages/mueble/interfaces/muebleCreacion';
 import { expositores } from 'src/app/interfaces/expositores';
 import { pertenencia_elementos_atributos } from 'src/app/interfaces/pertenencia_elementos_atributos';
+import { UrlService } from '../url/url.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MueblesService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private urlService: UrlService) { }
 
   modeloCategoriaId = 3;
 
-  API_URI = 'http://localhost:3000/muebles/';
-  API_URI_CREATE = 'http://localhost:3000/createMueble';
-  API_URI_EXPOSITORES = 'http://localhost:3000/expositores/';
+  API_URI = this.urlService.api_uri + '/muebles/';
+  API_URI_CREATE = this.urlService.api_uri + '/createMueble';
+  API_URI_EXPOSITORES = this.urlService.api_uri + '/expositores/';
+  API_URI_MUEBLE = this.urlService.api_uri + '/mueble/'
 
   headers = new HttpHeaders({
     'Content-Type': 'application/json',
@@ -96,6 +98,11 @@ export class MueblesService {
   getPertenenciaExpositorElementobyIdExpositor(id_expositor: number): Observable<pertenencia_elementos_atributos[]> {
     //no funciona todavia
     return this.http.get<pertenencia_elementos_atributos[]>(this.API_URI + 'pertenencia_elementos_atributos/' + id_expositor);
+  }
+
+  desactivarMueble(id_mueble: number): Observable<muebles> {
+    console.log (id_mueble)
+    return this.http.put<muebles>(this.API_URI_MUEBLE + id_mueble, this.options);
   }
 
 }

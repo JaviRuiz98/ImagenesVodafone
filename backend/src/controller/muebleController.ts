@@ -6,6 +6,7 @@ import {
 import { imagenes, muebles } from "@prisma/client";
 import { muebleCreation } from "../interfaces/mueblesCreados";
 import { fetchGuardarElemento } from "./elementoController";
+import { tiendaService } from "../services/tiendasServices";
 
 //No está operativa
 export async function getFilteredMuebles(req: Request, res: Response) {
@@ -238,3 +239,18 @@ export async function updateExpositor(req: Request, res: Response) {
     }
 }
 
+export async function desactivarMueble(req: Request, res: Response) {
+    try {
+        const id = parseInt(req.params.id);
+        
+        const muebleDesactivado = await muebleService.desactivarMueble(id);
+        for (const pertenencia of muebleDesactivado.pertenencia_mueble_tienda || []) {
+            await tiendaService.desactivarUnaPertenenciaMuebleTienda(pertenencia.id);
+        }
+
+        res.status(200).json(muebleDesactivado);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}

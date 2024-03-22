@@ -26,7 +26,8 @@ export class PasoHuecosFormComponent implements OnInit {
   categorias_elementos: categorias_elementos[]; // inicializar
 
   atributos_expositor: atributos_expositores[] = []; // huecos
-  
+  altura_plano: number = 0;
+  anchura_plano: number = 0;
   array_rectangulos: any[] = [];
   canvas: fabric.Canvas;
   id: number = 0;
@@ -67,10 +68,10 @@ export class PasoHuecosFormComponent implements OnInit {
       expositor: null,
       categorias_elementos: null,
       elemento: null,
-      x_start: rect.left,
-      y_start: rect.top,
-      ancho: rect.width,
-      alto: rect.height,
+      x_start: rect.left / this.anchura_plano,
+      y_start: rect.top / this.altura_plano,
+      ancho: rect.width / this.anchura_plano,
+      alto: rect.height / this.altura_plano,
       angulo: rect.angle
     }); 
     //añado al formgroup
@@ -81,10 +82,10 @@ export class PasoHuecosFormComponent implements OnInit {
       if (index !== -1) {
         // Actualiza los datos del mueble en el arreglo
         this.atributos_expositor[index].id = rect.id;
-        this.atributos_expositor[index].x_start =rect.left;
-        this.atributos_expositor[index].y_start = rect.top;
-        this.atributos_expositor[index].ancho = rect.getScaledWidth();
-        this.atributos_expositor[index].alto = rect.getScaledHeight();
+        this.atributos_expositor[index].x_start =rect.left / this.anchura_plano;
+        this.atributos_expositor[index].y_start = rect.top / this.altura_plano;
+        this.atributos_expositor[index].ancho = rect.getScaledWidth() / this.anchura_plano;
+        this.atributos_expositor[index].alto = rect.getScaledHeight() / this.altura_plano;
         this.atributos_expositor[index].angulo = rect.angle;
         // Actualiza el formulario
         this.editar_atributo_expositor(this.atributos_expositor[index]);
@@ -96,11 +97,11 @@ export class PasoHuecosFormComponent implements OnInit {
     this.id++;
     // this.array_rectangulos[this.array_rectangulos.length] = new fabric.Rect({
     const rect = new fabric.Rect({
-      left: startX ,  // startX // Posición inicial en el eje X
-      top: startY, //startY // Posición inicial en el eje Y
+      left: startX*this.anchura_plano ,  // startX // Posición inicial en el eje X
+      top: startY*this.altura_plano, //startY // Posición inicial en el eje Y
       fill: 'yellow', // Color de relleno
-      width: ancho, // Math.abs(startX - currentX), // Ancho inicial
-      height: alto,  // Math.abs(startY - currentY), // Alto inicial
+      width: ancho*this.anchura_plano, // Math.abs(startX - currentX), // Ancho inicial
+      height: alto*this.altura_plano,  // Math.abs(startY - currentY), // Alto inicial
       angle: angle, // Ángulo inicial (sin rotación)
       cornerStyle: 'circle', // Estilo de los controles de esquina para redimensionar/rotar
       borderColor: 'black', // Color del borde cuando el objeto está seleccionado
@@ -129,21 +130,23 @@ export class PasoHuecosFormComponent implements OnInit {
       alto: rect.height,
       angulo: rect.angle
     }); 
+    console.log (rect);
+
 
     // Escuchar eventos de modificación en el rectángulo
     rect.on('modified', () => {
-      const index = this.atributos_expositor.findIndex(m => m.id === rect.id); // Encuentra el hueco por ID
+      const index = this.atributos_expositor.findIndex(m => m.id === rect.id);
       if (index !== -1) {
-        // Actualiza los datos del mueble en el arreglo
-        this.atributos_expositor[index].id = rect.id;
-        this.atributos_expositor[index].x_start =rect.left;
-        this.atributos_expositor[index].y_start = rect.top;
-        this.atributos_expositor[index].ancho = rect.getScaledWidth();
-        this.atributos_expositor[index].alto = rect.getScaledHeight();
-        this.atributos_expositor[index].angulo = rect.angle;
-        this.editar_atributo_expositor(this.atributos_expositor[index]);
+          this.atributos_expositor[index].id = rect.id;
+          this.atributos_expositor[index].x_start = rect.left / this.anchura_plano;
+          this.atributos_expositor[index].y_start = rect.top / this.altura_plano;
+          this.atributos_expositor[index].ancho = rect.getScaledWidth() / this.anchura_plano;
+          this.atributos_expositor[index].alto = rect.getScaledHeight() / this.altura_plano;
+          this.atributos_expositor[index].angulo = rect.angle;
+          this.editar_atributo_expositor(this.atributos_expositor[index]);
       }
-    });
+   });
+  
   }
  
 
@@ -231,6 +234,8 @@ export class PasoHuecosFormComponent implements OnInit {
   ngOnInit() {        
     this.src = this.imagenExpositor ;
     this.inicializaCanvas();
+    this.altura_plano = this.canvas.height;
+    this.anchura_plano = this.canvas.width;
     this.inicializarAtributosExpositor();  
     this.inicializaCategoriasElementos();
   }
@@ -295,7 +300,13 @@ export class PasoHuecosFormComponent implements OnInit {
   inicializarAtributosExpositor() {
     const control = <FormArray>this.expositorFormulario.get('atributos_expositores') as FormArray;
     for (let i = 1; i < control.length; i++) {
-      this.inicializarRectangulo(control.at(i).value.x_start, control.at(i).value.y_start, control.at(i).value.ancho, control.at(i).value.alto, control.at(i).value.angulo,control.at(i).value.categorias_elementos);
+      this.inicializarRectangulo(
+        control.at(i).value.x_start, 
+        control.at(i).value.y_start, 
+        control.at(i).value.ancho,
+        control.at(i).value.alto,
+        control.at(i).value.angulo,
+        control.at(i).value.categorias_elementos);
     }
   }
 
