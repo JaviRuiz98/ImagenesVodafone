@@ -28,7 +28,6 @@ import { SuperPieComponent } from './componentes/super-pie/super-pie.component';
 @NgModule({
   declarations: [
     AppComponent,
-    SuperPieComponent,
   ],
   imports: [
     BarraMenuComponent,
