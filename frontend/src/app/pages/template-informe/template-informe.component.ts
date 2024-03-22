@@ -14,6 +14,7 @@ import { TagModule } from 'primeng/tag';
 import { CommonModule } from '@angular/common';
 import { datos_graficas } from 'src/app/interfaces/datos_graficas';
 import { SuperPieComponent } from 'src/app/componentes/super-pie/super-pie.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-template-informe',
@@ -46,10 +47,33 @@ export class TemplateInformeComponent implements OnInit {
 
   fecha: string = '';
 
-  data: any;
-  chartData = [0, 0, 0, 0]; //Cantidad de resultados por bueno, notable, medio y malo
-  chartOptions: any;
-  datos_graficas: datos_graficas[] = [];
+  datos_graficas: datos_graficas[] = [
+    {
+      etiqueta: 'Positivo',
+      valor: 0,
+      color: 'green'
+    },
+    {
+      etiqueta: 'Notable',
+      valor: 0,
+      color: 'yellow'
+    },
+    {
+      etiqueta: 'Medio',
+      valor: 0,
+      color: 'orange'
+    },
+    {
+      etiqueta: 'Negativo',
+      valor: 0,
+      color: 'red'
+    },
+    {
+      etiqueta: 'No procesados',
+      valor: 0,
+      color: 'bluegray'
+    }
+  ];
 
   constructor(
     private informeService: InformeService,
@@ -72,7 +96,7 @@ export class TemplateInformeComponent implements OnInit {
 
         this.mapearResumenAuditoria();
 
-        this.generarDatosChart();
+        this.datos_graficas = this.generarDatosChart(this.datos_graficas);
       },
       (error) => {
         console.error(error);
@@ -117,55 +141,30 @@ export class TemplateInformeComponent implements OnInit {
     return this.publicMedhodsService.getSeverityDispositivos(numero_dispositivos, huecos_esperados);
   }
 
-  generarDatosChart() {
+  generarDatosChart(datos_graficas: datos_graficas[]) {
+    console.log('datos_grafica', datos_graficas);
     for (const dato of this.informeData.datos_barra_progreso) {
       switch (dato) {
         case 0:
+          datos_graficas[4].valor++;
           break;
         case 1:
-          this.chartData[0]++;
+          datos_graficas[0].valor++;
           break;
         case 2:
-          this.chartData[1]++;
+          datos_graficas[1].valor++;
           break;
         case 3:
         case 4:
-          this.chartData[2]++;
+          datos_graficas[2].valor++;
           break;
         default:
-          this.chartData[3]++;
+          datos_graficas[3].valor++;
           break;
       }
     }
+    console.log('datos_grafica', datos_graficas);
 
-    this.chartData[4] = this.informeData.num_expositores - this.informeData.num_expositores_procesados; // cuenta de elementos no procesados aun
-
-    this.datos_graficas = [
-      {
-        etiqueta: 'Positivo',
-        valor: this.chartData[0],
-        color: 'green'
-      },
-      {
-        etiqueta: 'Notable',
-        valor: this.chartData[1],
-        color: 'yellow'
-      },
-      {
-        etiqueta: 'Medio',
-        valor: this.chartData[2],
-        color: 'orange'
-      },
-      {
-        etiqueta: 'Negativo',
-        valor: this.chartData[3],
-        color: 'red'
-      },
-      {
-        etiqueta: 'No procesados',
-        valor: this.chartData[4],
-        color: 'bluegray'
-      }
-    ];
+    return [...datos_graficas];
   }
 }

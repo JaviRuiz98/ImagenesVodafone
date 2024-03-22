@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
 import { datos_graficas } from 'src/app/interfaces/datos_graficas';
 
@@ -19,30 +19,43 @@ export class SuperPieComponent implements OnChanges {
 
   options: any;
 
-  ngOnChanges() {
-      const documentStyle = getComputedStyle(document.documentElement);
-      const textColor = documentStyle.getPropertyValue('--text-color');
+  constructor(
+    private cdRef: ChangeDetectorRef
+  ) { }
 
-      this.data = {
-          labels: this.datos_graficas.map((d) => d.etiqueta),
-          datasets: [
-              {
-                  data: this.datos_graficas.map((d) => d.valor),
-                  backgroundColor: this.datos_graficas.map((d) => documentStyle.getPropertyValue(`--${d.color}-500`)),                  
-                  hoverBackgroundColor: this.datos_graficas.map((d) => documentStyle.getPropertyValue(`--${d.color}-400`)),
-              }
-          ]
-      };
+  ngOnChanges(changes: SimpleChanges) {
+    this.actualizarGrafica();
+    this.cdRef.detectChanges();
+  }
 
-      this.options = {
-          plugins: {
-              legend: {
-                  labels: {
-                      usePointStyle: true,
-                      color: textColor
-                  }
-              }
-          }
-      };
+  actualizarGrafica() {
+    console.log('datos dentro pie', this.datos_graficas);
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+
+    this.data = {
+        labels: this.datos_graficas.map((d) => d.etiqueta),
+        datasets: [
+            {
+                data: this.datos_graficas.map((d) => d.valor),
+                backgroundColor: this.datos_graficas.map((d) => documentStyle.getPropertyValue(`--${d.color}-500`)),                  
+                hoverBackgroundColor: this.datos_graficas.map((d) => documentStyle.getPropertyValue(`--${d.color}-400`)),
+            }
+        ]
+    };
+
+    console.log('data', this.data.datasets[0].data);
+    console.log('color', this.data.labels);
+
+    this.options = {
+        plugins: {
+            legend: {
+                labels: {
+                    usePointStyle: true,
+                    color: textColor
+                }
+            }
+        }
+    };
   }
 }
