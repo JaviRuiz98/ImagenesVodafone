@@ -51,7 +51,7 @@ export class ElementosComponent implements OnInit{
   mostrar: boolean = false;
 
   tableStateOption: any[] = [{label:'Dispositivos', icon: 'pi pi-mobile', value: 'dispositivos',  styleClass: "optionColorVodafone" }, {label:'Carteles' ,icon: 'pi pi-book', value: 'cartel', styleClass: "optionColorVodafone" }];
-  tableSelected:string = 'dispositivos';
+  tableSelected: string = 'Dispositivos';
 
   verRemarcado: boolean = false;
 
@@ -168,21 +168,21 @@ export class ElementosComponent implements OnInit{
     
     const estadoSeleccionado = $event.value?.estado;
     const nombreCategoriaSeleccionada = $event.value?.nombre;
-
-    if (estadoSeleccionado) {
-        if (estadoSeleccionado === 'Catalogados') {
-            this.elementos = this.elementos.filter(elemento => elemento.activo == true);
-        } else if (estadoSeleccionado === 'Descatalogados') {
-            this.elementos = this.elementos.filter(elemento => elemento.activo == false);
-        }
-    } else if (nombreCategoriaSeleccionada) {
-        if (this.categorias_elementos.find(opcion => opcion.nombre === nombreCategoriaSeleccionada)) {
-            // this.categoriaSeleccionada = $event.value?.nombre;
-        }
+  
+    if (nombreCategoriaSeleccionada) {
+      this.tableSelected = nombreCategoriaSeleccionada;
+    }
+  
+    if (this.opcionCatalogoSeleccionado?.estado === 'Catalogados') {
+        this.elementos = this.elementos.filter(elemento => elemento.activo == true);
+    } else if (this.opcionCatalogoSeleccionado?.estado === 'Descatalogados') {
+        this.elementos = this.elementos.filter(elemento => elemento.activo == false);
     }
 
-    if (this.categoriaSeleccionada && this.categoriaSeleccionada.nombre) {
-        this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == this.categoriaSeleccionada.nombre);
+    if (this.tableSelected === 'Dispositivos') {
+        this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.id === 2);
+    }else if(this.tableSelected === 'Carteles'){
+      this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.id === 1);
     }
 }
  
