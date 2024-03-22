@@ -13,8 +13,8 @@ import { datos_informe } from 'src/app/interfaces/datos_informe';
 import { TagModule } from 'primeng/tag';
 import { CommonModule } from '@angular/common';
 import { datos_graficas } from 'src/app/interfaces/datos_graficas';
-import { SuperPieComponent } from 'src/app/componentes/super-pie/super-pie.component';
 import { Observable } from 'rxjs';
+import { SuperPieComponent } from 'src/app/componentes/_grafica/super-pie/super-pie.component';
 
 @Component({
   selector: 'app-template-informe',
