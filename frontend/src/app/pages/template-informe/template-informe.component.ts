@@ -12,6 +12,8 @@ import { UrlService } from 'src/app/servicios/url/url.service';
 import { datos_informe } from 'src/app/interfaces/datos_informe';
 import { TagModule } from 'primeng/tag';
 import { CommonModule } from '@angular/common';
+import { datos_graficas } from 'src/app/interfaces/datos_graficas';
+import { SuperPieComponent } from 'src/app/componentes/super-pie/super-pie.component';
 
 @Component({
   selector: 'app-template-informe',
@@ -23,7 +25,8 @@ import { CommonModule } from '@angular/common';
     ProgressBarModule,
     ChartModule,
     TagModule,
-    CommonModule
+    CommonModule,
+    SuperPieComponent
   ],
 })
 export class TemplateInformeComponent implements OnInit {
@@ -46,6 +49,7 @@ export class TemplateInformeComponent implements OnInit {
   data: any;
   chartData = [0, 0, 0, 0]; //Cantidad de resultados por bueno, notable, medio y malo
   chartOptions: any;
+  datos_graficas: datos_graficas[] = [];
 
   constructor(
     private informeService: InformeService,
@@ -136,35 +140,32 @@ export class TemplateInformeComponent implements OnInit {
 
     this.chartData[4] = this.informeData.num_expositores - this.informeData.num_expositores_procesados; // cuenta de elementos no procesados aun
 
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--text-color');
-
-    this.data = {
-      datasets: [
-          {
-              data: this.chartData,
-              backgroundColor: [
-                documentStyle.getPropertyValue('--green-500'),
-                documentStyle.getPropertyValue('--yellow-500'),
-                documentStyle.getPropertyValue('--orange-500'),
-                documentStyle.getPropertyValue('--red-500'),
-                documentStyle.getPropertyValue('--bluegray-500'),
-              ],
-              label: 'My dataset'
-          }
-      ],
-      labels: ['Positivo', 'Notable', 'Medio', 'Negativo', 'No procesados']
-  };
-  
-  this.chartOptions = {
-      plugins: {
-          legend: {
-              labels: {
-                  color: textColor
-              }
-          }
+    this.datos_graficas = [
+      {
+        etiqueta: 'Positivo',
+        valor: this.chartData[0],
+        color: 'green'
+      },
+      {
+        etiqueta: 'Notable',
+        valor: this.chartData[1],
+        color: 'yellow'
+      },
+      {
+        etiqueta: 'Medio',
+        valor: this.chartData[2],
+        color: 'orange'
+      },
+      {
+        etiqueta: 'Negativo',
+        valor: this.chartData[3],
+        color: 'red'
+      },
+      {
+        etiqueta: 'No procesados',
+        valor: this.chartData[4],
+        color: 'bluegray'
       }
-  };
+    ];
   }
-
 }
