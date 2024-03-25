@@ -141,7 +141,7 @@ export async function getRegionesDisponibles(__req: Request, res: Response) {
 }
 
 
-export async function getCategorias_elementos(__req: Request, res: Response) {
+export async function getCategorias_elementos(_req: Request, res: Response) {
     try{
         const categorias = await elementosService.getCategorias();
         res.status(200).json(categorias);
@@ -151,7 +151,7 @@ export async function getCategorias_elementos(__req: Request, res: Response) {
     }
 }
 
-export async function getResumenEstadisticasElementos(__req: Request, res: Response) {
+export async function getResumenEstadisticasElementos(_req: Request, res: Response) {
     try{
         const procesados = await procesadoService.getAll();
         const resultados_ordenados: resultados_ordenados = getResumenEstadisticas(procesados);
