@@ -27,7 +27,7 @@ export async function validateGetFilteredMuebles(req: Request, res: Response, ne
 }
 
 export async function validateMuebleByIdTienda( req: Request, res: Response, next: NextFunction ) {
-    const id_tienda = parseInt( req.body.id_tienda as string );
+    const id_tienda = parseInt( req.params.id_tienda as string );
     const idCorrect = validateIdExistsAndIsValidInteger(id_tienda);
 
     if (!idCorrect) {
