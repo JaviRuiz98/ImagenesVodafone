@@ -205,11 +205,6 @@ export class ElementosComponent implements OnInit{
       {estado: 'Catalogados'}, 
       {estado: 'Descatalogados'}
     ]
-
- 
-  
- 
-
   }
 
   

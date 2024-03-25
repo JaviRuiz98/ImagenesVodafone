@@ -17,6 +17,10 @@ import { ButtonModule } from 'primeng/button';
 import { UniformesService } from 'src/app/servicios/uniformes/uniformes.service';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+
+
+
+
 @Component({
   selector: 'app-carrito',
   templateUrl: './carrito.component.html',
