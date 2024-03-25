@@ -62,7 +62,9 @@ export class EstadisticasAuditoriaComponent {
   
         // Para `diferencia`, sumamos los valores en el arreglo a las categorías correspondientes
         data.conteo_dispositivos.diferencia.forEach((diferencia) => {
-          if (diferencia === 1 || diferencia === 2) {
+          if (diferencia === 0) {
+            this.estadisticas_resultados_conteo[0].valor++;
+          } else if (diferencia === 1 || diferencia === 2) {
             this.estadisticas_resultados_conteo[1].valor++;
           } else if (diferencia === 3 || diferencia === 4) {
             this.estadisticas_resultados_conteo[2].valor++;
