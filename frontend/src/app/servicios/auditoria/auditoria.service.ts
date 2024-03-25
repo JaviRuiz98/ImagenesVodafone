@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from "rxjs";
 import { auditoria } from '../../interfaces/auditoria';
-import { muebles } from 'src/app/interfaces/muebles';
 import { muebles_auditoria } from 'src/app/interfaces/muebles_auditoria';
 import { UrlService } from '../url/url.service';
 import { estados_auditorias } from 'src/app/pages/estadisticas/interface/estados-auditorias';
-
+import { resultados_ordenados } from 'src/app/interfaces/resultados_ordenados';
 
 @Injectable({
   providedIn: 'root'
@@ -64,6 +63,10 @@ export class AuditoriaService {
 
   getEstadisticasEstadosAuditoria(): Observable<estados_auditorias[]> {
     return this.http.get<estados_auditorias[]>(`${this.API_URI}/estadisticas/estados_auditoria`);
+  }
+
+  getEstadisticasResultadosAuditoria(): Observable<resultados_ordenados> {
+    return this.http.get<resultados_ordenados>(`${this.API_URI}/estadisticas/resultados_auditoria`);
   }
 
 }

@@ -1,14 +1,9 @@
-import { muebles } from "@prisma/client";
+import { muebles, pertenencia_elementos_auditoria } from "@prisma/client";
 import { elementoExtended } from "./elementoExtended";
 import { procesados_imagenes_extended } from "./procesadosImagenesExtended";
 
-export interface per_ele_aud_extended {
-    id: number;
-    id_auditoria: number;
-    id_mueble: number;
-    id_expositor: number;
-    id_elemento: number;
-    muebles: muebles;
-    elementos: elementoExtended;
-    procesados_imagenes: procesados_imagenes_extended[]; // Ajusta el tipo de acuerdo a tus datos
+export interface per_ele_aud_extended extends pertenencia_elementos_auditoria {
+    muebles?: muebles;
+    elementos?: elementoExtended;
+    procesados_imagenes: procesados_imagenes_extended[];
 }
