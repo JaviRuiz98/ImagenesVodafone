@@ -6,5 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./estadisticas-muebles.component.css']
 })
 export class EstadisticasMueblesComponent {
-
+ constructor  ( 
+ ){}
 }

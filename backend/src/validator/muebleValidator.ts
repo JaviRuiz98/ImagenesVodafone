@@ -6,7 +6,7 @@ import { expositorService, muebleService } from '../services/muebleService';
 export async function validateGetFilteredMuebles(req: Request, res: Response, next: NextFunction) {
 
 
-    const id_tienda = parseInt(req.body.id_tienda as string);
+    const id_tienda = parseInt(req.params.id_tienda as string);
 
     if (!id_tienda) {
         res.status(400).json({ error: 'id_tienda es necesario' });
