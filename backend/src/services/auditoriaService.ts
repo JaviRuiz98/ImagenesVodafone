@@ -265,5 +265,22 @@ export const auditoriaService = {
         } finally {
             db.$disconnect();
         }
+    },
+
+    async getAllEstadosParaAuditorias() {
+        try {
+            return db.estados_auditoria.findMany(
+                {
+                    include: {
+                        auditorias: true
+                    }
+                }
+            )
+        } catch (error) {
+            console.error('No se pudo obtener los estados para la auditoria:', error);
+            throw error;
+        } finally {
+            db.$disconnect();
+        }
     }
 }

@@ -5,6 +5,7 @@ import { auditoria } from '../../interfaces/auditoria';
 import { muebles } from 'src/app/interfaces/muebles';
 import { muebles_auditoria } from 'src/app/interfaces/muebles_auditoria';
 import { UrlService } from '../url/url.service';
+import { estados_auditorias } from 'src/app/pages/estadisticas/interface/estados-auditorias';
 
 
 @Injectable({
@@ -59,6 +60,10 @@ export class AuditoriaService {
 
   getBarraProgresoAuditoria(id_auditoria_seleccionada: number): Observable<number[]> {
     return this.http.get<number[]>(`${this.API_URI}/barra_progreso_auditoria/${id_auditoria_seleccionada}`);
+  }
+
+  getEstadisticasEstadosAuditoria(): Observable<estados_auditorias[]> {
+    return this.http.get<estados_auditorias[]>(`${this.API_URI}/estadisticas/estados_auditoria`);
   }
 
 }
