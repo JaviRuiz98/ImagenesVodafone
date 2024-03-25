@@ -9,6 +9,7 @@ export interface resultados_ordenados {
         otro_idioma: number
     },
     conteo_dispositivos: {
-        error: number[]
+        error: number,
+        diferencia: number[]
     }
 }

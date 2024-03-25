@@ -170,6 +170,22 @@ export const elementosService = {
           console.error(`Error al intentar obtener las categorias:`, error);
           throw error;
         }
+      }, 
+
+      async getResumenEstadisticas(){
+        try{
+          const procesados = await db.procesados_imagenes.findMany(
+            {
+              orderBy: {
+                id_probabilidad_cartel: 'desc', 
+                
+              }
+            }
+          );
+        }catch(error){
+          console.error(`Error al intentar obtener las estadísticas:`, error);
+          throw error;
+        }
       }
      
 
