@@ -92,20 +92,26 @@ export async function getElementosProcesadosAuditoria(req: Request, res: Respons
 function agruparElementosMueblesAuditorias(per_ele_aud_brutos: per_ele_aud_extended[]) {
 
     const resultado: muebleConElementos[] = per_ele_aud_brutos.reduce((acc: muebleConElementos[], item: per_ele_aud_extended) => {
-        let mueble = acc.find((m: muebleConElementos) => m.id === item.muebles.id);
-        if (!mueble) {
-            mueble = {
-                ...item.muebles,
-                elementos: []
-            };
-            acc.push(mueble);
+        if (item.muebles) {
+            let mueble = acc.find((m: muebleConElementos) => m.id === item.muebles?.id);
+            if (!mueble) {
+                mueble = {
+                    ...item.muebles,
+                    elementos: []
+                };
+                acc.push(mueble);
+            }
+
+            if(item.elementos) {
+                mueble.elementos.push({
+                    ...item.elementos,
+                    procesados_imagenes: item.procesados_imagenes,
+                    id_expositor: item.id_expositor
+                });
+            }
         }
-        mueble.elementos.push({
-            ...item.elementos,
-            procesados_imagenes: item.procesados_imagenes,
-            id_expositor: item.id_expositor
-        });
         return acc;
+
     }, []);
 
     return resultado;
@@ -133,7 +139,7 @@ export async function getNumberArrayProgresoAuditoria(id_auditoria: number): Pro
         if(pea.procesados_imagenes.length == 0) {
             return 0;
         }
-        switch (pea.elementos.id_categoria) {
+        switch (pea.elementos?.id_categoria) {
             case 1:
             return pea.procesados_imagenes[0].id_probabilidad_cartel || 0;
             case 3:
@@ -249,6 +255,19 @@ export async function getEstadisticasEstadosAuditoria(_req: Request, res: Respon
         })
 
         res.status(200).json(estados);
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+export async function getEstadisticasResultadosAuditoria(_req: Request, res: Response) {
+    try {
+        // Obtener todos el último procesado de cada elemento-auditoria
+        const ultimos_procesados: per_ele_aud_extended[] = await auditoriaService.getUltimosProcesadosElementoAuditoria();
+
+        // Contar y ordenar los procesamientos
+
+        res.status(200).json(ultimos_procesados);
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
     }

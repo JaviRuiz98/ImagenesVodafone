@@ -282,5 +282,29 @@ export const auditoriaService = {
         } finally {
             db.$disconnect();
         }
+    },
+
+    getUltimosProcesadosElementoAuditoria() {
+        try {
+            return db.pertenencia_elementos_auditoria.findMany({
+                include: {
+                    procesados_imagenes: {
+                        orderBy: {
+                            fecha: 'desc'
+                        },
+                        take: 1,
+                        include: {
+                            probabilidades_respuesta_carteles: true,
+                            categorias_elementos: true
+                        }
+                    }
+                }
+            })
+        } catch (error) {
+            console.error('No se pudo obtener los ultimos procesados:', error);
+            throw error;
+        } finally {
+            db.$disconnect();
+        }
     }
 }
