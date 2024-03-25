@@ -65,7 +65,12 @@ export const procesadoService = {
                 prompts: true,
                 pertenencia_elementos_auditoria: {
                     include: {
-                        elementos: true,
+                        elementos: {
+                            include: {
+                                categorias_elementos: true,
+                                imagenes: true
+                            }
+                        }
                     }
                 },
                 probabilidades_respuesta_carteles: true
