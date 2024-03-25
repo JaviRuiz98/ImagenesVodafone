@@ -2,6 +2,8 @@ import { Request, Response } from 'express';
 import { elementosService } from '../services/elementoService';
 import { imagenService } from '../services/imagenService'; // 
 import { resultados_ordenados } from '../interfaces/resultados_ordenados';
+import { procesadoService } from '../services/procesadoService';
+import { getResumenEstadisticas } from '../utils/funcionesCompartidasController';
 
 
 export async function createElementos(req: Request, res: Response) {
@@ -151,8 +153,9 @@ export async function getCategorias_elementos(__req: Request, res: Response) {
 
 export async function getResumenEstadisticasElementos(__req: Request, res: Response) {
     try{
-        const resumen = await elementosService.getResumenEstadisticas();
-        res.status(200).json(resumen);
+        const procesados = await procesadoService.getAll();
+        const resultados_ordenados: resultados_ordenados = getResumenEstadisticas(procesados);
+        res.status(200).json(resultados_ordenados);
     }catch(error){
         res.status(500).json({ error: 'Error interno del servidor' });
     }

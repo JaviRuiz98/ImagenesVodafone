@@ -1,4 +1,5 @@
 import { procesados_imagenes } from "@prisma/client";
+import { resultados_ordenados } from "../interfaces/resultados_ordenados";
 
 export function parseBool(value: string): boolean {
     const value_bool = value == 'true';
@@ -6,10 +7,10 @@ export function parseBool(value: string): boolean {
   }
   
                                                                                                       //por defecto 10, no creo que haya mas
-  export async function getResumenEstadisticas( procesados: procesados_imagenes[], maximaDiferenciaPermitida:number = 10 ) {
+  export  function getResumenEstadisticas( procesados: procesados_imagenes[], maximaDiferenciaPermitida:number = 10 ):resultados_ordenados {
     
       // Inicializar el objeto de resultados ordenados
-      let resultados = {
+      const resultados: resultados_ordenados = {
         carteles: {
           muy_alta: 0,
           alta: 0,

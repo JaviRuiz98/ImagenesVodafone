@@ -45,7 +45,7 @@ export const procesadoService = {
   
     }, 
 
-    getById(id_procesado_imagen: number): Promise<procesados_imagenes | null> {
+    async getById(id_procesado_imagen: number): Promise<procesados_imagenes | null> {
         return db.procesados_imagenes.findUnique({
             where: {
                 id: id_procesado_imagen
@@ -57,6 +57,17 @@ export const procesadoService = {
             }
         })
     },
+
+    async getAll(): Promise<procesados_imagenes[]> {
+        return db.procesados_imagenes.findMany({
+            include: {
+                imagenes: true,
+                prompts: true,
+                probabilidades_respuesta_carteles: true
+            }
+        })
+    } ,
+        
 
     borrarProcesado(id_procesado_imagen: number) {
         return db.procesados_imagenes.delete({

@@ -172,21 +172,7 @@ export const elementosService = {
         }
       }, 
 
-      async getResumenEstadisticas(){
-        try{
-          const procesados = await db.procesados_imagenes.findMany(
-            {
-              orderBy: {
-                id_probabilidad_cartel: 'desc', 
-                
-              }
-            }
-          );
-        }catch(error){
-          console.error(`Error al intentar obtener las estadísticas:`, error);
-          throw error;
-        }
-      }
+    
      
 
 }
