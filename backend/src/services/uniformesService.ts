@@ -1,6 +1,6 @@
 
 import { producto, carrito, imagenes, caracteristicas_productos } from "@prisma/client";
-
+import { productoExtended } from "../interfaces/producto";
 import db from "../config/database";
 
 
@@ -90,6 +90,38 @@ export const uniformesService = {
             throw error;
         }finally {
             await db.$disconnect();
+        }
+    },
+
+    async crearPedido(id_tienda: number): Promise<any> {
+        try {
+            const fecha_creacion = new Date();
+            return await db.pedidos.create({
+                data: {
+                    id_tienda: id_tienda,
+                    fecha: fecha_creacion,
+                }
+            }) 
+        }catch (error) {
+            throw error;
+        }
+    },
+
+    async asignarCarrito(productos_carrito: productoExtended[], id_pedido: number): Promise<any> {
+        try {
+
+            const carritoItems = productos_carrito.map(producto => ({
+                id_pedido: id_pedido,
+                id_caracteristicas_producto: producto.caracteristica_seleccionada.id, // Corregido el nombre de la propiedad
+                cantidad: producto.cantidad
+            }))
+
+
+            return await db.carrito.createMany({
+                data: carritoItems,
+            });
+        } catch (error) {
+            throw error;
         }
     }
 

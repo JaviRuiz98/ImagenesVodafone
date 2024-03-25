@@ -1,20 +1,18 @@
 <p-toast>  </p-toast>
 
-       
+
 <p-panel header="Elementos" [style]="{width: '70%', margin: '0 auto'}">
     <p-toolbar styleClass="mb-4 gap-2">
 
         <ng-template pTemplate="left">
-            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="AbrirnuevoElemento()" ></button>
+            <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-danger"  (click)="AbrirnuevoElemento()" ></button>
             <!-- <button pButton pRipple label="Desactivar" icon="pi pi-eye " class="p-button-danger" [style]="{'margin-left': '20px'}" (click)="activarDesactivarelementos()" [disabled]="!elementosSeleccionados|| !elementosSeleccionados.length"></button> -->
             <span class="p-input-icon-left" style="margin-left: 20px">
                 <i class="pi pi-search"></i>
                 <input pInputText type="text" [(ngModel)]="imputSearch" (input)="filterByNombre($event)"    placeholder="Filtrar por nombre" /> 
             </span>
- 
             <p-dropdown [options]="categorias_elementos" (onChange)="cambiarOpcionBusqueda($event)" [(ngModel)]="categoriaSeleccionada"  optionLabel="nombre" [showClear]="true" placeholder="Buscar por clase" [style] = "{'margin-left': '20px'}"></p-dropdown>
             <p-dropdown [options]="opcionesCatalogo" (onChange)="cambiarOpcionBusqueda($event)" [(ngModel)]="opcionCatalogoSeleccionado" optionLabel="estado" [showClear]="true" placeholder="Estado del catalogo" [style] = "{'margin-left': '20px'}" ></p-dropdown>
-            
         </ng-template>
     </p-toolbar>
     <p-table
@@ -60,8 +58,8 @@
                 </td>
                 <!-- <td *ngIf="categoriaSeleccionada?.nombre == 'Carteles'">{{ elemento.regiones.nombre }}</td> -->
                 <td>
-                    <p-button *ngIf="elemento.activo == 1" (mouseover)="descatalogar.toggle($event)" (click)="activarDesactivarElementos(elemento)" icon="pi pi-eye-slash" [rounded]="true" [text]="true" severity="danger "></p-button>
-                    <p-button *ngIf="elemento.activo == 0" (mouseover)="catalogar.toggle($event)" (click)="activarDesactivarElementos(elemento)" icon="pi pi-eye" [rounded]="true" [text]="true" severity="info "></p-button>
+                    <p-button *ngIf="elemento.activo == 0" (mouseover)="catalogar.toggle($event)" (click)="activarDesactivarElementos(elemento)" icon="pi pi-eye-slash" [rounded]="true" [text]="true" severity="danger "></p-button>
+                    <p-button *ngIf="elemento.activo == 1" (mouseover)="descatalogar.toggle($event)" (click)="activarDesactivarElementos(elemento)" icon="pi pi-eye" [rounded]="true" [text]="true" severity="info "></p-button>
                     <p-overlayPanel #descatalogar>
                         Descatalogar
                     </p-overlayPanel>
