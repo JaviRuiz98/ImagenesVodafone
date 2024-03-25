@@ -8,6 +8,15 @@ import { EstadisticasMueblesComponent } from './estadisticas-muebles/estadistica
 import { EstadisticasElementosComponent } from './estadisticas-elementos/estadisticas-elementos.component';
 import { EstadisticasIaComponent } from './estadisticas-ia/estadisticas-ia.component';
 import { EstadisticasUniformesComponent } from './estadisticas-uniformes/estadisticas-uniformes.component';
+import { FormsModule } from '@angular/forms';
+
+
+//uniformes
+import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+
+import { CardModule } from 'primeng/card';
+import { ChartModule } from 'primeng/chart';
 
 @NgModule({
   declarations: [
@@ -17,11 +26,17 @@ import { EstadisticasUniformesComponent } from './estadisticas-uniformes/estadis
     EstadisticasMueblesComponent,
     EstadisticasElementosComponent,
     EstadisticasIaComponent,
-    EstadisticasUniformesComponent
+    EstadisticasUniformesComponent,
+   
   ],
   imports: [
     CommonModule,
     MenubarModule,
+    ButtonModule,
+    CalendarModule,
+    FormsModule,
+    CardModule,
+    ChartModule
   ]
 })
 export class EstadisticasModule { }

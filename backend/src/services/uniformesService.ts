@@ -1,5 +1,5 @@
 
-import { producto, carrito, imagenes, caracteristicas_productos } from "@prisma/client";
+import { producto, pedidos, carrito, imagenes, caracteristicas_productos } from "@prisma/client";
 import { productoExtended } from "../interfaces/producto";
 import db from "../config/database";
 
@@ -15,6 +15,15 @@ export const uniformesService = {
             throw error;
         } finally {
             await db.$disconnect();
+        }
+    },
+
+    async getPedidos(): Promise<pedidos[]> {
+        try {
+            const pedidos = await db.pedidos.findMany();
+            return pedidos;
+        }catch (error) {
+            throw error;
         }
     },
 

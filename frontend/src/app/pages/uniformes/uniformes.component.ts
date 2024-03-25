@@ -20,13 +20,15 @@ export class UniformesComponent implements OnInit {
 
  
 
-  productos: productos[];
+  productosTodos!: productos[];
+  productos!: productos[];
   productos_carrito: productos[] = [] as productos[];
   producto_seleccionado: productos = {
     id: 0,
     nombre: '',
     precio: 0,
     descripcion: '',
+    genero: '',
     imagenes: {
       id_imagen: 0,
       url: ''
@@ -53,8 +55,8 @@ export class UniformesComponent implements OnInit {
   talla_valida: boolean = true;
   url_imagenes_productos: string = 'http://validador-vf.topdigital.local/imagenes/imagenesProducto/';
 
-
-
+  opciones_generos: any[] = [{label: 'Hombre', value: 'Hombre'}, {label: 'Mujer', value: 'Mujer'}];
+  opcion_genero: string = 'Hombre';
   constructor( private uniformesService: UniformesService, private messageService: MessageService) {  
  
   
@@ -122,28 +124,42 @@ export class UniformesComponent implements OnInit {
     this.producto_seleccionado.caracteristica_seleccionada.talla = caracteristica.talla;
   }
 
+  cambiarOpcionGenero(event: any) {
+    this.producto_seleccionado.caracteristica_seleccionada.genero = this.opcion_genero;
+    this.productos = this.productosTodos.filter(producto => (producto.genero ==  this.opcion_genero) || (producto.genero == null));
+
+  }
+
 
 
   ngOnInit() {
     this.inicializaProductos();
+
+    setTimeout(() => {
+      this.productos = this.productosTodos.filter(producto => (producto.genero == 'Hombre') || (producto.genero == null));
+    },1000)
+
+ 
+
   }
 
   inicializaProductos() {
+    this.productos = [];
     this.uniformesService.getProductos().subscribe(
       (productos: productos[]) => {
-        this.productos = productos;
-        this.producto_seleccionado = this.productos[0];
-
+        this.productosTodos = productos;
+      //  this.producto_seleccionado = this.productosTodos[0];
         this.inicializaCaracteristicasProducto();
       }
     );
+
   }
 
   inicializaCaracteristicasProducto() {
     this.uniformesService.getCaracteristicas().subscribe(
       (caracteristicas: caracteristicas_productos[]) => {
         this.caracteristicas_productos = caracteristicas;
-        this.productos.map(producto => {
+        this.productosTodos.map(producto => {
           producto.caracteristicas_productos = this.caracteristicas_productos.filter(caracteristica => caracteristica.id_producto === producto.id);
         })
         console.log(this.productos);

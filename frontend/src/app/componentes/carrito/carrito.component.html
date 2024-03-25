@@ -28,7 +28,7 @@
         
                             <div class="flex sm:flex-row align-items-center sm:align-items-end gap-3 sm:gap-2" style="justify-content: space-between;">
                                 <div class="flex flex-column gap-3">
-                                    <h3>Talla: {{producto.caracteristica_seleccionada}}</h3>
+                                    <h3>Talla: {{producto.caracteristica_seleccionada.talla}}</h3>
                                     <!-- Parte de la seleccion de unidades -->
                                     <p-inputNumber
                                         [(ngModel)]="producto.cantidad"
