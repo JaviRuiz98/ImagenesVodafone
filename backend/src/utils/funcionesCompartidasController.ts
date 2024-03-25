@@ -1,5 +1,6 @@
 import { procesados_imagenes } from "@prisma/client";
-import { resultados_ordenados } from "../interfaces/resultados_ordenados";
+import { resultados_ordenados, resultados_ordenados_elementos } from "../interfaces/resultados_ordenados";
+import { procesados_imagenes_elementos } from "../interfaces/procesadosImagenesExtended";
 
 export function parseBool(value: string): boolean {
     const value_bool = value == 'true';
@@ -83,4 +84,81 @@ export function parseBool(value: string): boolean {
     return resultados;
   
   }
+
+  export  function getResumenEstadisticasConElementos( procesados: procesados_imagenes_elementos[], maximaDiferenciaPermitida:number = 10 ):resultados_ordenados_elementos {
+    
+    // Inicializar el objeto de resultados ordenados
+    const resultados: resultados_ordenados_elementos = {
+      carteles: {
+        muy_alta: [],
+        alta: [],
+        media: [],
+        baja: [],
+        muy_baja: [],
+        ninguna: [],
+        otro_idioma: [],
+      },
+      conteo_dispositivos: {
+        // Inicializar el array de errores de dispositivos con ceros
+        diferencia: new Array(maximaDiferenciaPermitida +1).fill([]), 
+        error: [],
+        
+      },
+    };
+
+
+    // Procesar cada registro para contar las probabilidades y los errores de dispositivo
+    for (const item of procesados) {
+      if (item.valido === false) {
+        resultados.conteo_dispositivos.error.push(item.elementos);
+      }else{
+        if (!!item.id_probabilidad_cartel){
+          // Contar las probabilidades de carteles
+          switch (item.id_probabilidad_cartel) {
+            case 1:
+              resultados.carteles.muy_alta.push(item.elementos);
+              break;
+            case 2:
+              resultados.carteles.alta.push(item.elementos);;
+              break;
+            case 3:
+              resultados.carteles.otro_idioma.push(item.elementos);;
+              break;
+            case 4:
+              resultados.carteles.media.push(item.elementos);;
+              break;
+            case 5:
+              resultados.carteles.baja.push(item.elementos);;
+              break;
+            case 6:
+              resultados.carteles.muy_baja.push(item.elementos);;
+              break;
+            case 7:
+              resultados.carteles.ninguna.push(item.elementos);;
+              break;
+          }
+        }
+        
+  
+       // Calcular el error de dispositivos contados vs. huecos esperados
+      if (!!item.dispositivos_contados  && !!item.huecos_esperados ) {
+  
+          
+          const diferencia = Math.abs(item.dispositivos_contados - item.huecos_esperados);
+          if (diferencia >= resultados.conteo_dispositivos.diferencia.length) {
+            //Si fuese mas de numErrorConteo, se añaden en la posición numErrorConteo, por defecto sería la posición 11
+            resultados.conteo_dispositivos.diferencia[maximaDiferenciaPermitida].push(item.elementos);;
+          } else {
+            resultados.conteo_dispositivos.diferencia[diferencia].push(item.elementos);;
+          }
+        }
+
+       
+      }
+    }
+     
+  // Retornar los resultados ordenados
+  return resultados;
+
+}
   

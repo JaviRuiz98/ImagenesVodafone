@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
 import { elementosService } from '../services/elementoService';
 import { imagenService } from '../services/imagenService'; // 
-import { resultados_ordenados } from '../interfaces/resultados_ordenados';
+import {  resultados_ordenados_elementos } from '../interfaces/resultados_ordenados';
 import { procesadoService } from '../services/procesadoService';
-import { getResumenEstadisticas } from '../utils/funcionesCompartidasController';
+import {  getResumenEstadisticasConElementos } from '../utils/funcionesCompartidasController';
+import { procesados_imagenes_elementos } from '../interfaces/procesadosImagenesExtended';
 
 
 export async function createElementos(req: Request, res: Response) {
@@ -154,9 +155,17 @@ export async function getCategorias_elementos(_req: Request, res: Response) {
 export async function getResumenEstadisticasElementos(_req: Request, res: Response) {
     try{
         const procesados = await procesadoService.getAll();
-        const resultados_ordenados: resultados_ordenados = getResumenEstadisticas(procesados);
+        const procesadosConElementos: procesados_imagenes_elementos [] =  procesados.map((procesado:any) => {
+            const elementos = procesado.pertenencia_elementos_auditoria?.elementos || null;
+                return {
+                ...procesado,
+                elementos: elementos
+            };
+        });
+        const resultados_ordenados: resultados_ordenados_elementos = getResumenEstadisticasConElementos(procesadosConElementos);
         res.status(200).json(resultados_ordenados);
     }catch(error){
+        console.log(error);
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 }
