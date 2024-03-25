@@ -9,6 +9,11 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { timeout } from 'rxjs';
 import { EnumService } from 'src/app/servicios/enum/enum.service';
 
+
+
+import { productos } from 'src/app/interfaces/productos';
+
+
 @Component({
   selector: 'app-elementos',
   templateUrl: './elementos.component.html',
@@ -17,14 +22,14 @@ import { EnumService } from 'src/app/servicios/enum/enum.service';
 
 
 
-
 export class ElementosComponent implements OnInit{
 
-
+  
   @Output() archivoSeleccionadoChange = new EventEmitter<{ archivo: File }>();
   @Input() id_elemento_selected: number = 0;
   @Input() mostrarDialogoNuevoElemento: boolean = false;
 
+  carritoVisible: boolean = false;
   cargando_procesamiento: boolean = false;
   imputSearch!: string;
   elementos!: elementos[];
@@ -41,16 +46,13 @@ export class ElementosComponent implements OnInit{
 
 
   opcionesCatalogo!: any[];
-  opcionCatalogoSeleccionado = {estado: 'Todos'};
+  opcionCatalogoSeleccionado = {estado: 'Catalogados'};
  
   mostrar: boolean = false;
 
   tableStateOption: any[] = [{label:'Dispositivos', icon: 'pi pi-mobile', value: 'dispositivos',  styleClass: "optionColorVodafone" }, {label:'Carteles' ,icon: 'pi pi-book', value: 'cartel', styleClass: "optionColorVodafone" }];
-  tableSelected:string = 'dispositivos';
+  tableSelected: string = 'Dispositivos';
 
-
-
-////7
   verRemarcado: boolean = false;
 
 
@@ -71,6 +73,7 @@ export class ElementosComponent implements OnInit{
   inicializaElementos() {
     this.elementosService.getElementos().subscribe((elementos: elementos[]) => {
       this.elementos = elementos;
+      this.elementos = this.elementos.filter(elemento => elemento.activo == true);
       this.elementosTodos = elementos;
       console.log("elementos", elementos);
  //     this.resetTabla();
@@ -108,14 +111,13 @@ export class ElementosComponent implements OnInit{
   }
  
   manejarMostrarDialogo(valor: boolean): void {
+    this.inicializaElementos();
     this.mostrarDialogoNuevoElemento = false;
     console.log('Valor recibido: ', valor);
-    // Aquí haces algo con el valor recibido
   }
  
 
   activarDesactivarElementos(elemento: elementos) {
-    //this.opcionMostrarCambia
 
     this.elementosService.cambiarActivo(elemento.id, !elemento.activo).subscribe((elemento: elementos) => {
      this.inicializaElementos();
@@ -124,8 +126,7 @@ export class ElementosComponent implements OnInit{
       }else{
         this.messageService.add({ severity: 'success', summary: 'Modificado con exito', detail: 'Elemento añadido al catalogo' });
       }
-     // this.elementos.find(elementos => elementos.id === this.id_elemento_selected)?.activo = !this.elementos.find(elemento => elemento.id === this.id_elemento_selected)?.activo
-      setInterval(() => {
+      setTimeout(() => {
         this.cambiarOpcionBusqueda(0);
       },100)
     })
@@ -144,6 +145,7 @@ export class ElementosComponent implements OnInit{
   }
 
   filterByNombre(event: Event) {
+    this.cambiarOpcionBusqueda(0);
     this.elementos = this.elementosTodos;
     if(this.imputSearch == ""){
       this.inicializaElementos();
@@ -161,43 +163,35 @@ export class ElementosComponent implements OnInit{
     this.mostrar = false; 
   }
 
-
   cambiarOpcionBusqueda($event: any) {
-     
     this.elementos = this.elementosTodos;
-    if(this.opcionesCatalogo.find((opcion) => opcion.estado === $event.value?.estado)){
-  //    this.opcionCatalogoSeleccionado.estado = $event.value.nombre; 
-    }else{
-
-      if(this.categorias_elementos.find((opcion) => opcion.nombre === $event.value?.nombre)){
-        //  this.categoriaSeleccionada = $event.value?.nombre;
-      }
+    
+    const estadoSeleccionado = $event.value?.estado;
+    const nombreCategoriaSeleccionada = $event.value?.nombre;
+  
+    if (nombreCategoriaSeleccionada) {
+      this.tableSelected = nombreCategoriaSeleccionada;
+    }
+  
+    if (this.opcionCatalogoSeleccionado?.estado === 'Catalogados') {
+        this.elementos = this.elementos.filter(elemento => elemento.activo == true);
+    } else if (this.opcionCatalogoSeleccionado?.estado === 'Descatalogados') {
+        this.elementos = this.elementos.filter(elemento => elemento.activo == false);
     }
 
-    if(this.opcionCatalogoSeleccionado.estado == "Todos"){
-   //   this.inicializaElementos();
-      this.elementos = this.elementosTodos;
-    }else if(this.opcionCatalogoSeleccionado.estado  == "Catalogados"){
-      this.elementos = this.elementosTodos.filter(elemento => elemento.activo == true);
-    }else if(this.opcionCatalogoSeleccionado.estado == "Descatalogados"){
-      this.elementos = this.elementosTodos.filter(elemento => elemento.activo == false);
+    if (this.tableSelected === 'Dispositivos') {
+        this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.id === 2);
+    }else if(this.tableSelected === 'Carteles'){
+      this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.id === 1);
     }
-
-    if(this.categoriaSeleccionada.nombre  == "Carteles"){ 
-      this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == "Carteles");
-    }else if(this.categoriaSeleccionada.nombre  == "Dispositivos"){
-      this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == "Dispositivos");
-    }else if(this.categoriaSeleccionada.nombre  == "Modelo"){
-      this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == "Modelo");
-    }else if(this.categoriaSeleccionada.nombre  == "Otros"){
-      this.elementos = this.elementos.filter(elemento => elemento.categorias_elementos.nombre == "Otros");
-    }
-  }
+}
  
 
   inicializaCategorias_elementos(){
     this.enumService.getCategorias_elementos().subscribe((elementos: categorias_elementos[]) => {
       this.categorias_elementos = elementos; 
+      const index = this.categorias_elementos.findIndex((elemento) => elemento.id == 3);
+      this.categorias_elementos.splice(index, 1);
     })
   }
 
@@ -208,15 +202,9 @@ export class ElementosComponent implements OnInit{
     this.inicializaCategorias_elementos(); 
 
     this.opcionesCatalogo = [
-      {estado: 'Todos'}, 
       {estado: 'Catalogados'}, 
       {estado: 'Descatalogados'}
     ]
-
- 
-  
- 
-
   }
 
   

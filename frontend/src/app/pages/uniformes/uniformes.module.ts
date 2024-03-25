@@ -12,11 +12,11 @@ import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { SidebarModule } from 'primeng/sidebar'; 
 import { DataView } from 'primeng/dataview';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { FormsModule } from '@angular/forms';
+import { RadioButtonModule } from 'primeng/radiobutton'; 
 import { CarritoComponent } from 'src/app/componentes/carrito/carrito.component';
-
-
+import { InputNumberModule } from 'primeng/inputnumber';
+import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormControl, Validators  } from '@angular/forms'; 
+import { PanelModule } from 'primeng/panel'; 
 @NgModule({
     declarations: [
         UniformesComponent
@@ -33,7 +33,10 @@ import { CarritoComponent } from 'src/app/componentes/carrito/carrito.component'
         SidebarModule,
         RadioButtonModule,
         FormsModule, 
-        CarritoComponent
+        CarritoComponent,
+        ReactiveFormsModule,
+        InputNumberModule, 
+        PanelModule
     ],
     providers: [
         MessageService,        

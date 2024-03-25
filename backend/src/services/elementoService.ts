@@ -170,7 +170,9 @@ export const elementosService = {
           console.error(`Error al intentar obtener las categorias:`, error);
           throw error;
         }
-      }
+      }, 
+
+    
      
 
 }
