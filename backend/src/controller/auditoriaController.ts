@@ -1,13 +1,15 @@
 import { Request, Response } from 'express';
 import { auditoriaService } from '../services/auditoriaService';
 import { auditoria_extended } from '../interfaces/auditoriaExtended';
-import { auditorias } from '@prisma/client';
+import { auditorias, procesados_imagenes } from '@prisma/client';
 import { tiendaService } from '../services/tiendasServices';
 import { muebleConElementos} from '../interfaces/muebleConElementos';
 import { per_ele_aud_extended } from '../interfaces/perEleAudExtended';
 import { muebleService } from "../services/muebleService";
 import { estados_extended } from '../interfaces/estadosExtended';
-
+import { resultados_ordenados } from '../interfaces/resultados_ordenados';
+import { getResumenEstadisticas } from '../utils/funcionesCompartidasController';
+import { cuenta_no_procesados } from '../interfaces/cuenta_no_procesados';
 
 export async function getAuditorias(req: Request, res: Response) {
     try {
@@ -263,12 +265,39 @@ export async function getEstadisticasEstadosAuditoria(_req: Request, res: Respon
 export async function getEstadisticasResultadosAuditoria(_req: Request, res: Response) {
     try {
         // Obtener todos el último procesado de cada elemento-auditoria
-        const ultimos_procesados: per_ele_aud_extended[] = await auditoriaService.getUltimosProcesadosElementoAuditoria();
+        const elementos_auditorias: per_ele_aud_extended[] = await auditoriaService.getUltimosProcesadosElementoAuditoria();
+
+        // Contar y ordenar los no procesados
+        const cuenta_no_procesados: cuenta_no_procesados = cuentaNoProcesados(elementos_auditorias);
+
+        // Hago un array de los procesados que no son undefined
+        const ultimos_procesados: procesados_imagenes[] = elementos_auditorias.map((elemento) => elemento.procesados_imagenes[0]);
 
         // Contar y ordenar los procesamientos
+        const resultados_ordenados: resultados_ordenados = getResumenEstadisticas(ultimos_procesados, 10, cuenta_no_procesados);
 
-        res.status(200).json(ultimos_procesados);
+        res.status(200).json(resultados_ordenados);
     } catch (error) {
+        console.error('No se pudo obtener los resultados ordenados:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
+}
+
+function cuentaNoProcesados(elementos: per_ele_aud_extended[]): cuenta_no_procesados {
+    const no_procesados: cuenta_no_procesados = {
+        no_procesados_carteles: 0,
+        no_procesados_dispositivos: 0    
+    }   
+
+    for (const elemento of elementos) {
+        if (elemento.procesados_imagenes.length == 0) {
+            if (elemento.elementos?.id_categoria == 1) {
+                no_procesados.no_procesados_carteles++;
+            } else if (elemento.elementos?.id_categoria == 3) {
+                no_procesados.no_procesados_dispositivos++;
+            }
+        }
+    }
+
+    return no_procesados;
 }

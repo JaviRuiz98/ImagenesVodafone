@@ -293,11 +293,8 @@ export const auditoriaService = {
                             fecha: 'desc'
                         },
                         take: 1,
-                        include: {
-                            probabilidades_respuesta_carteles: true,
-                            categorias_elementos: true
-                        }
-                    }
+                    },
+                    elementos: true
                 }
             })
         } catch (error) {
