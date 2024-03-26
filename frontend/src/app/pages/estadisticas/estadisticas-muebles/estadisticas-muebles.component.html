@@ -16,12 +16,16 @@
         <div class="grid m-2">
             <div class="col-5">
                 <h3>Carteles</h3>
+                <app-barra-multiuso [datos]="estadisticas_resultados_carteles"></app-barra-multiuso>
             </div>
+
             <div class="col-1">
                 <p-divider layout="vertical"></p-divider>
             </div>
             <div class="col-5">
                 <h3>Modelos (conteo de dispositivos)</h3>
+                <app-barra-multiuso [datos]="estadisticas_resultados_conteo"></app-barra-multiuso>
+
             </div>
         </div>
     </div>

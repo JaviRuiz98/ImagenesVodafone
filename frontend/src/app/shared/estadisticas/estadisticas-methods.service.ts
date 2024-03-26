@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { datos_graficas } from 'src/app/interfaces/datos_graficas';
-import { resultados_ordenados } from 'src/app/interfaces/resultados_ordenados';
+import { resultados_ordenados, resultados_ordenados_elementos } from 'src/app/interfaces/resultados_ordenados';
 
 @Injectable({
   providedIn: 'root'
@@ -175,7 +175,7 @@ estadisticas_resultados_conteo_sin_no_procesados: datos_graficas[] = [
 
 
 
-public mapearEstadisticasResultados(   data: resultados_ordenados, mapeoEspecificaciones: 'carteles' | 'conteoDispositivos'  ): datos_graficas[] {
+public mapearEstadisticasResultados(   data: resultados_ordenados, mapeoEspecificaciones: 'carteles' | 'conteoDispositivos', noProesados: boolean  ): datos_graficas[] {
 
     let estadisticasResultados: datos_graficas[] = this.estadisticas_resultados_carteles;
   // Mapeo de `carteles` si se especifica
@@ -188,7 +188,9 @@ public mapearEstadisticasResultados(   data: resultados_ordenados, mapeoEspecifi
     estadisticasResultados[4].valor = data.carteles.baja;
     estadisticasResultados[5].valor = data.carteles.muy_baja;
     estadisticasResultados[6].valor = data.carteles.ninguna;
-    estadisticasResultados[7].valor = data.carteles.no_procesados || 0;
+    if (noProesados){
+      estadisticasResultados[7].valor = data.carteles.no_procesados || 0;
+    }
 
 
   }
@@ -197,7 +199,9 @@ public mapearEstadisticasResultados(   data: resultados_ordenados, mapeoEspecifi
   if (mapeoEspecificaciones === 'conteoDispositivos' && data.conteo_dispositivos) {
     estadisticasResultados = this.estadisticas_resultados_conteo;
     estadisticasResultados[4].valor = data.conteo_dispositivos.error;
-    estadisticasResultados[5].valor = data.conteo_dispositivos.no_procesados || 0;
+    if (noProesados){
+      estadisticasResultados[5].valor = data.conteo_dispositivos.no_procesados || 0;
+    }
 
     // Para `diferencia`, sumamos los valores en el arreglo a las categorías correspondientes
     data.conteo_dispositivos.diferencia.forEach((diferencia) => {
@@ -227,6 +231,27 @@ public mapearEstadisticasEstados(data: any[]): datos_graficas[] {
   // Notifica a Angular sobre los cambios para que pueda actualizar la vista si es necesario
   return [...estadisticasEstados];
 }
+
+public fromOrdenadosElementosToOrdenados(entrada: resultados_ordenados_elementos): resultados_ordenados {
+  return {
+      carteles: {
+          muy_alta: entrada.carteles.muy_alta.length,
+          alta: entrada.carteles.alta.length,
+          otro_idioma: entrada.carteles.otro_idioma.length,
+          media: entrada.carteles.media.length,
+          baja: entrada.carteles.baja.length,
+          muy_baja: entrada.carteles.muy_baja.length,
+          ninguna: entrada.carteles.ninguna.length,
+          no_procesados:0
+      
+      },
+      conteo_dispositivos: {
+          error: entrada.conteo_dispositivos.error.length,
+          diferencia: entrada.conteo_dispositivos.diferencia.map(d => d.length),
+         no_procesados:0
+      }
+  };
+} 
 
 }
 
