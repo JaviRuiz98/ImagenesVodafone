@@ -10,6 +10,7 @@ import { EstadisticasElementosComponent } from './estadisticas-elementos/estadis
 import { EstadisticasIaComponent } from './estadisticas-ia/estadisticas-ia.component';
 import { EstadisticasUniformesComponent } from './estadisticas-uniformes/estadisticas-uniformes.component';
 import { SuperPieComponent } from 'src/app/componentes/_grafica/super-pie/super-pie.component';
+import { SuperDonutComponent } from 'src/app/componentes/_grafica/super-donut/super-donut.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { SuperPieComponent } from 'src/app/componentes/_grafica/super-pie/super-
     CommonModule,
     MenubarModule,
     SuperPieComponent,
+    SuperDonutComponent,
     DividerModule
   ]
 })
