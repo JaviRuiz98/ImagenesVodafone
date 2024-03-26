@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuditoriaService } from 'src/app/servicios/auditoria/auditoria.service';
 import { datos_graficas } from 'src/app/interfaces/datos_graficas';
 import { resultados_ordenados } from 'src/app/interfaces/resultados_ordenados';
+import { conteo_elementos_procesados_auditoria } from '../interface/conteoElementosProcesadosAuditoria';
 
 @Component({
   selector: 'app-estadisticas-auditoria',
@@ -13,6 +14,7 @@ export class EstadisticasAuditoriaComponent {
   estadisticas_estados_auditoria: datos_graficas[] = [];
   estadisticas_resultados_carteles: datos_graficas[] = [];
   estadisticas_resultados_conteo: datos_graficas[] = [];
+  estadisticas_procesados_dado_estado: conteo_elementos_procesados_auditoria;
 
   constructor(
     private auditoriaService: AuditoriaService
@@ -84,6 +86,22 @@ export class EstadisticasAuditoriaComponent {
     );
   }
   
+  obtenerEstadisticasProcesadosDadoEstadoAuditoria() {
+    this.auditoriaService.getEstadisticasProcesadosDadoEstadoAuditoria().subscribe(
+      (data: conteo_elementos_procesados_auditoria) => {
+        console.log('estadisticas_procesados_dado_estado', data);
+        this.estadisticas_procesados_dado_estado = data;
+
+        // Permitir solo dos decimales
+        this.estadisticas_procesados_dado_estado.en_progreso.porcentaje = parseFloat(this.estadisticas_procesados_dado_estado.en_progreso.porcentaje.toFixed(2))
+        this.estadisticas_procesados_dado_estado.finalizada.porcentaje = parseFloat(this.estadisticas_procesados_dado_estado.finalizada.porcentaje.toFixed(2))
+        this.estadisticas_procesados_dado_estado.caducada.porcentaje = parseFloat(this.estadisticas_procesados_dado_estado.caducada.porcentaje.toFixed(2))
+
+      }, (error) => {
+        console.log(error);
+      }
+    );
+  }
 
   inicializarObjetosDeEstadisticas() {
     this.estadisticas_estados_auditoria = [
@@ -169,7 +187,7 @@ export class EstadisticasAuditoriaComponent {
         color: 'red'
       },      
       {
-        etiqueta: 'Error',
+        etiqueta: 'Imagen no válida',
         valor: 0,
         color: 'purple'
       },
@@ -182,5 +200,6 @@ export class EstadisticasAuditoriaComponent {
 
     this.obtenerEstadisticasEstadosAuditoria();
     this.obtenerEstadisticasResultadosAuditoria();
+    this.obtenerEstadisticasProcesadosDadoEstadoAuditoria();
   }
 }
