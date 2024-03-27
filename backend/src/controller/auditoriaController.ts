@@ -166,37 +166,44 @@ export async function getNumberArrayProgresoAuditoria(id_auditoria: number): Pro
     }
 }
 
-async function createAuditoria(id_tienda: number): Promise<auditorias> {
+async function createAuditoria(id_tienda: number): Promise<auditorias | null> {
     try {
         const promises = [];
 
-        // Actualizo la información de la auditoría anterior en caso de que esté caducada
-        const last_auditoria: auditorias | null = await auditoriaService.getLastAuditoriaByTienda(id_tienda);
-        if(last_auditoria?.id_estado == 1) {
-            promises.push( auditoriaService.marcarAuditoriaComoCaducada(last_auditoria.id) );
-        }
+        // Compruebo que la auditoria tenga algun mueble
+        const muebles_tienda = await muebleService.getMueblesAndElementosByIdTienda(id_tienda);
+        if(muebles_tienda.length == 0) {
+            console.log('Auditoria en tienda ' + id_tienda + ' no creada porque no tiene muebles');
+            return null;
+        } else {
+            // Actualizo la información de la auditoría anterior en caso de que esté caducada
+            const last_auditoria: auditorias | null = await auditoriaService.getLastAuditoriaByTienda(id_tienda);
+            if(last_auditoria?.id_estado == 1) {
+                promises.push( auditoriaService.marcarAuditoriaComoCaducada(last_auditoria.id) );
+            }
 
-        const createdAuditoria: auditorias = await auditoriaService.createAuditoria(id_tienda);
+            const createdAuditoria: auditorias = await auditoriaService.createAuditoria(id_tienda);
 
-        // Almaceno todos los expositores que posee la auditoria en la tabla de auditoria_expositores
-        const muebles: any[] = await muebleService.getMueblesAndElementosByIdTienda(id_tienda);
+            // Almaceno todos los expositores que posee la auditoria en la tabla de auditoria_expositores
+            const muebles: any[] = await muebleService.getMueblesAndElementosByIdTienda(id_tienda);
 
-        for (const mueble of muebles) {
-            for(const expositor of mueble.expositores) {
-                for (const atributos_expositores of expositor.atributos_expositores) {
-                    for (const pertenencia of atributos_expositores.pertenencia_elementos_atributos) {
-                        if(pertenencia.elementos.id_categoria != 2) {
-                            promises.push(auditoriaService.createPertenenciaElementosAuditoria(createdAuditoria.id, mueble, expositor.id, pertenencia.elementos));
+            for (const mueble of muebles) {
+                for(const expositor of mueble.expositores) {
+                    for (const atributos_expositores of expositor.atributos_expositores) {
+                        for (const pertenencia of atributos_expositores.pertenencia_elementos_atributos) {
+                            if(pertenencia.elementos.id_categoria != 2) {
+                                promises.push(auditoriaService.createPertenenciaElementosAuditoria(createdAuditoria.id, mueble, expositor.id, pertenencia.elementos));
+                            }
                         }
                     }
-                }
-            } 
+                } 
+            }
+            await Promise.all(promises);
+
+            console.log('Auditoria creada');
+
+            return createdAuditoria;
         }
-        await Promise.all(promises);
-
-        console.log('Auditoria creada');
-
-        return createdAuditoria;
     } catch (error) {
         console.log('No se pudo crear la auditoria:', error);
         throw error;
@@ -209,8 +216,12 @@ export async function createSingleAuditoria(req: Request, res: Response) {
         
         const createdAuditoria = await createAuditoria(id_tienda);
 
-        res.status(201).json(createdAuditoria);
-        console.log('Auditoria creada');
+        if (createdAuditoria !== null) {
+            res.status(201).json(createdAuditoria);
+            console.log('Auditoria creada');
+        } else {
+            res.status(500).json({ error: 'No se pudo crear la auditoria' });
+        }
     } catch (error) {
         res.status(500).json({ error: error });
     }

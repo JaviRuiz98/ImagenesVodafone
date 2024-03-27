@@ -93,9 +93,9 @@ export class EstadisticasAuditoriaComponent {
         this.estadisticas_procesados_dado_estado = data;
 
         // Permitir solo dos decimales
-        this.estadisticas_procesados_dado_estado.en_progreso.porcentaje = parseFloat(this.estadisticas_procesados_dado_estado.en_progreso.porcentaje.toFixed(2))
-        this.estadisticas_procesados_dado_estado.finalizada.porcentaje = parseFloat(this.estadisticas_procesados_dado_estado.finalizada.porcentaje.toFixed(2))
-        this.estadisticas_procesados_dado_estado.caducada.porcentaje = parseFloat(this.estadisticas_procesados_dado_estado.caducada.porcentaje.toFixed(2))
+        this.estadisticas_procesados_dado_estado.en_progreso.porcentaje = parseFloat(this.estadisticas_procesados_dado_estado.en_progreso.porcentaje.toFixed(1))
+        this.estadisticas_procesados_dado_estado.finalizada.porcentaje = parseFloat(this.estadisticas_procesados_dado_estado.finalizada.porcentaje.toFixed(1))
+        this.estadisticas_procesados_dado_estado.caducada.porcentaje = parseFloat(this.estadisticas_procesados_dado_estado.caducada.porcentaje.toFixed(1))
 
       }, (error) => {
         console.log(error);
