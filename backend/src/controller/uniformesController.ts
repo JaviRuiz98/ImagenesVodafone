@@ -20,6 +20,7 @@ export async function getProductos(__req: Request, res: Response) {
                 id: producto.id, 
                 nombre: producto.nombre,
                 precio: producto.precio,
+                genero: producto.genero,
                 descripcion: producto.descripcion,
                 imagenes: imagen, // Asumiendo que esto devuelve un único resultado o un array de imágenes.
                 caracteristicas_productos: [] // Esto se deja vacío, asumiendo que se llenará en otro lugar.
@@ -32,6 +33,28 @@ export async function getProductos(__req: Request, res: Response) {
         res.status(500).json({ error: "Internal server error" });
     }
 }
+
+export async function getPedidos(__req: Request, res: Response) {
+    try {
+        const pedidos = await uniformesService.getPedidos();
+        res.status(200).json(pedidos);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+    
+}
+
+
+export async function getCarrito(__req: Request, res: Response) {
+    try {
+        const carrito = await uniformesService.getCarrito();
+        res.status(200).json(carrito);
+    }catch (error) {
+        console.error(error);
+    }
+}
+
 
 export async function getCaracteristicas(__req: Request, res: Response) {
     try {
@@ -96,9 +119,12 @@ export async function tramitarPedido(req: Request, res: Response) {
 
         const row_pedido = await uniformesService.crearPedido(id_tienda);
 
-        await uniformesService.asignarCarrito(productos_carrito, row_pedido.id);
-
-        res.status(200).json( );
+        const respuesta = await uniformesService.asignarCarrito(productos_carrito, row_pedido.id);
+        if(respuesta == 'ok'){
+        res.status(200).json({ message: "ok" });
+        }else{
+            res.status(400).json({ message: "Error al tramitar el pedido" });
+        }
     }catch (error) {
         console.error(error);
         res.status(500).json({ error: "Internal server error" });

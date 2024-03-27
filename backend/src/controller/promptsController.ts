@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { promptService } from '../services/promptService';
 import { prompts } from '@prisma/client';
-import { estadisticaPrompts } from '../interfaces/estadisticaPrompts';
+import { estadisticaPrompts } from '../interfaces/procesados/estadisticaPrompts';
 
 export async function getAllPrompts( _req: Request, res: Response) {
     try{      

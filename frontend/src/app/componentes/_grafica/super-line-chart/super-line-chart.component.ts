@@ -1,8 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-// Importa ChartModule correctamente.
+import { ChangeDetectorRef, Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
 import { datos_graficas } from 'src/app/interfaces/datos_graficas';
-// Asegúrate de que la importación de date-fns es correcta.
 import { format } from 'date-fns';
 
 @Component({
@@ -15,24 +13,29 @@ import { format } from 'date-fns';
 export class SuperLineChartComponent implements OnInit {
   @Input() titulo: string;
   @Input() data_grafica: datos_graficas[] = [];
-  @Input() backgroundColor = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.2)`;
-  @Input() borderColor = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 1)`;
+
 
   data: any;
   options: any;
 
-  constructor() {}
+  constructor( private cdRef: ChangeDetectorRef) {}
 
   ngOnInit() {
-    this._initOptions();
-    this._initData();
+    this.initOptions();
+    this.initData();
   }
 
-  private _initOptions() {
+  ngOnChanges(changes: SimpleChanges) {
+    this.initData();
+    this.cdRef.detectChanges();
+  }
+
+
+  private initOptions() {
     this.options = {
       plugins: {
         title: {
-          display: true,
+          display: false,
           text: this.titulo,
           align: 'center',
           font: {
@@ -44,36 +47,49 @@ export class SuperLineChartComponent implements OnInit {
             bottom: 10,
           },
         },
+        legend: {
+          display: false,
+        }
       },
+     
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
     };
   }
+  
 
-  private _initData() {
+  private initData() {
+    const documentStyle = getComputedStyle(document.documentElement);
+
     if (this.data_grafica.length > 0) {
       let labels: string[] = this.data_grafica.map((data) => {
-        if (todosValores2SonDistintosDeNullYFecha([data])) { // Asegúrate de que esta función es accesible y corrige según sea necesario.
+        if (this.todosValores2SonDistintosDeNullYFecha([data])) { // Asegúrate de que esta función es accesible y corrige según sea necesario.
           return format(new Date(data.valor2), 'MMMM - yyyy');
         } else {
-          return data.valor.toString();
+          return data.etiqueta.toString();
         }
       });
 
       this.data = {
         labels: labels,
         datasets: [
-          {
-            data: this.data_grafica.map((data) => data.valor),
-            borderColor: this.borderColor,
-            backgroundColor: this.backgroundColor,
-            borderWidth: 1,
-            tension: 0.4,
-          },
-        ],
+            {
+                data: this.data_grafica.map((d) => d.valor),
+                backgroundColor: this.data_grafica.map((d) => documentStyle.getPropertyValue(`--${d.color}-500`)),                  
+                hoverBackgroundColor: this.data_grafica.map((d) => documentStyle.getPropertyValue(`--${d.color}-400`)),
+            }
+        ], 
       };
+
     }
   }
+
+  
+ todosValores2SonDistintosDeNullYFecha(datosGraficas: datos_graficas[]): boolean {
+  return datosGraficas.every((dato) => dato.valor2 !== null && dato.valor2 instanceof Date);
 }
 
-function todosValores2SonDistintosDeNullYFecha(datosGraficas: datos_graficas[]): boolean {
-  return datosGraficas.every((dato) => dato.valor2 !== null && dato.valor2 instanceof Date);
 }

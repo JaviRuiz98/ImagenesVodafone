@@ -17,6 +17,8 @@ import { CarritoComponent } from 'src/app/componentes/carrito/carrito.component'
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FormGroup, FormsModule, FormBuilder, ReactiveFormsModule, FormControl, Validators  } from '@angular/forms'; 
 import { PanelModule } from 'primeng/panel'; 
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { ImageModule } from 'primeng/image';
 @NgModule({
     declarations: [
         UniformesComponent
@@ -36,8 +38,10 @@ import { PanelModule } from 'primeng/panel';
         CarritoComponent,
         ReactiveFormsModule,
         InputNumberModule, 
-        PanelModule
-    ],
+        PanelModule,
+        SelectButtonModule,
+        ImageModule
+        ],
     providers: [
         MessageService,        
         DataView,

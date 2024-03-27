@@ -172,11 +172,12 @@ export const elementosService = {
         }
       }, 
 
-      async getProcesados() {
+      async getElementosWithProcesados( categoria_id?:number) {
         try {
           return await db.elementos.findMany({
             where: {
-              activo: true
+              activo: true,
+              id_categoria: categoria_id
             },
             include: {
               imagenes: true,

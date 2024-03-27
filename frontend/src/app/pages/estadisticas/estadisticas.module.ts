@@ -14,6 +14,17 @@ import { SuperLineChartComponent } from 'src/app/componentes/_grafica/super-line
 import { BarraMultiusoComponent } from 'src/app/componentes/_grafica/barra-multiuso/barra-multiuso.component';
 import { SuperDonutComponent } from 'src/app/componentes/_grafica/super-donut/super-donut.component';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { TableModule } from 'primeng/table';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { FormsModule } from '@angular/forms';
+
+
+//uniformes
+import { ButtonModule } from 'primeng/button';
+import { CalendarModule } from 'primeng/calendar';
+
+import { CardModule } from 'primeng/card';
+import { ChartModule } from 'primeng/chart';
 
 @NgModule({
   declarations: [
@@ -23,7 +34,8 @@ import { ProgressBarModule } from 'primeng/progressbar';
     EstadisticasMueblesComponent,
     EstadisticasElementosComponent,
     EstadisticasIaComponent,
-    EstadisticasUniformesComponent
+    EstadisticasUniformesComponent,
+   
   ],
   imports: [
     CommonModule,
@@ -34,7 +46,14 @@ import { ProgressBarModule } from 'primeng/progressbar';
     DividerModule,
     SuperDonutComponent,
     DividerModule,
-    ProgressBarModule
+    ProgressBarModule,
+    TableModule,
+    ProgressSpinnerModule,
+    ButtonModule,
+    CalendarModule,
+    FormsModule,
+    CardModule,
+    ChartModule
   ]
 })
 export class EstadisticasModule { }

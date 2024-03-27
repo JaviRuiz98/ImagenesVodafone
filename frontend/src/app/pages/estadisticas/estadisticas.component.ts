@@ -16,30 +16,30 @@ export class EstadisticasComponent {
         this.seleccionarApartado('auditorias');
       }
     },
-    {
-      id: 'tiendas',
-      label: 'Tiendas',
-      icon: 'pi pi-fw pi-home',
-      command: () => {
-        this.seleccionarApartado('tiendas');
-      }
-    },
+    // {
+    //   id: 'tiendas',
+    //   label: 'Tiendas',
+    //   icon: 'pi pi-fw pi-home',
+    //   command: () => {
+    //     this.seleccionarApartado('tiendas');
+    //   }
+    // },
     {
       id: 'muebles',
-      label: 'Muebles',
+      label: 'Mobiliario',
       icon: 'pi pi-fw pi-cog',
       command: () => {
         this.seleccionarApartado('muebles');
       }
     },
-    {
-      id: 'elementos',
-      label: 'Elementos',
-      icon: 'pi pi-fw pi-box',
-      command: () => {
-        this.seleccionarApartado('elementos');
-      }
-    },
+    // {
+    //   id: 'elementos',
+    //   label: 'Elementos',
+    //   icon: 'pi pi-fw pi-box',
+    //   command: () => {
+    //     this.seleccionarApartado('elementos');
+    //   }
+    // },
     {
       id: 'uniformes',
       label: 'Uniformes',

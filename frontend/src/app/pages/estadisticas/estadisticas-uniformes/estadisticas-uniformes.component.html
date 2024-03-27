@@ -1,1 +1,13 @@
-<p>estadisticas-uniformes works!</p>
+ 
+
+<div class="card flex justify-content-left">
+    <p-card class="cardFiltros">
+        <h4>Filtrar por rango de fecha</h4>
+        <p-calendar [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true"></p-calendar>
+        <p-button label="Filtrar" (onClick)="filtrarPorFecha()"></p-button>
+    </p-card>
+</div>
+
+<div class="card">
+    <p-chart type="bar" [data]="data" [options]="options"></p-chart>
+</div>
