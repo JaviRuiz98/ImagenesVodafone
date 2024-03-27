@@ -1,4 +1,8 @@
 <div style="display: flex;">
+    <div>
+        <h3>Procesados realizados:</h3>
+        <app-barra-multiuso [datos]="estadisticas_procesados"></app-barra-multiuso>
+    </div>
     <div style="height: 600px; width: 600px">
         <h3>Estados de auditoría:</h3>
         <app-super-donut [datos_graficas]="estadisticas_estados_auditoria"></app-super-donut>
@@ -13,6 +17,7 @@
         <app-super-pie [datos_graficas]="estadisticas_resultados_conteo"></app-super-pie>
     </div>
     <div style="height: 300px; width: 300px">
+        <h3>Tiendas con auditorías en progreso:</h3>
         <app-super-donut [datos_graficas]="estadisticas_tiendas_en_progreso"></app-super-donut>
     </div>
 </div>

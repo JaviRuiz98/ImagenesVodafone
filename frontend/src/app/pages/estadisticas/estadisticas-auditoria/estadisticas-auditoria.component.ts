@@ -21,6 +21,8 @@ export class EstadisticasAuditoriaComponent {
   total_tiendas: number = 0;
   estadisticas_tiendas_en_progreso: datos_graficas[] = [];
 
+  estadisticas_procesados: datos_graficas[] = [];
+
   constructor(
     private auditoriaService: AuditoriaService,
     private tiendasService: TiendasService
@@ -124,6 +126,7 @@ export class EstadisticasAuditoriaComponent {
       this.estadisticas_tiendas_en_progreso[1].valor = this.total_tiendas - this.estadisticas_tiendas_en_progreso[0].valor;
 
       console.log('estadisticas_tiendas_en_progreso', this.estadisticas_tiendas_en_progreso);
+      this.estadisticas_tiendas_en_progreso = [...this.estadisticas_tiendas_en_progreso];
     })
 
     
@@ -147,7 +150,7 @@ export class EstadisticasAuditoriaComponent {
       {
         etiqueta: 'En progreso',
         valor: 0,
-        color: 'orange'
+        color: 'yellow'
       },  
       {
         etiqueta: 'Ya auditadas',

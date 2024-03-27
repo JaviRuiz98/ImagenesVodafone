@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
+import { ProcesadosService } from 'src/app/servicios/procesados/procesados.service';
 import { AuditoriaService } from 'src/app/servicios/auditoria/auditoria.service';
 
 import { MessageService } from 'primeng/api';
@@ -46,7 +46,7 @@ export class AuditoriaComponent implements OnInit{
 
   constructor( 
     private auditoriaService: AuditoriaService ,
-    private procesamientoService: ProcesamientoService,
+    private procesadosService: ProcesadosService,
     private messageService: MessageService,
     private localStorageService: LocalStorageService,
     private urlService: UrlService
@@ -83,7 +83,7 @@ export class AuditoriaComponent implements OnInit{
       this.messageService.add({ severity: 'info', summary: 'Cargando', detail: 'La imagen se está procesando' });
     
       try {
-        const response: procesados_imagenes = await this.procesamientoService.postProcesamientoImagenes(id_elemento_selected, id_expositor_selected, this.auditoria_seleccionada.id, this.imagenAProcesar).toPromise();
+        const response: procesados_imagenes = await this.procesadosService.postProcesamientoImagenes(id_elemento_selected, id_expositor_selected, this.auditoria_seleccionada.id, this.imagenAProcesar).toPromise();
         this.cargas_procesamiento[id_elemento_selected] = false;
         await this.actualizarProcesamientoEnMueble(id_elemento_selected, response);
         this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Imagen procesada correctamente' });

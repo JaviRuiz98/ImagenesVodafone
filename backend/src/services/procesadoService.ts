@@ -136,5 +136,13 @@ export const procesadoService = {
         })
 
         return probabilidad_object.id;
+    },
+
+    async getFechasTodosProcesados(): Promise<{fecha: Date}[]> {
+        return db.procesados_imagenes.findMany({
+            select: {
+                fecha: true,
+            }
+        })
     }
 }

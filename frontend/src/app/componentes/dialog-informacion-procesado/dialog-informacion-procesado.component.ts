@@ -7,7 +7,7 @@ import { TagModule } from 'primeng/tag';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
 import { ButtonModule } from 'primeng/button';
-import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
+import { ProcesadosService } from 'src/app/servicios/procesados/procesados.service';
 
 @Component({
   selector: 'app-dialog-informacion-procesado',
@@ -39,7 +39,7 @@ export class DialogInformacionProcesadoComponent implements OnInit{
   dislikeButton: string = "pi pi-thumbs-down";
   verResumen: boolean = true;
 
-  constructor(private procesamientoService: ProcesamientoService, private publicMethodsService: PublicMethodsService) { }
+  constructor(private procesadosService: ProcesadosService, private publicMethodsService: PublicMethodsService) { }
 
   ngOnInit(): void {
     console.log('procesado', this.procesado)
@@ -71,7 +71,7 @@ export class DialogInformacionProcesadoComponent implements OnInit{
         this.likeButton = "pi pi-thumbs-up";
         this.dislikeButton = "pi pi-thumbs-down";
     }
-    this.procesamientoService.updateFeedbackProcesado(procesado.id, procesado.feedback_humano).subscribe();
+    this.procesadosService.updateFeedbackProcesado(procesado.id, procesado.feedback_humano).subscribe();
   }
   mostrarPrompt(){
     this.verPrompt = true;
