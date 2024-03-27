@@ -20,7 +20,7 @@ router.get('/auditoria_elementos_procesados/:id_auditoria', getElementosProcesad
 
 router.get('/estadisticas/estados_auditoria', getEstadisticasEstadosAuditoria);
 router.get('/estadisticas/resultados_auditoria', getEstadisticasResultadosAuditoria);
-router.get('/estadisticas/porcentaje_completado', getPorcentajeProcesadoDadoEstadoAuditoria)
+router.get('/estadisticas/porcentaje_completado', getPorcentajeProcesadoDadoEstadoAuditoria);
 
 router.post('/nueva_auditoria',  createSingleAuditoria);
 router.post('/auditoria_global',  createAuditoriaGlobal);

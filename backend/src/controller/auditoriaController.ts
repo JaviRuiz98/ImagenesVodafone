@@ -261,7 +261,7 @@ export async function terminarAuditoria(req: Request, res: Response) {
 
 export async function getEstadisticasEstadosAuditoria(_req: Request, res: Response) {
     try {
-        const id_estados_excluidos: number[] = [1];
+        const id_estados_excluidos: number[] = [];
         const estados: estados_extended[] = await auditoriaService.getAllEstadosParaAuditorias(id_estados_excluidos);
 
         estados.map((estado) => {

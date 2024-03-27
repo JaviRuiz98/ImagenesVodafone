@@ -29,7 +29,6 @@ export class SuperPieComponent implements OnChanges {
   }
 
   actualizarGrafica() {
-    console.log('datos dentro pie', this.datos_graficas);
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
 
@@ -43,9 +42,6 @@ export class SuperPieComponent implements OnChanges {
             }
         ]
     };
-
-    console.log('data', this.data.datasets[0].data);
-    console.log('color', this.data.labels);
 
     this.options = {
         plugins: {

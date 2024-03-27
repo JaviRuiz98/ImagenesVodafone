@@ -29,16 +29,16 @@ export class EstadisticasAuditoriaComponent {
     this.auditoriaService.getEstadisticasEstadosAuditoria().subscribe(
       (data) => {
         const estadisticas_estados_auditoria_raw = data;
-        console.log('estadisticas_estados_auditoria', this.estadisticas_estados_auditoria);
+        this.estadisticas_estados_auditoria = [];
 
+        console.log('estadisticas_estados_auditoria_raw', estadisticas_estados_auditoria_raw);
 
-        for(let i = 0; i < estadisticas_estados_auditoria_raw.length; i++) {
+        for(let i = 1; i < estadisticas_estados_auditoria_raw.length; i++) {
           this.estadisticas_estados_auditoria[i].valor = estadisticas_estados_auditoria_raw[i].num_auditorias;
+          this.estadisticas_estados_auditoria.push(this.estadisticas_estados_auditoria[i]);
         }
 
         console.log('estadisticas_estados_auditoria', this.estadisticas_estados_auditoria);
-
-        this.estadisticas_estados_auditoria = [...this.estadisticas_estados_auditoria];
       }, (error) => {
         console.log(error);
       }
@@ -93,9 +93,9 @@ export class EstadisticasAuditoriaComponent {
         this.estadisticas_procesados_dado_estado = data;
 
         // Permitir solo dos decimales
-        this.estadisticas_procesados_dado_estado.en_progreso.porcentaje = parseFloat(this.estadisticas_procesados_dado_estado.en_progreso.porcentaje.toFixed(1))
-        this.estadisticas_procesados_dado_estado.finalizada.porcentaje = parseFloat(this.estadisticas_procesados_dado_estado.finalizada.porcentaje.toFixed(1))
-        this.estadisticas_procesados_dado_estado.caducada.porcentaje = parseFloat(this.estadisticas_procesados_dado_estado.caducada.porcentaje.toFixed(1))
+        this.estadisticas_procesados_dado_estado.en_progreso.porcentaje = parseFloat(this.estadisticas_procesados_dado_estado?.en_progreso.porcentaje.toFixed(1))
+        this.estadisticas_procesados_dado_estado.finalizada.porcentaje = parseFloat(this.estadisticas_procesados_dado_estado?.finalizada.porcentaje.toFixed(1))
+        this.estadisticas_procesados_dado_estado.caducada.porcentaje = parseFloat(this.estadisticas_procesados_dado_estado?.caducada.porcentaje.toFixed(1))
 
       }, (error) => {
         console.log(error);
