@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import { datos_graficas } from '../interfaces/datos_graficas';
+import { resultados_ordenados } from '../interfaces/resultados_ordenados';
 
 
 @Injectable({
@@ -57,4 +59,7 @@ export class PublicMethodsService {
     formatDate(date: Date): string | null {
         return this.datePipe.transform(date, 'dd/MM/yyyy HH:mm');
       }
+
+    
+      
 }

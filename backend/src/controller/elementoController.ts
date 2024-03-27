@@ -2,6 +2,10 @@ import { Request, Response } from 'express';
 import { elementosService } from '../services/elementoService';
 import { imagenService } from '../services/imagenService'; // 
 
+import { elementosConProcesados } from '../interfaces/expositoresProcesados';
+import { getResumenEstadisticasConElementos } from '../utils/funcionesCompartidasController';
+import { resultados_ordenados_elementos } from '../interfaces/resultados_ordenados';
+
 
 export async function createElementos(req: Request, res: Response) {
     const {nombre} = req.body; //tipar en un futuro
@@ -138,12 +142,32 @@ export async function getRegionesDisponibles(__req: Request, res: Response) {
 }
 
 
-export async function getCategorias_elementos(__req: Request, res: Response) {
+export async function getCategorias_elementos(_req: Request, res: Response) {
     try{
         const categorias = await elementosService.getCategorias();
         res.status(200).json(categorias);
     }catch(error){
        console.log(error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+}
+
+export async function getResumenEstadisticasElementos(_req: Request, res: Response) {
+    try{
+        const elementos = await elementosService.getProcesados();
+        const elementosConProcesados: elementosConProcesados [] =  elementos.map((elemento:any) => {
+            const procesados = elemento.pertenencia_elementos_auditoria.flatMap ((pertenencia:any) => pertenencia.procesados_imagenes ) || null;
+                return {
+                ...elemento,
+                pertenencia_elementos_auditoria: elemento.pertenencia_elementos_auditoria.length,
+                procesados_imagenes: procesados
+            };
+        });
+    
+        const resultados_ordenados: resultados_ordenados_elementos = getResumenEstadisticasConElementos(elementosConProcesados);
+        res.status(200).json(resultados_ordenados);
+    }catch(error){
+        console.log(error);
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 }

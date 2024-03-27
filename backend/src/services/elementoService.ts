@@ -170,7 +170,33 @@ export const elementosService = {
           console.error(`Error al intentar obtener las categorias:`, error);
           throw error;
         }
-      }
+      }, 
+
+      async getProcesados() {
+        try {
+          return await db.elementos.findMany({
+            where: {
+              activo: true
+            },
+            include: {
+              imagenes: true,
+              categorias_elementos: true,
+              pertenencia_elementos_auditoria:{
+                include: {
+                  procesados_imagenes: true
+                }
+              }
+            }
+          });
+        } catch (error) {
+          console.log("Error:", error);
+          throw error;
+        } finally {
+          await db.$disconnect();
+        }
+      },
+
+    
      
 
 }

@@ -8,6 +8,7 @@ import { PublicMethodsService } from 'src/app/shared/public-methods.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
 import { InformeService } from 'src/app/servicios/informe/informe.service';
+import { HttpResponse } from '@angular/common/http';
 
 
 @Component({
@@ -61,6 +62,10 @@ export class GestionDeAuditoriasComponent implements OnInit {
       (data)=>{
         this.inicializaAuditorias();
         this.goToAuditoria(data);
+        console.log('Nueva auditoria creada', data);
+      }, (error)=>{
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'La tienda no posee muebles'});
+        console.log('No se pudo crear aunditoría', error);
       }
     );
   } 

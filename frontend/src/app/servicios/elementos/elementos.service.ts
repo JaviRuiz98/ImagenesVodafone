@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { elementos } from '../../interfaces/elementos';
 import { regiones } from 'src/app/interfaces/regiones';
 import { UrlService } from '../url/url.service';
+import { resultados_ordenados_elementos } from 'src/app/interfaces/resultados_ordenados';
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +56,10 @@ export class ElementosService {
 
   getCategorias_elementos(){
     return this.http.get<regiones[]>(`${this.API_URI}/categorias_elementos`);
+  }
+
+  getEstadisticasRespuestas(): Observable<resultados_ordenados_elementos>{
+    return this.http.get<resultados_ordenados_elementos>(`${this.API_URI}/estadisticas/elementos`);
   }
   
   

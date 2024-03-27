@@ -1,11 +1,11 @@
 import db  from "../config/database";
 import { auditorias, elementos, muebles } from '@prisma/client';
+import { per_ele_aud_extended } from "../interfaces/perEleAudExtended";
 
 export const auditoriaService = {
 
-    async getAuditorias(id_tienda: number): Promise<auditorias[]| null> {
+    async getAuditorias(id_tienda?: number): Promise<auditorias[]| null> {
         try{
-
             const whereClause = id_tienda != 0? { id_tienda: id_tienda } : { };
             return db.auditorias.findMany({
                 where: whereClause, 
@@ -138,12 +138,11 @@ export const auditoriaService = {
         }
     },
 
-    async getBarraProgresoAuditoria(id_auditoria: number): Promise<any> {
+    async getElementosAuditoriaConElementosYUltimoProcesado(id_auditoria?: number): Promise<per_ele_aud_extended[]> {
         try {
+            const whereClause = id_auditoria != 0? { id_auditoria: id_auditoria } : { };
             return db.pertenencia_elementos_auditoria.findMany({
-                where: {
-                    id_auditoria: id_auditoria
-                },
+                where: whereClause,
                 include: {
                     procesados_imagenes: {
                         take: 1,
@@ -155,6 +154,29 @@ export const auditoriaService = {
                 },
                 orderBy: {
                     id_mueble: 'asc'
+                }
+            })
+        } catch (error) {
+            console.error('No se pudo obtener la barra de progreso:', error);
+            throw error;
+        } finally {
+            db.$disconnect();
+        }
+    },
+
+    async getElementosAuditoriaConAuditoriasYUltimoProcesado(id_auditoria?: number): Promise<per_ele_aud_extended[]>  {
+        try {
+            const whereClause = id_auditoria != 0? { id_auditoria: id_auditoria } : { };
+            return db.pertenencia_elementos_auditoria.findMany({
+                where: whereClause,
+                include: {
+                    procesados_imagenes: {
+                        take: 1,
+                        orderBy: {
+                            fecha: 'desc'
+                        }
+                    },
+                    auditorias: true
                 }
             })
         } catch (error) {
@@ -261,6 +283,44 @@ export const auditoriaService = {
             })
         } catch (error) {
             console.error('No se pudo obtener el numero de procesados por expositor:', error);
+            throw error;
+        } finally {
+            db.$disconnect();
+        }
+    },
+
+    async getAllEstadosParaAuditorias() {
+        try {
+            return db.estados_auditoria.findMany(
+                {
+                    include: {
+                        auditorias: true
+                    }
+                }
+            )
+        } catch (error) {
+            console.error('No se pudo obtener los estados para la auditoria:', error);
+            throw error;
+        } finally {
+            db.$disconnect();
+        }
+    },
+
+    getUltimosProcesadosElementoAuditoria() {
+        try {
+            return db.pertenencia_elementos_auditoria.findMany({
+                include: {
+                    procesados_imagenes: {
+                        orderBy: {
+                            fecha: 'desc'
+                        },
+                        take: 1,
+                    },
+                    elementos: true
+                }
+            })
+        } catch (error) {
+            console.error('No se pudo obtener los ultimos procesados:', error);
             throw error;
         } finally {
             db.$disconnect();

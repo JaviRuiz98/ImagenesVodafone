@@ -1,1 +1,49 @@
-<p>estadisticas-muebles works!</p>
+<div class="grid">
+    <div class="col-12">
+        <div class="grid m-2">
+            <div class="col-4">
+                <small>Porcentaje de respuestas de procesados para cada tipo de mueble</small>
+            </div>
+            <div class="col-8 justify-content-end text-right">
+                Fecha
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="grid">
+    <div class="col-8">
+        <div class="grid m-2">
+            <div class="col-5">
+                <h3>Carteles</h3>
+                <app-super-line-chart [data_grafica]="estadisticas_resultados_carteles"></app-super-line-chart>
+            </div>
+
+            <div class="col-1">
+                <p-divider layout="vertical"></p-divider>
+            </div>
+            <div class="col-5">
+                <h3>Modelos (conteo de dispositivos)</h3>
+                <app-super-line-chart [data_grafica]="estadisticas_resultados_conteo"></app-super-line-chart>
+
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-4">
+        <div class="grid m-2">
+            <div class="col-1">
+                <p-divider layout="vertical"></p-divider>
+            </div>
+            <div class="col-5">
+                <h3>Carteles</h3>
+            </div>
+            <div class="col-1">
+                <p-divider layout="vertical"></p-divider>
+            </div>
+            <div class="col-5">
+                <h3>Modelos</h3>
+            </div>
+        </div>
+    </div>
+</div>
