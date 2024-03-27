@@ -14,6 +14,8 @@ import { SuperLineChartComponent } from 'src/app/componentes/_grafica/super-line
 import { BarraMultiusoComponent } from 'src/app/componentes/_grafica/barra-multiuso/barra-multiuso.component';
 import { SuperDonutComponent } from 'src/app/componentes/_grafica/super-donut/super-donut.component';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { TableModule } from 'primeng/table';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { ProgressBarModule } from 'primeng/progressbar';
     DividerModule,
     SuperDonutComponent,
     DividerModule,
-    ProgressBarModule
+    ProgressBarModule,
+    TableModule,
+    ProgressSpinnerModule
   ]
 })
 export class EstadisticasModule { }

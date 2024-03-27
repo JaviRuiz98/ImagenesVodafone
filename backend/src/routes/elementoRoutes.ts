@@ -1,6 +1,6 @@
 import express, { Router } from 'express';
 import {  uploadImagenRepresentativa } from '../config/multer';
-import {  deleteElemento, guardarElemento,editarEstadoElemento,getRegionesDisponibles, getCategorias_elementos, getResumenEstadisticasElementos } from '../controller/elementoController';
+import {  deleteElemento, guardarElemento,editarEstadoElemento,getRegionesDisponibles, getCategorias_elementos, getResumenEstadisticasElementos, getElementosEstadisticas } from '../controller/elementoController';
 import { uploadFileToFtp } from '../config/ftpUpload'; 
 import { getElementos, getElementosActivos } from '../controller/elementoController';
 
@@ -18,5 +18,6 @@ router.post('/elementoActivaDesactiva', editarEstadoElemento);
 router.get('/regiones', getRegionesDisponibles);
  
 router.get('/estadisticas/elementos', getResumenEstadisticasElementos);
-
+router.get('/estadisticas/carteles',getElementosEstadisticas('carteles'));
+router.get('/estadisticas/dispositivos',getElementosEstadisticas('conteo'));
 export default router;

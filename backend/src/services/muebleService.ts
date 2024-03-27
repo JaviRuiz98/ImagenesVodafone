@@ -1,6 +1,6 @@
 import {  expositores, muebles } from "@prisma/client";
 import db from "../config/database";
-import { muebleCreation } from "../interfaces/mueblesCreados";
+import { muebleCreation } from "../interfaces/mueble/mueblesCreados";
 
 // import { ExpositorFrontInterfaz } from "../interfaces/muebleFrontendInterfaces";
 // import {expositoresConProcesados} from "../interfaces/expositoresProcesados"

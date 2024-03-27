@@ -4,7 +4,7 @@ import {
     muebleService,
 } from "../services/muebleService";
 import { imagenes, muebles } from "@prisma/client";
-import { muebleCreation } from "../interfaces/mueblesCreados";
+import { muebleCreation } from "../interfaces/mueble/mueblesCreados";
 import { fetchGuardarElemento } from "./elementoController";
 import { tiendaService } from "../services/tiendasServices";
 

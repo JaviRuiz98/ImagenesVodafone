@@ -3,13 +3,13 @@ import { auditoriaService } from '../services/auditoriaService';
 import { auditoria_extended } from '../interfaces/auditoriaExtended';
 import { auditorias, procesados_imagenes } from '@prisma/client';
 import { tiendaService } from '../services/tiendasServices';
-import { muebleConElementos} from '../interfaces/muebleConElementos';
+import { muebleConElementos} from '../interfaces/mueble/muebleConElementos';
 import { per_ele_aud_extended } from '../interfaces/perEleAudExtended';
 import { muebleService } from "../services/muebleService";
 import { estados_extended } from '../interfaces/estadosExtended';
-import { resultados_ordenados } from '../interfaces/resultados_ordenados';
+import { resultados_ordenados } from '../interfaces/estadisticas/resultados_ordenados';
 import { getResumenEstadisticas } from '../utils/funcionesCompartidasController';
-import { cuenta_no_procesados } from '../interfaces/cuenta_no_procesados';
+import { cuenta_no_procesados } from '../interfaces/procesados/cuenta_no_procesados';
 import { conteo_elementos_procesados_auditoria } from '../interfaces/auditoria/conteoElementosProcesadosAuditoria';
 
 export async function getAuditorias(req: Request, res: Response) {

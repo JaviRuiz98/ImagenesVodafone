@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { ChatMessage } from '../interfaces/procesadoInterfaces';
+import { ChatMessage } from '../interfaces/procesados/procesadoInterfaces';
 import * as fs from 'fs';
 import openai from '../config/openAi';
 import { elementosService } from '../services/elementoService';

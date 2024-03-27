@@ -1,7 +1,7 @@
 import {  elementos, procesados_imagenes } from "@prisma/client";
-import { resultados_ordenados, resultados_ordenados_elementos } from "../interfaces/resultados_ordenados";
-import { cuenta_no_procesados } from "../interfaces/cuenta_no_procesados";
-import { elementosConProcesados } from "../interfaces/expositoresProcesados";
+import { resultados_ordenados, resultados_ordenados_elementos } from "../interfaces/estadisticas/resultados_ordenados";
+import { cuenta_no_procesados } from "../interfaces/procesados/cuenta_no_procesados";
+import { elementosConProcesados } from "../interfaces/mueble/expositoresProcesados";
 
 export function parseBool(value: string): boolean {
     const value_bool = value == 'true';
@@ -173,7 +173,7 @@ function addElementoInResultadoByIdProbabilidadCartel(resultados: resultados_ord
 }
 
 function getProbabilidadCartelMasComun(procesados_imagenes: procesados_imagenes[]): number {
-  const probabilidades: { id: number, count: number }[] = getNumeroProbabilidad(procesados_imagenes);
+  const probabilidades: { id: number, count: number }[] = getNumeroProbabilidadCartel(procesados_imagenes);
    
 
   probabilidades.sort((a, b) => {
@@ -189,30 +189,8 @@ function getProbabilidadCartelMasComun(procesados_imagenes: procesados_imagenes[
 
 //Muy grande gepeto
 function getDiferenciaMasComun(procesados_imagenes: procesados_imagenes[]): number {
-  const diferenciasCount: { [key: number]: number } = {};
-
-  procesados_imagenes.forEach((procesado: procesados_imagenes) => {
-    if (procesado.dispositivos_contados == null || procesado.huecos_esperados == null) {
-      return;
-    }
-
-    if (!procesado.valido) {//si es error con key en -1 añadimos uno mas
-      diferenciasCount[-1] = (diferenciasCount[-1] || 0) + 1;
-      return;
-    }
-    //en caso de que existan dispositivos contados y huecos esperados calculamos la diferencia
-    const diferencia = Math.abs(procesado.dispositivos_contados - procesado.huecos_esperados);
-    //lo sumamos a la key correspondiente
-    if (diferenciasCount[diferencia] === undefined) {
-      diferenciasCount[diferencia] = 1;
-    } else {
-      diferenciasCount[diferencia]++;
-    }
-  });
-
-  //salimos del bucle y creamos un array de [clave, valor]
-  let diferenciasArray: [number, number][] = Object.entries(diferenciasCount).map(([key, value]) => [parseInt(key), value]);
-
+ 
+  let diferenciasArray: [number, number][] = getNumeroProbabilidadConteo(procesados_imagenes);
   //vamos a devolver el mas común
   diferenciasArray.sort((a, b) => {
     if (b[1] === a[1]) { //comparamos valores porque b[0] y a[0] son las claves (diferencias)
@@ -235,9 +213,36 @@ function getDiferenciaMasComun(procesados_imagenes: procesados_imagenes[]): numb
   }
   return diferenciaMasComun;
 }
+
+export function getNumeroProbabilidadConteo ( procesados_imagenes: procesados_imagenes[]): [number, number] [] {
+  const diferenciasCount: { [key: number]: number } = {};
+
+  procesados_imagenes.forEach((procesado: procesados_imagenes) => {
+    if (procesado.dispositivos_contados == null || procesado.huecos_esperados == null) {
+      return;
+    }
+
+    if (!procesado.valido) {//si es error con key en -1 añadimos uno mas
+      diferenciasCount[-1] = (diferenciasCount[-1] || 0) + 1;
+      return;
+    }
+    //en caso de que existan dispositivos contados y huecos esperados calculamos la diferencia
+    const diferencia = Math.abs(procesado.dispositivos_contados - procesado.huecos_esperados);
+    //lo sumamos a la key correspondiente
+    if (diferenciasCount[diferencia] === undefined) {
+      diferenciasCount[diferencia] = 1;
+    } else {
+      diferenciasCount[diferencia]++;
+    }
+  });
+
+  //salimos del bucle y creamos un array de [clave, valor]
+  const diferenciasArray: [number, number][] = Object.entries(diferenciasCount).map(([key, value]) => [parseInt(key), value]);
+  return diferenciasArray;
+}
   
 
-function getNumeroProbabilidad(procesados_imagenes: procesados_imagenes[]): { id: number, count: number }[] {
+export function getNumeroProbabilidadCartel(procesados_imagenes: procesados_imagenes[]): { id: number, count: number }[] {
   let probabilidades = [
     { id: 1, count: 0 },
     { id: 2, count: 0 },

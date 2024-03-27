@@ -22,23 +22,55 @@
 <div class="grid m-2">
    
     <div class="col-5">
-        <h3>Carteles</h3>
-        <small class ="text-secondary text-small mb-2">Respuestas mas comunes al procesar cada elemento</small>
         
-        <app-super-line-chart [data_grafica]="estadisticas_resultados_carteles" ></app-super-line-chart>
+        <div *ngIf ="estadisticas_resultados_carteles.length > 0; else cargando">
+            <h3>Carteles</h3>
+            <small class ="text-secondary text-small mb-2">Respuestas mas comunes al procesar cada elemento</small>
+            <app-super-line-chart [data_grafica]="estadisticas_resultados_carteles" ></app-super-line-chart>
+        </div>
+
+        <ng-template #cargando>
+            <p-progressSpinner ></p-progressSpinner>
+        </ng-template>
     </div>
 
     <div class="col-1">
         <p-divider layout="vertical"></p-divider>
     </div>
     <div class="col-5">
-        <h3>Modelos (conteo de dispositivos)</h3>
-        <small class ="text-secondary text-small mb-2">Diferencia entre dispositivos esperados y encontrados más común al procesar cada elemento</small>
+        <div *ngIf ="estadisticas_resultados_conteo.length > 0; else cargando2">
+            <h3>Modelos (conteo de dispositivos)</h3>
+            <small class ="text-secondary text-small mb-2">Diferencia entre dispositivos esperados y encontrados más común al procesar cada elemento</small>
 
-        <app-super-line-chart [data_grafica]="estadisticas_resultados_conteo" [titulo]="'Diferencia más común entre dispositivos esperados y encontrados al procesar cada elemento'"></app-super-line-chart>
+            <app-super-line-chart [data_grafica]="estadisticas_resultados_conteo" [titulo]="'Diferencia más común entre dispositivos esperados y encontrados al procesar cada elemento'"></app-super-line-chart>
+        </div>
 
+        <ng-template #cargando2>
+            <p-progressSpinner ></p-progressSpinner>
+        </ng-template>
     </div>
      
-    
+    <div class="col-6">
+        <div class="card">
+            <!-- <p-table [value]="estadisticas.carteles" [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Quantity</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                    <tr>
+                        <td>{{ product.code }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.category }}</td>
+                        <td>{{ product.quantity }}</td>
+                    </tr>
+                </ng-template>
+            </p-table> -->
+        </div>
+    </div>
     
 </div>

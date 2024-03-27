@@ -34,3 +34,20 @@ export interface resultados_ordenados_elementos {
         diferencia: elementos[][],
     }
 }
+
+export interface estadisticas_carteles {
+    elemento: elementos,
+    muy_alta: number,
+    alta: number,
+    media: number,
+    baja: number,
+    muy_baja: number,
+    ninguna: number,
+    otro_idioma: number,
+}
+
+export interface estadisticas_conteo_dispositivos {
+    elemento: elementos,
+    error: number,
+    diferencia: number[],
+}

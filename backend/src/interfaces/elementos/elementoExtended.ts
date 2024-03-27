@@ -1,5 +1,5 @@
 import { imagenes, elementos } from "@prisma/client";
-import { procesados_imagenes_extended } from "./procesadosImagenesExtended";
+import { procesados_imagenes_extended } from "../procesados/procesadosImagenesExtended";
 
 export interface elementoExtended extends elementos {
     id_region?: number | null;
