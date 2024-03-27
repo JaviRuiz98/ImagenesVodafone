@@ -106,11 +106,6 @@ export class EstadisticasAuditoriaComponent {
   inicializarObjetosDeEstadisticas() {
     this.estadisticas_estados_auditoria = [
       {
-        etiqueta: 'En proceso',
-        valor: 0,
-        color: 'yellow'
-      },
-      {
         etiqueta: 'Finalizada',
         valor: 0,
         color: 'green'

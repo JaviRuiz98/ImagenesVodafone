@@ -58,7 +58,7 @@ export class EstadisticasComponent {
     }
   ];
 
-  apartado_seleccionado: string = '';
+  apartado_seleccionado: string = 'auditorias';
 
   seleccionarApartado(id: string): void {
     this.apartado_seleccionado = id;

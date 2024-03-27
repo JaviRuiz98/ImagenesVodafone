@@ -261,7 +261,8 @@ export async function terminarAuditoria(req: Request, res: Response) {
 
 export async function getEstadisticasEstadosAuditoria(_req: Request, res: Response) {
     try {
-        const estados: estados_extended[] = await auditoriaService.getAllEstadosParaAuditorias();
+        const id_estados_excluidos: number[] = [1];
+        const estados: estados_extended[] = await auditoriaService.getAllEstadosParaAuditorias(id_estados_excluidos);
 
         estados.map((estado) => {
             estado.num_auditorias = estado.auditorias?.length;
@@ -277,7 +278,7 @@ export async function getEstadisticasEstadosAuditoria(_req: Request, res: Respon
 export async function getEstadisticasResultadosAuditoria(_req: Request, res: Response) {
     try {
         // Obtener todos el último procesado de cada elemento-auditoria
-        const elementos_auditorias: per_ele_aud_extended[] = await auditoriaService.getUltimosProcesadosElementoAuditoria();
+        const elementos_auditorias: per_ele_aud_extended[] = await auditoriaService.getUltimosProcesadosElementoAuditoriaNotEnProgreso();
 
         // Contar y ordenar los no procesados
         const cuenta_no_procesados: cuenta_no_procesados = cuentaNoProcesados(elementos_auditorias);
@@ -337,8 +338,6 @@ export async function getPorcentajeProcesadoDadoEstadoAuditoria(_req: Request, r
         }
 
         conteo_elementos_procesados_auditoria = await contarProcesadosDeCadaEstadoAuditoria(elementos_auditoria, conteo_elementos_procesados_auditoria);
-
-        console.log(conteo_elementos_procesados_auditoria);
 
         res.status(200).json(await conteo_elementos_procesados_auditoria);
     } catch (error) {
