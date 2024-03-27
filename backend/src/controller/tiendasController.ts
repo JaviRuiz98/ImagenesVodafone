@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { tiendaService } from '../services/tiendasServices';
 import { imagenes, muebles, tiendas } from '@prisma/client';
 import { imagenService } from '../services/imagenService';
+import { tiendasConPlano } from '../interfaces/tiendasConPlano';
  
  
 
@@ -167,7 +168,7 @@ export async function getTiendaBySfid(req: Request, res: Response) {
       
 
         //obtiene las tiendas ordenadas por categoría_clause
-        const tienda: any = await tiendaService.getBySfid(sfid);
+        const tienda: tiendasConPlano | null = await tiendaService.getBySfid(sfid);
 
       
         if (!tienda) {

@@ -3,6 +3,8 @@ import { AuditoriaService } from 'src/app/servicios/auditoria/auditoria.service'
 import { datos_graficas } from 'src/app/interfaces/datos_graficas';
 import { resultados_ordenados } from 'src/app/interfaces/resultados_ordenados';
 import { conteo_elementos_procesados_auditoria } from '../interface/conteoElementosProcesadosAuditoria';
+import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
+import { tienda } from 'src/app/interfaces/tienda';
 
 @Component({
   selector: 'app-estadisticas-auditoria',
@@ -16,8 +18,12 @@ export class EstadisticasAuditoriaComponent {
   estadisticas_resultados_conteo: datos_graficas[] = [];
   estadisticas_procesados_dado_estado: conteo_elementos_procesados_auditoria;
 
+  total_tiendas: number = 0;
+  estadisticas_tiendas_en_progreso: datos_graficas[] = [];
+
   constructor(
-    private auditoriaService: AuditoriaService
+    private auditoriaService: AuditoriaService,
+    private tiendasService: TiendasService
   ) { };
 
   ngOnInit(): void {
@@ -29,16 +35,23 @@ export class EstadisticasAuditoriaComponent {
     this.auditoriaService.getEstadisticasEstadosAuditoria().subscribe(
       (data) => {
         const estadisticas_estados_auditoria_raw = data;
-        this.estadisticas_estados_auditoria = [];
 
         console.log('estadisticas_estados_auditoria_raw', estadisticas_estados_auditoria_raw);
 
-        for(let i = 1; i < estadisticas_estados_auditoria_raw.length; i++) {
-          this.estadisticas_estados_auditoria[i].valor = estadisticas_estados_auditoria_raw[i].num_auditorias;
-          this.estadisticas_estados_auditoria.push(this.estadisticas_estados_auditoria[i]);
+        // Logica del mapeado teniendo en cuenta que se ignora el estado 1 (En progreso)
+        const id_estados_excluidos: number[] = [1];
+        let estados_ignorados = 0;
+        for(let i = 0; i < estadisticas_estados_auditoria_raw.length; i++) {
+          if(!id_estados_excluidos.includes(estadisticas_estados_auditoria_raw[i].id)) {
+            this.estadisticas_estados_auditoria[i-estados_ignorados].valor = estadisticas_estados_auditoria_raw[i].num_auditorias;
+          } else {
+            estados_ignorados++;
+          }
         }
 
         console.log('estadisticas_estados_auditoria', this.estadisticas_estados_auditoria);
+
+        this.estadisticas_estados_auditoria = [...this.estadisticas_estados_auditoria];
       }, (error) => {
         console.log(error);
       }
@@ -103,6 +116,19 @@ export class EstadisticasAuditoriaComponent {
     );
   }
 
+  obtenerTiendasConAuditoriaEnProgreso() {
+    this.tiendasService.getAllTiendas().subscribe((data: tienda[]) => {
+      this.total_tiendas = data.length;
+
+      this.estadisticas_tiendas_en_progreso[0].valor = this.estadisticas_estados_auditoria[0].valor;
+      this.estadisticas_tiendas_en_progreso[1].valor = this.total_tiendas - this.estadisticas_tiendas_en_progreso[0].valor;
+
+      console.log('estadisticas_tiendas_en_progreso', this.estadisticas_tiendas_en_progreso);
+    })
+
+    
+  }
+
   inicializarObjetosDeEstadisticas() {
     this.estadisticas_estados_auditoria = [
       {
@@ -116,6 +142,19 @@ export class EstadisticasAuditoriaComponent {
         color: 'red'
       }
     ];
+
+    this.estadisticas_tiendas_en_progreso = [
+      {
+        etiqueta: 'En progreso',
+        valor: 0,
+        color: 'orange'
+      },  
+      {
+        etiqueta: 'Ya auditadas',
+        valor: 0,
+        color: 'bluegray'
+      }
+    ]
 
     this.estadisticas_resultados_carteles = [
       {
@@ -196,5 +235,6 @@ export class EstadisticasAuditoriaComponent {
     this.obtenerEstadisticasEstadosAuditoria();
     this.obtenerEstadisticasResultadosAuditoria();
     this.obtenerEstadisticasProcesadosDadoEstadoAuditoria();
+    this.obtenerTiendasConAuditoriaEnProgreso();
   }
 }

@@ -82,7 +82,7 @@ export async function getElementosProcesadosAuditoria(req: Request, res: Respons
     try {
         const id_auditoria = parseInt(req.params.id_auditoria);
 
-        const per_ele_aud_brutos: any[] = await auditoriaService.getPertenenciasElementosAuditoria(id_auditoria);
+        const per_ele_aud_brutos: per_ele_aud_extended[] = await auditoriaService.getPertenenciasElementosAuditoria(id_auditoria);
         
         const per_ele_aud_netos = agruparElementosMueblesAuditorias(per_ele_aud_brutos);
         res.status(200).json(per_ele_aud_netos);
@@ -185,7 +185,7 @@ async function createAuditoria(id_tienda: number): Promise<auditorias | null> {
             const createdAuditoria: auditorias = await auditoriaService.createAuditoria(id_tienda);
 
             // Almaceno todos los expositores que posee la auditoria en la tabla de auditoria_expositores
-            const muebles: any[] = await muebleService.getMueblesAndElementosByIdTienda(id_tienda);
+            const muebles = await muebleService.getMueblesAndElementosByIdTienda(id_tienda);
 
             for (const mueble of muebles) {
                 for(const expositor of mueble.expositores) {
