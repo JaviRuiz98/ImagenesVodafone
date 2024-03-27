@@ -28,7 +28,6 @@ export class SuperDonutComponent {
   }
 
   actualizarGrafica() {
-    console.log('datos dentro pie', this.datos_graficas);
     const documentStyle = getComputedStyle(document.documentElement);
     const textColor = documentStyle.getPropertyValue('--text-color');
 
@@ -43,9 +42,6 @@ export class SuperDonutComponent {
         ]
     };
 
-    console.log('data', this.data.datasets[0].data);
-    console.log('color', this.data.labels);
-
     this.options = {
         plugins: {
             legend: {
@@ -53,6 +49,17 @@ export class SuperDonutComponent {
                     usePointStyle: true,
                     color: textColor
                 }
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  const label = context.label || '';
+                  const value = context.parsed;
+                  const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                  const percentage = (value / total * 100).toFixed(2) + '%';
+                  return label + ': ' + percentage;
+                }
+              }
             }
         }
     };

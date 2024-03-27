@@ -289,10 +289,15 @@ export const auditoriaService = {
         }
     },
 
-    async getAllEstadosParaAuditorias() {
+    async getAllEstadosParaAuditorias(id_estados_excluidos: number[]) {
         try {
             return db.estados_auditoria.findMany(
                 {
+                    where: {
+                        id: {
+                            notIn: id_estados_excluidos
+                        }
+                    },
                     include: {
                         auditorias: true
                     }
@@ -306,9 +311,16 @@ export const auditoriaService = {
         }
     },
 
-    getUltimosProcesadosElementoAuditoria() {
+    getUltimosProcesadosElementoAuditoriaNotEnProgreso() {
         try {
             return db.pertenencia_elementos_auditoria.findMany({
+                where: {
+                    auditorias: {
+                        id_estado: {
+                            not: 1
+                        }
+                    }
+                },
                 include: {
                     procesados_imagenes: {
                         orderBy: {
