@@ -63,6 +63,7 @@ export const procesadoService = {
             include: {
                 imagenes: true,
                 prompts: true,
+                
                 pertenencia_elementos_auditoria: {
                     include: {
                         elementos: {
@@ -71,7 +72,8 @@ export const procesadoService = {
                                 imagenes: true
                             }
                         }
-                    }
+                    } ,
+                  
                 },
                 probabilidades_respuesta_carteles: true
             }

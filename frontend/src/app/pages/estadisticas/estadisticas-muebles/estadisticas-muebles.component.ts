@@ -24,9 +24,13 @@ export class EstadisticasMueblesComponent implements OnInit  {
   this.elementosService.getEstadisticasRespuestas().subscribe(
     (estadisticas: resultados_ordenados_elementos) => {
       this.estadisticas = estadisticas;
+      console.log(this.estadisticas);
       const estadisticas_length: resultados_ordenados = this.estadisticasMethods.fromOrdenadosElementosToOrdenados(estadisticas);
+      console.log(estadisticas_length);
       this.estadisticas_resultados_carteles = this.estadisticasMethods.mapearEstadisticasResultados(estadisticas_length, "carteles", false);
       this.estadisticas_resultados_carteles = this.estadisticasMethods.mapearEstadisticasResultados(estadisticas_length, "conteoDispositivos", false);
+      console.log ('estadisticas_resultados_carteles', this.estadisticas_resultados_carteles);
+      console.log ('estadisticas_resultados_conteo', this.estadisticas_resultados_conteo);
 
     });
  }

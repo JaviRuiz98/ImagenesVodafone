@@ -19,7 +19,8 @@ import { datos_graficas } from 'src/app/interfaces/datos_graficas';
 
 export class BarraMultiusoComponent implements OnInit  {
   @Input() datos: datos_graficas[] = [];
-
+  @Input ()  backgroundColor = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.2)`;
+  @Input ()borderColor = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 1)`;
   basicData: any;
   basicOptions: any;
 

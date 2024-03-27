@@ -175,12 +175,13 @@ estadisticas_resultados_conteo_sin_no_procesados: datos_graficas[] = [
 
 
 
-public mapearEstadisticasResultados(   data: resultados_ordenados, mapeoEspecificaciones: 'carteles' | 'conteoDispositivos', noProesados: boolean  ): datos_graficas[] {
+public mapearEstadisticasResultados(   data: resultados_ordenados, mapeoEspecificaciones: 'carteles' | 'conteoDispositivos', noProcesados: boolean  ): datos_graficas[] {
 
-    let estadisticasResultados: datos_graficas[] = this.estadisticas_resultados_carteles;
+  let estadisticasResultados: datos_graficas[] = [];
   // Mapeo de `carteles` si se especifica
   if (mapeoEspecificaciones === 'carteles' && data.carteles) {
-    
+     estadisticasResultados = (noProcesados) ? (this.estadisticas_resultados_carteles): (this.estadisticas_resultados_carteles_sin_no_procesados);
+
     estadisticasResultados[0].valor = data.carteles.muy_alta;
     estadisticasResultados[1].valor = data.carteles.alta;
     estadisticasResultados[2].valor = data.carteles.otro_idioma;
@@ -188,7 +189,7 @@ public mapearEstadisticasResultados(   data: resultados_ordenados, mapeoEspecifi
     estadisticasResultados[4].valor = data.carteles.baja;
     estadisticasResultados[5].valor = data.carteles.muy_baja;
     estadisticasResultados[6].valor = data.carteles.ninguna;
-    if (noProesados){
+    if (noProcesados){
       estadisticasResultados[7].valor = data.carteles.no_procesados || 0;
     }
 
@@ -197,11 +198,12 @@ public mapearEstadisticasResultados(   data: resultados_ordenados, mapeoEspecifi
 
   // Mapeo de `conteo_dispositivos` si se especifica
   if (mapeoEspecificaciones === 'conteoDispositivos' && data.conteo_dispositivos) {
-    estadisticasResultados = this.estadisticas_resultados_conteo;
+    estadisticasResultados = (noProcesados) ? (this.estadisticas_resultados_conteo): (this.estadisticas_resultados_conteo_sin_no_procesados);
     estadisticasResultados[4].valor = data.conteo_dispositivos.error;
-    if (noProesados){
+    if (noProcesados){
       estadisticasResultados[5].valor = data.conteo_dispositivos.no_procesados || 0;
     }
+
 
     // Para `diferencia`, sumamos los valores en el arreglo a las categorías correspondientes
     data.conteo_dispositivos.diferencia.forEach((diferencia) => {
@@ -242,13 +244,13 @@ public fromOrdenadosElementosToOrdenados(entrada: resultados_ordenados_elementos
           baja: entrada.carteles.baja.length,
           muy_baja: entrada.carteles.muy_baja.length,
           ninguna: entrada.carteles.ninguna.length,
-          no_procesados:0
+          no_procesados:undefined
       
       },
       conteo_dispositivos: {
           error: entrada.conteo_dispositivos.error.length,
           diferencia: entrada.conteo_dispositivos.diferencia.map(d => d.length),
-         no_procesados:0
+         no_procesados:undefined
       }
   };
 } 

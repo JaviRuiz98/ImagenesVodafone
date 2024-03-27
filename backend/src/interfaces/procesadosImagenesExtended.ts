@@ -10,3 +10,7 @@ export interface procesados_imagenes_extended extends procesados_imagenes {
 export interface procesados_imagenes_elementos extends procesados_imagenes { 
     elementos: elementos;
 }
+
+export interface elementos_con_procesados extends elementos {
+    procesados_imagenes: procesados_imagenes[];
+}
