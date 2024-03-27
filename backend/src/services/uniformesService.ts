@@ -1,5 +1,5 @@
 
-import { producto, carrito, imagenes, caracteristicas_productos } from "@prisma/client";
+import { producto, pedidos, carrito, imagenes, caracteristicas_productos } from "@prisma/client";
 import { productoExtended } from "../interfaces/producto";
 import db from "../config/database";
 
@@ -15,6 +15,15 @@ export const uniformesService = {
             throw error;
         } finally {
             await db.$disconnect();
+        }
+    },
+
+    async getPedidos(): Promise<pedidos[]> {
+        try {
+            const pedidos = await db.pedidos.findMany();
+            return pedidos;
+        }catch (error) {
+            throw error;
         }
     },
 
@@ -112,14 +121,38 @@ export const uniformesService = {
 
             const carritoItems = productos_carrito.map(producto => ({
                 id_pedido: id_pedido,
-                id_caracteristicas_producto: producto.caracteristica_seleccionada.id, // Corregido el nombre de la propiedad
-                cantidad: producto.cantidad
+                id_caracteristicas_productos: producto.caracteristica_seleccionada.id, // Corregido el nombre de la propiedad
+                cantidad: producto.cantidad,
             }))
 
+            for (const item of carritoItems) {
+                const cantidad_valida = await db.caracteristicas_productos.findUnique({
+                  where: {
+                    id: item.id_caracteristicas_productos,
+                  },
+                });
+          
+                if (!cantidad_valida || cantidad_valida.stock < item.cantidad) {
+                  console.log( `El stock es insuficiente: ${item.cantidad} de ${cantidad_valida?.stock} disponibles`);
+                  return;
+                }
+          
+                await db.caracteristicas_productos.update({
+                  where: {
+                    id: item.id_caracteristicas_productos,
+                  },
+                  data: {
+                    stock: {
+                      decrement: item.cantidad,
+                    },
+                  },
+                });
+              }
 
-            return await db.carrito.createMany({
+            await db.carrito.createMany({
                 data: carritoItems,
             });
+            return 'ok';
         } catch (error) {
             throw error;
         }

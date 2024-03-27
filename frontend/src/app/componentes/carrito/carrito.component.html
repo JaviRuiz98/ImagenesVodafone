@@ -28,8 +28,9 @@
         
                             <div class="flex sm:flex-row align-items-center sm:align-items-end gap-3 sm:gap-2" style="justify-content: space-between;">
                                 <div class="flex flex-column gap-3">
-                                    <h3>Talla: {{producto.caracteristica_seleccionada}}</h3>
+                                    <h3>Talla: {{producto.caracteristica_seleccionada.talla}}</h3>
                                     <!-- Parte de la seleccion de unidades -->
+                                    <small class="p-error" *ngIf="producto.cantidad >= producto.caracteristica_seleccionada.stock">*Stock maximo: {{producto.caracteristica_seleccionada.stock}}* <br></small> 
                                     <p-inputNumber
                                         [(ngModel)]="producto.cantidad"
                                         [showButtons]="true"
@@ -39,6 +40,7 @@
                                         (ngModelChange)="cambiarTotal(producto)"
                                         [step]="1"
                                         [min]="1"
+                                        [max]="producto.caracteristica_seleccionada.stock"
                                         decrementButtonClass="p-button-secondary"
                                         incrementButtonClass="p-button-danger"
                                         incrementButtonIcon="pi pi-plus"
@@ -67,7 +69,14 @@
 </div>
 
 <ng-template #carritoVacio>
-    <h3>Aun no has añadido ningun producto al carrito!</h3>
+    <div *ngIf="verPedidoRealizado; else nuevoCarrito" style="background-color: rgb(215, 245, 215); border-radius: 10px; padding: 10px;">
+        <h1>Operación realizada con exito!</h1>
+    </div>
+    <ng-template #nuevoCarrito >
+        <div style="background-color: rgb(238, 238, 238); border-radius: 10px; padding: 10px;">
+            <h2>Aun no has añadido ningun producto al carrito!</h2>
+        </div>
+    </ng-template>
 </ng-template>
 
 <hr style="border: 1px solid rgb(141, 139, 139);">
