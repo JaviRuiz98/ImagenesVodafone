@@ -4,7 +4,8 @@ import { datos_graficas } from 'src/app/interfaces/datos_graficas';
 
 import { pedidos } from 'src/app/interfaces/pedidos';
 import { carrito } from 'src/app/interfaces/carrito';
-
+import { productos } from 'src/app/interfaces/productos';
+import { caracteristicas_productos } from 'src/app/interfaces/caracteristicas';
 
 @Component({
   selector: 'app-estadisticas-uniformes',
@@ -15,9 +16,10 @@ import { carrito } from 'src/app/interfaces/carrito';
 
 
 
-
 export class EstadisticasUniformesComponent implements OnInit {
 
+
+  productos_nombres = ['Forro', 'Polo', 'Pantalon', 'Tarjeta', 'Lanyard', 'Lanyard Practicas'];
 
   rangeDates: Date[] | undefined;
 
@@ -27,6 +29,12 @@ export class EstadisticasUniformesComponent implements OnInit {
   carritoTodos!: carrito[];
   carritoFiltrado!: carrito[];
 
+  productosTodos: productos[] = [];
+  producto: productos; 
+
+  productos_filtrados: productos[] = [];
+
+  caracteristicas_productos!: caracteristicas_productos[];
 
   ///
   data: any;
@@ -35,8 +43,16 @@ export class EstadisticasUniformesComponent implements OnInit {
   dataUnisex: number[] = [];
   options: any;
 
+  documentStyle = getComputedStyle(document.documentElement);
+  textColor = this.documentStyle.getPropertyValue('--text-color');
+  textColorSecondary = this.documentStyle.getPropertyValue('--text-color-secondary');
+  surfaceBorder = this.documentStyle.getPropertyValue('--surface-border');
 
-  constructor(private uniformesService: UniformesService) { }
+  constructor(private uniformesService: UniformesService) {
+    this.dataHombre = new Array(this.productos_nombres.length).fill(0);
+    this.dataMujer = new Array(this.productos_nombres.length).fill(0);
+    this.dataUnisex = new Array(this.productos_nombres.length).fill(0);
+   }
 
 
   
@@ -49,6 +65,14 @@ export class EstadisticasUniformesComponent implements OnInit {
 
     this.uniformesService.getCarrito().subscribe((carrito) => { //todos los items registrados en carritos
       this.carritoTodos = carrito;
+    })
+
+    this.uniformesService.getProductos().subscribe((productos) => {
+      this.productosTodos = productos;
+    })
+
+    this.uniformesService.getCaracteristicas().subscribe((caracteristicas_productos) => {
+      this.caracteristicas_productos = caracteristicas_productos;
     })
 
   }
@@ -66,41 +90,83 @@ export class EstadisticasUniformesComponent implements OnInit {
         const carritosFiltrados = this.carritoTodos.filter(carrito => carrito.id_pedido === pedido.id);
         this.carritoFiltrado = [...this.carritoFiltrado, ...carritosFiltrados];
       });
-  
-    } 
+
+      this.carritoFiltrado.forEach((carrito) => { // implementar dataHombre, mujer y unisex
+        let caracteristica = this.caracteristicas_productos.find(caracteristica => caracteristica.id === carrito.id_caracteristicas_productos);
+        let producto = this.productosTodos.find(producto => caracteristica.id_producto === producto.id);
+        const producto_seleccionado: productos = {
+          id: caracteristica.id_producto,
+          nombre: producto.nombre,
+          precio: producto.precio,
+          genero: producto.genero,
+          descripcion: producto.descripcion,
+          imagenes: producto.imagenes,
+          caracteristicas_productos: [],
+          caracteristica_seleccionada:{
+            id: caracteristica.id,
+            id_producto: caracteristica.id_producto,
+            genero: "",
+            talla: caracteristica.talla,
+            stock: 0
+          },
+          cantidad: carrito.cantidad,
+        }
+
+        this.productos_filtrados.push(producto_seleccionado);
+      })
+
+      console.log(this.productos_filtrados);
+
+      this.productos_filtrados.forEach(producto => {
+        for(let i = 0; i < this.productos_nombres.length; i++){
+          if(producto.nombre == this.productos_nombres[i]){
+            if(producto.genero == 'Hombre'){
+              this.dataHombre[i] += producto.cantidad;
+            }else if(producto.genero == 'Mujer'){
+             this.dataMujer[i] += producto.cantidad; 
+            }else if(producto.genero == null){
+              this.dataUnisex[i] += producto.cantidad;
+            }
+          } 
+        }
+
+      })
+      console.log(this.dataHombre, this.dataMujer, this.dataUnisex);
+
+      
+
+      this.data = {
+        labels: this.productos_nombres,
+        datasets: [
+            {
+                label: 'Hombre',
+                backgroundColor: this.documentStyle.getPropertyValue('--blue-500'),
+                borderColor: this.documentStyle.getPropertyValue('--blue-500'),
+                data: this.dataHombre
+            },
+            {
+                label: 'Mujer',
+                backgroundColor: this.documentStyle.getPropertyValue('--pink-500'),
+                borderColor: this.documentStyle.getPropertyValue('--pink-500'),
+                data: this.dataMujer
+            },
+            {
+                label: 'Unisex',
+                backgroundColor: this.documentStyle.getPropertyValue('--yellow-500'),
+                borderColor: this.documentStyle.getPropertyValue('--yellow-500'),
+                data: this.dataUnisex
+            }
+        ]
+      };
+
+    }  
  
   }
 
   ngOnInit(): void {
 
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--text-color');
-    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
-    this.data = {
-      labels: ['Forro', 'Polo', 'Pantalon', 'Tarjeta', 'Lanyard', 'Lanyard Practicas'],
-      datasets: [
-          {
-              label: 'Hombre',
-              backgroundColor: documentStyle.getPropertyValue('--blue-500'),
-              borderColor: documentStyle.getPropertyValue('--blue-500'),
-              data: this.dataHombre
-          },
-          {
-              label: 'Mujer',
-              backgroundColor: documentStyle.getPropertyValue('--pink-500'),
-              borderColor: documentStyle.getPropertyValue('--pink-500'),
-              data: this.dataMujer
-          },
-          {
-              label: 'Unisex',
-              backgroundColor: documentStyle.getPropertyValue('--yellow-500'),
-              borderColor: documentStyle.getPropertyValue('--yellow-500'),
-              data: this.dataUnisex
-          }
-      ]
-    };
+
 
 
     this.options = {
@@ -109,29 +175,29 @@ export class EstadisticasUniformesComponent implements OnInit {
       plugins: {
           legend: {
               labels: {
-                  color: textColor
+                  color: this.textColor
               }
           }
       },
       scales: {
           x: {
               ticks: {
-                  color: textColorSecondary,
+                  color: this.textColorSecondary,
                   font: {
                       weight: 500
                   }
               },
               grid: {
-                  color: surfaceBorder,
+                  color: this.surfaceBorder,
                   drawBorder: false
               }
           },
           y: {
               ticks: {
-                  color: textColorSecondary
+                  color: this.textColorSecondary
               },
               grid: {
-                  color: surfaceBorder,
+                  color: this.surfaceBorder,
                   drawBorder: false
               }
           }

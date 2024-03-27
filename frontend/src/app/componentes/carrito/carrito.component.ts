@@ -50,16 +50,16 @@ export class CarritoComponent implements OnInit{
   @Input() productos_carrito: productos[] = [];
  // productos_carrito: productos[] = [];
    
-  @Output() mostrarDialogoNuevoElemento = new EventEmitter<boolean>();
+  @Output() mostrarCarrito = new EventEmitter<boolean>();
   // @Output() nuevoElementoCreado = new EventEmitter<elementos>();
- 
+  
   url_imagenes_productos: string = 'http://validador-vf.topdigital.local/imagenes/imagenesProducto/';
  
   total_carrito: number = 0;
 
-
+  verPedidoRealizado: boolean = false;
   id_tienda: number = 0;                                                //TO DO: obtener id desde las coockies del navegador 
-
+ 
   constructor( 
     private UniformesService: UniformesService,
     private messageService: MessageService, 
@@ -76,6 +76,7 @@ export class CarritoComponent implements OnInit{
 
   cambiarTotal(producto: productos){
     this.calcularTotalCarrito();
+ 
   }
 
   // tramitarPedido(){
@@ -106,7 +107,7 @@ export class CarritoComponent implements OnInit{
       message: '¿Seguro que quieres confirmar la compra?',
       accept: () => {
         this.tramitarPedido();
-        this.messageService.add({severity:'info', summary: 'Confirmed', detail: 'Tramitando pedido...'});
+ 
       },
       reject: () => {
         this.messageService.add({severity:'info', summary: 'Rejected', detail: 'Tramitando pedido...'});
@@ -117,14 +118,26 @@ export class CarritoComponent implements OnInit{
 
 
   tramitarPedido(){
-
+  
     this.UniformesService.tramitarPedido(this.productos_carrito, this.id_tienda).subscribe(
-      res => {
-        if(res.status == 'ok'){
+      (res: any)  => {
+        if(res.message == 'ok'){
           this.productos_carrito = [];
+          this.total_carrito = 0;
           this.messageService.add({severity:'success', summary: 'Confirmado', detail: 'Tramitado con exito'});
+          this.verPedidoRealizado = true
+
+        }else{
+          this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al tramitar el pedido: stock'});
         }
-    })
+      //  this.mostrarCarrito.emit(false);
+    },
+    error => {
+      this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al tramitar el pedido'});
+    //  this.mostrarCarrito.emit(false);
+    }
+    
+    )
   }
 
 

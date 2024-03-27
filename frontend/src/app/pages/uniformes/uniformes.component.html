@@ -5,7 +5,7 @@
 </div>
 
 <p-sidebar [(visible)]="carritoVisible" [style]="{width: '35%'}" position="right">
-   <app-carrito *ngIf="carritoVisible" [productos_carrito] ="productos_carrito"  ></app-carrito>
+   <app-carrito *ngIf="carritoVisible" (mostrarCarrito)="mostrarCarrito($event)" [productos_carrito] ="productos_carrito"  ></app-carrito>
 </p-sidebar>
 
 
@@ -94,8 +94,14 @@
                 <h3>Talla:</h3>
                 <div style="display: flex; align-items: center;" *ngIf="producto_seleccionado?.caracteristicas_productos?.length > 1; else sinOpciones" class="radio-container">
                   <div class="flex flex-row gap-2" *ngFor="let caracteristica of producto_seleccionado?.caracteristicas_productos" >
-                    <p-radioButton name="talla_{{producto_seleccionado}}" [label]="caracteristica.talla" [(ngModel)]="producto_seleccionado.caracteristica_seleccionada" (onClick)="seleccionarTalla(caracteristica)" 
-                    [value]="[caracteristica.talla]"></p-radioButton>
+                    <p-radioButton *ngIf="caracteristica.stock > 0; else sinStock"  name="talla_{{producto_seleccionado}}" [label]="caracteristica.talla"  [ngModel]="producto_seleccionado.caracteristica_seleccionada" (onClick)="producto_seleccionado.caracteristica_seleccionada = caracteristica" 
+                    [value]="[caracteristica]">
+                    </p-radioButton>
+                    <ng-template #sinStock>
+                        <p-radioButton [disabled]="true" name="talla_{{producto_seleccionado}}" [label]="caracteristica.talla" [(ngModel)]="producto_seleccionado.caracteristica_seleccionada" (onClick)="seleccionarTalla(caracteristica)" 
+                            [value]="[caracteristica.talla]">
+                        </p-radioButton>
+                    </ng-template>
                   </div>
                 </div>
                 <ng-template #sinOpciones>
@@ -106,11 +112,13 @@
                 </ng-template>
             </div>
             <small class="p-error" *ngIf="!talla_valida">* Seleccione una talla* <br></small>
-            <small class="p-error" *ngIf="!cantidad_valida">* Seleccione una cantidad * <br></small> 
+            <small class="p-error" *ngIf="!cantidad_valida">*Stock maximo: {{producto_seleccionado?.caracteristica_seleccionada?.stock}}* <br></small> 
 
             <div class="flex justify-content-end">
+                
                 <div class="flex align-items-center">
                     <p-inputNumber
+                    *ngIf="producto_seleccionado?.caracteristica_seleccionada?.stock > 0"
                     [(ngModel)]="producto_seleccionado.cantidad"
                     [showButtons]="true"
                     buttonLayout="horizontal"
@@ -119,6 +127,8 @@
                     [style]="{ 'margin-right': '50px'}"
                     [step]="1"
                     [min]="1"
+                    [max]="producto_seleccionado?.caracteristica_seleccionada?.stock"
+                    (ngModelChange)="validarCantidades(producto_seleccionado)"
                     decrementButtonClass="p-button-secondary"
                     incrementButtonClass="p-button-danger"
                     incrementButtonIcon="pi pi-plus"

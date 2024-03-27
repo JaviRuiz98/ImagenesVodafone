@@ -37,9 +37,8 @@ export class UniformesService {
   }
 
   tramitarPedido(productos_carrito: productos[], id_tienda: number ):Observable<any>{
-    return this.http.post(`${this.API_URI}/tramitar-pedido`, {productos_carrito, id_tienda});
+    return this.http.post<any>(`${this.API_URI}/tramitar-pedido`, {productos_carrito, id_tienda});
   }
-
 
  
 

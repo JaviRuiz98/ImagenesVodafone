@@ -6,4 +6,5 @@ export interface carrito {
     id: number;
     id_pedido: number;
     id_caracteristicas_productos: number;
+    cantidad: number;
 }

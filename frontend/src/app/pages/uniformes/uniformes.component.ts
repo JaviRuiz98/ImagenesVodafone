@@ -68,10 +68,13 @@ export class UniformesComponent implements OnInit {
  
  
   anadirCarrito(producto: productos){
-    if(this.producto_seleccionado.cantidad <= 0) {this.cantidad_valida = false;} else{ this.cantidad_valida = true; }
+  
+    if(this.producto_seleccionado.cantidad <= 0 || this.producto_seleccionado.cantidad  > this.producto_seleccionado.caracteristica_seleccionada.stock) {this.cantidad_valida = false;} else{ this.cantidad_valida = true; }
 
-    if(this.producto_seleccionado.caracteristicas_productos.length ==1 ) {
+    if(this.producto_seleccionado.caracteristicas_productos.length ==1 ) {   
       this.talla_valida = true;
+      this.producto_seleccionado.caracteristica_seleccionada = this.producto_seleccionado.caracteristicas_productos[0];
+
     }else if(this.producto_seleccionado.caracteristica_seleccionada.talla == null){
       this.talla_valida = false;
     }else{
@@ -89,7 +92,7 @@ export class UniformesComponent implements OnInit {
     let productoEncontrado = false;
 
     for (let i = 0; i < this.productos_carrito.length; i++) {
-      if (this.productos_carrito[i].caracteristica_seleccionada.talla == this.producto_seleccionado.caracteristica_seleccionada.talla) {
+      if (this.productos_carrito[i].caracteristica_seleccionada.id == this.producto_seleccionado.caracteristica_seleccionada.id) {
         // Si encontramos el producto con la misma característica seleccionada, sumamos la cantidad.
         this.productos_carrito[i].cantidad += this.producto_seleccionado.cantidad;
         productoEncontrado = true;
@@ -107,7 +110,7 @@ export class UniformesComponent implements OnInit {
   seleccionarOpcionesProducto(producto: productos){
     this.verOpcionesProducto = true;
     this.producto_seleccionado = producto;
-    this.producto_seleccionado.cantidad = 0;
+    this.producto_seleccionado.cantidad = 1;
     this.producto_seleccionado.caracteristica_seleccionada = {
       id: 0,
       id_producto: producto.id,
@@ -115,6 +118,7 @@ export class UniformesComponent implements OnInit {
       talla: null,
       stock: 0
     };
+    this.cantidad_valida = true; 
      
   }
 
@@ -131,6 +135,13 @@ export class UniformesComponent implements OnInit {
   }
 
 
+  validarCantidades(producto: productos){
+    if(producto.cantidad  >= producto.caracteristica_seleccionada.stock) {
+      this.cantidad_valida = false;
+    } else{
+       this.cantidad_valida = true; 
+      }
+  }
 
   ngOnInit() {
     this.inicializaProductos();
@@ -153,6 +164,14 @@ export class UniformesComponent implements OnInit {
       }
     );
 
+  }
+  mostrarCarrito(event: boolean) {
+    this.carritoVisible = false;
+    if (event) {
+      this.carritoVisible = true;
+    } else {
+      this.carritoVisible = false;
+    }
   }
 
   inicializaCaracteristicasProducto() {

@@ -119,9 +119,12 @@ export async function tramitarPedido(req: Request, res: Response) {
 
         const row_pedido = await uniformesService.crearPedido(id_tienda);
 
-        await uniformesService.asignarCarrito(productos_carrito, row_pedido.id);
-
-        res.status(200).json( );
+        const respuesta = await uniformesService.asignarCarrito(productos_carrito, row_pedido.id);
+        if(respuesta == 'ok'){
+        res.status(200).json({ message: "ok" });
+        }else{
+            res.status(400).json({ message: "Error al tramitar el pedido" });
+        }
     }catch (error) {
         console.error(error);
         res.status(500).json({ error: "Internal server error" });
