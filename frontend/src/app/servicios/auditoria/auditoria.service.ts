@@ -6,6 +6,7 @@ import { muebles_auditoria } from 'src/app/interfaces/muebles_auditoria';
 import { UrlService } from '../url/url.service';
 import { estados_auditorias } from 'src/app/pages/estadisticas/interface/estados-auditorias';
 import { resultados_ordenados } from 'src/app/interfaces/resultados_ordenados';
+import { conteo_elementos_procesados_auditoria } from 'src/app/pages/estadisticas/interface/conteoElementosProcesadosAuditoria';
 
 @Injectable({
   providedIn: 'root'
@@ -69,4 +70,7 @@ export class AuditoriaService {
     return this.http.get<resultados_ordenados>(`${this.API_URI}/estadisticas/resultados_auditoria`);
   }
 
+  getEstadisticasProcesadosDadoEstadoAuditoria(): Observable<conteo_elementos_procesados_auditoria> {
+    return this.http.get<conteo_elementos_procesados_auditoria>(`${this.API_URI}/estadisticas/porcentaje_completado`);
+  }
 }

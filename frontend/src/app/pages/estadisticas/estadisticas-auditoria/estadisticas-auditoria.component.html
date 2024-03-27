@@ -1,7 +1,11 @@
 <div style="display: flex;">
     <div style="height: 600px; width: 600px">
         <h3>Estados de auditoría:</h3>
-        <app-super-pie [datos_graficas]="estadisticas_estados_auditoria"></app-super-pie>
+        <app-super-donut [datos_graficas]="estadisticas_estados_auditoria"></app-super-donut>
+        <h3>Porcentaje procesados realizados en cada estado:</h3>
+        <p-progressBar [value]="estadisticas_procesados_dado_estado.en_progreso.porcentaje" [color]="'orange'" [style]="{'margin-bottom': '20px'}"></p-progressBar>
+        <p-progressBar [value]="estadisticas_procesados_dado_estado.finalizada.porcentaje" [color]="'green'" [style]="{'margin-bottom': '20px'}"></p-progressBar>
+        <p-progressBar [value]="estadisticas_procesados_dado_estado.caducada.porcentaje" [color]="'red'" [style]="{'margin-bottom': '20px'}"></p-progressBar>
     </div>
     <div style="height: 400px; width: 400px">
         <h3>Resultados de auditoría:</h3>

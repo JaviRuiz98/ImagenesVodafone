@@ -12,6 +12,8 @@ import { EstadisticasUniformesComponent } from './estadisticas-uniformes/estadis
 import { SuperPieComponent } from 'src/app/componentes/_grafica/super-pie/super-pie.component';
 import { SuperLineChartComponent } from 'src/app/componentes/_grafica/super-line-chart/super-line-chart.component';
 import { BarraMultiusoComponent } from 'src/app/componentes/_grafica/barra-multiuso/barra-multiuso.component';
+import { SuperDonutComponent } from 'src/app/componentes/_grafica/super-donut/super-donut.component';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,10 @@ import { BarraMultiusoComponent } from 'src/app/componentes/_grafica/barra-multi
     SuperPieComponent,
     SuperLineChartComponent,
     BarraMultiusoComponent,
-    DividerModule
+    DividerModule,
+    SuperDonutComponent,
+    DividerModule,
+    ProgressBarModule
   ]
 })
 export class EstadisticasModule { }
