@@ -25,6 +25,7 @@ import { CalendarModule } from 'primeng/calendar';
 
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
+import { StackedBarComponent } from 'src/app/componentes/_grafica/stacked-bar/stacked-bar.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { ChartModule } from 'primeng/chart';
     CalendarModule,
     FormsModule,
     CardModule,
-    ChartModule
+    ChartModule,
+    StackedBarComponent
   ]
 })
 export class EstadisticasModule { }

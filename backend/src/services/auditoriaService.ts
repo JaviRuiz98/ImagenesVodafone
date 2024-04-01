@@ -43,6 +43,18 @@ export const auditoriaService = {
         }
     },
 
+    async getSoloAllAuditoriasInPeriodo(): Promise<auditorias[]| null> {
+        try{
+            return db.auditorias.findMany({
+            })
+        } catch (error) {
+            console.error('No se pudo obtener el auditoria:', error);
+            throw error;
+        } finally  {
+            await db.$disconnect();
+        }
+    },
+
     async getAuditoriaAndTienda(id_auditoria: number): Promise<auditorias | null> {
         try {
             return db.auditorias.findUnique({

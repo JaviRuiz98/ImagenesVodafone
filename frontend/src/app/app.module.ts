@@ -23,10 +23,11 @@ import { UniformesModule } from './pages/uniformes/uniformes.module';
 
 import { ButtonModule } from 'primeng/button';
 import { EstadisticasModule } from './pages/estadisticas/estadisticas.module';
+
 @NgModule({
   declarations: [
     AppComponent,
-  ],
+    ],
   imports: [
     BarraMenuComponent,
     RemarcarExpositorComponent,

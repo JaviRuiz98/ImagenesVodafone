@@ -6,7 +6,11 @@ export interface datos_graficas {
 }
 
 export interface datos_graficas_multidatos {
-    etiquetas: string[]; //eje x
+    // por cada conjunto de datos
     color?: string[];
+    leyenda: string[];
+
+    // por cada etiqueta
+    etiquetas: string[]; //eje x
     datos: number[][]; //eje y
 }

@@ -11,6 +11,7 @@ import { resultados_ordenados } from '../interfaces/estadisticas/resultados_orde
 import { getResumenEstadisticas } from '../utils/funcionesCompartidasController';
 import { cuenta_no_procesados } from '../interfaces/procesados/cuenta_no_procesados';
 import { conteo_elementos_procesados_auditoria } from '../interfaces/auditoria/conteoElementosProcesadosAuditoria';
+import { conteo_movimientos_auditoria } from '../interfaces/auditoria/conteoMovimientosAuditoria';
 
 export async function getAuditorias(req: Request, res: Response) {
     try {
@@ -373,4 +374,70 @@ async function contarProcesadosDeCadaEstadoAuditoria(elementos_auditoria: per_el
     conteo_elementos_procesados_auditoria.caducada.porcentaje = (conteo_elementos_procesados_auditoria.caducada.procesados / conteo_elementos_procesados_auditoria.caducada.total) * 100;
 
     return conteo_elementos_procesados_auditoria;
+}
+
+export async function getMovimientosAuditorias(_req: Request, res: Response) {
+    try {
+        const auditorias = await auditoriaService.getSoloAllAuditoriasInPeriodo();
+
+        if(!!auditorias) {
+            const movimientos_auditoria = await agruparAuditorias(auditorias);
+
+            res.status(200).json(movimientos_auditoria);
+        } else {
+            res.status(404).json({ error: 'No se han podido obtener los movimientos de auditorias' });
+        }        
+    } catch (error) {
+        console.error('No se pudo obtener los movimientos de auditorias:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}   
+
+async function agruparAuditorias(auditorias: auditorias[]): Promise<conteo_movimientos_auditoria> {
+    const fechaMin = new Date(Math.min(...auditorias.map(a => new Date(a.fecha).getTime())));
+    const fechaMax = new Date(Math.max(...auditorias.map(a => new Date(a.fecha_fin? a.fecha_fin : a.fecha).getTime())));
+    let fechaActual = new Date(fechaMin);
+    const resultado: conteo_movimientos_auditoria = {
+        fechas: [],
+        iniciadas: [],
+        finalizadas: [],
+        caducadas: []
+    };
+
+    while (fechaActual <= fechaMax || (fechaActual.toISOString().split('T')[0] === fechaMax.toISOString().split('T')[0])) {
+        const fechaStr = formatearFecha(fechaActual);
+        resultado.fechas.push(fechaStr);
+        resultado.iniciadas.push(0);
+        resultado.finalizadas.push(0);
+        resultado.caducadas.push(0);
+
+        auditorias.forEach(auditoria => {
+            const fechaAuditoria = formatearFecha(new Date(auditoria.fecha));
+            if (fechaAuditoria === fechaStr) {
+                resultado.iniciadas[resultado.iniciadas.length - 1]++;
+                if (auditoria.id_estado === 2) {
+                    resultado.finalizadas[resultado.finalizadas.length - 1]++;
+                } else if (auditoria.id_estado === 3) {
+                    resultado.caducadas[resultado.caducadas.length - 1]++;
+                }
+            }
+        });
+
+        fechaActual = agregarDia(fechaActual);
+
+        // Si después de agregar un día, fechaActual es mayor que fechaMax, termina el bucle.
+        if (fechaActual > fechaMax && fechaStr === fechaMax.toISOString().split('T')[0]) break;
+    }
+
+    return resultado;
+}
+
+function formatearFecha(fecha: Date): string {
+    return fecha.toISOString().split('T')[0];
+}
+
+function agregarDia(fecha: Date): Date {
+    const nuevaFecha = new Date(fecha);
+    nuevaFecha.setDate(fecha.getDate() + 1);
+    return nuevaFecha;
 }
