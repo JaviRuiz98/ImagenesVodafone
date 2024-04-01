@@ -10,6 +10,7 @@ import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { tienda } from 'src/app/interfaces/tienda';
 import { Router } from '@angular/router';
+import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-plano-tienda',
@@ -20,7 +21,7 @@ export class PlanoTiendaComponent implements OnInit {
 
   @ViewChild('op') op: OverlayPanel;
 
-  imagen_plano_tienda: string = '/assets/images/planoTienda.png';
+  imagen_plano_tienda: string = '';
 
   mostrar_dialog_asignar_muebles = false;
 
@@ -78,6 +79,8 @@ export class PlanoTiendaComponent implements OnInit {
       width: parametrosAlturaAnchura.width,
       height: parametrosAlturaAnchura.height,
     });
+
+    this.imagen_plano_tienda = this.urlService.url_imagenes_planos + this.tiendaSelected.imagen_plano.url;
 
     fabric.Image.fromURL(this.imagen_plano_tienda, (img) => {
       const scaleX = this.canvas.width / img.width;
