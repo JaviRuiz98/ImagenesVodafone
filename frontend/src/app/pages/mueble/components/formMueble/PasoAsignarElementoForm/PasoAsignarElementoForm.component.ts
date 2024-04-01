@@ -8,7 +8,7 @@ import { elementos } from 'src/app/interfaces/elementos';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { UrlService } from 'src/app/servicios/url/url.service';
 import { MessageService } from 'primeng/api';
-import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
+import { ProcesadosService } from 'src/app/servicios/procesados/procesados.service';
 import { elementoCreacion } from '../../../interfaces/elementoCreacion';
 
 
@@ -20,7 +20,7 @@ import { elementoCreacion } from '../../../interfaces/elementoCreacion';
 export class PasoAsignarElementoFormComponent implements AfterViewInit {
 
 
-  constructor(private imagenService: ProcesamientoService, private fb: FormBuilder, private urlService: UrlService, private cdr: ChangeDetectorRef, public messageService : MessageService) { }
+  constructor(private procesadosService: ProcesadosService, private fb: FormBuilder, private urlService: UrlService, private cdr: ChangeDetectorRef, public messageService : MessageService) { }
 
   canvas: fabric.Canvas;
   

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
+import { ProcesadosService } from 'src/app/servicios/procesados/procesados.service';
 import { UrlService } from 'src/app/servicios/url/url.service';
 import { fabric } from 'fabric';
 import { elementos } from 'src/app/interfaces/elementos';
@@ -16,7 +16,7 @@ export class ViewExpositorComponent implements AfterViewInit {
 
  
 
-  constructor(private imagenService: ProcesamientoService, public dialogConfig : DynamicDialogConfig, private urlService: UrlService,) { }
+  constructor(private imagenService: ProcesadosService, public dialogConfig : DynamicDialogConfig, private urlService: UrlService,) { }
 
 
   canvas: fabric.Canvas;

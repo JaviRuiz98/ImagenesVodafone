@@ -278,3 +278,36 @@ export async function getProcesadosByIdAuditoria(req: Request, res: Response) {
   }catch{
   }
 }
+
+export async function getProcesadosAndTiempo(_req: Request, res: Response) {
+  try{
+    const fechas_procesados = await procesadoService.getFechasTodosProcesados();
+
+    const fechas_agrupadas = await agruparPorDia(fechas_procesados);
+
+    res.status(200).json({ fechas_agrupadas });
+  }catch{
+    res.status(500).json({ error: 'No se han podido obtener los procesados realizados a lo largo del tiempo' });
+  }
+}
+
+function formatearFecha(fecha: Date): string {
+  return fecha.toISOString().split('T')[0];
+}
+
+async function agruparPorDia(fechas: {fecha: Date}[]) {
+  const acumulador = fechas.reduce((acc, valorActual) => {
+    const dia = formatearFecha(valorActual.fecha); // Usamos la función formatearFecha aquí
+    acc[dia] = (acc[dia] || 0) + 1;
+    return acc;
+  }, {} as { [key: string]: number });
+
+  // Transforma el acumulador en dos arreglos: uno para fechas y otro para procesados
+  const fechasArr = Object.keys(acumulador);
+  const procesadosArr = Object.values(acumulador);
+
+  return { 
+    fechas: fechasArr, 
+    procesados: procesadosArr 
+  };
+}

@@ -13,7 +13,7 @@ import { PrimeIcons } from 'primeng/api';
 import { PaginatorModule } from 'primeng/paginator';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
 import { ImageModule } from 'primeng/image';
-import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
+import { ProcesadosService } from 'src/app/servicios/procesados/procesados.service';
 import { MessageService } from 'primeng/api';
 import { ConfirmationService, ConfirmEventType } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
@@ -69,7 +69,7 @@ export class PaginadorProcesamientoSubidaComponent {
         {label:'Dislike' ,icon: 'pi pi-thumbs-down', value: 'dislike', styleClass: "optionColorVodafone" }
     ];
 
-    constructor(private localstorage: LocalStorageService, private publicMethodsService: PublicMethodsService, private confirmationService: ConfirmationService, private messageService: MessageService, private procesamientoService: ProcesamientoService) { }
+    constructor(private localstorage: LocalStorageService, private publicMethodsService: PublicMethodsService, private confirmationService: ConfirmationService, private messageService: MessageService, private procesadosService: ProcesadosService) { }
  
     recibirFile(event: {archivo:File}) {
         const imagenAProcesar = event.archivo;

@@ -8,7 +8,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { DialogModule } from 'primeng/dialog';
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ProcesamientoService } from 'src/app/servicios/procesamiento-imagenes/procesamiento-services.service';
+import { ProcesadosService } from 'src/app/servicios/procesados/procesados.service';
 import { GalleriaModule } from 'primeng/galleria';
 import { LocalStorageService } from 'src/app/servicios/local-storage/localStorage.service';
 import { auditoria } from 'src/app/interfaces/auditoria';
@@ -62,7 +62,7 @@ export class VisualizacionProcesadosComponent implements OnInit{
   constructor(
     private LocalStorageService: LocalStorageService,
     private confirmationService: ConfirmationService,
-    private procesamientoService: ProcesamientoService,
+    private procesadosService: ProcesadosService,
     private messageService: MessageService
   ) {}
 
