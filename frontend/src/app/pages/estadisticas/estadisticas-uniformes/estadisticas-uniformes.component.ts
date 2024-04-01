@@ -6,6 +6,17 @@ import { pedidos } from 'src/app/interfaces/pedidos';
 import { carrito } from 'src/app/interfaces/carrito';
 import { productos } from 'src/app/interfaces/productos';
 import { caracteristicas_productos } from 'src/app/interfaces/caracteristicas';
+import { constrainedMemory } from 'process';
+
+
+
+interface estadisticasUniforme {
+  total: number;
+  totalPorTalla: number[]; // suma de talla en la posicion de su respectiva talla 
+
+}
+
+
 
 @Component({
   selector: 'app-estadisticas-uniformes',
@@ -16,10 +27,14 @@ import { caracteristicas_productos } from 'src/app/interfaces/caracteristicas';
 
 
 
+
+
 export class EstadisticasUniformesComponent implements OnInit {
 
-
+ 
   productos_nombres = ['Forro', 'Polo', 'Pantalon', 'Tarjeta', 'Lanyard', 'Lanyard Practicas'];
+
+  estadisticasPorTalla: estadisticasUniforme;
 
   rangeDates: Date[] | undefined;
 
@@ -30,19 +45,33 @@ export class EstadisticasUniformesComponent implements OnInit {
   carritoFiltrado!: carrito[];
 
   productosTodos: productos[] = [];
-  producto: productos; 
+  producto: productos = {
+    id: 0,
+    nombre: '',
+    precio: 0,
+    genero: '',
+    descripcion: '',
+    imagenes: {
+      id_imagen: 0,
+      url: ''
+    },
+    caracteristicas_productos: [],
+
+  }
+  productosPredefinidos: productos[] = [];
 
   productos_filtrados: productos[] = [];
 
   caracteristicas_productos!: caracteristicas_productos[];
 
+  mostrarInfoProducto: boolean = false;
   ///
   data: any;
   dataHombre: number[] = [];
   dataMujer: number[] = [];
   dataUnisex: number[] = [];
   options: any;
-
+  mostrarGrafica: boolean = false;
   documentStyle = getComputedStyle(document.documentElement);
   textColor = this.documentStyle.getPropertyValue('--text-color');
   textColorSecondary = this.documentStyle.getPropertyValue('--text-color-secondary');
@@ -69,16 +98,50 @@ export class EstadisticasUniformesComponent implements OnInit {
 
     this.uniformesService.getProductos().subscribe((productos) => {
       this.productosTodos = productos;
+
     })
 
     this.uniformesService.getCaracteristicas().subscribe((caracteristicas_productos) => {
       this.caracteristicas_productos = caracteristicas_productos;
     })
 
+    this.inicializaProductos();
+    this.inicializaCaracteristicasProducto(); 
   }
 
 
+
+  inicializaProductos() {
+    this.productosPredefinidos = [];
+    this.uniformesService.getProductos().subscribe(
+      (productos: productos[]) => {
+        this.productosPredefinidos = productos;
+      //  this.producto_seleccionado = this.productosTodos[0];
+        this.inicializaCaracteristicasProducto();
+      }
+    );
+
+  }
+ 
+
+  inicializaCaracteristicasProducto() {
+    this.uniformesService.getCaracteristicas().subscribe(
+      (caracteristicas: caracteristicas_productos[]) => {
+        this.caracteristicas_productos = caracteristicas;
+        this.productosPredefinidos.map(producto => {
+          producto.caracteristicas_productos = this.caracteristicas_productos.filter(caracteristica => caracteristica.id_producto === producto.id);
+      
+        })
+      }
+    );
+  }
+
+
+
+
   filtrarPorFecha() {
+    if(this.rangeDates == undefined){return;}
+
     this.pedidosFiltrados = [];
     this.carritoFiltrado = [];
     if (this.rangeDates) {
@@ -122,6 +185,7 @@ export class EstadisticasUniformesComponent implements OnInit {
           if(producto.nombre == this.productos_nombres[i]){
             if(producto.genero == 'Hombre'){
               this.dataHombre[i] += producto.cantidad;
+
             }else if(producto.genero == 'Mujer'){
              this.dataMujer[i] += producto.cantidad; 
             }else if(producto.genero == null){
@@ -158,10 +222,37 @@ export class EstadisticasUniformesComponent implements OnInit {
             }
         ]
       };
-
+      this.mostrarGrafica = true;
     }  
  
   }
+
+  mostrarInfo(nombre: string, genero: string) {
+    this.producto = this.productosPredefinidos.find(producto => (producto.nombre == nombre) && (producto.genero == genero));
+
+    this.estadisticasPorTalla = {
+      total: 0,
+      totalPorTalla: new Array(this.producto.caracteristicas_productos.length).fill(0),
+    }
+
+    this.productos_filtrados.forEach(producto => {
+      if(producto.id == this.producto.id){
+        for(let i = 0; i< this.producto.caracteristicas_productos.length; i++){
+          if(this.producto.caracteristicas_productos[i].talla == producto.caracteristica_seleccionada.talla){
+            this.estadisticasPorTalla.totalPorTalla[i] += producto.cantidad;
+            this.estadisticasPorTalla.total += producto.cantidad;
+          }
+        }
+      
+      
+      }
+
+    })
+
+    console.log(this.estadisticasPorTalla);
+    this.mostrarInfoProducto = true;
+  }
+
 
   ngOnInit(): void {
 

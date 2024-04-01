@@ -20,9 +20,10 @@ import { FormsModule } from '@angular/forms';
 //uniformes
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
-
+import { PanelModule } from 'primeng/panel';
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,9 @@ import { ChartModule } from 'primeng/chart';
     CalendarModule,
     FormsModule,
     CardModule,
-    ChartModule
+    ChartModule,
+    PanelModule,
+    OverlayPanelModule
   ]
 })
 export class EstadisticasModule { }
