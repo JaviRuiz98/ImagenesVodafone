@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit , SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, Input , SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartModule } from 'primeng/chart';
 import { datos_graficas } from 'src/app/interfaces/datos_graficas';
@@ -17,28 +17,32 @@ import { datos_graficas } from 'src/app/interfaces/datos_graficas';
 
 
 
-export class BarraMultiusoComponent implements OnInit  {
+export class BarraMultiusoComponent  {
   @Input() datos: datos_graficas[] = [];
+    @Input() leyenda: string = '';
+
   @Input () backgroundColor = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.2)`;
   @Input () borderColor = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 1)`;
   basicData: any;
   basicOptions: any;
 
-  ngOnInit() {
+  ngOnChanges() {
       this.prepararDatosGrafica();
+
+      console.log('datos', this.datos);
   }
 
   prepararDatosGrafica() {
       const labels = this.datos.map(dato => dato.etiqueta);
       const data = this.datos.map(dato => dato.valor);
-      const backgroundColors = this.datos.map(dato => dato.color || 'rgba(0, 0, 0, 0.1)'); // Proporciona un color predeterminado si no se especifica
-      const borderColor = this.datos.map(dato => dato.color || 'rgb(0, 0, 0)'); // Proporciona un color predeterminado si no se especifica
+      const backgroundColors = this.datos.map(dato => dato.color || 'rgba(0, 0, 255, 0.1)'); // Proporciona un color predeterminado si no se especifica
+      const borderColor = this.datos.map(dato => dato.color || 'rgb(0, 0, 255)'); // Proporciona un color predeterminado si no se especifica
 
       this.basicData = {
           labels,
           datasets: [
               {
-                  label: 'Data',
+                  label: this.leyenda,
                   data,
                   backgroundColor: backgroundColors,
                   borderColor,

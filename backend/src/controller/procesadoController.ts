@@ -280,13 +280,11 @@ export async function getProcesadosByIdAuditoria(req: Request, res: Response) {
 }
 
 export async function getProcesadosAndTiempo(_req: Request, res: Response) {
-  try{
+  try {
     const fechas_procesados = await procesadoService.getFechasTodosProcesados();
-
-    const fechas_agrupadas = await agruparPorDia(fechas_procesados);
-
-    res.status(200).json({ fechas_agrupadas });
-  }catch{
+    const resultadoAgrupado = await agruparPorDia(fechas_procesados);
+    res.status(200).json(resultadoAgrupado);
+  } catch {
     res.status(500).json({ error: 'No se han podido obtener los procesados realizados a lo largo del tiempo' });
   }
 }
@@ -295,19 +293,41 @@ function formatearFecha(fecha: Date): string {
   return fecha.toISOString().split('T')[0];
 }
 
-async function agruparPorDia(fechas: {fecha: Date}[]) {
-  const acumulador = fechas.reduce((acc, valorActual) => {
-    const dia = formatearFecha(valorActual.fecha); // Usamos la función formatearFecha aquí
-    acc[dia] = (acc[dia] || 0) + 1;
-    return acc;
-  }, {} as { [key: string]: number });
+function agregarDia(fecha: Date): Date {
+  const nuevaFecha = new Date(fecha);
+  nuevaFecha.setDate(fecha.getDate() + 1);
+  return nuevaFecha;
+}
 
-  // Transforma el acumulador en dos arreglos: uno para fechas y otro para procesados
-  const fechasArr = Object.keys(acumulador);
-  const procesadosArr = Object.values(acumulador);
+function sonFechasIguales(fecha1: Date, fecha2: Date): boolean {
+  return formatearFecha(fecha1) === formatearFecha(fecha2);
+}
 
-  return { 
-    fechas: fechasArr, 
-    procesados: procesadosArr 
+async function agruparPorDia(fechas: {fecha: Date}[]): Promise<{fechas: string[], procesados: number[]}> {
+  // Asegura que las fechas estén en formato UTC para comparaciones consistentes
+  const fechasFormat = fechas.map(f => formatearFecha(f.fecha));
+  const fechaMin = new Date(Math.min(...fechas.map(f => f.fecha.getTime())));
+  const fechaMax = new Date(Math.max(...fechas.map(f => f.fecha.getTime())));
+  let fechaActual = new Date(fechaMin);
+  const fechasRango: { [fecha: string]: number } = {};
+
+  while (fechaActual <= fechaMax || sonFechasIguales(fechaActual, fechaMax)) {
+    const fechaStr = formatearFecha(fechaActual);
+    fechasRango[fechaStr] = 0;
+    fechaActual = agregarDia(fechaActual);
+  }
+
+  fechasFormat.forEach(fecha => {
+    if (fecha in fechasRango) {
+      fechasRango[fecha] += 1;
+    }
+  });
+
+  const fechasArr = Object.keys(fechasRango);
+  const procesadosArr = Object.values(fechasRango);
+
+  return {
+    fechas: fechasArr,
+    procesados: procesadosArr
   };
 }

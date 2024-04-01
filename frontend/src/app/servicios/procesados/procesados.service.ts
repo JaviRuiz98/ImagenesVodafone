@@ -53,5 +53,9 @@ export class ProcesadosService {
         })
       );
   }
+
+  getProcesadosAndTiempo(): Observable<any> {
+    return this.http.get<any>(`${this.API_URI}/estadisticas/procesados_and_tiempo`);
+  }
   
 }
