@@ -17,15 +17,14 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FormsModule } from '@angular/forms';
-
-
-//uniformes
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { OverlayPanelModule } from 'primeng/overlaypanel';//uniformes
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
-
+import { IrArribaComponent } from 'src/app/componentes/ir-arriba/ir-arriba.component';
 @NgModule({
   declarations: [
     EstadisticasComponent,
@@ -53,7 +52,12 @@ import { ChartModule } from 'primeng/chart';
     CalendarModule,
     FormsModule,
     CardModule,
-    ChartModule
+    ChartModule,
+    SelectButtonModule,
+    OverlayPanelModule,
+    IrArribaComponent
+    
+    
   ]
 })
 export class EstadisticasModule { }

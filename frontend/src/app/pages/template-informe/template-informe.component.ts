@@ -27,7 +27,8 @@ import { SuperPieComponent } from 'src/app/componentes/_grafica/super-pie/super-
     ChartModule,
     TagModule,
     CommonModule,
-    SuperPieComponent
+    SuperPieComponent,
+    
   ],
 })
 export class TemplateInformeComponent implements OnInit {
