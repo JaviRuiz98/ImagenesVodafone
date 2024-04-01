@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { SuperPieComponent } from 'src/app/componentes/_grafica/super-pie/super-pie.component';
 import { TableModule } from 'primeng/table';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
@@ -7,6 +7,9 @@ import { TagModule } from 'primeng/tag';
 import { elementos } from 'src/app/interfaces/elementos';
 import { EstadisticasMethodsService } from 'src/app/shared/estadisticas/estadisticas-methods.service';
 import { datos_graficas } from 'src/app/interfaces/datos_graficas';
+import { CommonModule } from '@angular/common';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 
 @Component({
   selector: 'app-procesados-detalles',
@@ -16,22 +19,35 @@ import { datos_graficas } from 'src/app/interfaces/datos_graficas';
   imports: [
     SuperPieComponent,
     TableModule,
-    TagModule
+    TagModule,
+    CommonModule
   ],
 })
-export class ProcesadosDetallesComponent {
+export class ProcesadosDetallesComponent  implements OnInit {
 
   
-  constructor(    public publicMedhodsService: PublicMethodsService,
+  constructor(  
+    public dialogConfig : DynamicDialogConfig,
+    public publicMedhodsService: PublicMethodsService,
     public estadisticasMethods: EstadisticasMethodsService,
     private urlService: UrlService,) { }
+ 
+
 
     url_imagenes_procesadas: string = this.urlService.url_imagenes_procesadas;
     url_imagenes_referencia: string = this.urlService.url_imagenes_referencia;
-    @Input() elementoProcesados: elementos;
-    @Input () datos_graficas: datos_graficas[];
+    elemento?: elementos;
+    procesados: procesados_imagenes[] = [];
+    datos_graficas?: datos_graficas[];
  
- 
+    ngOnInit(): void {
+
+      this.elemento = this.dialogConfig.data.elemento;
+       console.log('elemento', this.elemento);
+      this.procesados = this.elemento.procesados_imagenes;
+      console.log('procesados', this.procesados);
+      this.datos_graficas = this.dialogConfig.data.datos_graficas;
+    }
   
   getSeverityCartel(procesado: string): string {
     return this.publicMedhodsService.getSeverityCartel(procesado);

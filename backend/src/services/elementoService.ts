@@ -127,6 +127,33 @@ export const elementosService = {
         }
       },
 
+      async getProcesados ( id_elemento: number) {
+        try{
+          return await db.elementos.findFirst({
+            where: {
+              id: id_elemento
+            },
+            include: {
+              imagenes: true,
+              pertenencia_elementos_auditoria: {
+                include: {
+                  procesados_imagenes: {
+                    include: {
+                      imagenes: true,
+                      prompts: true,
+                      probabilidades_respuesta_carteles:true
+                    }
+                  }
+                }
+              }
+            }
+          });
+        }catch(error){
+          console.log(error)
+          throw error;
+        }
+      },
+
       //ide auditoria -> objeto pertenencia_elemento_auditoria
 
       async peaByIdAuditoria(id_elemento_auditoria: number): Promise<pertenencia_elementos_auditoria | null>{

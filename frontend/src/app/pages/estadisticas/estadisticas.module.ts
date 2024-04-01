@@ -18,13 +18,16 @@ import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FormsModule } from '@angular/forms';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { OverlayPanelModule } from 'primeng/overlaypanel';//uniformes
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
+//uniformes
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
 import { IrArribaComponent } from 'src/app/componentes/ir-arriba/ir-arriba.component';
+import { ProcesadosDetallesComponent } from 'src/app/componentes/procesados-detalles/procesados-detalles.component';
 @NgModule({
   declarations: [
     EstadisticasComponent,
@@ -55,7 +58,9 @@ import { IrArribaComponent } from 'src/app/componentes/ir-arriba/ir-arriba.compo
     ChartModule,
     SelectButtonModule,
     OverlayPanelModule,
-    IrArribaComponent
+    IrArribaComponent,
+    ProcesadosDetallesComponent,
+    DynamicDialogModule
     
     
   ]

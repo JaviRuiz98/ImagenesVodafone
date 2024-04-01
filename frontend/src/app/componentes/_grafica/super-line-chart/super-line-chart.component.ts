@@ -66,7 +66,7 @@ export class SuperLineChartComponent implements OnInit {
 
     if (this.data_grafica.length > 0) {
       let labels: string[] = this.data_grafica.map((data) => {
-        if (this.todosValores2SonDistintosDeNullYFecha([data])) { // Asegúrate de que esta función es accesible y corrige según sea necesario.
+        if (this.todosValores2SonDistintosDeNullYFecha([data])) { 
           return format(new Date(data.valor2), 'MMMM - yyyy');
         } else {
           return data.etiqueta.toString();

@@ -1,12 +1,10 @@
-<h1> 
-    Procesados del elemento {{elementoProcesados.nombre}}
-</h1>
+
 <div style="justify-content: center; display: flex; margin-top: 10%">
   <h3>Resumen resultados:</h3>
-  <app-super-pie [datos_graficas]="this.datos_graficas"></app-super-pie>
+  <app-super-pie [datos_graficas]="datos_graficas"></app-super-pie>
 </div>
 
-<p-table [value]="elementoProcesados.procesados_imagenes">
+<p-table [value]="procesados">
   <ng-template pTemplate="header">
       <tr>
           <th>Imagen Referencia</th>
@@ -14,12 +12,17 @@
           <th>Detalles</th>
       </tr>
   </ng-template>
+  <ng-template pTemplate="emptymessage">
+      <tr>
+          <td colspan="3">No hay elementos</td>
+    </tr>
+    </ng-template>
   <ng-template pTemplate="body" let-procesado>
       <tr>
           <td>
               <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block mx-auto border-round" 
-                      [src]="url_imagenes_referencia + elementoProcesados.imagenes.url" 
-                      [alt]="elementoProcesados.imagenes.url" />
+                      [src]="url_imagenes_referencia + elemento.imagenes.url" 
+                      [alt]="elemento.imagenes.url" />
           </td>
           <td>
               <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block mx-auto border-round" 

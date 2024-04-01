@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { ProcesadosDetallesComponent } from 'src/app/componentes/procesados-detalles/procesados-detalles.component';
 import { datos_graficas } from 'src/app/interfaces/datos_graficas';
 import { elementos } from 'src/app/interfaces/elementos';
 import { estadisticas_carteles, estadisticas_conteo_dispositivos, resultados_ordenados, resultados_ordenados_elementos } from 'src/app/interfaces/resultados_ordenados';
@@ -84,6 +85,36 @@ export class EstadisticasMueblesComponent implements OnInit  {
 
  getImagenElementoUri(elemento: elementos) {
   return this.urlService.url_imagenes_referencia + elemento.imagenes.url;
+ }
+
+ openInfo(elemento: elementos) {
+  const categoria: "carteles" | "conteoDispositivos" = elemento.categorias_elementos.id === 1 ? "carteles" : "conteoDispositivos";
+  const id_elemento:number = elemento.id
+
+  this.elementosService.getElementoWithProcesadosById(id_elemento).subscribe((elementoConProcesados: elementos) => {
+
+    
+    this.elementosService.getEstadisticasRespuestasById(id_elemento).subscribe((resutlados: resultados_ordenados) => {
+      const datos:datos_graficas[] = this.estadisticasMethods.mapearEstadisticasResultados(resutlados, categoria, true);
+
+
+      this.ref = this.dialogService.open(ProcesadosDetallesComponent, {
+         header: `Proesado del elemento ${elemento.nombre}`,
+        width: '70%',
+        contentStyle: {"max-height": "500px", "overflow": "auto"},
+        baseZIndex: 10000,
+        data: {
+          elemento: elementoConProcesados,
+          datos_graficas: datos
+        }
+    
+      });
+
+    });
+
+   
+  });
+ 
  }
 
 

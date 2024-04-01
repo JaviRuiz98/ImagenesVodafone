@@ -6,11 +6,13 @@ import { elementosConProcesados } from "../interfaces/mueble/expositoresProcesad
 import {
     getNumeroProbabilidadCartel,
     getNumeroProbabilidadConteo,
+    getResumenEstadisticas,
     getResumenEstadisticasConElementos,
 } from "../utils/funcionesCompartidasController";
 import {
     estadisticas_carteles,
     estadisticas_conteo_dispositivos,
+    resultados_ordenados,
     resultados_ordenados_elementos,
 } from "../interfaces/estadisticas/resultados_ordenados";
 import { elementos } from "@prisma/client";
@@ -177,14 +179,18 @@ export async function getCategorias_elementos(_req: Request, res: Response) {
     }
 }
 
-// export async function getProcesados(_req: Request, res: Response) {
-//     try {
-//         const procesados = await elementosService.getProcesados();
-//         res.status(200).json(procesados);
-//     } catch (error) {
-//         res.status(500).json({ error: "Error interno del servidor" });
-//     }
-// }
+export async function getProcesados(req: Request, res: Response) {
+    try {
+        const id_elemento =  req.params.id
+        const elemento = await elementosService.getProcesados(parseInt(id_elemento));
+        const elementosConProcesados: elementosConProcesados[] =
+            mapearElementosConProcesados([elemento]);
+            
+        res.status(200).json(elementosConProcesados[0]);
+    } catch (error) {
+        res.status(500).json({ error: "Error interno del servidor" });
+    }
+}
 
 //ESTADÍSTICAS
 
@@ -200,6 +206,26 @@ export async function getResumenEstadisticasElementos(
         const resultados_ordenados: resultados_ordenados_elementos =
             getResumenEstadisticasConElementos(elementosConProcesados);
         res.status(200).json(resultados_ordenados);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Error interno del servidor" });
+    }
+}
+
+export async function getEstadisticasResumen(req : Request, res: Response) {
+    try {
+        const id = req.params.id
+        //hacer en validador
+        if (isNaN(parseInt(id)) || parseInt(id) <= 0) {
+            res.status(400).json({ error: "id debe ser un numero positivo" });
+            return;
+        }
+        const elemento = await elementosService.getProcesados(parseInt(id));
+        const elementoConProcesados: elementosConProcesados[] = mapearElementosConProcesados([elemento]);
+
+        const resumen:resultados_ordenados = getResumenEstadisticas(elementoConProcesados[0].procesados_imagenes);
+        
+        res.status(200).json(resumen);
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: "Error interno del servidor" });
