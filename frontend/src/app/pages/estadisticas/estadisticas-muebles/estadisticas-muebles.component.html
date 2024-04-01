@@ -62,7 +62,7 @@
         </div>        
         <div class="card" *ngIf ="tableStateValue==='cartel'; else conteo">
             <div *ngIf ="estadisticasCartel.length > 0; else cargando">
-                <p-table [value]="estadisticasCartel" [tableStyle]="{ 'min-width': '50rem' }">
+                <p-table [value]="estadisticasCartel" [tableStyle]="{ 'min-width': '50rem' }"   [scrollable]="true" [scrollHeight]="'calc(100vh - 204px)'">
                     <ng-template pTemplate="header">
                         <tr>
                             <th>Nombre</th>
@@ -80,22 +80,57 @@
                     </ng-template>
                     <ng-template pTemplate="body" let-cartel>
                         <tr>
-                            <td>{{ cartel.elemento.nombre }}</td>
-                            <td> 
-                                
+                            <td >{{ cartel.elemento.nombre }}</td>
+                            <td [style]="{'width':'50px'}"> 
                                 <img [src]=" getImagenElementoUri(cartel.elemento)" height="200vh"
-                                    [alt]="'No disponible'" class="imagenDestacada"
+                                    [alt]="'No disponible'" 
                                 />
-                            
-                            
+                        
                             </td>
-                            <td>{{ cartel.muy_alta }}</td>
-                            <td>{{ cartel.alta }}</td>
-                            <td>{{ cartel.media }}</td>
-                            <td>{{ cartel.baja }}</td>
-                            <td>{{ cartel.muy_baja }}</td>
-                            <td>{{ cartel.ninguna }}</td>
-                            <td>{{ cartel.otro_idioma }}</td>
+                            <td>
+                                <div class ="flex justify-content-center align-items-center">
+                                    {{cartel.muy_alta}}
+                                    <app-estadistica_unica_respuesta  class ="m-2" [color]="'green'" [valor]="(cartel.muy_alta/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta>
+                                </div>
+                              
+                            </td>
+                            <td>
+                                <div class="flex justify-content-center align-items-center">
+                                  {{cartel.alta}}
+                                  <app-estadistica_unica_respuesta class="m-2" [color]="'blue'" [valor]="(cartel.alta/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta>
+                                </div>
+                              </td>
+                              <td>
+                                <div class="flex justify-content-center align-items-center">
+                                  {{cartel.media}}
+                                  <app-estadistica_unica_respuesta class="m-2" [color]="'yellow'" [valor]="(cartel.media/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta>
+                                </div>
+                              </td>
+                              <td>
+                                <div class="flex justify-content-center align-items-center">
+                                  {{cartel.baja}}
+                                  <app-estadistica_unica_respuesta class="m-2" [color]="'orange'" [valor]="(cartel.baja/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta>
+                                </div>
+                              </td>
+                              <td>
+                                <div class="flex justify-content-center align-items-center">
+                                  {{cartel.muy_baja}}
+                                  <app-estadistica_unica_respuesta class="m-2" [color]="'pink'" [valor]="(cartel.muy_baja/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta>
+                                </div>
+                              </td>
+                              <td>
+                                <div class="flex justify-content-center align-items-center">
+                                  {{cartel.ninguna}}
+                                  <app-estadistica_unica_respuesta class="m-2" [color]="'red'" [valor]="(cartel.ninguna/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta>
+                                </div>
+                              </td>
+                              <td>
+                                <div class="flex justify-content-center align-items-center">
+                                  {{cartel.otro_idioma}}
+                                  <app-estadistica_unica_respuesta class="m-2" [color]="'purple'" [valor]="(cartel.otro_idioma/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta>
+                                </div>
+                              </td>
+                              
                             <td>{{ getTotalCarteles(cartel) }}</td>
                             <td> <p-button label="Ver más"  severity="danger" [text]="true" [raised]="true" (onClick)="openInfo(cartel.elemento)" [rounded]="true"  ></p-button> </td>
 
@@ -108,7 +143,7 @@
 
         <ng-template #conteo>
             <div class="card" *ngIf ="estadisticasConteo.length > 0; else cargando">
-                <p-table [value]="estadisticasConteo" [tableStyle]="{ 'min-width': '50rem' }">
+                <p-table [value]="estadisticasConteo" [tableStyle]="{ 'min-width': '50rem' }"  [scrollable]="true" [scrollHeight]="'calc(100vh - 204px)'">
                     <ng-template pTemplate="header">
                         <tr>
                             <th>Nombre</th>

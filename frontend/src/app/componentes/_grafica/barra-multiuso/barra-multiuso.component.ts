@@ -10,7 +10,8 @@ import { datos_graficas } from 'src/app/interfaces/datos_graficas';
   styleUrls: ['./barra-multiuso.component.css'],
   standalone: true,
   imports: [ 
-    ChartModule
+    ChartModule,
+    CommonModule
   ]
 })
 
@@ -21,6 +22,10 @@ export class BarraMultiusoComponent implements OnInit  {
   @Input() datos: datos_graficas[] = [];
   @Input () backgroundColor = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.2)`;
   @Input () borderColor = `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 1)`;
+  @Input () showInfo: boolean = true;
+  @Input () barThicknes?: number; 
+  @Input () width?: string;
+
   basicData: any;
   basicOptions: any;
 
@@ -42,7 +47,8 @@ export class BarraMultiusoComponent implements OnInit  {
                   data,
                   backgroundColor: backgroundColors,
                   borderColor,
-                  borderWidth: 1
+                  borderWidth: 1,
+                  barThickness: this.barThicknes
               }
           ]
       };
@@ -57,8 +63,12 @@ export class BarraMultiusoComponent implements OnInit  {
       const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
       this.basicOptions = {
+        responsive: true,
+
           plugins: {
               legend: {
+                display: this.showInfo, 
+
                   labels: {
                       color: textColor
                   }
@@ -66,6 +76,7 @@ export class BarraMultiusoComponent implements OnInit  {
           },
           scales: {
               y: {
+                display: this.showInfo, 
                   beginAtZero: true,
                   ticks: {
                       color: textColorSecondary
@@ -76,6 +87,7 @@ export class BarraMultiusoComponent implements OnInit  {
                   }
               },
               x: {
+                display: this.showInfo, 
                   ticks: {
                       color: textColorSecondary
                   },

@@ -26,8 +26,8 @@ import { CalendarModule } from 'primeng/calendar';
 
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
-import { IrArribaComponent } from 'src/app/componentes/ir-arriba/ir-arriba.component';
 import { ProcesadosDetallesComponent } from 'src/app/componentes/procesados-detalles/procesados-detalles.component';
+import { EstadisticaUnicaRespuestaComponent } from './estadisticas-muebles/estadistica_unica_respuesta/estadistica_unica_respuesta.component';
 @NgModule({
   declarations: [
     EstadisticasComponent,
@@ -58,8 +58,9 @@ import { ProcesadosDetallesComponent } from 'src/app/componentes/procesados-deta
     ChartModule,
     SelectButtonModule,
     OverlayPanelModule,
-    IrArribaComponent,
+    EstadisticaUnicaRespuestaComponent,
     ProcesadosDetallesComponent,
+
     DynamicDialogModule
     
     

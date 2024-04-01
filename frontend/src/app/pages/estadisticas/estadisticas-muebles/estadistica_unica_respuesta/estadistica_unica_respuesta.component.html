@@ -1,0 +1,5 @@
+<!-- estadistica_unica_respuesta.component.html -->
+<div *ngIf ="valor > 0" class="progress-bar-vertical-container" (mouseenter)="showTooltip = true" (mouseleave)="showTooltip = false">
+  <div class="progress-bar-fill" [ngStyle]="{'height': valor + '%', 'background-color': color}"></div>
+  <div class="progress-tooltip" *ngIf="showTooltip">{{valor}}%</div>
+</div>
