@@ -224,6 +224,39 @@ export const elementosService = {
         }
       },
 
+      async  getNumProcesadosByCategoria(categoria_id: number): Promise<number> {
+        try {
+          // Primero, recuperamos todos los elementos que coinciden con los criterios
+          const elementos = await db.elementos.findMany({
+            where: {
+              activo: true,
+              id_categoria: categoria_id
+            },
+            include: {
+              pertenencia_elementos_auditoria:{
+                include: {
+                  procesados_imagenes: true
+                }
+              }
+            }
+          });
+      
+          // Luego, para cada elemento, contamos las imágenes procesadas
+          let totalProcesados = 0;
+          for (const elemento of elementos) {
+            for (const pertenencia of elemento.pertenencia_elementos_auditoria) {
+          
+              totalProcesados += pertenencia.procesados_imagenes.length;
+            }
+          }
+      
+          return totalProcesados;
+        } catch (error) {
+          console.error('Error al obtener el total de procesados por categoría:', error);
+          throw error;  
+        }
+      }
+      
     
      
 

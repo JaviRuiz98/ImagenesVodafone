@@ -45,7 +45,7 @@
     <div class="col-4">
         <!-- <div *ngIf ="estadisticas_resultados_conteo.length > 0; else cargando"> -->
             <p-overlayPanel #infoDispositivosGeneral>
-                Diferencia entre dispositivos esperados y encontrados más común al procesar cada elemento
+                Diferencia entre dispositivos esperados y encontrados más comunes al procesar cada elemento
             </p-overlayPanel>
             <h3>Modelos (conteo de dispositivos) <span class="pi pi-info-circle text-xl" (click)="infoDispositivosGeneral.toggle($event)" style ="cursor: pointer; color:grey"></span></h3>
 
@@ -59,16 +59,16 @@
     <div class="col-2">
         <div class="flex flex-column">
             <div>
-                <span class=" font-bold" style="align-self: end;">  Nº de procesados totales: 100</span>
+                <span class=" font-bold" style="align-self: end;">  Nº de procesados totales: {{numProcesadosCategoria.carteles+numProcesadosCategoria.conteo_dispositivos}}</span>
             </div>
                 <!-- <p-divider layout="horizontal"  ></p-divider> -->
             <div>
-                <span class=" font-bold" style="align-self: end;">  Nº de procesados de conteo: 30</span>
+                <span class=" font-bold" style="align-self: end;">  Nº de procesados de conteo: {{numProcesadosCategoria.conteo_dispositivos}}</span>
             </div>
             <!-- <p-divider layout="horizontal"  ></p-divider> -->
             
             <div>
-                <span class=" font-bold" style="align-self: end;">  Nº de procesados de carteles: 70</span>
+                <span class=" font-bold" style="align-self: end;">  Nº de procesados de carteles: {{numProcesadosCategoria.carteles}}</span>
             </div>
         </div>
     </div>

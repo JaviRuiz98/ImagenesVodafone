@@ -76,6 +76,10 @@ export class ElementosService {
   getEstadisticasRespuestasById(id_elemento: number): Observable<resultados_ordenados>{
     return this.http.get<resultados_ordenados>(`${this.API_URI}/estadisticas/elementos/${id_elemento}`);
   }
+
+  getNumProcesadosByCategoria(): Observable<{conteo_dispositivos: number, carteles: number}> {
+    return this.http.get<{conteo_dispositivos: number, carteles: number}>(`${this.API_URI}/estadisticas/categorias`);
+  }
   
   
 

@@ -28,6 +28,7 @@ export class EstadisticasMueblesComponent implements OnInit  {
 
  estadisticasCartel: estadisticas_carteles[] = [];
  estadisticasConteo: estadisticas_conteo_dispositivos[] = [];
+ numProcesadosCategoria: {conteo_dispositivos: number, carteles: number} = {conteo_dispositivos: 0, carteles: 0};
 
  tableStateOptions =  [{label: 'Carteles', value: 'cartel'}, {label: 'Conteo de dispositivos', value: 'dispositivo'}];
  tableStateValue = 'cartel';
@@ -47,10 +48,20 @@ export class EstadisticasMueblesComponent implements OnInit  {
       
       this.initCarteles();
       this.initConteoDispositivos();
+      this.initNumProcesadosCategoria ();
 
 
     });
  }
+
+ initNumProcesadosCategoria() {
+  this.elementosService.getNumProcesadosByCategoria().subscribe(
+    (numProcesados: {conteo_dispositivos: number, carteles: number}) => {
+      this.numProcesadosCategoria = numProcesados;
+    }
+  )
+
+  }
 
  initCarteles() {
   this.elementosService.getEstadisticasCarteles().subscribe(

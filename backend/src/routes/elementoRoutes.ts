@@ -1,8 +1,9 @@
 import express, { Router } from 'express';
 import {  uploadImagenRepresentativa } from '../config/multer';
-import {  deleteElemento, guardarElemento,editarEstadoElemento,getRegionesDisponibles, getCategorias_elementos, getResumenEstadisticasElementos, getElementosEstadisticas, getProcesados, getEstadisticasResumen } from '../controller/elementoController';
+import {  deleteElemento, guardarElemento,editarEstadoElemento,getRegionesDisponibles, getCategorias_elementos } from '../controller/elementoController';
 import { uploadFileToFtp } from '../config/ftpUpload'; 
 import { getElementos, getElementosActivos } from '../controller/elementoController';
+import { getElementosEstadisticas, getEstadisticasResumen, getNumProcesadosByCategoria, getProcesados, getResumenEstadisticasElementos } from '../controller/elementoEstadisticasController';
 
 const router: Router = express.Router();
 
@@ -22,4 +23,5 @@ router.get('/estadisticas/elementos', getResumenEstadisticasElementos );
 router.get ('/estadisticas/elementos/:id',getEstadisticasResumen);
 router.get('/estadisticas/carteles',getElementosEstadisticas('carteles'));
 router.get('/estadisticas/dispositivos',getElementosEstadisticas('conteo'));
+router.get('/estadisticas/categorias', getNumProcesadosByCategoria);
 export default router;
