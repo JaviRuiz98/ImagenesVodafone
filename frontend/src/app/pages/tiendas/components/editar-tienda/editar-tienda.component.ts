@@ -92,7 +92,9 @@ export class EditarTiendaComponent implements OnInit {
         ...this.tiendaSelected, 
         archivo_imagen: this.archivoSeleccionadoImagen
       }
-      this.TiendasService.editarTienda(tienda, this.listaMueblesAsignadosTablaDerecha).subscribe((response: any) => {
+      //debo borrar el plano en caso de que exista una imagen plano y la seleccionada actualmente sea null
+      const borrarPlano: boolean = this.archivoSeleccionadoImagen == null && this.tiendaSelected.imagen_plano != null;
+      this.TiendasService.editarTienda(tienda, this.listaMueblesAsignadosTablaDerecha, borrarPlano).subscribe((response: any) => {
         this.verFormularioEditarTienda = false;
         this.actualizarListadoTiendasChange.emit();
       })

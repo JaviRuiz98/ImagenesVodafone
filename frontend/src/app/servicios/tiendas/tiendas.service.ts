@@ -28,10 +28,13 @@ export class TiendasService {
     return this.http.post<boolean>(`${this.API_URI}/tiendas`, formData);
   }
 
-  editarTienda(tienda: tiendaCreacion, listaNuevosMuebles: muebles[]): Observable<boolean> {
+  editarTienda(tienda: tiendaCreacion, listaNuevosMuebles: muebles[], borrarPlano?:boolean): Observable<boolean> {
     const formData = new FormData();
     formData.append('listaNuevosMuebles', JSON.stringify(listaNuevosMuebles));
     formData.append('imagenesPlanos', tienda.archivo_imagen);
+    if (borrarPlano) {
+      formData.append('borrarPlano', borrarPlano.toString());
+    }
     return this.http.put<boolean>(`${this.API_URI}/tiendas/` + tienda.id, formData);
   }
   activarDesactivarTienda(tienda: tienda, parametro: string): Observable<tienda> {

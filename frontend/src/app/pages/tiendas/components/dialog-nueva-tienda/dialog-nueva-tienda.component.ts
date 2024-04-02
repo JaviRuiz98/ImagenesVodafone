@@ -105,11 +105,7 @@ export class DialogNuevaTiendaComponent{
           this.actualizarListadoTiendasChange.emit();
           this.verFormularioNuevaTienda = false;
         })
-      } else{
-        this.TiendasService.editarTienda(this.nuevaTienda, this.listaMueblesNuevaTienda).subscribe((response: any) => {
-          this.verFormularioNuevaTienda = false;
-        })
-      }
+      } 
     }
   }
   ordenarListaAlfabeticamente(lista: any[], campo: string) {
