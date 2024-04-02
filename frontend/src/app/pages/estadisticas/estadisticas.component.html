@@ -1,7 +1,15 @@
 
 <div class="menubar-container">
     <p-menubar [model]="apartados" >
-        
+        <p-calendar 
+            [(ngModel)]="periodo_fechas" 
+            view="month" 
+            dateFormat="mm/yy" 
+            [readonlyInput]="true"
+            selectionMode="range"
+            [showIcon]="true"
+            (onSelect)="filtrarPorFecha()">
+        </p-calendar>
     </p-menubar>
 </div>
 
