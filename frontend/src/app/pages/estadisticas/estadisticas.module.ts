@@ -27,6 +27,8 @@ import { CalendarModule } from 'primeng/calendar';
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
 import { ProcesadosDetallesComponent } from 'src/app/componentes/procesados-detalles/procesados-detalles.component';
+import { StackedBarComponent } from 'src/app/componentes/_grafica/stacked-bar/stacked-bar.component';
+
 @NgModule({
   declarations: [
     EstadisticasComponent,
@@ -59,9 +61,8 @@ import { ProcesadosDetallesComponent } from 'src/app/componentes/procesados-deta
     OverlayPanelModule,
     ProcesadosDetallesComponent,
 
-    DynamicDialogModule
-    
-    
+    DynamicDialogModule,
+    StackedBarComponent
   ]
 })
 export class EstadisticasModule { }

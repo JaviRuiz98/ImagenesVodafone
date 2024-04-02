@@ -1,9 +1,11 @@
 <div style="display: flex;">
-    <div>
-        <h3>Procesados realizados:</h3>
-        <app-barra-multiuso [datos]="estadisticas_procesados"></app-barra-multiuso>
-    </div>
     <div style="height: 600px; width: 600px">
+        <h3>Auditorias creadas y terminadas:</h3>
+        <app-stacked-bar [datos]="estadisticas_movimientos_auditoria"></app-stacked-bar>
+        <h3>Procesados realizados:</h3>
+        <app-barra-multiuso [datos]="estadisticas_procesados_diarios" [leyenda]="'Num. procesados'"></app-barra-multiuso>
+    </div>
+    <div style="height: 600px; width: 600px; margin-left: 20px">
         <h3>Estados de auditoría:</h3>
         <app-super-donut [datos_graficas]="estadisticas_estados_auditoria"></app-super-donut>
         <h3>Porcentaje procesados realizados en cada estado:</h3>

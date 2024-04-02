@@ -4,6 +4,7 @@ import { getNumberArrayProgresoAuditoria } from './auditoriaController';
 import { createPDF } from '../config/informeGenerator';
 import { sendEmail } from '../services/emailService';
 import { cifrarDatos, descifrarDatos } from '../config/crypt';
+import { elementosAuditoriaService } from '../services/elementosAuditoriaService';
 
 export async function  generarInformeAuditoria(req: Request, res: Response) {
     try {
@@ -61,10 +62,10 @@ export async function getDatosInformeAuditoria (req: Request, res: Response): Pr
 
         const [auditoria, num_expositores, num_expositores_procesados, datos_barra_progreso, procesados_auditoria] = await Promise.all([
             auditoriaService.getAuditoriaAndTienda(id_auditoria),
-            auditoriaService.getNumExpositoresByAuditoria(id_auditoria),
-            auditoriaService.getNumExpositoresProcesadosByAuditoria(id_auditoria),
+            elementosAuditoriaService.getNumExpositoresByAuditoria(id_auditoria),
+            elementosAuditoriaService.getNumExpositoresProcesadosByAuditoria(id_auditoria),
             getNumberArrayProgresoAuditoria(id_auditoria),
-            auditoriaService.getProcesadosByIdAuditoria(id_auditoria)
+            elementosAuditoriaService.getProcesadosByIdAuditoria(id_auditoria)
         ]);
     
         const auditoria_extended: any = {

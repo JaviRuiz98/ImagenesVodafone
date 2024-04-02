@@ -1,16 +1,17 @@
 import { Request, Response } from 'express';
+
 import { auditoriaService } from '../services/auditoriaService';
-import { auditoria_extended } from '../interfaces/auditoriaExtended';
-import { auditorias, procesados_imagenes } from '@prisma/client';
+import { elementosAuditoriaService } from '../services/elementosAuditoriaService';
 import { tiendaService } from '../services/tiendasServices';
-import { muebleConElementos} from '../interfaces/mueble/muebleConElementos';
-import { per_ele_aud_extended } from '../interfaces/perEleAudExtended';
 import { muebleService } from "../services/muebleService";
+
+
+import { auditorias } from '@prisma/client';
+
+import { auditoria_extended } from '../interfaces/auditoriaExtended';
+import { per_ele_aud_extended } from '../interfaces/perEleAudExtended';
 import { estados_extended } from '../interfaces/estadosExtended';
-import { resultados_ordenados } from '../interfaces/estadisticas/resultados_ordenados';
-import { getResumenEstadisticas } from '../utils/funcionesCompartidasController';
-import { cuenta_no_procesados } from '../interfaces/procesados/cuenta_no_procesados';
-import { conteo_elementos_procesados_auditoria } from '../interfaces/auditoria/conteoElementosProcesadosAuditoria';
+import { conteo_movimientos_auditoria } from '../interfaces/auditoria/conteoMovimientosAuditoria';
 
 export async function getAuditorias(req: Request, res: Response) {
     try {
@@ -38,27 +39,11 @@ export async function getAuditorias(req: Request, res: Response) {
     }
 }
 
-export async function getAuditoriaById(req: Request, res: Response) {
-    try {
-        const id_auditoria = parseInt(req.params.id_auditoria);
-        const auditoria: auditorias | null = await auditoriaService.getAuditoriaById(id_auditoria);
-        let auditoria_extended: auditoria_extended | null;
-
-        if(auditoria) {           
-            auditoria_extended = await getAuditoriaExtendedDadoIdAuditoria(auditoria);         
-            res.status(200).json(auditoria_extended || null); 
-        }       
-           
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    }
-}
-
 async function getAuditoriaExtendedDadoIdAuditoria(auditoria: auditorias): Promise<auditoria_extended> {
     try {
         const [num_expositores, num_expositores_procesados, datos_barra_progreso] = await Promise.all([
-          auditoriaService.getNumExpositoresByAuditoria(auditoria.id),
-          auditoriaService.getNumExpositoresProcesadosByAuditoria(auditoria.id),
+          elementosAuditoriaService.getNumExpositoresByAuditoria(auditoria.id),
+          elementosAuditoriaService.getNumExpositoresProcesadosByAuditoria(auditoria.id),
           getNumberArrayProgresoAuditoria(auditoria.id)
         ]);
       
@@ -77,49 +62,6 @@ async function getAuditoriaExtendedDadoIdAuditoria(auditoria: auditorias): Promi
     }      
 }
 
-
-export async function getElementosProcesadosAuditoria(req: Request, res: Response) {
-    try {
-        const id_auditoria = parseInt(req.params.id_auditoria);
-
-        const per_ele_aud_brutos: per_ele_aud_extended[] = await auditoriaService.getPertenenciasElementosAuditoria(id_auditoria);
-        
-        const per_ele_aud_netos = agruparElementosMueblesAuditorias(per_ele_aud_brutos);
-        res.status(200).json(per_ele_aud_netos);
-    } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
-    } 
-
-}
-
-function agruparElementosMueblesAuditorias(per_ele_aud_brutos: per_ele_aud_extended[]) {
-
-    const resultado: muebleConElementos[] = per_ele_aud_brutos.reduce((acc: muebleConElementos[], item: per_ele_aud_extended) => {
-        if (item.muebles) {
-            let mueble = acc.find((m: muebleConElementos) => m.id === item.muebles?.id);
-            if (!mueble) {
-                mueble = {
-                    ...item.muebles,
-                    elementos: []
-                };
-                acc.push(mueble);
-            }
-
-            if(item.elementos) {
-                mueble.elementos.push({
-                    ...item.elementos,
-                    procesados_imagenes: item.procesados_imagenes,
-                    id_expositor: item.id_expositor
-                });
-            }
-        }
-        return acc;
-
-    }, []);
-
-    return resultado;
-}
-
 export async function getBarraProgresoAuditoria(req: Request, res: Response) {
     const id_auditoria = parseInt(req.params.id_auditoria);
 
@@ -132,7 +74,7 @@ export async function getNumberArrayProgresoAuditoria(id_auditoria: number): Pro
             id_auditoria = parseInt(id_auditoria);
         }
 
-        const expositores_auditoria: per_ele_aud_extended[] | undefined = await auditoriaService.getElementosAuditoriaConElementosYUltimoProcesado(id_auditoria);
+        const expositores_auditoria: per_ele_aud_extended[] | undefined = await elementosAuditoriaService.getElementosAuditoriaConElementosYUltimoProcesado(id_auditoria);
 
         if(!expositores_auditoria) {
             return [];
@@ -166,6 +108,22 @@ export async function getNumberArrayProgresoAuditoria(id_auditoria: number): Pro
     }
 }
 
+export async function getAuditoriaById(req: Request, res: Response) {
+    try {
+        const id_auditoria = parseInt(req.params.id_auditoria);
+        const auditoria: auditorias | null = await auditoriaService.getAuditoriaById(id_auditoria);
+        let auditoria_extended: auditoria_extended | null;
+
+        if(auditoria) {           
+            auditoria_extended = await getAuditoriaExtendedDadoIdAuditoria(auditoria);         
+            res.status(200).json(auditoria_extended || null); 
+        }       
+           
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
 async function createAuditoria(id_tienda: number): Promise<auditorias | null> {
     try {
         const promises = [];
@@ -192,7 +150,7 @@ async function createAuditoria(id_tienda: number): Promise<auditorias | null> {
                     for (const atributos_expositores of expositor.atributos_expositores) {
                         for (const pertenencia of atributos_expositores.pertenencia_elementos_atributos) {
                             if(pertenencia.elementos.id_categoria != 2) {
-                                promises.push(auditoriaService.createPertenenciaElementosAuditoria(createdAuditoria.id, mueble, expositor.id, pertenencia.elementos));
+                                promises.push(elementosAuditoriaService.createPertenenciaElementosAuditoria(createdAuditoria.id, mueble, expositor.id, pertenencia.elementos));
                             }
                         }
                     }
@@ -275,102 +233,69 @@ export async function getEstadisticasEstadosAuditoria(_req: Request, res: Respon
     }
 }
 
-export async function getEstadisticasResultadosAuditoria(_req: Request, res: Response) {
+export async function getMovimientosAuditorias(_req: Request, res: Response) {
     try {
-        // Obtener todos el último procesado de cada elemento-auditoria
-        const elementos_auditorias: per_ele_aud_extended[] = await auditoriaService.getUltimosProcesadosElementoAuditoriaNotEnProgreso();
+        const auditorias = await auditoriaService.getSoloAllAuditoriasInPeriodo();
 
-        // Contar y ordenar los no procesados
-        const cuenta_no_procesados: cuenta_no_procesados = cuentaNoProcesados(elementos_auditorias);
+        if(!!auditorias) {
+            const movimientos_auditoria = await agruparAuditorias(auditorias);
 
-        // Hago un array de los procesados que no son undefined
-        const ultimos_procesados: procesados_imagenes[] = elementos_auditorias.map((elemento) => elemento.procesados_imagenes[0]);
-
-        // Contar y ordenar los procesamientos
-        const resultados_ordenados: resultados_ordenados = getResumenEstadisticas(ultimos_procesados, 10, cuenta_no_procesados);
-
-        res.status(200).json(resultados_ordenados);
+            res.status(200).json(movimientos_auditoria);
+        } else {
+            res.status(404).json({ error: 'No se han podido obtener los movimientos de auditorias' });
+        }        
     } catch (error) {
-        console.error('No se pudo obtener los resultados ordenados:', error);
+        console.error('No se pudo obtener los movimientos de auditorias:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
-}
+}   
 
-function cuentaNoProcesados(elementos: per_ele_aud_extended[]): cuenta_no_procesados {
-    const no_procesados: cuenta_no_procesados = {
-        no_procesados_carteles: 0,
-        no_procesados_dispositivos: 0    
-    }   
+async function agruparAuditorias(auditorias: auditorias[]): Promise<conteo_movimientos_auditoria> {
+    const fechaMin = new Date(Math.min(...auditorias.map(a => new Date(a.fecha).getTime())));
+    //const fechaMax = new Date(Math.max(...auditorias.map(a => new Date(a.fecha_fin? a.fecha_fin : a.fecha).getTime())));
+    const fechaMax = new Date();
+    let fechaActual = new Date(fechaMin);
+    const resultado: conteo_movimientos_auditoria = {
+        fechas: [],
+        iniciadas: [],
+        finalizadas: [],
+        caducadas: []
+    };
 
-    for (const elemento of elementos) {
-        if (elemento.procesados_imagenes.length == 0) {
-            if (elemento.elementos?.id_categoria == 1) {
-                no_procesados.no_procesados_carteles++;
-            } else if (elemento.elementos?.id_categoria == 3) {
-                no_procesados.no_procesados_dispositivos++;
+    while (fechaActual <= fechaMax || (fechaActual.toISOString().split('T')[0] === fechaMax.toISOString().split('T')[0])) {
+        const fechaStr = formatearFecha(fechaActual);
+        resultado.fechas.push(fechaStr);
+        resultado.iniciadas.push(0);
+        resultado.finalizadas.push(0);
+        resultado.caducadas.push(0);
+
+        auditorias.forEach(auditoria => {
+            const fechaAuditoria = formatearFecha(new Date(auditoria.fecha));
+            if (fechaAuditoria === fechaStr) {
+                resultado.iniciadas[resultado.iniciadas.length - 1]++;
+                if (auditoria.id_estado === 2) {
+                    resultado.finalizadas[resultado.finalizadas.length - 1]++;
+                } else if (auditoria.id_estado === 3) {
+                    resultado.caducadas[resultado.caducadas.length - 1]++;
+                }
             }
-        }
+        });
+
+        fechaActual = agregarDia(fechaActual);
+
+        // Si después de agregar un día, fechaActual es mayor que fechaMax, termina el bucle.
+        if (fechaActual > fechaMax && fechaStr === fechaMax.toISOString().split('T')[0]) break;
     }
 
-    return no_procesados;
+    return resultado;
 }
 
-export async function getPorcentajeProcesadoDadoEstadoAuditoria(_req: Request, res: Response) {
-    try {
-        const elementos_auditoria = await auditoriaService.getElementosAuditoriaConAuditoriasYUltimoProcesado();
-
-        let conteo_elementos_procesados_auditoria: conteo_elementos_procesados_auditoria = {
-            en_progreso: {
-                total: 0,
-                procesados: 0,
-                porcentaje: 0
-            },
-            finalizada: {
-                total: 0,
-                procesados: 0,
-                porcentaje: 0
-            },
-            caducada: {
-                total: 0,
-                procesados: 0,
-                porcentaje: 0
-            }
-        }
-
-        conteo_elementos_procesados_auditoria = await contarProcesadosDeCadaEstadoAuditoria(elementos_auditoria, conteo_elementos_procesados_auditoria);
-
-        res.status(200).json(await conteo_elementos_procesados_auditoria);
-    } catch (error) {
-        console.error('No se pudo obtener el porcentaje de procesados por estado:', error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-    
+function formatearFecha(fecha: Date): string {
+    return fecha.toISOString().split('T')[0];
 }
 
-async function contarProcesadosDeCadaEstadoAuditoria(elementos_auditoria: per_ele_aud_extended[], conteo_elementos_procesados_auditoria: conteo_elementos_procesados_auditoria) {
-
-    for (const elemento of (await elementos_auditoria)) {
-        if(elemento.auditorias?.id_estado == 1) {
-            conteo_elementos_procesados_auditoria.en_progreso.total++;
-            if(elemento.procesados_imagenes.length > 0) {
-                conteo_elementos_procesados_auditoria.en_progreso.procesados++;
-            }
-        } else if(elemento.auditorias?.id_estado == 2) {
-            conteo_elementos_procesados_auditoria.finalizada.total++;
-            if(elemento.procesados_imagenes.length > 0) {
-                conteo_elementos_procesados_auditoria.finalizada.procesados++;
-            }
-        } else if(elemento.auditorias?.id_estado == 3) {
-            conteo_elementos_procesados_auditoria.caducada.total++;
-            if(elemento.procesados_imagenes.length > 0) {
-                conteo_elementos_procesados_auditoria.caducada.procesados++;
-            }
-        }
-    }
-
-    conteo_elementos_procesados_auditoria.en_progreso.porcentaje = (conteo_elementos_procesados_auditoria.en_progreso.procesados / conteo_elementos_procesados_auditoria.en_progreso.total) * 100;
-    conteo_elementos_procesados_auditoria.finalizada.porcentaje = (conteo_elementos_procesados_auditoria.finalizada.procesados / conteo_elementos_procesados_auditoria.finalizada.total) * 100;
-    conteo_elementos_procesados_auditoria.caducada.porcentaje = (conteo_elementos_procesados_auditoria.caducada.procesados / conteo_elementos_procesados_auditoria.caducada.total) * 100;
-
-    return conteo_elementos_procesados_auditoria;
+function agregarDia(fecha: Date): Date {
+    const nuevaFecha = new Date(fecha);
+    nuevaFecha.setDate(fecha.getDate() + 1);
+    return nuevaFecha;
 }

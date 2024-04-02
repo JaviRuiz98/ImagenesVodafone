@@ -1,15 +1,20 @@
 import express, { Router } from 'express';
+
 import { getAuditorias, 
     createSingleAuditoria, 
     getAuditoriaById, 
     terminarAuditoria, 
     createAuditoriaGlobal, 
     getBarraProgresoAuditoria, 
-    getElementosProcesadosAuditoria,
     getEstadisticasEstadosAuditoria,
-    getEstadisticasResultadosAuditoria,
-    getPorcentajeProcesadoDadoEstadoAuditoria
+    getMovimientosAuditorias
 } from '../controller/auditoriaController';
+
+import {
+    getElementosProcesadosAuditoria,
+    getEstadisticasResultadosAuditoria,
+    getPorcentajeProcesadoDadoEstadoAuditoria,
+} from '../controller/elementosAuditoriaController';
 
 const router: Router = express.Router();
 
@@ -21,6 +26,7 @@ router.get('/auditoria_elementos_procesados/:id_auditoria', getElementosProcesad
 router.get('/estadisticas/estados_auditoria', getEstadisticasEstadosAuditoria);
 router.get('/estadisticas/resultados_auditoria', getEstadisticasResultadosAuditoria);
 router.get('/estadisticas/porcentaje_completado', getPorcentajeProcesadoDadoEstadoAuditoria);
+router.get('/estadisticas/movimientos_auditorias', getMovimientosAuditorias);
 
 router.post('/nueva_auditoria',  createSingleAuditoria);
 router.post('/auditoria_global',  createAuditoriaGlobal);

@@ -7,6 +7,7 @@ import { UrlService } from '../url/url.service';
 import { estados_auditorias } from 'src/app/pages/estadisticas/interface/estados-auditorias';
 import { resultados_ordenados } from 'src/app/interfaces/resultados_ordenados';
 import { conteo_elementos_procesados_auditoria } from 'src/app/pages/estadisticas/interface/conteoElementosProcesadosAuditoria';
+import { conteo_movimientos_auditoria } from 'src/app/pages/estadisticas/interface/conteoMovimientosAuditoria';
 
 @Injectable({
   providedIn: 'root'
@@ -72,5 +73,9 @@ export class AuditoriaService {
 
   getEstadisticasProcesadosDadoEstadoAuditoria(): Observable<conteo_elementos_procesados_auditoria> {
     return this.http.get<conteo_elementos_procesados_auditoria>(`${this.API_URI}/estadisticas/porcentaje_completado`);
+  }
+
+  getMovimientosAuditorias(): Observable<conteo_movimientos_auditoria> {
+    return this.http.get<conteo_movimientos_auditoria>(`${this.API_URI}/estadisticas/movimientos_auditorias`);
   }
 }
