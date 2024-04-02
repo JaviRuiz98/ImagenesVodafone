@@ -141,7 +141,12 @@ export const elementosService = {
                     include: {
                       imagenes: true,
                       prompts: true,
-                      probabilidades_respuesta_carteles:true
+                      probabilidades_respuesta_carteles:true,
+                      auditorias: {
+                        include: {
+                          tiendas: true
+                        }
+                      }
                     }
                   }
                 }
@@ -199,13 +204,25 @@ export const elementosService = {
         }
       }, 
 
-      async getElementosWithProcesados( categoria_id?:number) {
+      async getElementosWithProcesados( elementos_ids: number[] | null, categoria_id?:number) {
         try {
+
+          let whereClause:any = {
+            activo: true, // Always include active elements
+          };
+      
+          // If elementos_ids is provided, add it to the condition
+          if (elementos_ids != null) {
+            whereClause['id'] = { in: elementos_ids };
+          }
+      
+          // If categoria_id is provided, add it to the condition
+          if (categoria_id != null) {
+            whereClause['id_categoria'] = categoria_id;
+          }
+          //El id tiene que estar contenido en el array
           return await db.elementos.findMany({
-            where: {
-              activo: true,
-              id_categoria: categoria_id
-            },
+            where: whereClause,
             include: {
               imagenes: true,
               categorias_elementos: true,
@@ -224,14 +241,25 @@ export const elementosService = {
         }
       },
 
-      async  getNumProcesadosByCategoria(categoria_id: number): Promise<number> {
+      async  getNumProcesadosByCategoria(categoria_id: number, elementos_ids: number[] | null): Promise<number> {
         try {
+
+          let whereClause:any = {
+            activo: true, // Always include active elements
+          };
+      
+          // If elementos_ids is provided, add it to the condition
+          if (elementos_ids != null) {
+            whereClause['id'] = { in: elementos_ids };
+          }
+      
+          // If categoria_id is provided, add it to the condition
+          if (categoria_id != null) {
+            whereClause['id_categoria'] = categoria_id;
+          }
           // Primero, recuperamos todos los elementos que coinciden con los criterios
           const elementos = await db.elementos.findMany({
-            where: {
-              activo: true,
-              id_categoria: categoria_id
-            },
+            where:  whereClause,
             include: {
               pertenencia_elementos_auditoria:{
                 include: {

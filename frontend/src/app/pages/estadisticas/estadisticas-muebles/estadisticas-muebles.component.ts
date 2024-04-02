@@ -112,7 +112,6 @@ export class EstadisticasMueblesComponent implements OnInit  {
       this.ref = this.dialogService.open(ProcesadosDetallesComponent, {
          header: `Proesado del elemento ${elemento.nombre}`,
         width: '70%',
-        contentStyle: {"max-height": "500px", "overflow": "auto"},
         baseZIndex: 10000,
         maximizable: true,
         data: {

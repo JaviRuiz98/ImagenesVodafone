@@ -58,15 +58,26 @@ export class ElementosService {
     return this.http.get<regiones[]>(`${this.API_URI}/categorias_elementos`);
   }
 
-  getEstadisticasRespuestas(): Observable<resultados_ordenados_elementos>{
-    return this.http.get<resultados_ordenados_elementos>(`${this.API_URI}/estadisticas/elementos`);
+  getEstadisticasRespuestas(elementos_ids?: number[]): Observable<resultados_ordenados_elementos>{
+
+    
+    const body = {
+      elementos_ids: elementos_ids 
+    }
+    return this.http.post<resultados_ordenados_elementos>(`${this.API_URI}/estadisticas/elementos`, body);
   }
 
-  getEstadisticasCarteles(): Observable<estadisticas_carteles[]>{
-    return this.http.get<estadisticas_carteles[]>(`${this.API_URI}/estadisticas/carteles`);
+  getEstadisticasCarteles(elementos_ids?: number[]): Observable<estadisticas_carteles[]>{
+    const body = {
+      elementos_ids: elementos_ids 
+    }
+    return this.http.post<estadisticas_carteles[]>(`${this.API_URI}/estadisticas/carteles`, body);
   }
-  getEstadisticasConteoDispositivos(): Observable<estadisticas_conteo_dispositivos[]>{
-    return this.http.get<estadisticas_conteo_dispositivos[]>(`${this.API_URI}/estadisticas/dispositivos`);
+  getEstadisticasConteoDispositivos(elementos_ids?: number[]): Observable<estadisticas_conteo_dispositivos[]>{
+    const body = {
+      elementos_ids: elementos_ids 
+    }
+    return this.http.post<estadisticas_conteo_dispositivos[]>(`${this.API_URI}/estadisticas/dispositivos`, body);
   }
 
   getElementoWithProcesadosById(id_elemento: number): Observable<elementos> {
@@ -77,8 +88,11 @@ export class ElementosService {
     return this.http.get<resultados_ordenados>(`${this.API_URI}/estadisticas/elementos/${id_elemento}`);
   }
 
-  getNumProcesadosByCategoria(): Observable<{conteo_dispositivos: number, carteles: number}> {
-    return this.http.get<{conteo_dispositivos: number, carteles: number}>(`${this.API_URI}/estadisticas/categorias`);
+  getNumProcesadosByCategoria(elementos_ids?: number[]): Observable<{conteo_dispositivos: number, carteles: number}> {
+    const body = {
+      elementos_ids: elementos_ids 
+    }
+    return this.http.post<{conteo_dispositivos: number, carteles: number}>(`${this.API_URI}/estadisticas/categorias`, body);
   }
   
   

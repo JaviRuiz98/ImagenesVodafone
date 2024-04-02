@@ -32,11 +32,12 @@ export async function getProcesados(req: Request, res: Response) {
 
 
 export async function getResumenEstadisticasElementos(
-    _req: Request,
+    req: Request,
     res: Response
 ) {
     try {
-        const elementos = await elementosService.getElementosWithProcesados();
+        const elementos_id: number [] | null = req.body.elementos_ids;
+        const elementos = await elementosService.getElementosWithProcesados(elementos_id);
         const elementosConProcesados: elementosConProcesados[] =
             mapearElementosConProcesados(elementos);
 
@@ -71,10 +72,12 @@ export async function getEstadisticasResumen(req : Request, res: Response) {
 
 export const getElementosEstadisticas =
     (estadisticas: "carteles" | "conteo") =>
-        async (_req: Request, res: Response) => {
+        async (req: Request, res: Response) => {
             try {
+                const elementos_id:number [] | null= req.body.elementos_ids;
+
                 const categoria = estadisticas == "carteles" ? 1 : 3;
-                const elementos = await elementosService.getElementosWithProcesados(categoria);
+                const elementos = await elementosService.getElementosWithProcesados(elementos_id, categoria);
                 const elementosConProcesados: elementosConProcesados[] =
                     mapearElementosConProcesados(elementos);
 
@@ -149,18 +152,27 @@ function obtenerEstadisticasConteos(
     });
 }
 
-export async function getNumProcesadosByCategoria(_req: Request, res: Response) {
+export async function getNumProcesadosByCategoria(req: Request, res: Response) {
     try {
+        //- no harcodearlo bro
+        //- ya tio, por el momento si
+
+        const elementos_id: number [] | null= req.body.elementos_ids;
         const categoria_carterles: number = 1;
         const categoria_conteo: number = 3;
-        const numProcesadosCarteles = await elementosService.getNumProcesadosByCategoria(categoria_carterles);
-        const numProcesadosConteo = await elementosService.getNumProcesadosByCategoria(categoria_conteo);
+
+
+        const numProcesadosCarteles = await elementosService.getNumProcesadosByCategoria(categoria_carterles, elementos_id);
+        const numProcesadosConteo = await elementosService.getNumProcesadosByCategoria(categoria_conteo, elementos_id);
+
         res.status(200).json({conteo_dispositivos: numProcesadosConteo, carteles: numProcesadosCarteles});
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: "Error interno del servidor" });
     }
 }
+
+
 
 function mapearElementosConProcesados(
     elementos: any
