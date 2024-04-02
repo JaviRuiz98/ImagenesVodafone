@@ -395,7 +395,8 @@ export async function getMovimientosAuditorias(_req: Request, res: Response) {
 
 async function agruparAuditorias(auditorias: auditorias[]): Promise<conteo_movimientos_auditoria> {
     const fechaMin = new Date(Math.min(...auditorias.map(a => new Date(a.fecha).getTime())));
-    const fechaMax = new Date(Math.max(...auditorias.map(a => new Date(a.fecha_fin? a.fecha_fin : a.fecha).getTime())));
+    //const fechaMax = new Date(Math.max(...auditorias.map(a => new Date(a.fecha_fin? a.fecha_fin : a.fecha).getTime())));
+    const fechaMax = new Date();
     let fechaActual = new Date(fechaMin);
     const resultado: conteo_movimientos_auditoria = {
         fechas: [],

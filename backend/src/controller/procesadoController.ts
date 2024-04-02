@@ -307,7 +307,8 @@ async function agruparPorDia(fechas: {fecha: Date}[]): Promise<{fechas: string[]
   // Asegura que las fechas estén en formato UTC para comparaciones consistentes
   const fechasFormat = fechas.map(f => formatearFecha(f.fecha));
   const fechaMin = new Date(Math.min(...fechas.map(f => f.fecha.getTime())));
-  const fechaMax = new Date(Math.max(...fechas.map(f => f.fecha.getTime())));
+  //const fechaMax = new Date(Math.max(...fechas.map(f => f.fecha.getTime())));
+  const fechaMax = new Date();
   let fechaActual = new Date(fechaMin);
   const fechasRango: { [fecha: string]: number } = {};
 
