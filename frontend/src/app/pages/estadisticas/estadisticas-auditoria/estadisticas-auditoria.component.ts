@@ -273,7 +273,7 @@ export class EstadisticasAuditoriaComponent {
     ]
 
     this.estadisticas_movimientos_auditoria = {
-      color: ['yellow', 'green', 'red'],
+      color: ['orange', 'green', 'red'],
       leyenda: ['Iniciadas', 'Finalizada', 'Caducada'],
       etiquetas: [],
       datos: []
