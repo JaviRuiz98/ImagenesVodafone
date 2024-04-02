@@ -1,16 +1,20 @@
 import express, { Router } from 'express';
+
 import { getAuditorias, 
     createSingleAuditoria, 
     getAuditoriaById, 
     terminarAuditoria, 
     createAuditoriaGlobal, 
     getBarraProgresoAuditoria, 
-    getElementosProcesadosAuditoria,
     getEstadisticasEstadosAuditoria,
-    getEstadisticasResultadosAuditoria,
-    getPorcentajeProcesadoDadoEstadoAuditoria,
     getMovimientosAuditorias
 } from '../controller/auditoriaController';
+
+import {
+    getElementosProcesadosAuditoria,
+    getEstadisticasResultadosAuditoria,
+    getPorcentajeProcesadoDadoEstadoAuditoria,
+} from '../controller/elementosAuditoriaController';
 
 const router: Router = express.Router();
 
