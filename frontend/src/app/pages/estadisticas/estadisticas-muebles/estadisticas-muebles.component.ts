@@ -103,6 +103,7 @@ export class EstadisticasMueblesComponent implements OnInit  {
         width: '70%',
         contentStyle: {"max-height": "500px", "overflow": "auto"},
         baseZIndex: 10000,
+        maximizable: true,
         data: {
           elemento: elementoConProcesados,
           datos_graficas: datos

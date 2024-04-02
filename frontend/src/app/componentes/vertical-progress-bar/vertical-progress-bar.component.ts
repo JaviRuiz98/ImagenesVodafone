@@ -5,9 +5,9 @@ import { BarraMultiusoComponent } from 'src/app/componentes/_grafica/barra-multi
 import { datos_graficas } from 'src/app/interfaces/datos_graficas';
 
 @Component({
-  selector: 'app-estadistica_unica_respuesta',
-  templateUrl: './estadistica_unica_respuesta.component.html',
-  styleUrls: ['./estadistica_unica_respuesta.component.css'],
+  selector: 'app-vertical-progress-bar',
+  templateUrl: './vertical-progress-bar.html',
+  styleUrls: ['./vertical-progress-bar.css'],
   standalone: true,
   imports: [ 
     CommonModule,
@@ -15,7 +15,7 @@ import { datos_graficas } from 'src/app/interfaces/datos_graficas';
     ProgressBarModule
   ]
 })
-export class EstadisticaUnicaRespuestaComponent {
+export class VerticalProgressBarComponent {
 
   constructor() { }
   @Input() valor:number;

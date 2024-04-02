@@ -25,7 +25,7 @@
 
 <div class="grid m-2">
    
-    <div class="col-5">
+    <div class="col-4">
         
         <!-- <div *ngIf ="estadisticas_resultados_carteles.length > 0; else cargando"> -->
             <p-overlayPanel #infoCartelesGeneral>
@@ -42,7 +42,7 @@
     <div class="col-1">
         <p-divider layout="vertical"></p-divider>
     </div>
-    <div class="col-5">
+    <div class="col-4">
         <!-- <div *ngIf ="estadisticas_resultados_conteo.length > 0; else cargando"> -->
             <p-overlayPanel #infoDispositivosGeneral>
                 Diferencia entre dispositivos esperados y encontrados más común al procesar cada elemento
@@ -52,6 +52,25 @@
             <app-super-line-chart [data_grafica]="estadisticas_resultados_conteo" [titulo]="'Diferencia más común entre dispositivos esperados y encontrados al procesar cada elemento'"></app-super-line-chart>
         <!-- </div> -->
 
+    </div>
+    <div class="col-1">
+        <p-divider layout="vertical"  ></p-divider>
+    </div>
+    <div class="col-2">
+        <div class="flex flex-column">
+            <div>
+                <span class=" font-bold" style="align-self: end;">  Nº de procesados totales: 100</span>
+            </div>
+                <!-- <p-divider layout="horizontal"  ></p-divider> -->
+            <div>
+                <span class=" font-bold" style="align-self: end;">  Nº de procesados de conteo: 30</span>
+            </div>
+            <!-- <p-divider layout="horizontal"  ></p-divider> -->
+            
+            <div>
+                <span class=" font-bold" style="align-self: end;">  Nº de procesados de carteles: 70</span>
+            </div>
+        </div>
     </div>
      
     <div class="col-12 m-2 flex-column justify-content-center flex-wrap">
@@ -90,44 +109,44 @@
                             <td>
                                 <div class ="flex justify-content-center align-items-center">
                                     {{cartel.muy_alta}}
-                                    <app-estadistica_unica_respuesta  class ="m-2" [color]="'green'" [valor]="(cartel.muy_alta/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta>
+                                    <!-- <app-estadistica_unica_respuesta  class ="m-2" [color]="'green'" [valor]="(cartel.muy_alta/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta> -->
                                 </div>
                               
                             </td>
                             <td>
                                 <div class="flex justify-content-center align-items-center">
                                   {{cartel.alta}}
-                                  <app-estadistica_unica_respuesta class="m-2" [color]="'blue'" [valor]="(cartel.alta/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta>
+                                  <!-- <app-estadistica_unica_respuesta class="m-2" [color]="'blue'" [valor]="(cartel.alta/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta> -->
                                 </div>
                               </td>
                               <td>
                                 <div class="flex justify-content-center align-items-center">
                                   {{cartel.media}}
-                                  <app-estadistica_unica_respuesta class="m-2" [color]="'yellow'" [valor]="(cartel.media/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta>
+                                  <!-- <app-estadistica_unica_respuesta class="m-2" [color]="'yellow'" [valor]="(cartel.media/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta> -->
                                 </div>
                               </td>
                               <td>
                                 <div class="flex justify-content-center align-items-center">
                                   {{cartel.baja}}
-                                  <app-estadistica_unica_respuesta class="m-2" [color]="'orange'" [valor]="(cartel.baja/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta>
+                                  <!-- <app-estadistica_unica_respuesta class="m-2" [color]="'orange'" [valor]="(cartel.baja/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta> -->
                                 </div>
                               </td>
                               <td>
                                 <div class="flex justify-content-center align-items-center">
                                   {{cartel.muy_baja}}
-                                  <app-estadistica_unica_respuesta class="m-2" [color]="'pink'" [valor]="(cartel.muy_baja/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta>
+                                  <!-- <app-estadistica_unica_respuesta class="m-2" [color]="'pink'" [valor]="(cartel.muy_baja/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta> -->
                                 </div>
                               </td>
                               <td>
                                 <div class="flex justify-content-center align-items-center">
                                   {{cartel.ninguna}}
-                                  <app-estadistica_unica_respuesta class="m-2" [color]="'red'" [valor]="(cartel.ninguna/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta>
+                                  <!-- <app-estadistica_unica_respuesta class="m-2" [color]="'red'" [valor]="(cartel.ninguna/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta> -->
                                 </div>
                               </td>
                               <td>
                                 <div class="flex justify-content-center align-items-center">
                                   {{cartel.otro_idioma}}
-                                  <app-estadistica_unica_respuesta class="m-2" [color]="'purple'" [valor]="(cartel.otro_idioma/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta>
+                                  <!-- <app-estadistica_unica_respuesta class="m-2" [color]="'purple'" [valor]="(cartel.otro_idioma/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta> -->
                                 </div>
                               </td>
                               
@@ -150,9 +169,9 @@
                             <th></th>
                             <th>
                                 <p-overlayPanel #errorConteoInfo>
-                                   Se considera un error si la imagen proporcionada es distinta a la del elemento y por tanto, no se realiza un conteo.
+                                 El procesado se considera inválido ya que la foto proporcionada es distinta a la del elemento con dispositivos y por tanto, no se realiza un conteo.
                                 </p-overlayPanel>
-                                Error <span class="pi pi-info-circle text-xl " (click)="errorConteoInfo.toggle($event)" style ="cursor: pointer; color:grey" ></span>
+                                Inválido <span class="pi pi-info-circle text-xl " (click)="errorConteoInfo.toggle($event)" style ="cursor: pointer; color:grey" ></span>
                             </th>
                             <th>Correcto </th>
                             <th>Diferencia de 1 o 2</th>

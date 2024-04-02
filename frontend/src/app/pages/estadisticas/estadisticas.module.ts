@@ -27,7 +27,6 @@ import { CalendarModule } from 'primeng/calendar';
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
 import { ProcesadosDetallesComponent } from 'src/app/componentes/procesados-detalles/procesados-detalles.component';
-import { EstadisticaUnicaRespuestaComponent } from './estadisticas-muebles/estadistica_unica_respuesta/estadistica_unica_respuesta.component';
 @NgModule({
   declarations: [
     EstadisticasComponent,
@@ -58,7 +57,6 @@ import { EstadisticaUnicaRespuestaComponent } from './estadisticas-muebles/estad
     ChartModule,
     SelectButtonModule,
     OverlayPanelModule,
-    EstadisticaUnicaRespuestaComponent,
     ProcesadosDetallesComponent,
 
     DynamicDialogModule
