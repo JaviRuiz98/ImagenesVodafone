@@ -1,0 +1,18 @@
+/* estadistica_unica_respuesta.component.css */
+.progress-bar-vertical-container {
+    width: 40px; /* Ancho de la barra de progreso */
+    height: 200px; /* Altura total de la barra de progreso */
+    border: 1px solid #ccc; /* Borde del contenedor */
+    border-radius: 5px; /* Bordes redondeados */
+    position: relative; /* Para posicionamiento absoluto de la barra de llenado */
+    background-color: #e0e0e0; /* Color de fondo del contenedor */
+    overflow: hidden; /* Asegura que el relleno no se desborde */
+  }
+  
+  .progress-bar-fill {
+    width: 100%; /* Llenado completo del ancho del contenedor */
+    background-color: #4caf50; /* Color inicial de la barra de progreso */
+    position: absolute; /* Posicionamiento respecto al contenedor */
+    bottom: 0; /* Inicio desde el fondo del contenedor */
+  }
+  

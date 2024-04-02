@@ -17,14 +17,16 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FormsModule } from '@angular/forms';
-
-
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 //uniformes
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
+import { ProcesadosDetallesComponent } from 'src/app/componentes/procesados-detalles/procesados-detalles.component';
 import { StackedBarComponent } from 'src/app/componentes/_grafica/stacked-bar/stacked-bar.component';
 
 @NgModule({
@@ -54,6 +56,14 @@ import { StackedBarComponent } from 'src/app/componentes/_grafica/stacked-bar/st
     CalendarModule,
     FormsModule,
     CardModule,
+    ChartModule,
+    SelectButtonModule,
+    OverlayPanelModule,
+    ProcesadosDetallesComponent,
+
+    DynamicDialogModule
+    
+    
     ChartModule,
     StackedBarComponent
   ]

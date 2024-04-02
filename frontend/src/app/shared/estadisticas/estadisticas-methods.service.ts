@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { datos_graficas } from 'src/app/interfaces/datos_graficas';
 import { resultados_ordenados, resultados_ordenados_elementos } from 'src/app/interfaces/resultados_ordenados';
-import { elemento_valor } from 'src/app/pages/estadisticas/interface/tuplaElementoValor';
 
 @Injectable({
   providedIn: 'root'

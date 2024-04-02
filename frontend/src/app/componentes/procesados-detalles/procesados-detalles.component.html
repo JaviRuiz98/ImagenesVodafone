@@ -1,0 +1,56 @@
+
+<div style="justify-content: center; display: flex; margin-top: 10%">
+  <h3>Resumen resultados:</h3>
+  <app-super-pie [datos_graficas]="datos_graficas"></app-super-pie>
+</div>
+
+<p-table [value]="procesados">
+  <ng-template pTemplate="header">
+      <tr>
+          <th>Imagen Referencia</th>
+          <th>Imagen Procesada</th>
+          <th>Detalles</th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+      <tr>
+          <td colspan="3">No hay elementos</td>
+    </tr>
+    </ng-template>
+  <ng-template pTemplate="body" let-procesado>
+      <tr>
+          <td>
+              <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block mx-auto border-round" 
+                      [src]="url_imagenes_referencia + elemento.imagenes.url" 
+                      [alt]="elemento.imagenes.url" />
+          </td>
+          <td>
+              <img class="w-9 sm:w-16rem xl:w-10rem shadow-2 block mx-auto border-round" 
+                      [src]="url_imagenes_procesadas + procesado.imagenes.url" 
+                      [alt]="procesado.imagenes.url"/>
+          </td>
+          <td>
+              <div display="flex">                    
+                  <div *ngIf="procesado.id_categoria === 1">
+                      <strong>Resultados: </strong>
+                      <p-tag [severity]="getSeverityCartel(procesado.probabilidades_respuesta_carteles.probabilidad)">
+                          {{procesado.probabilidades_respuesta_carteles.probabilidad}}
+                      </p-tag>
+                  </div>
+                  <div *ngIf="procesado.id_categoria === 3">
+                      <strong>Resultados: </strong>
+                      <p-tag [severity]="getSeverityDispositivos(procesado.dispositivos_contados, procesado.huecos_esperados)">
+                          {{procesado.dispositivos_contados}}/{{procesado.huecos_esperados}}
+                      </p-tag>
+                  </div>                    
+              </div>
+              <div style="margin-top: 10px">
+                  <strong>Fecha:</strong> {{ this.publicMedhodsService.formatDate(procesado.fecha) }}
+              </div>
+              <div style="margin-top: 10px">
+                  <strong>Comentarios:</strong> {{ procesado.comentarios }}
+              </div>                
+          </td>
+      </tr>
+  </ng-template>
+</p-table>

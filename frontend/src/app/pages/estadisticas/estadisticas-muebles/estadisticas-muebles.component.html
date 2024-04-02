@@ -1,3 +1,7 @@
+
+<ng-template #cargando>
+    <p-progressSpinner ></p-progressSpinner>
+</ng-template>
 <div class="grid">
     <div class="col-12">
         <div class="grid m-2">
@@ -21,56 +25,190 @@
 
 <div class="grid m-2">
    
-    <div class="col-5">
+    <div class="col-4">
         
-        <div *ngIf ="estadisticas_resultados_carteles.length > 0; else cargando">
-            <h3>Carteles</h3>
-            <small class ="text-secondary text-small mb-2">Respuestas mas comunes al procesar cada elemento</small>
+        <!-- <div *ngIf ="estadisticas_resultados_carteles.length > 0; else cargando"> -->
+            <p-overlayPanel #infoCartelesGeneral>
+                Respuestas mas comunes al procesar cada elemento
+            </p-overlayPanel>
+            <h3>Carteles <span class="pi pi-info-circle text-xl" (click)="infoCartelesGeneral.toggle($event)" style ="cursor: pointer; color:grey"></span></h3>
+            
             <app-super-line-chart [data_grafica]="estadisticas_resultados_carteles" ></app-super-line-chart>
-        </div>
+        <!-- </div> -->
 
-        <ng-template #cargando>
-            <p-progressSpinner ></p-progressSpinner>
-        </ng-template>
+       
     </div>
 
     <div class="col-1">
         <p-divider layout="vertical"></p-divider>
     </div>
-    <div class="col-5">
-        <div *ngIf ="estadisticas_resultados_conteo.length > 0; else cargando2">
-            <h3>Modelos (conteo de dispositivos)</h3>
-            <small class ="text-secondary text-small mb-2">Diferencia entre dispositivos esperados y encontrados más común al procesar cada elemento</small>
+    <div class="col-4">
+        <!-- <div *ngIf ="estadisticas_resultados_conteo.length > 0; else cargando"> -->
+            <p-overlayPanel #infoDispositivosGeneral>
+                Diferencia entre dispositivos esperados y encontrados más comunes al procesar cada elemento
+            </p-overlayPanel>
+            <h3>Modelos (conteo de dispositivos) <span class="pi pi-info-circle text-xl" (click)="infoDispositivosGeneral.toggle($event)" style ="cursor: pointer; color:grey"></span></h3>
 
             <app-super-line-chart [data_grafica]="estadisticas_resultados_conteo" [titulo]="'Diferencia más común entre dispositivos esperados y encontrados al procesar cada elemento'"></app-super-line-chart>
-        </div>
+        <!-- </div> -->
 
-        <ng-template #cargando2>
-            <p-progressSpinner ></p-progressSpinner>
-        </ng-template>
+    </div>
+    <div class="col-1">
+        <p-divider layout="vertical"  ></p-divider>
+    </div>
+    <div class="col-2">
+        <div class="flex flex-column">
+            <div>
+                <span class=" font-bold" style="align-self: end;">  Nº de procesados totales: {{numProcesadosCategoria.carteles+numProcesadosCategoria.conteo_dispositivos}}</span>
+            </div>
+                <!-- <p-divider layout="horizontal"  ></p-divider> -->
+            <div>
+                <span class=" font-bold" style="align-self: end;">  Nº de procesados de conteo: {{numProcesadosCategoria.conteo_dispositivos}}</span>
+            </div>
+            <!-- <p-divider layout="horizontal"  ></p-divider> -->
+            
+            <div>
+                <span class=" font-bold" style="align-self: end;">  Nº de procesados de carteles: {{numProcesadosCategoria.carteles}}</span>
+            </div>
+        </div>
     </div>
      
-    <div class="col-6">
-        <div class="card">
-            <!-- <p-table [value]="estadisticas.carteles" [tableStyle]="{ 'min-width': '50rem' }">
-                <ng-template pTemplate="header">
-                    <tr>
-                        <th>Code</th>
-                        <th>Name</th>
-                        <th>Category</th>
-                        <th>Quantity</th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-product>
-                    <tr>
-                        <td>{{ product.code }}</td>
-                        <td>{{ product.name }}</td>
-                        <td>{{ product.category }}</td>
-                        <td>{{ product.quantity }}</td>
-                    </tr>
-                </ng-template>
-            </p-table> -->
+    <div class="col-12 m-2 flex-column justify-content-center flex-wrap">
+        <!-- <app-ir-arriba></app-ir-arriba> -->
+
+        <div class="m-2 flex justify-content-center">
+            <p-selectButton [options]="tableStateOptions" [(ngModel)]="tableStateValue" optionLabel="label" optionValue="value" [allowEmpty]="false"></p-selectButton>
+        </div>        
+        <div class="card" *ngIf ="tableStateValue==='cartel'; else conteo">
+            <div *ngIf ="estadisticasCartel.length > 0; else cargando">
+                <p-table [value]="estadisticasCartel" [tableStyle]="{ 'min-width': '50rem' }"   [scrollable]="true" [scrollHeight]="'calc(100vh - 204px)'">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Nombre</th>
+                            <th></th>
+                            <th>Muy alta</th>
+                            <th>alta</th>
+                            <th>media</th>
+                            <th>baja</th>
+                            <th>Muy baja</th>
+                            <th>Ninguna</th>
+                            <th> Otro idioma</th>
+                            <th>Procesados totales</th>
+                            <th></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-cartel>
+                        <tr>
+                            <td >{{ cartel.elemento.nombre }}</td>
+                            <td [style]="{'width':'50px'}"> 
+                                <img [src]=" getImagenElementoUri(cartel.elemento)" height="200vh"
+                                    [alt]="'No disponible'" 
+                                />
+                        
+                            </td>
+                            <td>
+                                <div class ="flex justify-content-center align-items-center">
+                                    {{cartel.muy_alta}}
+                                    <!-- <app-estadistica_unica_respuesta  class ="m-2" [color]="'green'" [valor]="(cartel.muy_alta/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta> -->
+                                </div>
+                              
+                            </td>
+                            <td>
+                                <div class="flex justify-content-center align-items-center">
+                                  {{cartel.alta}}
+                                  <!-- <app-estadistica_unica_respuesta class="m-2" [color]="'blue'" [valor]="(cartel.alta/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta> -->
+                                </div>
+                              </td>
+                              <td>
+                                <div class="flex justify-content-center align-items-center">
+                                  {{cartel.media}}
+                                  <!-- <app-estadistica_unica_respuesta class="m-2" [color]="'yellow'" [valor]="(cartel.media/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta> -->
+                                </div>
+                              </td>
+                              <td>
+                                <div class="flex justify-content-center align-items-center">
+                                  {{cartel.baja}}
+                                  <!-- <app-estadistica_unica_respuesta class="m-2" [color]="'orange'" [valor]="(cartel.baja/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta> -->
+                                </div>
+                              </td>
+                              <td>
+                                <div class="flex justify-content-center align-items-center">
+                                  {{cartel.muy_baja}}
+                                  <!-- <app-estadistica_unica_respuesta class="m-2" [color]="'pink'" [valor]="(cartel.muy_baja/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta> -->
+                                </div>
+                              </td>
+                              <td>
+                                <div class="flex justify-content-center align-items-center">
+                                  {{cartel.ninguna}}
+                                  <!-- <app-estadistica_unica_respuesta class="m-2" [color]="'red'" [valor]="(cartel.ninguna/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta> -->
+                                </div>
+                              </td>
+                              <td>
+                                <div class="flex justify-content-center align-items-center">
+                                  {{cartel.otro_idioma}}
+                                  <!-- <app-estadistica_unica_respuesta class="m-2" [color]="'purple'" [valor]="(cartel.otro_idioma/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta> -->
+                                </div>
+                              </td>
+                              
+                            <td>{{ getTotalCarteles(cartel) }}</td>
+                            <td> <p-button label="Ver más"  severity="danger" [text]="true" [raised]="true" (onClick)="openInfo(cartel.elemento)" [rounded]="true"  ></p-button> </td>
+
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+
         </div>
+
+        <ng-template #conteo>
+            <div class="card" *ngIf ="estadisticasConteo.length > 0; else cargando">
+                <p-table [value]="estadisticasConteo" [tableStyle]="{ 'min-width': '50rem' }"  [scrollable]="true" [scrollHeight]="'calc(100vh - 204px)'">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Nombre</th>
+                            <th></th>
+                            <th>
+                                <p-overlayPanel #errorConteoInfo>
+                                 El procesado se considera inválido ya que la foto proporcionada es distinta a la del elemento con dispositivos y por tanto, no se realiza un conteo.
+                                </p-overlayPanel>
+                                Inválido <span class="pi pi-info-circle text-xl " (click)="errorConteoInfo.toggle($event)" style ="cursor: pointer; color:grey" ></span>
+                            </th>
+                            <th>Correcto </th>
+                            <th>Diferencia de 1 o 2</th>
+                            <th>Diferencia de 3 o 4</th>
+                            <th>Diferencia de 5 o más</th>
+                            <th> Procesados totales</th>
+                            <th></th>
+                        
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-dispositivo>
+                        <tr>
+                            <td>{{ dispositivo.elemento.nombre }}</td>
+                            <td> 
+                                <img [src]=" getImagenElementoUri(dispositivo.elemento)" height="200vh"
+                                [alt]="'No disponible'" class="imagenDestacada"
+                                 />
+                               
+                            </td>
+                            <td>{{ dispositivo.error }}</td>
+                            <td>{{ dispositivo.diferencia[0] }}</td>
+                            <td>{{dispositivo.diferencia[1] + dispositivo.diferencia[2] }}</td>
+                            <td>{{ dispositivo.diferencia[3] + dispositivo.diferencia[4]}}</td>
+                            <td>{{ get5Plus(dispositivo) }}</td>
+                            <td>{{ getTotalDispositivos(dispositivo) }}</td>
+                            <td> <p-button label="Ver más"  severity="danger" [text]="true" [raised]="true" (onClick)="openInfo(dispositivo.elemento)" [rounded]="true"  ></p-button> </td>
+
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+          
+        </ng-template>
+       
+
     </div>
-    
+
 </div>
+
+

@@ -127,6 +127,33 @@ export const elementosService = {
         }
       },
 
+      async getProcesados ( id_elemento: number) {
+        try{
+          return await db.elementos.findFirst({
+            where: {
+              id: id_elemento
+            },
+            include: {
+              imagenes: true,
+              pertenencia_elementos_auditoria: {
+                include: {
+                  procesados_imagenes: {
+                    include: {
+                      imagenes: true,
+                      prompts: true,
+                      probabilidades_respuesta_carteles:true
+                    }
+                  }
+                }
+              }
+            }
+          });
+        }catch(error){
+          console.log(error)
+          throw error;
+        }
+      },
+
       //ide auditoria -> objeto pertenencia_elemento_auditoria
 
       async peaByIdAuditoria(id_elemento_auditoria: number): Promise<pertenencia_elementos_auditoria | null>{
@@ -197,6 +224,39 @@ export const elementosService = {
         }
       },
 
+      async  getNumProcesadosByCategoria(categoria_id: number): Promise<number> {
+        try {
+          // Primero, recuperamos todos los elementos que coinciden con los criterios
+          const elementos = await db.elementos.findMany({
+            where: {
+              activo: true,
+              id_categoria: categoria_id
+            },
+            include: {
+              pertenencia_elementos_auditoria:{
+                include: {
+                  procesados_imagenes: true
+                }
+              }
+            }
+          });
+      
+          // Luego, para cada elemento, contamos las imágenes procesadas
+          let totalProcesados = 0;
+          for (const elemento of elementos) {
+            for (const pertenencia of elemento.pertenencia_elementos_auditoria) {
+          
+              totalProcesados += pertenencia.procesados_imagenes.length;
+            }
+          }
+      
+          return totalProcesados;
+        } catch (error) {
+          console.error('Error al obtener el total de procesados por categoría:', error);
+          throw error;  
+        }
+      }
+      
     
      
 
