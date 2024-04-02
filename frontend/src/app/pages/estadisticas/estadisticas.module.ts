@@ -61,10 +61,7 @@ import { StackedBarComponent } from 'src/app/componentes/_grafica/stacked-bar/st
     OverlayPanelModule,
     ProcesadosDetallesComponent,
 
-    DynamicDialogModule
-    
-    
-    ChartModule,
+    DynamicDialogModule,
     StackedBarComponent
   ]
 })
