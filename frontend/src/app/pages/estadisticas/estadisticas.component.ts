@@ -1,6 +1,7 @@
+import { compileInjectable } from '@angular/compiler';
 import { Component } from '@angular/core';
-import { PeriodoFechasState } from 'src/app/state/periodoFechas.state';
-
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { FiltroState } from 'src/app/state/estadisticas/elementoSeleccionados.state';
 @Component({
   selector: 'app-estadisticas',
   templateUrl: './estadisticas.component.html',
@@ -61,18 +62,74 @@ export class EstadisticasComponent {
     }
   ];
 
-  apartado_seleccionado: string = 'auditorias';
 
-  constructor( private periodoFechasState: PeriodoFechasState ) {  }
+  isFiltrado: boolean = false;
+  showingSelectElementosFiltroDialog: boolean = false;
 
-  seleccionarApartado(id: string): void {
-    this.apartado_seleccionado = id;
+  //Debería meterlo en el estado de filtros? crear uno nuevo? ya me dices
+  apartado_seleccionado: string;
+  private apartadoSeleccionadoSubject = new BehaviorSubject<string>("auditorias");
+  public apartado_seleccionado$ = this.apartadoSeleccionadoSubject.asObservable();
+
+
+  loading$:Observable<boolean>;
+
+  constructor( private filtroState: FiltroState ) { 
+    this.loading$ = this.filtroState.loading$;
+   }
+
+
+  ngOnInit(): void {
+    combineLatest([this.filtroState.fechaIsFiltrado$ , this.filtroState.elementoIsFiltrado$,this.apartado_seleccionado$
+    ]).subscribe(([fechaIsFiltrado, elementoIsFiltrado, apartadoSeleccionado]) => {
+      this.updateIsFiltrado(fechaIsFiltrado, elementoIsFiltrado,apartadoSeleccionado);
+    });
   }
 
+
+  updateIsFiltrado(fechaIsFiltrado: boolean, elementoIsFiltrado: boolean, apartadoSeleccionado: string) {
+
+
+    switch (apartadoSeleccionado) {
+      case 'auditorias':
+        this.isFiltrado = fechaIsFiltrado;
+        break;
+      case 'muebles':
+        this.isFiltrado = elementoIsFiltrado || fechaIsFiltrado;
+        break;
+      case 'uniformes':
+        this.isFiltrado = false;
+        break;
+      case 'ia':
+        this.isFiltrado = false;
+        
+    }
+  }
+
+  seleccionarApartado(id: string): void {
+    this.apartadoSeleccionadoSubject.next(id);
+  }
+  //Filtros
+  
   filtrarPorFecha() {
-    if(this.periodo_fechas[1] !== null) {
-      this.periodoFechasState.updatePeriodoFechas(this.periodo_fechas);
+    if(!!this.periodo_fechas && this.periodo_fechas[1] !== null) {
+      this.periodo_fechas[1] = new Date(this.periodo_fechas[1].getFullYear(), this.periodo_fechas[1].getMonth() + 1, 0);
+      this.filtroState.updatePeriodoFechas(this.periodo_fechas);
       console.log('fechas almacenadas en estado', this.periodo_fechas);
     }
   }
+
+  
+  onSelectedElementosIds($event: number[]) {
+    this.showingSelectElementosFiltroDialog = false;
+    this.filtroState.updateElementosSeleccionados($event);  
+  }
+  
+  limpiarFiltros() {
+    this.periodo_fechas = undefined;
+    this.filtroState.updateElementosSeleccionados([]);
+    this.filtroState.updatePeriodoFechas([]);
+  }
+  
+  
 }

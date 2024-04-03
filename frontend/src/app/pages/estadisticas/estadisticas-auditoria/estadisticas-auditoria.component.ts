@@ -9,14 +9,14 @@ import { tienda } from 'src/app/interfaces/tienda';
 import { ProcesadosService } from 'src/app/servicios/procesados/procesados.service';
 import { datos_informe } from 'src/app/interfaces/datos_informe';
 import { Observable } from 'rxjs';
-import { PeriodoFechasState } from 'src/app/state/periodoFechas.state';
+import { FiltroState } from 'src/app/state/estadisticas/elementoSeleccionados.state';
 
 @Component({
   selector: 'app-estadisticas-auditoria',
   templateUrl: './estadisticas-auditoria.component.html',
   styleUrls: ['./estadisticas-auditoria.component.css']
 })
-export class EstadisticasAuditoriaComponent implements OnDestroy {
+export class EstadisticasAuditoriaComponent  {
 
   estadisticas_estados_auditoria: datos_graficas[] = [];
   estadisticas_resultados_carteles: datos_graficas[] = [];
@@ -36,7 +36,7 @@ export class EstadisticasAuditoriaComponent implements OnDestroy {
     private auditoriaService: AuditoriaService,
     private tiendasService: TiendasService,
     private procesadosService: ProcesadosService,
-    private state: PeriodoFechasState
+    private state: FiltroState
   ) {
     this.setStateSelectors();
   };
@@ -60,10 +60,10 @@ export class EstadisticasAuditoriaComponent implements OnDestroy {
     });
 
   }
-
-  ngOnDestroy(): void {
-    this.state.reset();
-  }
+/*Te lo comento, no me interesa que se resete el estado de la fecha al cambiar de vista */
+  // ngOnDestroy(): void {
+  //   this.state.reset();
+  // }
 
   obtenerMovimientosAuditorias(fechas: Date[]) {
     this.auditoriaService.getMovimientosAuditorias(fechas).subscribe(

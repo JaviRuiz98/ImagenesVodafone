@@ -58,24 +58,31 @@ export class ElementosService {
     return this.http.get<regiones[]>(`${this.API_URI}/categorias_elementos`);
   }
 
-  getEstadisticasRespuestas(elementos_ids?: number[]): Observable<resultados_ordenados_elementos>{
-
-    
+  getEstadisticasRespuestas(elementos_ids?: number[], fechas?: Date[]): Observable<resultados_ordenados_elementos>{
+    const elementosIds = elementos_ids ? (elementos_ids.length > 0 ? elementos_ids : undefined) : undefined;
+    const fechas_ = fechas ? (fechas.length > 0 ? fechas : undefined) : undefined;
     const body = {
-      elementos_ids: elementos_ids 
+      elementos_ids: elementosIds,
+      fechas: fechas_
     }
     return this.http.post<resultados_ordenados_elementos>(`${this.API_URI}/estadisticas/elementos`, body);
   }
 
-  getEstadisticasCarteles(elementos_ids?: number[]): Observable<estadisticas_carteles[]>{
+  getEstadisticasCarteles(elementos_ids?: number[],  fechas?: Date[]): Observable<estadisticas_carteles[]>{
+    const elementosIds = elementos_ids ? (elementos_ids.length > 0 ? elementos_ids : undefined) : undefined;
+    const fechas_ = fechas ? (fechas.length > 0 ? fechas : undefined) : undefined;
     const body = {
-      elementos_ids: elementos_ids 
+      elementos_ids: elementosIds,
+      fechas: fechas_
     }
     return this.http.post<estadisticas_carteles[]>(`${this.API_URI}/estadisticas/carteles`, body);
   }
-  getEstadisticasConteoDispositivos(elementos_ids?: number[]): Observable<estadisticas_conteo_dispositivos[]>{
+  getEstadisticasConteoDispositivos(elementos_ids?: number[],  fechas?: Date[]): Observable<estadisticas_conteo_dispositivos[]>{
+    const elementosIds = elementos_ids ? (elementos_ids.length > 0 ? elementos_ids : undefined) : undefined;
+    const fechas_ = fechas ? (fechas.length > 0 ? fechas : undefined) : undefined;
     const body = {
-      elementos_ids: elementos_ids 
+      elementos_ids: elementosIds,
+      fechas: fechas_
     }
     return this.http.post<estadisticas_conteo_dispositivos[]>(`${this.API_URI}/estadisticas/dispositivos`, body);
   }
@@ -88,9 +95,12 @@ export class ElementosService {
     return this.http.get<resultados_ordenados>(`${this.API_URI}/estadisticas/elementos/${id_elemento}`);
   }
 
-  getNumProcesadosByCategoria(elementos_ids?: number[]): Observable<{conteo_dispositivos: number, carteles: number}> {
+  getNumProcesadosByCategoria(elementos_ids?: number[],  fechas?: Date[]): Observable<{conteo_dispositivos: number, carteles: number}> {
+    const elementosIds = elementos_ids ? (elementos_ids.length > 0 ? elementos_ids : undefined) : undefined;
+    const fechas_ = fechas ? (fechas.length > 0 ? fechas : undefined) : undefined;
     const body = {
-      elementos_ids: elementos_ids 
+      elementos_ids: elementosIds,
+      fechas: fechas_
     }
     return this.http.post<{conteo_dispositivos: number, carteles: number}>(`${this.API_URI}/estadisticas/categorias`, body);
   }

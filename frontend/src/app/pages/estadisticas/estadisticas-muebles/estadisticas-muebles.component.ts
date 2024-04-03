@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Observable, combineLatest } from 'rxjs';
 import { ProcesadosDetallesComponent } from 'src/app/componentes/procesados-detalles/procesados-detalles.component';
 import { datos_graficas } from 'src/app/interfaces/datos_graficas';
 import { elementos } from 'src/app/interfaces/elementos';
@@ -7,6 +8,7 @@ import { estadisticas_carteles, estadisticas_conteo_dispositivos, resultados_ord
 import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
 import { UrlService } from 'src/app/servicios/url/url.service';
 import { EstadisticasMethodsService } from 'src/app/shared/estadisticas/estadisticas-methods.service';
+import { FiltroState } from 'src/app/state/estadisticas/elementoSeleccionados.state';
 
 
 
@@ -18,7 +20,16 @@ import { EstadisticasMethodsService } from 'src/app/shared/estadisticas/estadist
 })
 export class EstadisticasMueblesComponent implements OnInit  {
 
- constructor  ( private elementosService: ElementosService, private   estadisticasMethods: EstadisticasMethodsService, private urlService: UrlService, public dialogService: DialogService ){ }
+ constructor  ( private filtroState: FiltroState,
+    private elementosService: ElementosService,
+    private   estadisticasMethods: EstadisticasMethodsService,
+    private urlService: UrlService, 
+    public dialogService: DialogService,
+    private state: FiltroState){
+      this.setStateSelectors();
+  } 
+
+ 
   
  ref: DynamicDialogRef | undefined;
 
@@ -36,33 +47,48 @@ export class EstadisticasMueblesComponent implements OnInit  {
 
  //Filtros
  filtrado: boolean = false;
- showingSelectElementos: boolean = false;
-  elementos_ids: number[] | null;
+ elementos_ids$: Observable<number[]>;
+ fechas$: Observable<Date[]>;
 
+
+  private setStateSelectors() {
+    this.elementos_ids$ = this.state.elementoSeleccionado$;
+    this.fechas$ = this.state.periodoFechas$;
+  }
+
+ 
  ngOnInit(): void {  
-  this.obtenerEstadisticas();
+ 
+  combineLatest([this.elementos_ids$, this.fechas$]).subscribe(([elementosIds, fechas]) => {
+    this.obtenerEstadisticas(elementosIds, fechas);
+  });
+    
+
 
  }
 
- obtenerEstadisticas() {
 
-  this.elementosService.getEstadisticasRespuestas(this.elementos_ids).subscribe(
+
+ obtenerEstadisticas( elementos_ids?: number[], fechas?: Date[]) {
+ 
+
+  this.elementosService.getEstadisticasRespuestas(elementos_ids, fechas).subscribe(
     (estadisticas: resultados_ordenados_elementos) => {
       this.estadisticas = estadisticas;  //tengo los elementos, pero no se que uso darles
       const estadisticas_length: resultados_ordenados = this.estadisticasMethods.fromOrdenadosElementosToOrdenados(estadisticas);
       this.estadisticas_resultados_carteles = this.estadisticasMethods.mapearEstadisticasResultados(estadisticas_length, "carteles", false);
       this.estadisticas_resultados_conteo = this.estadisticasMethods.mapearEstadisticasResultados(estadisticas_length, "conteoDispositivos", false);
 
-      this.initCarteles();
-      this.initConteoDispositivos();
-      this.initNumProcesadosCategoria ();
+      this.initCarteles(elementos_ids,fechas);
+      this.initConteoDispositivos(elementos_ids,fechas);
+      this.initNumProcesadosCategoria (elementos_ids,fechas);
 
 
     });
  }
 
- initNumProcesadosCategoria() {
-  this.elementosService.getNumProcesadosByCategoria(this.elementos_ids).subscribe(
+ initNumProcesadosCategoria(elementos_ids?: number[], fechas?: Date[]) {
+  this.elementosService.getNumProcesadosByCategoria(elementos_ids,fechas ).subscribe(
     (numProcesados: {conteo_dispositivos: number, carteles: number}) => {
       this.numProcesadosCategoria = numProcesados;
     }
@@ -70,16 +96,16 @@ export class EstadisticasMueblesComponent implements OnInit  {
 
   }
 
- initCarteles() {
-  this.elementosService.getEstadisticasCarteles(this.elementos_ids).subscribe(
+ initCarteles(elementos_ids?: number[], fechas?: Date[]) {
+  this.elementosService.getEstadisticasCarteles(elementos_ids,fechas).subscribe(
     (carteles: estadisticas_carteles[]) => {
       this.estadisticasCartel = carteles;
     } 
   );
  }
 
- initConteoDispositivos(){
-  this.elementosService.getEstadisticasConteoDispositivos(this.elementos_ids).subscribe(
+ initConteoDispositivos(elementos_ids?: number[], fechas?: Date[]){
+  this.elementosService.getEstadisticasConteoDispositivos(elementos_ids,fechas).subscribe(
     (conteo: estadisticas_conteo_dispositivos[]) => {
       this.estadisticasConteo = conteo;
     } 
@@ -135,18 +161,7 @@ export class EstadisticasMueblesComponent implements OnInit  {
  
  }
 
- onSelectedElementosIds($event: number[]) {
-  this.showingSelectElementos = false;
-  this.elementos_ids = $event;
-  this.filtrado=true;
-  this.obtenerEstadisticas();
-  }
 
-  limpiarFiltros() {
-    this.elementos_ids = null;
-    this.filtrado = false;
-    this.obtenerEstadisticas();
-  }
 
 
 
