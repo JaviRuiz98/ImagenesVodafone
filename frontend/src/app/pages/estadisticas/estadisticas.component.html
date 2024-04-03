@@ -1,7 +1,16 @@
 
 <div class="menubar-container">
     <p-menubar [model]="apartados" >
+        <p-button   [disabled]="!isFiltrado" (click)="limpiarFiltros()"   icon="pi pi-filter-slash" [outlined]="true"  [severity]="'danger'"  class="ml-2"></p-button>
+        
+        <p-button class="ml-2" *ngIf="apartado_seleccionado === 'muebles'"  (onClick)=" showingSelectElementosFiltroDialog = !showingSelectElementosFiltroDialog" [outlined]="true" [severity]="'danger'" label="Agrupar por elementos"></p-button>
+
+        <p-dialog [(visible)]="showingSelectElementosFiltroDialog" [style]="{width: '80%'}" header="Filtrar por elementos" [modal]="true" [closable]="true" [draggable]="false" [resizable]="false">
+         <app-multipleSelectorElementos (selectedElementosIds)=" onSelectedElementosIds($event)"></app-multipleSelectorElementos>
+        </p-dialog>
+
         <p-calendar 
+            class="ml-2"
             [(ngModel)]="periodo_fechas" 
             view="month" 
             dateFormat="mm/yy" 
@@ -10,7 +19,9 @@
             [showIcon]="true"
             (onSelect)="filtrarPorFecha()">
         </p-calendar>
+        
     </p-menubar>
+
 </div>
 
 <div [ngSwitch]="apartado_seleccionado" >
