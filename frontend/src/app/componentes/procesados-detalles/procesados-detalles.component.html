@@ -49,7 +49,24 @@
               </div>
               <div style="margin-top: 10px">
                   <strong>Comentarios:</strong> {{ procesado.comentarios }}
-              </div>                
+              </div>  
+
+              <p-divider></p-divider>
+              <div *ngIf = "procesado.auditorias.tiendas !== null">
+                <div style="margin-top: 10px">
+                    <strong class ="font-bold text-xl"> Tienda:</strong> 
+                  </div>       
+                  <div style="margin-top: 10px">
+                    <strong> Sfid:</strong>  {{ procesado.auditorias.tiendas.sfid }}
+                  </div>          
+                  <div style="margin-top: 10px">
+                    <strong> Nombre:</strong>  {{ procesado.auditorias.tiendas.nombre }}
+                  </div>    
+                </div>
+                     
+          </td>
+          <td>
+
           </td>
       </tr>
   </ng-template>

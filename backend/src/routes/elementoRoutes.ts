@@ -19,9 +19,9 @@ router.post('/elementoActivaDesactiva', editarEstadoElemento);
 router.get('/regiones', getRegionesDisponibles);
  
 router.get('/elementos/procesados/:id',  getProcesados);
-router.get('/estadisticas/elementos', getResumenEstadisticasElementos );
+router.post('/estadisticas/elementos', getResumenEstadisticasElementos );
 router.get ('/estadisticas/elementos/:id',getEstadisticasResumen);
-router.get('/estadisticas/carteles',getElementosEstadisticas('carteles'));
-router.get('/estadisticas/dispositivos',getElementosEstadisticas('conteo'));
-router.get('/estadisticas/categorias', getNumProcesadosByCategoria);
+router.post('/estadisticas/carteles',getElementosEstadisticas('carteles'));
+router.post('/estadisticas/dispositivos',getElementosEstadisticas('conteo'));
+router.post('/estadisticas/categorias', getNumProcesadosByCategoria);
 export default router;

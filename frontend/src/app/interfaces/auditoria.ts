@@ -1,8 +1,10 @@
 import { estados_auditoria } from './estados_auditoria';
+import { tienda } from './tienda';
 
 export class auditoria {
     id: number ;
     id_tienda: number;
+    tiendas?: tienda; //Se utiliza para las estadísticas, si molesta avisar 
     id_mobiliario: number;
     fecha: Date;
     estado: string;

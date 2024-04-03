@@ -1,18 +1,21 @@
-import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+
 import { categorias_elementos } from 'src/app/interfaces/categoria';
 import { elementos } from 'src/app/interfaces/elementos';
 import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
 import { EnumService } from 'src/app/servicios/enum/enum.service';
+import { UrlService } from 'src/app/servicios/url/url.service';
 
 @Component({
   selector: 'app-arrastrarElemento',
   templateUrl: './arrastrarElemento.component.html',
-  styleUrls: ['./arrastrarElemento.component.css']
+  styleUrls: ['./arrastrarElemento.component.css'],
+
 })
 export class ArrastrarElementoComponent implements OnInit {
 
-  constructor(private enumService: EnumService, private elementosService: ElementosService) { }
+  constructor(private enumService: EnumService, private elementosService: ElementosService, private urlService: UrlService) { }
   @Input() mode: 'arrastrar' | 'seleccionar' = 'arrastrar';
   @Input() categoria?: categorias_elementos;
   
@@ -37,7 +40,7 @@ export class ArrastrarElementoComponent implements OnInit {
 
   categoriaSeleccionada?: categorias_elementos;
   categorias_elementos: categorias_elementos[];
-  url_imagenes_referencias: string = 'http://validador-vf.topdigital.local/imagenes/imagenesReferencia/';
+  url_imagenes_referencias: string = this.urlService.url_imagenes_referencia;
 
 
   ngOnInit() {
@@ -50,7 +53,7 @@ export class ArrastrarElementoComponent implements OnInit {
   inicializarElementos(){
     this.elementosService.getElementos().subscribe( (elementos:elementos[]) => {
 
-      this.all_elementos = elementos.filter((elemento) => elemento.categorias_elementos.id !== 3);
+      this.all_elementos = elementos.filter((elemento) => elemento.categorias_elementos.id !== this.categoria_id_modelo);
       if (this.categoria) {
         this.all_elementos = this.all_elementos.filter((elemento) => elemento.categorias_elementos.id === this.categoria.id);
       }

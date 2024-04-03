@@ -10,7 +10,7 @@ import { datos_graficas } from 'src/app/interfaces/datos_graficas';
 import { CommonModule } from '@angular/common';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
-
+import { DividerModule } from 'primeng/divider';
 @Component({
   selector: 'app-procesados-detalles',
   templateUrl: './procesados-detalles.component.html',
@@ -20,7 +20,8 @@ import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
     SuperPieComponent,
     TableModule,
     TagModule,
-    CommonModule
+    CommonModule,
+    DividerModule
   ],
 })
 export class ProcesadosDetallesComponent  implements OnInit {
@@ -43,10 +44,9 @@ export class ProcesadosDetallesComponent  implements OnInit {
     ngOnInit(): void {
 
       this.elemento = this.dialogConfig.data.elemento;
-       console.log('elemento', this.elemento);
       this.procesados = this.elemento.procesados_imagenes;
-      console.log('procesados', this.procesados);
       this.datos_graficas = this.dialogConfig.data.datos_graficas;
+      
     }
   
   getSeverityCartel(procesado: string): string {

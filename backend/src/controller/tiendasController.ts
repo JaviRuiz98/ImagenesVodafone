@@ -58,6 +58,7 @@ export async function updateTienda(req: Request, res: Response) {
         const file = req.file; //es opcional
         const id_tienda = parseInt(req.params.id_tienda);
         const listaMuebles = JSON.parse(req.body.listaNuevosMuebles);
+        const borrarPlano:boolean = req.body.borrarPlano != undefined ? (req.body.borrarPlano.toLowerCase() === "true") : false;
         
         let imagen:imagenes | undefined; 
         if (file) {
@@ -66,12 +67,17 @@ export async function updateTienda(req: Request, res: Response) {
         //si existe imagen, actualizamos el plano
         if (imagen){
             await tiendaService.updatePlanoTienda(id_tienda, imagen);
-        }else{ //en caso de que no, debemos borrarla de la pertenencia si tenía antes
-            const tienda = await tiendaService.getAllById(id_tienda);
-            if (tienda[0].id_imagen_plano){
-               //Opcional eliminar del ftp
-               await tiendaService.deletePlanoTienda(id_tienda);
+        }else{
+            console.log(borrarPlano);
+            //La borraremos unicamente si llega en el body un booleano que nos diga de borrarlo:
+            if (borrarPlano == true){
+                const tienda = await tiendaService.getAllById(id_tienda);
+                if (tienda[0].id_imagen_plano){
+                //Opcional eliminar del ftp
+                await tiendaService.deletePlanoTienda(id_tienda);
+                }
             }
+            
             
         }
 

@@ -28,6 +28,8 @@ import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
 import { ProcesadosDetallesComponent } from 'src/app/componentes/procesados-detalles/procesados-detalles.component';
 import { StackedBarComponent } from 'src/app/componentes/_grafica/stacked-bar/stacked-bar.component';
+import { MultipleSelectorElementosComponent } from 'src/app/componentes/multipleSelectorElementos/multipleSelectorElementos.component';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [
@@ -60,6 +62,8 @@ import { StackedBarComponent } from 'src/app/componentes/_grafica/stacked-bar/st
     SelectButtonModule,
     OverlayPanelModule,
     ProcesadosDetallesComponent,
+    MultipleSelectorElementosComponent,
+    DialogModule,
 
     DynamicDialogModule,
     StackedBarComponent

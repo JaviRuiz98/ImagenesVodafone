@@ -1,3 +1,4 @@
+import { auditoria } from "./auditoria";
 import { imagenes } from "./imagenes";
 import { probabilidad_respuesta_carteles } from "./probabilidad_respuesta_carteles";
 import { Prompt } from "./prompts";
@@ -16,4 +17,5 @@ export interface procesados_imagenes {
     probabilidad_respuesta_carteles: probabilidad_respuesta_carteles;
     dispositivos_contados: number;
     huecos_esperados:number;
+    auditorias?: auditoria; 
 }
