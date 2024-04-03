@@ -51,6 +51,9 @@ export class FiltroState {
   public updatePeriodoFechas(newPeriodoFechas: Date[]): void {
     this._state.next({ ...this.state, periodoFechas: newPeriodoFechas, loading: false });
   }
+  public updateLoading(newLoading: boolean): void {
+    this._state.next({ ...this.state, loading: newLoading });
+  }
 
 
 

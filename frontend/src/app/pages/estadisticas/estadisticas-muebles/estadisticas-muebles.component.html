@@ -51,17 +51,13 @@
     <div class="col-2">
         <div class="flex flex-column">
             <div>
-                <span class=" font-bold" style="align-self: end;">  Nº de procesados totales: {{numProcesadosCategoria.carteles+numProcesadosCategoria.conteo_dispositivos}}</span>
+                <span class=" font-bold" style="align-self: end;">  Nº de procesados totales: {{numTotalProcesados}}</span>
             </div>
                 <!-- <p-divider layout="horizontal"  ></p-divider> -->
             <div>
-                <span class=" font-bold" style="align-self: end;">  Nº de procesados de conteo: {{numProcesadosCategoria.conteo_dispositivos}}</span>
+                <app-super-pie [datos_graficas]="numProcesadosCategoria"></app-super-pie>            
             </div>
-            <!-- <p-divider layout="horizontal"  ></p-divider> -->
-            
-            <div>
-                <span class=" font-bold" style="align-self: end;">  Nº de procesados de carteles: {{numProcesadosCategoria.carteles}}</span>
-            </div>
+           
         </div>
     </div>
      

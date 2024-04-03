@@ -40,7 +40,8 @@ export class EstadisticasMueblesComponent implements OnInit  {
 
  estadisticasCartel: estadisticas_carteles[] = [];
  estadisticasConteo: estadisticas_conteo_dispositivos[] = [];
- numProcesadosCategoria: {conteo_dispositivos: number, carteles: number} = {conteo_dispositivos: 0, carteles: 0};
+ numProcesadosCategoria: datos_graficas[];
+ numTotalProcesados: number = 0;
 
  tableStateOptions =  [{label: 'Carteles', value: 'cartel'}, {label: 'Conteo de dispositivos', value: 'dispositivo'}];
  tableStateValue = 'cartel';
@@ -60,7 +61,10 @@ export class EstadisticasMueblesComponent implements OnInit  {
  ngOnInit(): void {  
  
   combineLatest([this.elementos_ids$, this.fechas$]).subscribe(([elementosIds, fechas]) => {
+    // this.filtroState.updateLoading(true);
     this.obtenerEstadisticas(elementosIds, fechas);
+    // this.filtroState.updateLoading(false);
+
   });
     
 
@@ -90,7 +94,19 @@ export class EstadisticasMueblesComponent implements OnInit  {
  initNumProcesadosCategoria(elementos_ids?: number[], fechas?: Date[]) {
   this.elementosService.getNumProcesadosByCategoria(elementos_ids,fechas ).subscribe(
     (numProcesados: {conteo_dispositivos: number, carteles: number}) => {
-      this.numProcesadosCategoria = numProcesados;
+      this.numTotalProcesados = numProcesados.carteles + numProcesados.conteo_dispositivos;
+      this.numProcesadosCategoria = [
+        {
+          etiqueta: 'Carteles',
+          valor: numProcesados.carteles,
+          color: 'blue'
+        },
+        {
+          etiqueta: 'Conteo de dispositivos',
+          valor: numProcesados.conteo_dispositivos,
+          color: 'pink'
+        }
+      ]
     }
   )
 

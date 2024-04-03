@@ -16,14 +16,13 @@
       [style]="{'margin-left': '20px'}"></p-dropdown>
   </div>
   <div class="p-toolbar-group-center">
-    <div class *ngIf ="selected_elementos.length > 0">
-      <strong class=" text-xl">{{selected_elementos.length}}</strong>
-      <p-button    icon="pi pi-filter-slash" [outlined]="true" [severity]="'danger'" (click)="borrarElementos()"  class="ml-2"></p-button>
-
-    </div>
+     
   </div>
 
   <div class="p-toolbar-group-">
+      <strong *ngIf ="selected_elementos.length > 0" class=" text-xl">{{selected_elementos.length}}</strong>
+      <p-button  *ngIf ="selected_elementos.length > 0"  icon="pi pi-filter-slash" [outlined]="true" [severity]="'danger'" (click)="borrarElementos()"  class="ml-2"></p-button>
+
 
     <p-button icon="pi pi-check" label="Seleccionar" (onClick)="onSubmit()"  [disabled]="selected_elementos.length == 0" class="ml-2" [outlined]="true" [severity]="'danger'"></p-button>
 
