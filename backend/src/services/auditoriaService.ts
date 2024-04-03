@@ -138,8 +138,21 @@ export const auditoriaService = {
         }
     },
 
-    async getAllEstadosParaAuditorias(id_estados_excluidos: number[]) {
+    async getAllEstadosParaAuditorias(id_estados_excluidos: number[], periodo_fechas: Date[]) {
         try {
+            let whereClause = {};
+
+            if(periodo_fechas.length > 0) {
+                whereClause = {
+                    fecha: {
+                        
+                    },
+                    fecha_fin: {
+                        
+                    }
+                }
+            }
+
             return db.estados_auditoria.findMany(
                 {
                     where: {
@@ -148,7 +161,9 @@ export const auditoriaService = {
                         }
                     },
                     include: {
-                        auditorias: true
+                        auditorias: {
+                            where: whereClause,
+                        }
                     }
                 }
             )

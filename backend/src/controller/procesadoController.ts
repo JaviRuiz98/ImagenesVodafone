@@ -11,6 +11,7 @@ import { promptService } from '../services/promptService';
 import { procesados_imagenes } from '@prisma/client';
 import { muebleService } from '../services/muebleService';
 import { downloadImageFtp } from '../config/ftpDownload';
+import { error } from 'pdf-lib';
 
 
 // Constantes y configuracion de procesado
@@ -279,13 +280,22 @@ export async function getProcesadosByIdAuditoria(req: Request, res: Response) {
   }
 }
 
-export async function getProcesadosAndTiempo(_req: Request, res: Response) {
+export async function getProcesadosAndTiempo(req: Request, res: Response) {
   try {
-    const fechas_procesados = await procesadoService.getFechasTodosProcesados();
-    const resultadoAgrupado = await agruparPorDia(fechas_procesados);
+    const periodo_fechas = req.body.fechas;
+    console.log('periodo_fechas:', periodo_fechas);
+
+    // Poner validador para ver que se recupera correctamente el periodo_fechas
+    if(!periodo_fechas) {
+      throw error;
+    }
+
+    const fechas_procesados = await procesadoService.getFechasProcesadosDentroPeriodoFechas(periodo_fechas);
+    const resultadoAgrupado = await agruparPorDia(fechas_procesados, periodo_fechas);
     res.status(200).json(resultadoAgrupado);
   } catch {
     res.status(500).json({ error: 'No se han podido obtener los procesados realizados a lo largo del tiempo' });
+    console.log(Error)
   }
 }
 
@@ -303,12 +313,21 @@ function sonFechasIguales(fecha1: Date, fecha2: Date): boolean {
   return formatearFecha(fecha1) === formatearFecha(fecha2);
 }
 
-async function agruparPorDia(fechas: {fecha: Date}[]): Promise<{fechas: string[], procesados: number[]}> {
+async function agruparPorDia(fechas: {fecha: Date}[], periodo_fechas: Date[]): Promise<{fechas: string[], procesados: number[]}> {
   // Asegura que las fechas estén en formato UTC para comparaciones consistentes
   const fechasFormat = fechas.map(f => formatearFecha(f.fecha));
-  const fechaMin = new Date(Math.min(...fechas.map(f => f.fecha.getTime())));
-  //const fechaMax = new Date(Math.max(...fechas.map(f => f.fecha.getTime())));
-  const fechaMax = new Date();
+
+  let fechaMin: Date;
+  let fechaMax: Date;
+
+  if (periodo_fechas.length === 0) {
+      fechaMin = new Date(Math.min(...fechas.map(a => new Date(a.fecha).getTime())));
+      fechaMax = new Date();
+  } else {
+      fechaMin = new Date(periodo_fechas[0]);
+      fechaMax = new Date(periodo_fechas[1]);
+  }
+
   let fechaActual = new Date(fechaMin);
   const fechasRango: { [fecha: string]: number } = {};
 

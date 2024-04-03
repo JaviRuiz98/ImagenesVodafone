@@ -138,8 +138,19 @@ export const procesadoService = {
         return probabilidad_object.id;
     },
 
-    async getFechasTodosProcesados(): Promise<{fecha: Date}[]> {
+    async getFechasProcesadosDentroPeriodoFechas(periodo_fechas: Date[]): Promise<{fecha: Date}[]> {
+        let whereClause = {};
+        if(periodo_fechas && periodo_fechas?.length > 0) {
+            whereClause = {
+                fecha: {
+                    gte: new Date(periodo_fechas[0]),
+                    lte: new Date(periodo_fechas[1])
+                }
+            }
+        }
+
         return db.procesados_imagenes.findMany({
+            where: whereClause,
             select: {
                 fecha: true,
             }
