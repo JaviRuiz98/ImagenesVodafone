@@ -18,24 +18,40 @@ export class StackedBarComponent {
   options: any;
 
   ngOnChanges() {
-      const documentStyle = getComputedStyle(document.documentElement);
-      const textColor = documentStyle.getPropertyValue('--text-color');
-      const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-      const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+    const documentStyle = getComputedStyle(document.documentElement);
+    const textColor = documentStyle.getPropertyValue('--text-color');
+    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
-      this.data = {
-          labels: this.datos?.etiquetas,
-          datasets: []
-      };
+    // Definir colores con opacidad para el interior de las barras
+    const colorsInterior = {
+        'orange': 'rgba(255, 165, 0, 0.4)',
+        'green': 'rgba(0, 128, 0, 0.4)',
+        'red': 'rgba(255, 0, 0, 0.4)'
+    };
 
-      for (let i = 1; i < this.datos?.leyenda.length; i++) {
-          this.data?.datasets.push({
-              type: 'bar',
-              label: this.datos.leyenda[i],
-              backgroundColor: this.datos.color[i],
-              data: this.datos.datos[i]
-          });
-      }
+    // Definir colores con opacidad total para los bordes
+    const colorsBorde = {
+        'orange': 'rgba(255, 165, 0, 1)',
+        'green': 'rgba(0, 128, 0, 1)',
+        'red': 'rgba(255, 0, 0, 1)'
+    };
+
+    this.data = {
+        labels: this.datos?.etiquetas,
+        datasets: []
+    };
+
+    for (let i = 0; i < this.datos?.leyenda.length; i++) {
+        this.data?.datasets.push({
+            type: 'bar',
+            label: this.datos.leyenda[i],
+            backgroundColor: colorsInterior[this.datos.color[i]], // Usar color con opacidad 0.4 para el interior
+            borderColor: colorsBorde[this.datos.color[i]], // Usar el mismo color con opacidad 1 para el borde
+            borderWidth: 1, // Grosor del borde
+            data: this.datos.datos[i]
+        });
+    }
 
       this.options = {
           maintainAspectRatio: false,

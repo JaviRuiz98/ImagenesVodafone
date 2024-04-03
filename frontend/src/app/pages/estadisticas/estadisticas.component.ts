@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PeriodoFechasState } from 'src/app/state/periodoFechas.state';
 
 @Component({
   selector: 'app-estadisticas',
@@ -6,6 +7,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./estadisticas.component.css']
 })
 export class EstadisticasComponent {
+
+  periodo_fechas: Date[] | undefined;
 
   apartados = [
     {
@@ -60,7 +63,16 @@ export class EstadisticasComponent {
 
   apartado_seleccionado: string = 'auditorias';
 
+  constructor( private periodoFechasState: PeriodoFechasState ) {  }
+
   seleccionarApartado(id: string): void {
     this.apartado_seleccionado = id;
+  }
+
+  filtrarPorFecha() {
+    if(this.periodo_fechas[1] !== null) {
+      this.periodoFechasState.updatePeriodoFechas(this.periodo_fechas);
+      console.log('fechas almacenadas en estado', this.periodo_fechas);
+    }
   }
 }

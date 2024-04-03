@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { AuditoriaService } from 'src/app/servicios/auditoria/auditoria.service';
 import { datos_graficas, datos_graficas_multidatos } from 'src/app/interfaces/datos_graficas';
 import { resultados_ordenados } from 'src/app/interfaces/resultados_ordenados';
@@ -8,13 +8,15 @@ import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { tienda } from 'src/app/interfaces/tienda';
 import { ProcesadosService } from 'src/app/servicios/procesados/procesados.service';
 import { datos_informe } from 'src/app/interfaces/datos_informe';
+import { Observable } from 'rxjs';
+import { PeriodoFechasState } from 'src/app/state/periodoFechas.state';
 
 @Component({
   selector: 'app-estadisticas-auditoria',
   templateUrl: './estadisticas-auditoria.component.html',
   styleUrls: ['./estadisticas-auditoria.component.css']
 })
-export class EstadisticasAuditoriaComponent {
+export class EstadisticasAuditoriaComponent implements OnDestroy {
 
   estadisticas_estados_auditoria: datos_graficas[] = [];
   estadisticas_resultados_carteles: datos_graficas[] = [];
@@ -27,15 +29,53 @@ export class EstadisticasAuditoriaComponent {
 
   estadisticas_movimientos_auditoria: datos_graficas_multidatos;
 
+  public loading$: Observable<boolean>;
+  public periodo_fechas$: Observable<Date[]>;
+
   constructor(
     private auditoriaService: AuditoriaService,
     private tiendasService: TiendasService,
-    private procesadosService: ProcesadosService
-  ) { };
+    private procesadosService: ProcesadosService,
+    private state: PeriodoFechasState
+  ) {
+    this.setStateSelectors();
+  };
+
+  private setStateSelectors() {
+    this.loading$ = this.state.loading$;
+    this.periodo_fechas$ = this.state.periodoFechas$;
+
+  }
 
   ngOnInit(): void {
-    this.inicializarObjetosDeEstadisticas();
-    
+    this.periodo_fechas$.subscribe(fechas => {
+      this.inicializarObjetosDeEstadisticas();
+    });
+
+  }
+
+  ngOnDestroy(): void {
+    this.state.reset();
+  }
+
+  obtenerMovimientosAuditorias() {
+    this.auditoriaService.getMovimientosAuditorias(this.periodo_fechas$).subscribe(
+      (data: conteo_movimientos_auditoria) => {
+        console.log('actualización de periodo fechas', this.periodo_fechas$);
+        // console.log('estadisticas_movimientos_auditoria_raw', data);
+        this.estadisticas_movimientos_auditoria.etiquetas = data.fechas;
+        this.estadisticas_movimientos_auditoria.datos = [
+          data.iniciadas,
+          data.finalizadas,
+          data.caducadas
+        ]
+        // console.log('estadisticas_movimientos_auditoria', this.estadisticas_movimientos_auditoria);
+
+
+        this.estadisticas_movimientos_auditoria = { ...this.estadisticas_movimientos_auditoria };
+    } , (error) => {
+      console.log(error);
+    })
   }
 
   obtenerEstadisticasEstadosAuditoria() {
@@ -150,25 +190,6 @@ export class EstadisticasAuditoriaComponent {
     })
   }
 
-  obtenerMovimientosAuditorias() {
-    this.auditoriaService.getMovimientosAuditorias().subscribe(
-      (data: conteo_movimientos_auditoria) => {
-        console.log('estadisticas_movimientos_auditoria_raw', data);
-        this.estadisticas_movimientos_auditoria.etiquetas = data.fechas;
-        this.estadisticas_movimientos_auditoria.datos = [
-          data.iniciadas,
-          data.finalizadas,
-          data.caducadas
-        ]
-        console.log('estadisticas_movimientos_auditoria', this.estadisticas_movimientos_auditoria);
-
-
-        this.estadisticas_movimientos_auditoria = { ...this.estadisticas_movimientos_auditoria };
-   } , (error) => {
-     console.log(error);
-   })
-  }
-
   inicializarObjetosDeEstadisticas() {
     this.estadisticas_estados_auditoria = [
       {
@@ -273,7 +294,7 @@ export class EstadisticasAuditoriaComponent {
     ]
 
     this.estadisticas_movimientos_auditoria = {
-      color: ['yellow', 'green', 'red'],
+      color: ['orange', 'green', 'red'],
       leyenda: ['Iniciadas', 'Finalizada', 'Caducada'],
       etiquetas: [],
       datos: []

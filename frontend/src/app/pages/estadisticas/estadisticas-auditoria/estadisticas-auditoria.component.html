@@ -1,26 +1,42 @@
-<div style="display: flex;">
-    <div style="height: 600px; width: 600px">
+<li *ngFor="let fecha of periodo_fechas$ | async">{{ fecha | date:'fullDate' }}</li>
+
+<div style="width: 80%; margin-left: 10%">
+    <div style="height: 60%; width: 100%">
         <h3>Auditorias creadas y terminadas:</h3>
         <app-stacked-bar [datos]="estadisticas_movimientos_auditoria"></app-stacked-bar>
-        <h3>Procesados realizados:</h3>
-        <app-barra-multiuso [datos]="estadisticas_procesados_diarios" [leyenda]="'Num. procesados'"></app-barra-multiuso>
     </div>
-    <div style="height: 600px; width: 600px; margin-left: 20px">
-        <h3>Estados de auditoría:</h3>
-        <app-super-donut [datos_graficas]="estadisticas_estados_auditoria"></app-super-donut>
-        <h3>Porcentaje procesados realizados en cada estado:</h3>
-        <p-progressBar [value]="estadisticas_procesados_dado_estado?.en_progreso.porcentaje" [color]="'orange'" [style]="{'margin-bottom': '20px'}"></p-progressBar>
-        <p-progressBar [value]="estadisticas_procesados_dado_estado?.finalizada.porcentaje" [color]="'green'" [style]="{'margin-bottom': '20px'}"></p-progressBar>
-        <p-progressBar [value]="estadisticas_procesados_dado_estado?.caducada.porcentaje" [color]="'red'" [style]="{'margin-bottom': '20px'}"></p-progressBar>
+    <div style="display: flex; height: 40%; margin-top: 1%;">
+        <div style="width: 25%">
+            <h3>Tiendas con auditorías en progreso:</h3>
+            <app-super-donut [datos_graficas]="estadisticas_tiendas_en_progreso"></app-super-donut>
+        </div>
+        <div style="width: 25%">
+            <h3>Estados de auditorías:</h3>
+            <app-super-donut [datos_graficas]="estadisticas_estados_auditoria"></app-super-donut>
+        </div>
+        <div style="width: 25%">
+            <h3>Resultados de carteles en auditorias:</h3>
+            <app-super-pie [datos_graficas]="estadisticas_resultados_carteles"></app-super-pie>
+        </div>
+        <div style="width: 25%">
+            <h3>Resultados de cuenta de dispositivos:</h3>
+            <app-super-pie [datos_graficas]="estadisticas_resultados_conteo"></app-super-pie>
+        </div>
     </div>
-    <div style="height: 400px; width: 400px">
-        <h3>Resultados de auditoría:</h3>
-        <app-super-pie [datos_graficas]="estadisticas_resultados_carteles"></app-super-pie>
-        <app-super-pie [datos_graficas]="estadisticas_resultados_conteo"></app-super-pie>
-    </div>
-    <div style="height: 300px; width: 300px">
-        <h3>Tiendas con auditorías en progreso:</h3>
-        <app-super-donut [datos_graficas]="estadisticas_tiendas_en_progreso"></app-super-donut>
+    <div style="display: flex; height: 40%; margin-top: 1%;">
+        <div style="width: 60%">
+            <h3>Procesados realizados cada día:</h3>
+            <app-barra-multiuso [datos]="estadisticas_procesados_diarios" [leyenda]="'Num. procesados'"></app-barra-multiuso>
+        </div>
+        <div style="width: 40%; margin-left: 4%">
+            <h3>Porcentaje procesados realizados en cada estado:</h3>
+            En progreso:
+            <p-progressBar [value]="estadisticas_procesados_dado_estado?.en_progreso.porcentaje" [color]="'orange'" [style]="{'margin-bottom': '2%', 'margin-top': '1%'}"></p-progressBar>
+            Finalizadas:
+            <p-progressBar [value]="estadisticas_procesados_dado_estado?.finalizada.porcentaje" [color]="'green'" [style]="{'margin-bottom': '2%', 'margin-top': '1%'}"></p-progressBar>
+            Caducadas:
+            <p-progressBar [value]="estadisticas_procesados_dado_estado?.caducada.porcentaje" [color]="'red'" [style]="{'margin-bottom': '2%', 'margin-top': '1%'}"></p-progressBar>
+        </div>
     </div>
 </div>
 
