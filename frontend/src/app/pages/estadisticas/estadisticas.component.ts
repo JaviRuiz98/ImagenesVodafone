@@ -1,6 +1,6 @@
 import { compileInjectable } from '@angular/compiler';
 import { Component } from '@angular/core';
-import { BehaviorSubject, combineLatest } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { FiltroState } from 'src/app/state/estadisticas/elementoSeleccionados.state';
 @Component({
   selector: 'app-estadisticas',
@@ -69,30 +69,33 @@ export class EstadisticasComponent {
   //Debería meterlo en el estado de filtros? crear uno nuevo? ya me dices
   apartado_seleccionado: string;
   private apartadoSeleccionadoSubject = new BehaviorSubject<string>("auditorias");
-  public apartadoSeleccionado$ = this.apartadoSeleccionadoSubject.asObservable();
+  public apartado_seleccionado$ = this.apartadoSeleccionadoSubject.asObservable();
 
 
-  constructor( private filtroState: FiltroState ) {  }
+  loading$:Observable<boolean>;
+
+  constructor( private filtroState: FiltroState ) { 
+    this.loading$ = this.filtroState.loading$;
+   }
 
 
   ngOnInit(): void {
-    combineLatest([this.filtroState.fechaIsFiltrado$ , this.filtroState.elementoIsFiltrado$,this.apartadoSeleccionado$
+    combineLatest([this.filtroState.fechaIsFiltrado$ , this.filtroState.elementoIsFiltrado$,this.apartado_seleccionado$
     ]).subscribe(([fechaIsFiltrado, elementoIsFiltrado, apartadoSeleccionado]) => {
-      this.apartado_seleccionado = apartadoSeleccionado;
       this.updateIsFiltrado(fechaIsFiltrado, elementoIsFiltrado,apartadoSeleccionado);
     });
   }
 
 
   updateIsFiltrado(fechaIsFiltrado: boolean, elementoIsFiltrado: boolean, apartadoSeleccionado: string) {
-    this.isFiltrado = fechaIsFiltrado || elementoIsFiltrado;
+
 
     switch (apartadoSeleccionado) {
       case 'auditorias':
         this.isFiltrado = fechaIsFiltrado;
         break;
       case 'muebles':
-        this.isFiltrado = this.isFiltrado;
+        this.isFiltrado = elementoIsFiltrado || fechaIsFiltrado;
         break;
       case 'uniformes':
         this.isFiltrado = false;
