@@ -177,6 +177,7 @@ export class EstadisticasAuditoriaComponent implements OnDestroy {
 
   obtenerNumeroProcesadosDiarios() {
     this.procesadosService.getProcesadosAndTiempo().subscribe((data: any) => {
+      this.estadisticas_procesados_diarios = [];
       //console.log('estadisticas_procesados_diarios_raw', data);
       for (let i = 0; i < data.fechas.length; i++) {
         this.estadisticas_procesados_diarios.push({

@@ -102,6 +102,7 @@ export class PlanoTiendaComponent implements OnInit {
       });
     });
   }
+
   editarCanvas(){
     const parametrosAlturaAnchura = this.obtenerAlturaAnchuraCanvas(100, 100);
     this.canvas.setWidth(parametrosAlturaAnchura.width);
