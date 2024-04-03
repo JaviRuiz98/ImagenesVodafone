@@ -131,7 +131,9 @@ export const elementosService = {
         try{
           return await db.elementos.findFirst({
             where: {
-              id: id_elemento
+              id: id_elemento,
+              activo: true,
+              
             },
             include: {
               imagenes: true,

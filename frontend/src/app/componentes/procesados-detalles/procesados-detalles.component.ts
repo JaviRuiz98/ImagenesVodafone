@@ -44,9 +44,7 @@ export class ProcesadosDetallesComponent  implements OnInit {
     ngOnInit(): void {
 
       this.elemento = this.dialogConfig.data.elemento;
-       console.log('elemento', this.elemento);
       this.procesados = this.elemento.procesados_imagenes;
-      console.log('procesados', this.procesados);
       this.datos_graficas = this.dialogConfig.data.datos_graficas;
       
     }

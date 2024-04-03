@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { ProcesadosDetallesComponent } from 'src/app/componentes/procesados-detalles/procesados-detalles.component';
 import { datos_graficas } from 'src/app/interfaces/datos_graficas';
@@ -17,8 +17,9 @@ import { EstadisticasMethodsService } from 'src/app/shared/estadisticas/estadist
   styleUrls: ['./estadisticas-muebles.component.css']
 })
 export class EstadisticasMueblesComponent implements OnInit  {
- constructor  ( private elementosService: ElementosService, private   estadisticasMethods: EstadisticasMethodsService, private urlService: UrlService, public dialogService: DialogService ){ }
 
+ constructor  ( private elementosService: ElementosService, private   estadisticasMethods: EstadisticasMethodsService, private urlService: UrlService, public dialogService: DialogService ){ }
+  
  ref: DynamicDialogRef | undefined;
 
  
@@ -32,20 +33,26 @@ export class EstadisticasMueblesComponent implements OnInit  {
 
  tableStateOptions =  [{label: 'Carteles', value: 'cartel'}, {label: 'Conteo de dispositivos', value: 'dispositivo'}];
  tableStateValue = 'cartel';
+
+ //Filtros
+ filtrado: boolean = false;
+ showingSelectElementos: boolean = false;
+  elementos_ids: number[] | null;
+
  ngOnInit(): void {  
   this.obtenerEstadisticas();
+
  }
 
  obtenerEstadisticas() {
 
-  this.elementosService.getEstadisticasRespuestas().subscribe(
+  this.elementosService.getEstadisticasRespuestas(this.elementos_ids).subscribe(
     (estadisticas: resultados_ordenados_elementos) => {
       this.estadisticas = estadisticas;  //tengo los elementos, pero no se que uso darles
-
       const estadisticas_length: resultados_ordenados = this.estadisticasMethods.fromOrdenadosElementosToOrdenados(estadisticas);
       this.estadisticas_resultados_carteles = this.estadisticasMethods.mapearEstadisticasResultados(estadisticas_length, "carteles", false);
       this.estadisticas_resultados_conteo = this.estadisticasMethods.mapearEstadisticasResultados(estadisticas_length, "conteoDispositivos", false);
-      
+
       this.initCarteles();
       this.initConteoDispositivos();
       this.initNumProcesadosCategoria ();
@@ -55,7 +62,7 @@ export class EstadisticasMueblesComponent implements OnInit  {
  }
 
  initNumProcesadosCategoria() {
-  this.elementosService.getNumProcesadosByCategoria().subscribe(
+  this.elementosService.getNumProcesadosByCategoria(this.elementos_ids).subscribe(
     (numProcesados: {conteo_dispositivos: number, carteles: number}) => {
       this.numProcesadosCategoria = numProcesados;
     }
@@ -64,7 +71,7 @@ export class EstadisticasMueblesComponent implements OnInit  {
   }
 
  initCarteles() {
-  this.elementosService.getEstadisticasCarteles().subscribe(
+  this.elementosService.getEstadisticasCarteles(this.elementos_ids).subscribe(
     (carteles: estadisticas_carteles[]) => {
       this.estadisticasCartel = carteles;
     } 
@@ -72,7 +79,7 @@ export class EstadisticasMueblesComponent implements OnInit  {
  }
 
  initConteoDispositivos(){
-  this.elementosService.getEstadisticasConteoDispositivos().subscribe(
+  this.elementosService.getEstadisticasConteoDispositivos(this.elementos_ids).subscribe(
     (conteo: estadisticas_conteo_dispositivos[]) => {
       this.estadisticasConteo = conteo;
     } 
@@ -110,7 +117,7 @@ export class EstadisticasMueblesComponent implements OnInit  {
 
 
       this.ref = this.dialogService.open(ProcesadosDetallesComponent, {
-         header: `Proesado del elemento ${elemento.nombre}`,
+         header: `Procesados del elemento ${elemento.nombre}`,
         width: '70%',
         baseZIndex: 10000,
         maximizable: true,
@@ -127,6 +134,20 @@ export class EstadisticasMueblesComponent implements OnInit  {
   });
  
  }
+
+ onSelectedElementosIds($event: number[]) {
+  this.showingSelectElementos = false;
+  this.elementos_ids = $event;
+  this.filtrado=true;
+  this.obtenerEstadisticas();
+  }
+
+  limpiarFiltros() {
+    this.elementos_ids = null;
+    this.filtrado = false;
+    this.obtenerEstadisticas();
+  }
+
 
 
 }

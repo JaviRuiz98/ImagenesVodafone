@@ -30,7 +30,6 @@
   <div *ngIf="show_crear==true; else seleccionar" class="mt-4">
     <app-nuevo-elemento></app-nuevo-elemento>
   </div>
-  <ng-template #seleccionar>
     <div *ngIf="mode=='arrastrar' else seleccionar">
       <p-scrollPanel [style]="{ height: '47vh' }">
         <div *ngFor="let elemento of filtered_elementos" class="example-box" cdkDrag>
@@ -88,5 +87,4 @@
     </ng-template>
   
    
-  </ng-template>
   
