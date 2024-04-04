@@ -18,14 +18,17 @@ import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { FormsModule } from '@angular/forms';
 import { SelectButtonModule } from 'primeng/selectbutton';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
-//uniformes
 import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
-
+import { PanelModule } from 'primeng/panel';
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { DropdownModule } from 'primeng/dropdown';
+import { TagModule } from 'primeng/tag';
+import { GestionDePedidosComponent } from 'src/app/componentes/gestion-de-pedidos/gestion-de-pedidos.component';
+
 import { ProcesadosDetallesComponent } from 'src/app/componentes/procesados-detalles/procesados-detalles.component';
 import { StackedBarComponent } from 'src/app/componentes/_grafica/stacked-bar/stacked-bar.component';
 import { MultipleSelectorElementosComponent } from 'src/app/componentes/multipleSelectorElementos/multipleSelectorElementos.component';
@@ -58,6 +61,13 @@ import { DialogModule } from 'primeng/dialog';
     CalendarModule,
     FormsModule,
     CardModule,
+    ChartModule,
+    PanelModule,
+    OverlayPanelModule,
+    DropdownModule,
+    TableModule,
+    TagModule,
+    GestionDePedidosComponent,
     ChartModule,
     SelectButtonModule,
     OverlayPanelModule,

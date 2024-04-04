@@ -8,7 +8,7 @@
 <div *ngIf="total_carrito > 0; else carritoVacio" >
     <p-dataView #dv [value]="productos_carrito">
 
-            <ng-template let-producto pTemplate="listItem"> 
+            <ng-template let-producto  pTemplate="listItem" > 
     
                 <div class="col-12">
                     <div class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4" >
@@ -30,7 +30,7 @@
                                 <div class="flex flex-column gap-3">
                                     <h3>Talla: {{producto.caracteristica_seleccionada.talla}}</h3>
                                     <!-- Parte de la seleccion de unidades -->
-                                    <small class="p-error" *ngIf="producto.cantidad >= producto.caracteristica_seleccionada.stock">*Stock maximo: {{producto.caracteristica_seleccionada.stock}}* <br></small> 
+                                    <small class="p-error" *ngIf="array_cantidad_valida[this.productos_carrito.indexOf(producto)] == false">*Máximo stock superado*<br></small> 
                                     <p-inputNumber
                                         [(ngModel)]="producto.cantidad"
                                         [showButtons]="true"
@@ -40,7 +40,7 @@
                                         (ngModelChange)="cambiarTotal(producto)"
                                         [step]="1"
                                         [min]="1"
-                                        [max]="producto.caracteristica_seleccionada.stock"
+                                        
                                         decrementButtonClass="p-button-secondary"
                                         incrementButtonClass="p-button-danger"
                                         incrementButtonIcon="pi pi-plus"
