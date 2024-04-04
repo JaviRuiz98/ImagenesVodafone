@@ -19,6 +19,6 @@ router.post('/feedbackProcesado', feedbackProcesado );
 router.get('/procesados/:id_auditoria', getProcesadosByIdAuditoria );
 router.get('/procesadosByExpositor/:id_expositor', getProcesadosByIdExpositor );
 
-router.get('/estadisticas/procesados_and_tiempo', getProcesadosAndTiempo );
+router.post('/estadisticas/procesados_and_tiempo', getProcesadosAndTiempo );
 
 export default router;

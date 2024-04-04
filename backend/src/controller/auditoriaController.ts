@@ -217,15 +217,40 @@ export async function terminarAuditoria(req: Request, res: Response) {
     }
 }
 
-export async function getEstadisticasEstadosAuditoria(_req: Request, res: Response) {
+export async function getAuditoriasEnProgresoYTiendasTotales(req: Request, res: Response) {
     try {
+        let periodo_fechas: Date[] = req.body.fechas;
+
+        if(periodo_fechas.length == 0) {
+            periodo_fechas[1] = new Date();
+        }
+
+        const num_auditorias_en_progreso = await auditoriaService.getAuditoriasEnProgreso(periodo_fechas);
+        const tiendas_totales = await tiendaService.contarTiendasTotales();
+
+        res.status(200).json({num_auditorias_en_progreso, tiendas_totales});
+
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+        console.log(error);
+    }
+}
+
+export async function getEstadisticasEstadosAuditoria(req: Request, res: Response) {
+    try {
+        const periodo_fechas: Date[] = req.body.fechas;
+
         const id_estados_excluidos: number[] = [];
-        const estados: estados_extended[] = await auditoriaService.getAllEstadosParaAuditorias(id_estados_excluidos);
+        const estados: estados_extended[] = await auditoriaService.getAllEstadosParaAuditorias(id_estados_excluidos, periodo_fechas);
+        console.log('estados1', estados);
+
 
         estados.map((estado) => {
             estado.num_auditorias = estado.auditorias?.length;
             estado.auditorias = [];
         })
+
+        console.log('estados2:', estados);
 
         res.status(200).json(estados);
     } catch (error) {
@@ -233,12 +258,14 @@ export async function getEstadisticasEstadosAuditoria(_req: Request, res: Respon
     }
 }
 
-export async function getMovimientosAuditorias(_req: Request, res: Response) {
+export async function getMovimientosAuditorias(req: Request, res: Response) {
     try {
+        const periodo_fechas: Date[] = req.body.fechas;
+
         const auditorias = await auditoriaService.getSoloAllAuditoriasInPeriodo();
 
         if(!!auditorias) {
-            const movimientos_auditoria = await agruparAuditorias(auditorias);
+            const movimientos_auditoria = await agruparAuditorias(auditorias, periodo_fechas);
 
             res.status(200).json(movimientos_auditoria);
         } else {
@@ -250,10 +277,19 @@ export async function getMovimientosAuditorias(_req: Request, res: Response) {
     }
 }   
 
-async function agruparAuditorias(auditorias: auditorias[]): Promise<conteo_movimientos_auditoria> {
-    const fechaMin = new Date(Math.min(...auditorias.map(a => new Date(a.fecha).getTime())));
-    //const fechaMax = new Date(Math.max(...auditorias.map(a => new Date(a.fecha_fin? a.fecha_fin : a.fecha).getTime())));
-    const fechaMax = new Date();
+async function agruparAuditorias(auditorias: auditorias[], periodo_fechas: Date[]): Promise<conteo_movimientos_auditoria> {
+    let fechaMin: Date;
+    let fechaMax: Date;
+
+    if (periodo_fechas.length === 0) {
+        fechaMin = new Date(Math.min(...auditorias.map(a => new Date(a.fecha).getTime())));
+        // Para fechaMax considera tanto la fecha de creación como de finalización
+        fechaMax = new Date();
+    } else {
+        fechaMin = new Date(periodo_fechas[0]);
+        fechaMax = new Date(periodo_fechas[1]);
+    }
+
     let fechaActual = new Date(fechaMin);
     const resultado: conteo_movimientos_auditoria = {
         fechas: [],
@@ -270,13 +306,21 @@ async function agruparAuditorias(auditorias: auditorias[]): Promise<conteo_movim
         resultado.caducadas.push(0);
 
         auditorias.forEach(auditoria => {
-            const fechaAuditoria = formatearFecha(new Date(auditoria.fecha));
-            if (fechaAuditoria === fechaStr) {
-                resultado.iniciadas[resultado.iniciadas.length - 1]++;
-                if (auditoria.id_estado === 2) {
-                    resultado.finalizadas[resultado.finalizadas.length - 1]++;
-                } else if (auditoria.id_estado === 3) {
-                    resultado.caducadas[resultado.caducadas.length - 1]++;
+            // Para auditorías iniciadas (estado 1), usa la fecha de creación
+            const fechaAuditoriaInicio = formatearFecha(new Date(auditoria.fecha));
+            if (fechaAuditoriaInicio === fechaStr) {
+                resultado.iniciadas[resultado.fechas.length - 1]++;
+            }
+            if(auditoria.id_estado === 2 || auditoria.id_estado === 3) { // Para estados 2 y 3, usa la fecha de finalización, si existe
+                if (auditoria.fecha_fin) {
+                    const fechaAuditoriaFin = formatearFecha(new Date(auditoria.fecha_fin));
+                    if (fechaAuditoriaFin === fechaStr) {
+                        if (auditoria.id_estado === 2) {
+                            resultado.finalizadas[resultado.fechas.length - 1]++;
+                        } else if (auditoria.id_estado === 3) {
+                            resultado.caducadas[resultado.fechas.length - 1]++;
+                        }
+                    }
                 }
             }
         });
@@ -289,6 +333,7 @@ async function agruparAuditorias(auditorias: auditorias[]): Promise<conteo_movim
 
     return resultado;
 }
+
 
 function formatearFecha(fecha: Date): string {
     return fecha.toISOString().split('T')[0];

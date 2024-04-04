@@ -8,6 +8,7 @@ import { estados_auditorias } from 'src/app/pages/estadisticas/interface/estados
 import { resultados_ordenados } from 'src/app/interfaces/resultados_ordenados';
 import { conteo_elementos_procesados_auditoria } from 'src/app/pages/estadisticas/interface/conteoElementosProcesadosAuditoria';
 import { conteo_movimientos_auditoria } from 'src/app/pages/estadisticas/interface/conteoMovimientosAuditoria';
+import { en_progreso_y_tiendas_totales } from 'src/app/pages/estadisticas/interface/enProgresoYTiendasTotales';
 
 @Injectable({
   providedIn: 'root'
@@ -63,8 +64,8 @@ export class AuditoriaService {
     return this.http.get<number[]>(`${this.API_URI}/barra_progreso_auditoria/${id_auditoria_seleccionada}`);
   }
 
-  getEstadisticasEstadosAuditoria(): Observable<estados_auditorias[]> {
-    return this.http.get<estados_auditorias[]>(`${this.API_URI}/estadisticas/estados_auditoria`);
+  getEstadisticasEstadosAuditoria(fechas: Date[]): Observable<estados_auditorias[]> {
+    return this.http.post<estados_auditorias[]>(`${this.API_URI}/estadisticas/estados_auditoria`, {fechas});
   }
 
   getEstadisticasResultadosAuditoria(): Observable<resultados_ordenados> {
@@ -75,7 +76,11 @@ export class AuditoriaService {
     return this.http.get<conteo_elementos_procesados_auditoria>(`${this.API_URI}/estadisticas/porcentaje_completado`);
   }
 
-  getMovimientosAuditorias(periodo_fechas$: Observable<Date[]>): Observable<conteo_movimientos_auditoria> {
-    return this.http.get<conteo_movimientos_auditoria>(`${this.API_URI}/estadisticas/movimientos_auditorias`);
+  getMovimientosAuditorias(fechas: Date[]): Observable<conteo_movimientos_auditoria> {
+    return this.http.post<conteo_movimientos_auditoria>(`${this.API_URI}/estadisticas/movimientos_auditorias`, {fechas});
+  }
+
+  enProgresoYTiendasTotales(fechas: Date[]): Observable<en_progreso_y_tiendas_totales> {
+    return this.http.post<en_progreso_y_tiendas_totales>(`${this.API_URI}/estadisticas/en_progreso_y_tiendas_totales`, {fechas});
   }
 }

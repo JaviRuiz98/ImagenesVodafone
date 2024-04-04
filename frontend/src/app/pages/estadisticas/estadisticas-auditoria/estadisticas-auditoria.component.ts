@@ -4,12 +4,12 @@ import { datos_graficas, datos_graficas_multidatos } from 'src/app/interfaces/da
 import { resultados_ordenados } from 'src/app/interfaces/resultados_ordenados';
 import { conteo_elementos_procesados_auditoria } from '../interface/conteoElementosProcesadosAuditoria';
 import { conteo_movimientos_auditoria } from '../interface/conteoMovimientosAuditoria';
-import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { tienda } from 'src/app/interfaces/tienda';
 import { ProcesadosService } from 'src/app/servicios/procesados/procesados.service';
 import { datos_informe } from 'src/app/interfaces/datos_informe';
 import { Observable } from 'rxjs';
 import { FiltroState } from 'src/app/state/estadisticas/elementoSeleccionados.state';
+import { en_progreso_y_tiendas_totales } from '../interface/enProgresoYTiendasTotales';
 
 @Component({
   selector: 'app-estadisticas-auditoria',
@@ -34,7 +34,6 @@ export class EstadisticasAuditoriaComponent  {
 
   constructor(
     private auditoriaService: AuditoriaService,
-    private tiendasService: TiendasService,
     private procesadosService: ProcesadosService,
     private state: FiltroState
   ) {
@@ -50,6 +49,13 @@ export class EstadisticasAuditoriaComponent  {
   ngOnInit(): void {
     this.periodo_fechas$.subscribe(fechas => {
       this.inicializarObjetosDeEstadisticas();
+
+      this.obtenerEstadisticasEstadosAuditoria(fechas);
+      this.obtenerEstadisticasResultadosAuditoria();
+      this.obtenerEstadisticasProcesadosDadoEstadoAuditoria();
+      this.obtenerTiendasConAuditoriaEnProgreso(fechas);
+      this.obtenerNumeroProcesadosDiarios(fechas);
+      this.obtenerMovimientosAuditorias(fechas);
     });
 
   }
@@ -58,10 +64,9 @@ export class EstadisticasAuditoriaComponent  {
   //   this.state.reset();
   // }
 
-  obtenerMovimientosAuditorias() {
-    this.auditoriaService.getMovimientosAuditorias(this.periodo_fechas$).subscribe(
+  obtenerMovimientosAuditorias(fechas: Date[]) {
+    this.auditoriaService.getMovimientosAuditorias(fechas).subscribe(
       (data: conteo_movimientos_auditoria) => {
-        console.log('actualización de periodo fechas', this.periodo_fechas$);
         // console.log('estadisticas_movimientos_auditoria_raw', data);
         this.estadisticas_movimientos_auditoria.etiquetas = data.fechas;
         this.estadisticas_movimientos_auditoria.datos = [
@@ -74,16 +79,16 @@ export class EstadisticasAuditoriaComponent  {
 
         this.estadisticas_movimientos_auditoria = { ...this.estadisticas_movimientos_auditoria };
     } , (error) => {
-      console.log(error);
+      console.error(error);
     })
   }
 
-  obtenerEstadisticasEstadosAuditoria() {
-    this.auditoriaService.getEstadisticasEstadosAuditoria().subscribe(
+  obtenerEstadisticasEstadosAuditoria(fechas: Date[]) {
+    this.auditoriaService.getEstadisticasEstadosAuditoria(fechas).subscribe(
       (data) => {
         const estadisticas_estados_auditoria_raw = data;
 
-        //console.log('estadisticas_estados_auditoria_raw', estadisticas_estados_auditoria_raw);
+        console.log('estadisticas_estados_auditoria_raw', estadisticas_estados_auditoria_raw);
 
         // Logica del mapeado teniendo en cuenta que se ignora el estado 1 (En progreso)
         const id_estados_excluidos: number[] = [1];
@@ -96,13 +101,26 @@ export class EstadisticasAuditoriaComponent  {
           }
         }
 
-        //console.log('estadisticas_estados_auditoria', this.estadisticas_estados_auditoria);
+        console.log('estadisticas_estados_auditoria', this.estadisticas_estados_auditoria);
 
         this.estadisticas_estados_auditoria = [...this.estadisticas_estados_auditoria];
       }, (error) => {
         console.log(error);
       }
     )
+  }
+
+  obtenerTiendasConAuditoriaEnProgreso(fechas: Date[]) {
+    this.auditoriaService.enProgresoYTiendasTotales(fechas).subscribe(
+      (data: en_progreso_y_tiendas_totales) => {
+        console.log('estadisticas_en_progreso_raw', data);
+
+        this.estadisticas_tiendas_en_progreso[0].valor = data.num_auditorias_en_progreso;
+        this.estadisticas_tiendas_en_progreso[1].valor = data.tiendas_totales - data.num_auditorias_en_progreso;
+
+        console.log('estadisticas_tiendas_en_progreso', this.estadisticas_tiendas_en_progreso);
+        this.estadisticas_tiendas_en_progreso = [...this.estadisticas_tiendas_en_progreso];
+    })
   }
 
   obtenerEstadisticasResultadosAuditoria() {
@@ -163,31 +181,25 @@ export class EstadisticasAuditoriaComponent  {
     );
   }
 
-  obtenerTiendasConAuditoriaEnProgreso() {
-    this.tiendasService.getAllTiendas().subscribe((data: tienda[]) => {
-      this.total_tiendas = data.length;
 
-      this.estadisticas_tiendas_en_progreso[0].valor = this.estadisticas_estados_auditoria[0].valor;
-      this.estadisticas_tiendas_en_progreso[1].valor = this.total_tiendas - this.estadisticas_tiendas_en_progreso[0].valor;
 
-      //console.log('estadisticas_tiendas_en_progreso', this.estadisticas_tiendas_en_progreso);
-      this.estadisticas_tiendas_en_progreso = [...this.estadisticas_tiendas_en_progreso];
-    })
-  }
+  obtenerNumeroProcesadosDiarios(fechas: Date[]) {
+    this.procesadosService.getProcesadosAndTiempo(fechas).subscribe(
+      (data: any) => {
+        this.estadisticas_procesados_diarios = [];
+        //console.log('estadisticas_procesados_diarios_raw', data);
+        for (let i = 0; i < data.fechas.length; i++) {
+          this.estadisticas_procesados_diarios.push({
+            valor: data.procesados[i],
+            etiqueta: data.fechas[i]
+          })
+        }
 
-  obtenerNumeroProcesadosDiarios() {
-    this.procesadosService.getProcesadosAndTiempo().subscribe((data: any) => {
-      //console.log('estadisticas_procesados_diarios_raw', data);
-      for (let i = 0; i < data.fechas.length; i++) {
-        this.estadisticas_procesados_diarios.push({
-          valor: data.procesados[i],
-          etiqueta: data.fechas[i]
-        })
-      }
-
-      this.estadisticas_procesados_diarios = [...this.estadisticas_procesados_diarios];
-      //console.log('estadisticas_procesados_diarios', this.estadisticas_procesados_diarios);
-    })
+        this.estadisticas_procesados_diarios = [...this.estadisticas_procesados_diarios];
+        //console.log('estadisticas_procesados_diarios', this.estadisticas_procesados_diarios);
+      }, (error) => {
+        console.log(error);
+      })
   }
 
   inicializarObjetosDeEstadisticas() {
@@ -299,12 +311,5 @@ export class EstadisticasAuditoriaComponent  {
       etiquetas: [],
       datos: []
     }
-
-    this.obtenerEstadisticasEstadosAuditoria();
-    this.obtenerEstadisticasResultadosAuditoria();
-    this.obtenerEstadisticasProcesadosDadoEstadoAuditoria();
-    this.obtenerTiendasConAuditoriaEnProgreso();
-    this.obtenerNumeroProcesadosDiarios();
-    this.obtenerMovimientosAuditorias();
   }
 }
