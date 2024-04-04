@@ -283,7 +283,6 @@ export async function getProcesadosByIdAuditoria(req: Request, res: Response) {
 export async function getProcesadosAndTiempo(req: Request, res: Response) {
   try {
     const periodo_fechas = req.body.fechas;
-    console.log('periodo_fechas:', periodo_fechas);
 
     // Poner validador para ver que se recupera correctamente el periodo_fechas
     if(!periodo_fechas) {

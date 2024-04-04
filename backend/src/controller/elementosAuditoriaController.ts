@@ -74,7 +74,6 @@ export async function getEstadisticasResultadosAuditoria(req: Request, res: Resp
 
         // Contar y ordenar los procesamientos
         const resultados_ordenados: resultados_ordenados = getResumenEstadisticas(ultimos_procesados, 10, cuenta_no_procesados);
-        console.log('resultados ordenados:', resultados_ordenados);
 
         res.status(200).json(resultados_ordenados);
     } catch (error) {
