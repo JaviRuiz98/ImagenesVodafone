@@ -68,8 +68,8 @@ export class AuditoriaService {
     return this.http.post<estados_auditorias[]>(`${this.API_URI}/estadisticas/estados_auditoria`, {fechas});
   }
 
-  getEstadisticasResultadosAuditoria(): Observable<resultados_ordenados> {
-    return this.http.get<resultados_ordenados>(`${this.API_URI}/estadisticas/resultados_auditoria`);
+  getEstadisticasResultadosAuditoria(fechas: Date[]): Observable<resultados_ordenados> {
+    return this.http.post<resultados_ordenados>(`${this.API_URI}/estadisticas/resultados_auditoria`, {fechas});
   }
 
   getEstadisticasProcesadosDadoEstadoAuditoria(): Observable<conteo_elementos_procesados_auditoria> {

@@ -55,10 +55,16 @@ function agruparElementosMueblesAuditorias(per_ele_aud_brutos: per_ele_aud_exten
     return resultado;
 }
 
-export async function getEstadisticasResultadosAuditoria(_req: Request, res: Response) {
+export async function getEstadisticasResultadosAuditoria(req: Request, res: Response) {
     try {
+        let periodo_fechas: Date[] = req.body.fechas;
+
+        if(periodo_fechas.length == 0) {
+            periodo_fechas[1] = new Date();
+        }
+
         // Obtener todos el último procesado de cada elemento-auditoria
-        const elementos_auditorias: per_ele_aud_extended[] = await elementosAuditoriaService.getUltimosProcesadosElementoAuditoriaNotEnProgreso();
+        const elementos_auditorias: per_ele_aud_extended[] = await elementosAuditoriaService.getUltimosProcesadosElementoAuditoriaNotEnProgreso(periodo_fechas);
 
         // Contar y ordenar los no procesados
         const cuenta_no_procesados: cuenta_no_procesados = cuentaNoProcesados(elementos_auditorias);
@@ -68,6 +74,7 @@ export async function getEstadisticasResultadosAuditoria(_req: Request, res: Res
 
         // Contar y ordenar los procesamientos
         const resultados_ordenados: resultados_ordenados = getResumenEstadisticas(ultimos_procesados, 10, cuenta_no_procesados);
+        console.log('resultados ordenados:', resultados_ordenados);
 
         res.status(200).json(resultados_ordenados);
     } catch (error) {
