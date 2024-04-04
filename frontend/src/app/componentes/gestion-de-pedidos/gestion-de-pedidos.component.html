@@ -1,0 +1,113 @@
+
+
+
+
+<p-panel header="Pedidos" [style]="{width: '70%', margin: '0 auto'}" collapseIcon="pi pi-chevron-down" [toggleable]="true">
+    <p-table
+        #dt1
+        [value]="pedidosTodos"
+        dataKey="id"
+        [rows]="10"
+        [showCurrentPageReport]="true"
+        [rowsPerPageOptions]="[10, 25, 50]"
+        [loading]="loading"
+        [paginator]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+        [globalFilterFields]="['id', 'sfid', 'fecha', 'fechaEntrega', 'estado']"
+        [(selection)]="selectedPedidos"
+    >
+        <ng-template pTemplate="caption">
+            <div class="flex">
+                <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+                <span class="p-input-icon-left ml-auto">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" #inputSearch (input)="dt1.filterGlobal(inputSearch.value, 'contains')" placeholder="Search keyword" />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="id" style="min-width:15rem">
+                    <div class="flex align-items-center">
+                        ID del pedido
+                        <p-sortIcon field="id"></p-sortIcon>
+                        <p-columnFilter type="text" field="id" display="menu"></p-columnFilter>
+                    </div>
+                </th>
+                <th pSortableColumn="sfid" style="min-width:15rem">
+                    <div class="flex align-items-center">
+                        SFID
+                        <p-sortIcon field="sfid"></p-sortIcon>
+                        <p-columnFilter type="text" field="sfid" display="menu"></p-columnFilter>
+                    </div>
+                </th>
+    
+                <th pSortableColumn="pedido.fecha" style="min-width:10rem">
+                    <div class="flex align-items-center">
+                        Fecha
+                        <p-sortIcon field="pedido.fecha"></p-sortIcon>
+                        <!-- <p-columnFilter type="text" field="fecha" display="menu"></p-columnFilter> -->
+                        <p-columnFilter type="date" field="pedido.fecha" display="menu" dateFormat="MM/dd/yyyy"></p-columnFilter>
+                    </div>
+                </th>
+                <th pSortableColumn="fechaEntrega" style="min-width:10rem">
+                    <div class="flex align-items-center">
+                        fechaEntrega
+                        <p-sortIcon field="fechaEntrega"></p-sortIcon>
+                        <p-columnFilter type="text" field="fechaEntrega" display="menu"></p-columnFilter>
+                    </div>
+                </th>
+                <th style="min-width:10rem">
+                    <div class="flex align-items-center">
+                        Status
+                        <p-columnFilter field="estado" matchMode="equals" display="menu">
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <p-dropdown [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)" placeholder="Any">
+                                    <ng-template let-option pTemplate="item">
+                                        <p-tag [value]="option.value" [severity]="getSeverity(option.label)"></p-tag>
+                                    </ng-template>
+                                </p-dropdown>
+                            </ng-template>
+                        </p-columnFilter>
+                    </div>
+                </th>
+
+    
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-pedido>
+            <tr>
+                <td  >
+                 
+                    {{ pedido.id }}
+                   
+                </td >
+                <td>
+                    {{ pedido.sfid }}
+                </td>
+    
+                <td>
+                    {{ pedido.fecha | date: 'MM/dd/yyyy' }}
+                </td>
+                <td  >
+                    <div *ngIf="pedido.fecha_entrega; else sinFecha">
+                        {{ pedido.fecha_entrega | date: 'MM/dd/yyyy' }}
+                    </div>
+                    <ng-template #sinFecha  >
+                       --------
+                    </ng-template>
+                </td>
+                <td>
+                    <p-tag [value]="pedido.estado" [severity]="getSeverity(pedido.estado)"></p-tag>
+                </td>
+ 
+             
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td colspan="7">No se han encontrado pedidos.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</p-panel>

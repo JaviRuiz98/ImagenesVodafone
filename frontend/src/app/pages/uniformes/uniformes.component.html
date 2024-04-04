@@ -108,11 +108,12 @@
                     <span class="text-1xl font-semibold" *ngIf="producto_seleccionado && producto_seleccionado.caracteristicas_productos && producto_seleccionado.caracteristicas_productos.length > 0">
                         <!-- {{producto_seleccionado.caracteristicas_productos[0]?.talla}} -->
                         <h3>Unica</h3>
+                        
                       </span>
                 </ng-template>
             </div>
             <small class="p-error" *ngIf="!talla_valida">* Seleccione una talla* <br></small>
-            <small class="p-error" *ngIf="!cantidad_valida">*Stock maximo: {{producto_seleccionado?.caracteristica_seleccionada?.stock}}* <br></small> 
+            <small class="p-error" *ngIf="!cantidad_valida">*Stock maximo superado.* <br></small> 
 
             <div class="flex justify-content-end">
                 
@@ -126,8 +127,7 @@
                     spinnerMode="horizontal"
                     [style]="{ 'margin-right': '50px'}"
                     [step]="1"
-                    [min]="1"
-                    [max]="producto_seleccionado?.caracteristica_seleccionada?.stock"
+                    [min]="0"
                     (ngModelChange)="validarCantidades(producto_seleccionado)"
                     decrementButtonClass="p-button-secondary"
                     incrementButtonClass="p-button-danger"
