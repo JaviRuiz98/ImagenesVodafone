@@ -73,9 +73,11 @@ export class EstadisticasComponent {
 
 
   loading$:Observable<boolean>;
+  selectedElementosIds$:Observable<number[]>;
 
   constructor( private filtroState: FiltroState ) { 
     this.loading$ = this.filtroState.loading$;
+    this.selectedElementosIds$ = this.filtroState.elementoSeleccionado$;
    }
 
 

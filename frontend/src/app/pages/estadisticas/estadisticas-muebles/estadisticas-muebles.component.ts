@@ -55,7 +55,12 @@ export class EstadisticasMueblesComponent implements OnInit  {
  emptyArrayCargandoTabla = Array.from({ length: 5 }).map((_, i) => `Item #${i}`);
 
  //Filtros
+ lastElementoIds: number[] = [];
+ lastFechas: Date[] = [];
+ private primeraVez = true; // Bandera para controlar la primera ejecución
  private subscripcionFiltroState: Subscription;
+
+
  filtrado: boolean = false;
  elementos_ids$: Observable<number[]>;
  fechas$: Observable<Date[]>;
@@ -67,16 +72,35 @@ export class EstadisticasMueblesComponent implements OnInit  {
   }
 
  
- ngOnInit(): void {  
- 
-  this.subscripcionFiltroState = combineLatest([this.elementos_ids$, this.fechas$]).subscribe(([elementosIds, fechas]) => {
-    // this.filtroState.updateLoading(true);
-    this.obtenerEstadisticas(elementosIds, fechas);
+  ngOnInit(): void {
+    this.subscripcionFiltroState = combineLatest([this.elementos_ids$, this.fechas$]).subscribe(([elementosIds, fechas]) => {
+      if (this.primeraVez) {
+        this.primeraVez = false;
+        this.obtenerEstadisticas(elementosIds, fechas);
 
-  });
-    
- }
+      }
+      // Verifica si los arrays son iguales,
+      const elementosIdsCambiaron = !this.arraysIguales(elementosIds, this.lastElementoIds);
+      const fechasCambiaron = !this.fechasIguales(fechas, this.lastFechas);
+  
+      // Si alguno de los arrays cambió (incluyendo cambios a o desde un estado vacío)
+      if (elementosIdsCambiaron || fechasCambiaron) {
+        this.lastElementoIds = [...elementosIds]; // Actualiza la última referencia conocida
+        this.lastFechas = [...fechas]; // Actualiza la última referencia conocida
+        this.obtenerEstadisticas(elementosIds, fechas);
+      }
+    });
+  }
 
+  // Método para comparar el contenido de dos arrays
+  private arraysIguales(arr1: number[], arr2: number[]): boolean {
+    return arr1.length === arr2.length && arr1.every((valor, index) => valor === arr2[index]);
+  }
+
+  // Método para comparar dos arrays de fechas
+  private fechasIguales(arr1: Date[], arr2: Date[]): boolean {
+    return arr1.length === arr2.length && arr1.every((fecha, index) => fecha.getTime() === arr2[index].getTime());
+  }
  ngOnDestroy(): void {
   this.subscripcionFiltroState.unsubscribe();
 }
@@ -84,14 +108,14 @@ export class EstadisticasMueblesComponent implements OnInit  {
 
 
  obtenerEstadisticas( elementos_ids?: number[], fechas?: Date[]) {
- 
+  
 
   this.elementosService.getEstadisticasRespuestas(elementos_ids, fechas).subscribe(
     (estadisticas: resultados_ordenados_elementos) => {
       this.estadisticas = estadisticas;  //tengo los elementos, pero no se que uso darles
       const estadisticas_length: resultados_ordenados = this.estadisticasMethods.fromOrdenadosElementosToOrdenados(estadisticas);
-      this.estadisticas_resultados_carteles = this.estadisticasMethods.mapearEstadisticasResultados(estadisticas_length, "carteles", false);
-      this.estadisticas_resultados_conteo = this.estadisticasMethods.mapearEstadisticasResultados(estadisticas_length, "conteoDispositivos", false);
+      this.estadisticas_resultados_carteles = [...this.estadisticasMethods.mapearEstadisticasResultados(estadisticas_length, "carteles", false)];
+      this.estadisticas_resultados_conteo = [...this.estadisticasMethods.mapearEstadisticasResultados(estadisticas_length, "conteoDispositivos", false)];
       console.log ('estadisticas_resultados_carteles', this.estadisticas_resultados_carteles);
       console.log( 'estadisticas_resultados_conteo', this.estadisticas_resultados_conteo);
 

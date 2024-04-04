@@ -2,10 +2,10 @@
 <div class="menubar-container">
     <p-menubar [model]="apartados" >
 
-            
+            <p-progressSpinner *ngIf="(loading$ | async)" [style]="{'width': '5%', 'height': '5%'}" ></p-progressSpinner>
             <p-button   [disabled]="!isFiltrado" (click)="limpiarFiltros()"   icon="pi pi-filter-slash" [outlined]="true"  [severity]="'danger'"  class="ml-2"></p-button>
-            
-            <p-button class="ml-2"*ngIf="(apartado_seleccionado$ | async) == 'muebles'"  (onClick)=" showingSelectElementosFiltroDialog = !showingSelectElementosFiltroDialog" [outlined]="true" [severity]="'danger'" label="Agrupar por elementos"></p-button>
+            <span class="ml-2 font-bold" *ngIf="(apartado_seleccionado$ | async) == 'muebles' && (selectedElementosIds$ | async)?.length > 0">Elementos seleccionados: </span>
+            <p-button class="ml-2"*ngIf="(apartado_seleccionado$ | async) == 'muebles'"  (onClick)=" showingSelectElementosFiltroDialog = !showingSelectElementosFiltroDialog" [outlined]="true" [severity]="'danger'" [label]="'Agrupar por elementos'"></p-button>
             
             <p-dialog [(visible)]="showingSelectElementosFiltroDialog" [style]="{width: '80%'}" header="Filtrar por elementos" [modal]="true" [closable]="true" [draggable]="false" [resizable]="false">
                 <app-multipleSelectorElementos (selectedElementosIds)=" onSelectedElementosIds($event)"></app-multipleSelectorElementos>
