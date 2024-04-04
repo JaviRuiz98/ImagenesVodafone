@@ -142,6 +142,7 @@ function addElementoInResultadoByIdProbabilidadCartel(resultados: resultados_ord
     // Procesar cada registro para contar las probabilidades y los errores de dispositivo
     for (const elemento of elementos) {
       if (elemento.id_categoria == 3){ //modelos
+        console.log(elemento.nombre);
        //Necesito obtener  Math.abs(item.dispositivos_contados - item.huecos_esperados); más común de todos los procesados
         if (elemento.procesados_imagenes != null && elemento.procesados_imagenes.length > 0){
           const diferencia:number = getDiferenciaMasComun(elemento.procesados_imagenes);
@@ -158,6 +159,8 @@ function addElementoInResultadoByIdProbabilidadCartel(resultados: resultados_ord
         }
 
       } else if (elemento.id_categoria == 1){ //carteles
+        console.log(elemento.nombre);
+
         if (elemento.procesados_imagenes != null){
           const probabilidad_cartel:number = getProbabilidadCartelMasComun(elemento.procesados_imagenes);
           addElementoInResultadoByIdProbabilidadCartel(resultados, probabilidad_cartel, elemento);
