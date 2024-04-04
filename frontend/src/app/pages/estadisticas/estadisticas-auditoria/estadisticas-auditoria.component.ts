@@ -89,7 +89,7 @@ export class EstadisticasAuditoriaComponent  {
       (data) => {
         const estadisticas_estados_auditoria_raw = data;
 
-        //console.log('estadisticas_estados_auditoria_raw', estadisticas_estados_auditoria_raw);
+        console.log('estadisticas_estados_auditoria_raw', estadisticas_estados_auditoria_raw);
 
         // Logica del mapeado teniendo en cuenta que se ignora el estado 1 (En progreso)
         const id_estados_excluidos: number[] = [1];
@@ -102,7 +102,7 @@ export class EstadisticasAuditoriaComponent  {
           }
         }
 
-        //console.log('estadisticas_estados_auditoria', this.estadisticas_estados_auditoria);
+        console.log('estadisticas_estados_auditoria', this.estadisticas_estados_auditoria);
 
         this.estadisticas_estados_auditoria = [...this.estadisticas_estados_auditoria];
       }, (error) => {
@@ -114,11 +114,12 @@ export class EstadisticasAuditoriaComponent  {
   obtenerTiendasConAuditoriaEnProgreso() {
     this.tiendasService.getAllTiendas().subscribe((data: tienda[]) => {
       this.total_tiendas = data.length;
+      console.log('estadisticas_estados_auditoria', this.estadisticas_estados_auditoria);
 
       this.estadisticas_tiendas_en_progreso[0].valor = this.estadisticas_estados_auditoria[0].valor;
       this.estadisticas_tiendas_en_progreso[1].valor = this.total_tiendas - this.estadisticas_tiendas_en_progreso[0].valor;
 
-      //console.log('estadisticas_tiendas_en_progreso', this.estadisticas_tiendas_en_progreso);
+      console.log('estadisticas_tiendas_en_progreso', this.estadisticas_tiendas_en_progreso);
       this.estadisticas_tiendas_en_progreso = [...this.estadisticas_tiendas_en_progreso];
     })
   }

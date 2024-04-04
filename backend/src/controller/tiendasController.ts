@@ -67,18 +67,17 @@ export async function updateTienda(req: Request, res: Response) {
         //si existe imagen, actualizamos el plano
         if (imagen){
             await tiendaService.updatePlanoTienda(id_tienda, imagen);
-        }else{
+
+            const ids_per_mue_tien = await tiendaService.getIdsMueblesTienda(id_tienda);
+            await tiendaService.desactivarPosicionesMueblesTienda(ids_per_mue_tien);
+
+        }else if (borrarPlano == true){ //La borraremos unicamente si llega en el body un booleano que nos diga de borrarlo:
             console.log(borrarPlano);
-            //La borraremos unicamente si llega en el body un booleano que nos diga de borrarlo:
-            if (borrarPlano == true){
-                const tienda = await tiendaService.getAllById(id_tienda);
-                if (tienda[0].id_imagen_plano){
+            const tienda = await tiendaService.getAllById(id_tienda);
+            if (tienda[0].id_imagen_plano){
                 //Opcional eliminar del ftp
                 await tiendaService.deletePlanoTienda(id_tienda);
-                }
             }
-            
-            
         }
 
         desactivarMueblesTienda(id_tienda); //no se que hace pero me fio del lila

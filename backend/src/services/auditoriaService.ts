@@ -141,18 +141,30 @@ export const auditoriaService = {
     async getAllEstadosParaAuditorias(id_estados_excluidos: number[], periodo_fechas: Date[]) {
         try {
             let whereClause = {};
-
+    
             if(periodo_fechas.length > 0) {
+                // Usamos OR para manejar casos donde fecha_fin es null o está dentro del rango de fechas
                 whereClause = {
                     fecha: {
-                        
+                        gte: new Date(periodo_fechas[0]),
+                        lte: new Date(periodo_fechas[1])
                     },
-                    fecha_fin: {
-                        
-                    }
+                    AND: [
+                        {
+                            OR: [
+                                { fecha_fin: null },
+                                {
+                                    fecha_fin: {
+                                        gte: new Date(periodo_fechas[0]),
+                                        lte: new Date(periodo_fechas[1])
+                                    }
+                                }
+                            ]
+                        }
+                    ]
                 }
             }
-
+    
             return db.estados_auditoria.findMany(
                 {
                     where: {
@@ -174,4 +186,5 @@ export const auditoriaService = {
             db.$disconnect();
         }
     }
+    
 }

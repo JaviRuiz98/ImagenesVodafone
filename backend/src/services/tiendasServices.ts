@@ -284,5 +284,40 @@ export const tiendaService = {
         } finally {
             await db.$disconnect();
         }
+    },
+
+    async getIdsMueblesTienda(id_tienda: number): Promise<number[]> {
+        try {
+            const results = await db.pertenencia_mueble_tienda.findMany({
+                where: {
+                    id_tienda: id_tienda
+                },
+                select: {
+                    id: true
+                }
+            })
+            return results.map(result => result.id);
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
+    },
+
+    async desactivarPosicionesMueblesTienda(ids_per_mue_tien: number[]): Promise<any> {
+        try {
+            await db.posiciones_muebles_tienda.updateMany({
+                where: {
+                    id_pertenencia_mueble_tienda: {
+                        in: ids_per_mue_tien
+                    }
+                },
+                data: {
+                    activo: false
+                }
+            })
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
     }
 }

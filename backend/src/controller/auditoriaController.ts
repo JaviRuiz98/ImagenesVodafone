@@ -223,11 +223,15 @@ export async function getEstadisticasEstadosAuditoria(req: Request, res: Respons
 
         const id_estados_excluidos: number[] = [];
         const estados: estados_extended[] = await auditoriaService.getAllEstadosParaAuditorias(id_estados_excluidos, periodo_fechas);
+        console.log('estados1', estados);
+
 
         estados.map((estado) => {
             estado.num_auditorias = estado.auditorias?.length;
             estado.auditorias = [];
         })
+
+        console.log('estados2:', estados);
 
         res.status(200).json(estados);
     } catch (error) {
@@ -261,7 +265,7 @@ async function agruparAuditorias(auditorias: auditorias[], periodo_fechas: Date[
     if (periodo_fechas.length === 0) {
         fechaMin = new Date(Math.min(...auditorias.map(a => new Date(a.fecha).getTime())));
         // Para fechaMax considera tanto la fecha de creación como de finalización
-        fechaMax = new Date(Math.max(...auditorias.flatMap(a => [new Date(a.fecha).getTime(), a.fecha_fin ? new Date(a.fecha_fin).getTime() : 0])));
+        fechaMax = new Date();
     } else {
         fechaMin = new Date(periodo_fechas[0]);
         fechaMax = new Date(periodo_fechas[1]);
