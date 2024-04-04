@@ -123,12 +123,15 @@ export class EstadisticasComponent {
   onSelectedElementosIds($event: number[]) {
     this.showingSelectElementosFiltroDialog = false;
     this.filtroState.updateElementosSeleccionados($event);  
+    this.filtroState.loadSeconds(1);
   }
   
   limpiarFiltros() {
     this.periodo_fechas = undefined;
     this.filtroState.updateElementosSeleccionados([]);
     this.filtroState.updatePeriodoFechas([]);
+    this.filtroState.loadSeconds(1);
+
   }
   
   

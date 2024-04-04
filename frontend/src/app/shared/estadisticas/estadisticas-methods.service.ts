@@ -192,7 +192,6 @@ constructor() { }
       if (noProcesados){
         estadisticasResultados[7].valor = data.carteles.no_procesados || 0;
       }
-      console.log ('estadisticasResultados', estadisticasResultados);
 
     }
 

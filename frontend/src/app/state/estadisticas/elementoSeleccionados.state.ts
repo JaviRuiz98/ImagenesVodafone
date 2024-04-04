@@ -54,6 +54,12 @@ export class FiltroState {
   public updateLoading(newLoading: boolean): void {
     this._state.next({ ...this.state, loading: newLoading });
   }
+  public loadSeconds(seconds: number): void {
+    this._state.next({ ...this.state, loading: true });
+    setTimeout(() => {
+      this._state.next({ ...this.state, loading: false });
+    }, seconds * 1000);
+  }
 
 
 

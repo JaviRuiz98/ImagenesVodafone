@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Observable, combineLatest } from 'rxjs';
 import { ProcesadosDetallesComponent } from 'src/app/componentes/procesados-detalles/procesados-detalles.component';
-import { datos_graficas } from 'src/app/interfaces/datos_graficas';
+import { datos_graficas, datos_graficas_multidatos } from 'src/app/interfaces/datos_graficas';
 import { elementos } from 'src/app/interfaces/elementos';
 import { estadisticas_carteles, estadisticas_conteo_dispositivos, resultados_ordenados, resultados_ordenados_elementos } from 'src/app/interfaces/resultados_ordenados';
 import { ElementosService } from 'src/app/servicios/elementos/elementos.service';
@@ -20,7 +20,8 @@ import { FiltroState } from 'src/app/state/estadisticas/elementoSeleccionados.st
 })
 export class EstadisticasMueblesComponent implements OnInit  {
 
- constructor  ( private filtroState: FiltroState,
+
+ constructor  ( 
     private elementosService: ElementosService,
     private   estadisticasMethods: EstadisticasMethodsService,
     private urlService: UrlService, 
@@ -39,12 +40,18 @@ export class EstadisticasMueblesComponent implements OnInit  {
  estadisticas_resultados_conteo: datos_graficas[] = [];
 
  estadisticasCartel: estadisticas_carteles[] = [];
+ estadisticasCartelMultidatos: datos_graficas_multidatos[] = [];
+
  estadisticasConteo: estadisticas_conteo_dispositivos[] = [];
+ estadisticasConteoMultidatos: datos_graficas_multidatos[] = [];
+
+
  numProcesadosCategoria: datos_graficas[];
  numTotalProcesados: number = 0;
 
  tableStateOptions =  [{label: 'Carteles', value: 'cartel'}, {label: 'Conteo de dispositivos', value: 'dispositivo'}];
  tableStateValue = 'cartel';
+ emptyArrayCargandoTabla = Array.from({ length: 5 }).map((_, i) => `Item #${i}`);
 
  //Filtros
  filtrado: boolean = false;
@@ -63,7 +70,6 @@ export class EstadisticasMueblesComponent implements OnInit  {
   combineLatest([this.elementos_ids$, this.fechas$]).subscribe(([elementosIds, fechas]) => {
     // this.filtroState.updateLoading(true);
     this.obtenerEstadisticas(elementosIds, fechas);
-    // this.filtroState.updateLoading(false);
 
   });
     
@@ -82,6 +88,8 @@ export class EstadisticasMueblesComponent implements OnInit  {
       const estadisticas_length: resultados_ordenados = this.estadisticasMethods.fromOrdenadosElementosToOrdenados(estadisticas);
       this.estadisticas_resultados_carteles = this.estadisticasMethods.mapearEstadisticasResultados(estadisticas_length, "carteles", false);
       this.estadisticas_resultados_conteo = this.estadisticasMethods.mapearEstadisticasResultados(estadisticas_length, "conteoDispositivos", false);
+      console.log ('estadisticas_resultados_carteles', this.estadisticas_resultados_carteles);
+      console.log( 'estadisticas_resultados_conteo', this.estadisticas_resultados_conteo);
 
       this.initCarteles(elementos_ids,fechas);
       this.initConteoDispositivos(elementos_ids,fechas);
@@ -108,7 +116,8 @@ export class EstadisticasMueblesComponent implements OnInit  {
         }
       ]
     }
-  )
+  );
+
 
   }
 
@@ -116,6 +125,10 @@ export class EstadisticasMueblesComponent implements OnInit  {
   this.elementosService.getEstadisticasCarteles(elementos_ids,fechas).subscribe(
     (carteles: estadisticas_carteles[]) => {
       this.estadisticasCartel = carteles;
+      for (const carteles of this.estadisticasCartel) {
+        const dataCartel = this.getDataCartel(carteles);
+        this.estadisticasCartelMultidatos.push(dataCartel);
+      }
     } 
   );
  }
@@ -124,6 +137,10 @@ export class EstadisticasMueblesComponent implements OnInit  {
   this.elementosService.getEstadisticasConteoDispositivos(elementos_ids,fechas).subscribe(
     (conteo: estadisticas_conteo_dispositivos[]) => {
       this.estadisticasConteo = conteo;
+      for (const dispositivos of this.estadisticasConteo) {
+        const dataCartel = this.getDataDispositivos(dispositivos);
+        this.estadisticasConteoMultidatos.push(dataCartel);
+      }
     } 
   );
  }
@@ -176,6 +193,37 @@ export class EstadisticasMueblesComponent implements OnInit  {
   });
  
  }
+
+ getDataCartel(cartel: estadisticas_carteles): datos_graficas_multidatos {
+  return {
+    etiquetas: ['Respuestas'], // Etiqueta general para la única barra
+    leyenda: ['Muy alta', 'alta', 'Media', 'Baja', 'Muy baja', 'Ninguna', 'Otro idioma'], // Cada segmento de la barra
+    datos: [
+      [cartel.muy_alta ?? 0],
+      [cartel.alta ?? 0],
+      [cartel.media ?? 0],
+      [cartel.baja ?? 0],
+      [cartel.muy_baja ?? 0],
+      [cartel.ninguna ?? 0],
+      [cartel.otro_idioma ?? 0]
+    ], // Los valores de cada segmento en la única barra
+    color: ["green", "orange", "yellow", "pink", "magenta", "red", "gray"] // Colores para cada segmento
+  }
+}
+getDataDispositivos( dispositivos: estadisticas_conteo_dispositivos): datos_graficas_multidatos {
+  return{
+    etiquetas: ['Respuestas'], // Etiqueta general para la única barra
+    leyenda: ['Imágen no válida','Correcto', 'Diferencia de 1 o 2', 'Diferencia de 3 o 4', 'Diferencia de 5 o más'], // Cada segmento de la barra
+    datos: [
+      [dispositivos.error ?? 0],
+      [dispositivos.diferencia[0] + dispositivos.diferencia[1] ?? 0],
+      [dispositivos.diferencia[1]  + dispositivos.diferencia[2]?? 0],
+      [dispositivos.diferencia[3] + dispositivos.diferencia[4] ?? 0],
+      [this.get5Plus(dispositivos)?? 0]
+    ], // Los valores de cada segmento en la única barra
+    color: ["gray", "green",  "yellow", "orange", "red"] // Colores para cada segmento
+  }
+}
 
 
 

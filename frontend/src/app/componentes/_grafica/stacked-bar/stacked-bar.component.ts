@@ -15,6 +15,7 @@ export class StackedBarComponent {
   @Input() datos: datos_graficas_multidatos;
   @Input() horizontal:boolean = false;
   @Input () hideLegend:boolean = false;
+  @Input () smallUWU: boolean = false;
 
   data: any;
   options: any;
@@ -79,10 +80,11 @@ export class StackedBarComponent {
 
       this.options = {
          indexAxis: this.horizontal == true ? 'y' : 'x',
-
+         responsive: this.smallUWU == true ? false : true,
           maintainAspectRatio: false,
           aspectRatio: 0.8,
           plugins: {
+            
               tooltips: {
                   mode: 'index',
                   intersect: false
@@ -96,10 +98,13 @@ export class StackedBarComponent {
           scales: {
             
               x: {
+                
                   display: this.hideLegend == false,
                   stacked: true,
                   ticks: {
-                      color: textColorSecondary
+                   
+                      color: textColorSecondary,
+                     
                   },
                   grid: {
                       color: surfaceBorder,
@@ -110,6 +115,7 @@ export class StackedBarComponent {
                   display: this.hideLegend == false,
                   stacked: true,
                   ticks: {
+                   
                       color: textColorSecondary
                   },
                   grid: {
@@ -121,3 +127,4 @@ export class StackedBarComponent {
       };
   }
 }
+
