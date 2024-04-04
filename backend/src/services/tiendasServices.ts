@@ -319,5 +319,15 @@ export const tiendaService = {
             console.error(error);
             throw error;
         }
+    },
+
+    async contarTiendasTotales(): Promise<number> {
+        try {
+            const results = await db.tiendas.count();
+            return results;
+        } catch (error) {
+            console.error(error);
+            throw error;
+        }
     }
 }

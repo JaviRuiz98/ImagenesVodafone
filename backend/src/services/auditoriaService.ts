@@ -138,6 +138,39 @@ export const auditoriaService = {
         }
     },
 
+    async getAuditoriasEnProgreso(periodo_fechas: Date[]) {
+        try {
+            let whereClause = {};
+    
+            if(periodo_fechas.length > 0) {
+                whereClause = {
+                    fecha: {
+                        lte: new Date(periodo_fechas[1])
+                    }, 
+                    OR: [
+                        { fecha_fin: null },
+                        { fecha_fin: {
+                                gte: new Date(periodo_fechas[1]) 
+                            }
+                        }
+                    ]
+                }
+            }
+
+            return db.auditorias.count(
+                {
+                    where: whereClause
+                }
+            )
+
+        } catch (error) {
+            console.error('No se pudo obtener las auditorias en progreso:', error);
+            throw error;
+        } finally {
+            db.$disconnect();
+        }
+    },
+
     async getAllEstadosParaAuditorias(id_estados_excluidos: number[], periodo_fechas: Date[]) {
         try {
             let whereClause = {};

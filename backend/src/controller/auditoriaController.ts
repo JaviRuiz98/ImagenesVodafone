@@ -217,6 +217,25 @@ export async function terminarAuditoria(req: Request, res: Response) {
     }
 }
 
+export async function getAuditoriasEnProgresoYTiendasTotales(req: Request, res: Response) {
+    try {
+        let periodo_fechas: Date[] = req.body.fechas;
+
+        if(periodo_fechas.length == 0) {
+            periodo_fechas[1] = new Date();
+        }
+
+        const num_auditorias_en_progreso = await auditoriaService.getAuditoriasEnProgreso(periodo_fechas);
+        const tiendas_totales = await tiendaService.contarTiendasTotales();
+
+        res.status(200).json({num_auditorias_en_progreso, tiendas_totales});
+
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+        console.log(error);
+    }
+}
+
 export async function getEstadisticasEstadosAuditoria(req: Request, res: Response) {
     try {
         const periodo_fechas: Date[] = req.body.fechas;

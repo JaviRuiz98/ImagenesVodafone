@@ -4,12 +4,12 @@ import { datos_graficas, datos_graficas_multidatos } from 'src/app/interfaces/da
 import { resultados_ordenados } from 'src/app/interfaces/resultados_ordenados';
 import { conteo_elementos_procesados_auditoria } from '../interface/conteoElementosProcesadosAuditoria';
 import { conteo_movimientos_auditoria } from '../interface/conteoMovimientosAuditoria';
-import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { tienda } from 'src/app/interfaces/tienda';
 import { ProcesadosService } from 'src/app/servicios/procesados/procesados.service';
 import { datos_informe } from 'src/app/interfaces/datos_informe';
 import { Observable } from 'rxjs';
 import { FiltroState } from 'src/app/state/estadisticas/elementoSeleccionados.state';
+import { en_progreso_y_tiendas_totales } from '../interface/enProgresoYTiendasTotales';
 
 @Component({
   selector: 'app-estadisticas-auditoria',
@@ -34,7 +34,6 @@ export class EstadisticasAuditoriaComponent  {
 
   constructor(
     private auditoriaService: AuditoriaService,
-    private tiendasService: TiendasService,
     private procesadosService: ProcesadosService,
     private state: FiltroState
   ) {
@@ -54,7 +53,7 @@ export class EstadisticasAuditoriaComponent  {
       this.obtenerEstadisticasEstadosAuditoria(fechas);
       this.obtenerEstadisticasResultadosAuditoria();
       this.obtenerEstadisticasProcesadosDadoEstadoAuditoria();
-      this.obtenerTiendasConAuditoriaEnProgreso();
+      this.obtenerTiendasConAuditoriaEnProgreso(fechas);
       this.obtenerNumeroProcesadosDiarios(fechas);
       this.obtenerMovimientosAuditorias(fechas);
     });
@@ -111,16 +110,16 @@ export class EstadisticasAuditoriaComponent  {
     )
   }
 
-  obtenerTiendasConAuditoriaEnProgreso() {
-    this.tiendasService.getAllTiendas().subscribe((data: tienda[]) => {
-      this.total_tiendas = data.length;
-      console.log('estadisticas_estados_auditoria', this.estadisticas_estados_auditoria);
+  obtenerTiendasConAuditoriaEnProgreso(fechas: Date[]) {
+    this.auditoriaService.enProgresoYTiendasTotales(fechas).subscribe(
+      (data: en_progreso_y_tiendas_totales) => {
+        console.log('estadisticas_en_progreso_raw', data);
 
-      this.estadisticas_tiendas_en_progreso[0].valor = this.estadisticas_estados_auditoria[0].valor;
-      this.estadisticas_tiendas_en_progreso[1].valor = this.total_tiendas - this.estadisticas_tiendas_en_progreso[0].valor;
+        this.estadisticas_tiendas_en_progreso[0].valor = data.num_auditorias_en_progreso;
+        this.estadisticas_tiendas_en_progreso[1].valor = data.tiendas_totales - data.num_auditorias_en_progreso;
 
-      console.log('estadisticas_tiendas_en_progreso', this.estadisticas_tiendas_en_progreso);
-      this.estadisticas_tiendas_en_progreso = [...this.estadisticas_tiendas_en_progreso];
+        console.log('estadisticas_tiendas_en_progreso', this.estadisticas_tiendas_en_progreso);
+        this.estadisticas_tiendas_en_progreso = [...this.estadisticas_tiendas_en_progreso];
     })
   }
 
