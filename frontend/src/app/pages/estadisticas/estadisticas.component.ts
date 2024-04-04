@@ -73,9 +73,11 @@ export class EstadisticasComponent {
 
 
   loading$:Observable<boolean>;
+  selectedElementosIds$:Observable<number[]>;
 
   constructor( private filtroState: FiltroState ) { 
     this.loading$ = this.filtroState.loading$;
+    this.selectedElementosIds$ = this.filtroState.elementoSeleccionado$;
    }
 
 
@@ -115,7 +117,7 @@ export class EstadisticasComponent {
     if(!!this.periodo_fechas && this.periodo_fechas[1] !== null) {
       this.periodo_fechas[1] = new Date(this.periodo_fechas[1].getFullYear(), this.periodo_fechas[1].getMonth() + 1, 0);
       this.filtroState.updatePeriodoFechas(this.periodo_fechas);
-      console.log('fechas almacenadas en estado', this.periodo_fechas);
+      this.filtroState.loadSeconds(1);
     }
   }
 
@@ -123,12 +125,15 @@ export class EstadisticasComponent {
   onSelectedElementosIds($event: number[]) {
     this.showingSelectElementosFiltroDialog = false;
     this.filtroState.updateElementosSeleccionados($event);  
+    this.filtroState.loadSeconds(1);
   }
   
   limpiarFiltros() {
     this.periodo_fechas = undefined;
     this.filtroState.updateElementosSeleccionados([]);
     this.filtroState.updatePeriodoFechas([]);
+    this.filtroState.loadSeconds(1);
+
   }
   
   

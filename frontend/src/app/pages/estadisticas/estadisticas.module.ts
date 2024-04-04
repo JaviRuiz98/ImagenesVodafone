@@ -33,6 +33,7 @@ import { ProcesadosDetallesComponent } from 'src/app/componentes/procesados-deta
 import { StackedBarComponent } from 'src/app/componentes/_grafica/stacked-bar/stacked-bar.component';
 import { MultipleSelectorElementosComponent } from 'src/app/componentes/multipleSelectorElementos/multipleSelectorElementos.component';
 import { DialogModule } from 'primeng/dialog';
+import { SkeletonModule } from 'primeng/skeleton';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { DialogModule } from 'primeng/dialog';
     ProcesadosDetallesComponent,
     MultipleSelectorElementosComponent,
     DialogModule,
+    SkeletonModule,
 
     DynamicDialogModule,
     StackedBarComponent

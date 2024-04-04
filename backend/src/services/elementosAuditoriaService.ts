@@ -165,16 +165,35 @@ export const elementosAuditoriaService = {
         }
     },
 
-    getUltimosProcesadosElementoAuditoriaNotEnProgreso() {
+    getUltimosProcesadosElementoAuditoriaNotEnProgreso(periodo_fechas: Date[]) {
         try {
-            return db.pertenencia_elementos_auditoria.findMany({
-                where: {
-                    auditorias: {
-                        id_estado: {
-                            not: 1
-                        }
+            let whereClause = {
+                auditorias: {
+                    id_estado: {
+                        not: 1
+                    },
+                    fecha_fin: {
+                        
                     }
                 },
+            }
+
+            if (periodo_fechas) {
+                whereClause = {
+                    auditorias: {
+                        id_estado: {
+                            not: 1,
+                        },
+                        fecha_fin: {
+                            gte: periodo_fechas[0],
+                            lte: periodo_fechas[1]
+                        }
+                    }
+                }
+            }
+            
+            return db.pertenencia_elementos_auditoria.findMany({
+                where:  whereClause,
                 include: {
                     procesados_imagenes: {
                         orderBy: {

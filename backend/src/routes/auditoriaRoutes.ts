@@ -7,7 +7,8 @@ import { getAuditorias,
     createAuditoriaGlobal, 
     getBarraProgresoAuditoria, 
     getEstadisticasEstadosAuditoria,
-    getMovimientosAuditorias
+    getMovimientosAuditorias,
+    getAuditoriasEnProgresoYTiendasTotales
 } from '../controller/auditoriaController';
 
 import {
@@ -24,8 +25,9 @@ router.get('/barra_progreso_auditoria/:id_auditoria', getBarraProgresoAuditoria 
 router.get('/auditoria_elementos_procesados/:id_auditoria', getElementosProcesadosAuditoria);
 
 router.post('/estadisticas/movimientos_auditorias', getMovimientosAuditorias);
+router.post('/estadisticas/en_progreso_y_tiendas_totales', getAuditoriasEnProgresoYTiendasTotales);
 router.post('/estadisticas/estados_auditoria', getEstadisticasEstadosAuditoria);
-router.get('/estadisticas/resultados_auditoria', getEstadisticasResultadosAuditoria);
+router.post('/estadisticas/resultados_auditoria', getEstadisticasResultadosAuditoria);
 router.get('/estadisticas/porcentaje_completado', getPorcentajeProcesadoDadoEstadoAuditoria);
 
 router.post('/nueva_auditoria',  createSingleAuditoria);

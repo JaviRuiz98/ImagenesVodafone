@@ -206,7 +206,7 @@ export const elementosService = {
         }
       }, 
 
-      async getElementosWithProcesados( elementos_ids: number[] | null, categoria_id?:number) {
+      async getElementosWithProcesados( elementos_ids?: number[], categoria_id?:number, fechas?: Date[] ) {
         try {
 
           let whereClause:any = {
@@ -221,6 +221,20 @@ export const elementosService = {
           // If categoria_id is provided, add it to the condition
           if (categoria_id != null) {
             whereClause['id_categoria'] = categoria_id;
+          } 
+          if (fechas != null && fechas.length === 2) {
+            whereClause['pertenencia_elementos_auditoria'] = {
+              some: {
+                procesados_imagenes: {
+                  some: {
+                    fecha: {
+                      gte: fechas[0],
+                      lte: fechas[1]
+                    }
+                  }
+                }
+              }
+            };
           }
           //El id tiene que estar contenido en el array
           return await db.elementos.findMany({
@@ -243,7 +257,7 @@ export const elementosService = {
         }
       },
 
-      async  getNumProcesadosByCategoria(categoria_id: number, elementos_ids: number[] | null): Promise<number> {
+      async  getNumProcesadosByCategoria(categoria_id: number, elementos_ids?: number[], fechas?: Date[]): Promise<number> {
         try {
 
           let whereClause:any = {
@@ -259,9 +273,24 @@ export const elementosService = {
           if (categoria_id != null) {
             whereClause['id_categoria'] = categoria_id;
           }
+
+          if (fechas != null && fechas.length === 2) {
+            whereClause['pertenencia_elementos_auditoria'] = {
+              some: {
+                procesados_imagenes: {
+                  some: {
+                    fecha: {
+                      gte: fechas[0],
+                      lte: fechas[1]
+                    }
+                  }
+                }
+              }
+            };
+          }
           // Primero, recuperamos todos los elementos que coinciden con los criterios
           const elementos = await db.elementos.findMany({
-            where:  whereClause,
+            where: whereClause,
             include: {
               pertenencia_elementos_auditoria:{
                 include: {

@@ -1,7 +1,33 @@
 
 <ng-template #cargando>
-    <p-progressSpinner ></p-progressSpinner>
+    <p-progressSpinner  fill="var(--surface-ground)" [style]="{'width': '5%', 'height': '5%'}" animationDuration=".6s" class="fadein animation-duration-1000 mr-2"></p-progressSpinner>
 </ng-template>
+
+<ng-template #cargandoTablaEstadistica>
+    <p-table [value]="emptyArrayCargandoTabla" [tableStyle]="{ 'min-width': '50rem' }"   [scrollable]="true" [scrollHeight]="'calc(100vh - 204px)'">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Nombre</th>
+                <th></th>
+                <th> Resultados </th>
+                <th>Procesados totales</th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowIndex="rowIndex" let-cartel>
+          
+            <tr>
+                <td><p-skeleton></p-skeleton></td>
+                <td><p-skeleton></p-skeleton></td>
+                <td><p-skeleton></p-skeleton></td>
+                <td><p-skeleton></p-skeleton></td>
+                <td><p-skeleton></p-skeleton></td>
+            </tr>
+        </ng-template>
+    </p-table>
+</ng-template>
+
+
 <div class="grid">
     <div class="col-12">
         <div class="grid m-2">
@@ -24,8 +50,8 @@
                 Respuestas mas comunes al procesar cada elemento
             </p-overlayPanel>
             <h3>Carteles <span class="pi pi-info-circle text-xl" (click)="infoCartelesGeneral.toggle($event)" style ="cursor: pointer; color:grey"></span></h3>
-            
-            <app-super-line-chart [data_grafica]="estadisticas_resultados_carteles" ></app-super-line-chart>
+            <app-barra-multiuso [showInfo]="false" [datos]="estadisticas_resultados_carteles" ></app-barra-multiuso>
+
         <!-- </div> -->
 
        
@@ -40,8 +66,9 @@
                 Diferencia entre dispositivos esperados y encontrados más comunes al procesar cada elemento
             </p-overlayPanel>
             <h3>Modelos (conteo de dispositivos) <span class="pi pi-info-circle text-xl" (click)="infoDispositivosGeneral.toggle($event)" style ="cursor: pointer; color:grey"></span></h3>
+            <app-barra-multiuso [showInfo]="false" [datos]="estadisticas_resultados_conteo" ></app-barra-multiuso>
 
-            <app-super-line-chart [data_grafica]="estadisticas_resultados_conteo" [titulo]="'Diferencia más común entre dispositivos esperados y encontrados al procesar cada elemento'"></app-super-line-chart>
+            <!-- <app-super-line-chart [data_grafica]="estadisticas_resultados_conteo" [titulo]="'Diferencia más común entre dispositivos esperados y encontrados al procesar cada elemento'"></app-super-line-chart> -->
         <!-- </div> -->
 
     </div>
@@ -51,20 +78,17 @@
     <div class="col-2">
         <div class="flex flex-column">
             <div>
-                <span class=" font-bold" style="align-self: end;">  Nº de procesados totales: {{numProcesadosCategoria.carteles+numProcesadosCategoria.conteo_dispositivos}}</span>
+                <span class=" font-bold" style="align-self: end;">  Nº de procesados totales: {{numTotalProcesados}}</span>
             </div>
                 <!-- <p-divider layout="horizontal"  ></p-divider> -->
             <div>
-                <span class=" font-bold" style="align-self: end;">  Nº de procesados de conteo: {{numProcesadosCategoria.conteo_dispositivos}}</span>
+                <app-super-pie [datos_graficas]="numProcesadosCategoria"></app-super-pie>            
             </div>
-            <!-- <p-divider layout="horizontal"  ></p-divider> -->
-            
-            <div>
-                <span class=" font-bold" style="align-self: end;">  Nº de procesados de carteles: {{numProcesadosCategoria.carteles}}</span>
-            </div>
+           
         </div>
     </div>
-     
+
+    
     <div class="col-12 m-2 flex-column justify-content-center flex-wrap">
         <!-- <app-ir-arriba></app-ir-arriba> -->
 
@@ -72,24 +96,38 @@
             <p-selectButton [options]="tableStateOptions" [(ngModel)]="tableStateValue" optionLabel="label" optionValue="value" [allowEmpty]="false"></p-selectButton>
         </div>        
         <div class="card" *ngIf ="tableStateValue==='cartel'; else conteo">
-            <div *ngIf ="estadisticasCartel.length > 0; else cargando">
-                <p-table [value]="estadisticasCartel" [tableStyle]="{ 'min-width': '50rem' }"   [scrollable]="true" [scrollHeight]="'calc(100vh - 204px)'">
+
+            <div *ngIf ="!loadingTables; else cargandoTablaEstadistica">
+                <p-table 
+                [value]="estadisticasCartel" 
+                [tableStyle]="{ 'min-width': '50rem' }"  
+                (sortFunction)="customSortCartel($event)" [customSort]="true"  
+                [scrollable]="true" [scrollHeight]="'calc(100vh - 204px)'"
+                [globalFilterFields]="['elemento.nombre']"
+                >
+
+                <ng-template pTemplate="emptymessage">
+                    No hay elementos, prueba con otros filtros
+                </ng-template>
                     <ng-template pTemplate="header">
                         <tr>
                             <th>Nombre</th>
                             <th></th>
-                            <th>Muy alta</th>
-                            <th>alta</th>
-                            <th>media</th>
-                            <th>baja</th>
-                            <th>Muy baja</th>
-                            <th>Ninguna</th>
-                            <th> Otro idioma</th>
-                            <th>Procesados totales</th>
+                            <th> Resultados </th>
+                            <th pSortableColumn="cartel">Procesados totales <p-sortIcon field="procesados"></p-sortIcon></th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <p-columnFilter type="text" field="elemento.nombre"></p-columnFilter>
+                            </th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
                             <th></th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-cartel>
+                    <ng-template pTemplate="body" let-rowIndex="rowIndex" let-cartel>
                         <tr>
                             <td >{{ cartel.elemento.nombre }}</td>
                             <td [style]="{'width':'50px'}"> 
@@ -98,52 +136,21 @@
                                 />
                         
                             </td>
-                            <td>
-                                <div class ="flex justify-content-center align-items-center">
-                                    {{cartel.muy_alta}}
-                                    <!-- <app-estadistica_unica_respuesta  class ="m-2" [color]="'green'" [valor]="(cartel.muy_alta/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta> -->
-                                </div>
-                              
-                            </td>
-                            <td>
-                                <div class="flex justify-content-center align-items-center">
-                                  {{cartel.alta}}
-                                  <!-- <app-estadistica_unica_respuesta class="m-2" [color]="'blue'" [valor]="(cartel.alta/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta> -->
-                                </div>
-                              </td>
-                              <td>
-                                <div class="flex justify-content-center align-items-center">
-                                  {{cartel.media}}
-                                  <!-- <app-estadistica_unica_respuesta class="m-2" [color]="'yellow'" [valor]="(cartel.media/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta> -->
-                                </div>
-                              </td>
-                              <td>
-                                <div class="flex justify-content-center align-items-center">
-                                  {{cartel.baja}}
-                                  <!-- <app-estadistica_unica_respuesta class="m-2" [color]="'orange'" [valor]="(cartel.baja/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta> -->
-                                </div>
-                              </td>
-                              <td>
-                                <div class="flex justify-content-center align-items-center">
-                                  {{cartel.muy_baja}}
-                                  <!-- <app-estadistica_unica_respuesta class="m-2" [color]="'pink'" [valor]="(cartel.muy_baja/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta> -->
-                                </div>
-                              </td>
-                              <td>
-                                <div class="flex justify-content-center align-items-center">
-                                  {{cartel.ninguna}}
-                                  <!-- <app-estadistica_unica_respuesta class="m-2" [color]="'red'" [valor]="(cartel.ninguna/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta> -->
-                                </div>
-                              </td>
-                              <td>
-                                <div class="flex justify-content-center align-items-center">
-                                  {{cartel.otro_idioma}}
-                                  <!-- <app-estadistica_unica_respuesta class="m-2" [color]="'purple'" [valor]="(cartel.otro_idioma/getTotalCarteles(cartel))*100"></app-estadistica_unica_respuesta> -->
-                                </div>
-                              </td>
+                           <td>
+                            <div *ngIf =  "getTotalCarteles(cartel) > 0; else vacio">
+                                <app-stacked-bar  [smallUWU]="true" [horizontal]="true" [hideLegend]="true" [datos]=" estadisticasCartelMultidatos[rowIndex]"></app-stacked-bar>
+                            </div>
+                             
+                            <ng-template #vacio>
+                                Sin procesados
+                            </ng-template>
+
+                           </td>
                               
                             <td>{{ getTotalCarteles(cartel) }}</td>
-                            <td> <p-button label="Ver más"  severity="danger" [text]="true" [raised]="true" (onClick)="openInfo(cartel.elemento)" [rounded]="true"  ></p-button> </td>
+                            <td> 
+                                <p-button label="Ver más"  severity="danger" [text]="true" [raised]="true" (onClick)="openInfo(cartel.elemento)" [rounded]="true"  ></p-button> 
+                            </td>
 
                         </tr>
                     </ng-template>
@@ -153,43 +160,60 @@
         </div>
 
         <ng-template #conteo>
-            <div class="card" *ngIf ="estadisticasConteo.length > 0; else cargando">
-                <p-table [value]="estadisticasConteo" [tableStyle]="{ 'min-width': '50rem' }"  [scrollable]="true" [scrollHeight]="'calc(100vh - 204px)'">
+            <div class="card" *ngIf ="!loadingTables; else cargandoTablaEstadistica">
+                <p-table 
+                [value]="estadisticasConteo"
+                [tableStyle]="{ 'min-width': '50rem' }" 
+                (sortFunction)="customSortConteo($event)" [customSort]="true" 
+                 [globalFilterFields]="['elemento.nombre']"
+                [scrollable]="true" [scrollHeight]="'calc(100vh - 204px)'">
+                <ng-template pTemplate="emptymessage">
+                    No hay elementos, prueba con otros filtros
+                </ng-template>
                     <ng-template pTemplate="header">
                         <tr>
                             <th>Nombre</th>
                             <th></th>
-                            <th>
-                                <p-overlayPanel #errorConteoInfo>
-                                 El procesado se considera inválido ya que la foto proporcionada es distinta a la del elemento con dispositivos y por tanto, no se realiza un conteo.
-                                </p-overlayPanel>
-                                Inválido <span class="pi pi-info-circle text-xl " (click)="errorConteoInfo.toggle($event)" style ="cursor: pointer; color:grey" ></span>
-                            </th>
-                            <th>Correcto </th>
-                            <th>Diferencia de 1 o 2</th>
-                            <th>Diferencia de 3 o 4</th>
-                            <th>Diferencia de 5 o más</th>
-                            <th> Procesados totales</th>
+                            <th>Resultados</th>
+                        
+                          
+                            <th pSortableColumn="dispositivo">Procesados totales <p-sortIcon field="procesados"></p-sortIcon></th>
                             <th></th>
                         
                         </tr>
+                        <tr>
+                            <th>
+                                <p-columnFilter type="text" field="elemento.nombre"></p-columnFilter>
+                            </th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-dispositivo>
+                    <ng-template pTemplate="body" let-rowIndex="rowIndex" let-dispositivo>
                         <tr>
                             <td>{{ dispositivo.elemento.nombre }}</td>
                             <td> 
                                 <img [src]=" getImagenElementoUri(dispositivo.elemento)" height="200vh"
                                 [alt]="'No disponible'" class="imagenDestacada"
                                  />
-                               
                             </td>
-                            <td>{{ dispositivo.error }}</td>
-                            <td>{{ dispositivo.diferencia[0] }}</td>
-                            <td>{{dispositivo.diferencia[1] + dispositivo.diferencia[2] }}</td>
-                            <td>{{ dispositivo.diferencia[3] + dispositivo.diferencia[4]}}</td>
-                            <td>{{ get5Plus(dispositivo) }}</td>
+                            <td>
+                                <div *ngIf =  "getTotalDispositivos(dispositivo) > 0; else vacio">
+                                <app-stacked-bar  [smallUWU]="true" [horizontal]="true" [hideLegend]="true" [datos]=" estadisticasConteoMultidatos[rowIndex]"></app-stacked-bar>
+                                </div>
+                                <ng-template #vacio>
+                                    Sin procesados
+                                </ng-template>
+                            </td>
+                               
+                                
+                                
                             <td>{{ getTotalDispositivos(dispositivo) }}</td>
-                            <td> <p-button label="Ver más"  severity="danger" [text]="true" [raised]="true" (onClick)="openInfo(dispositivo.elemento)" [rounded]="true"  ></p-button> </td>
+                            <td>
+                                 <p-button label="Ver más"  severity="danger" [text]="true" [raised]="true" (onClick)="openInfo(dispositivo.elemento)" [rounded]="true"  ></p-button>
+                             </td>
 
                         </tr>
                     </ng-template>

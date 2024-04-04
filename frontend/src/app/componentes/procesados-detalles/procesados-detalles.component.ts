@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, HostListener, Input, OnInit } from '@angular/core';
 import { SuperPieComponent } from 'src/app/componentes/_grafica/super-pie/super-pie.component';
 import { TableModule } from 'primeng/table';
 import { PublicMethodsService } from 'src/app/shared/public-methods.service';
@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { procesados_imagenes } from 'src/app/interfaces/procesados_imagenes';
 import { DividerModule } from 'primeng/divider';
+import { IrArribaComponent } from '../ir-arriba/ir-arriba.component';
 @Component({
   selector: 'app-procesados-detalles',
   templateUrl: './procesados-detalles.component.html',
@@ -21,7 +22,8 @@ import { DividerModule } from 'primeng/divider';
     TableModule,
     TagModule,
     CommonModule,
-    DividerModule
+    DividerModule,
+    IrArribaComponent
   ],
 })
 export class ProcesadosDetallesComponent  implements OnInit {
@@ -32,7 +34,7 @@ export class ProcesadosDetallesComponent  implements OnInit {
     public publicMedhodsService: PublicMethodsService,
     public estadisticasMethods: EstadisticasMethodsService,
     private urlService: UrlService,) { }
- 
+    
 
 
     url_imagenes_procesadas: string = this.urlService.url_imagenes_procesadas;
@@ -40,6 +42,10 @@ export class ProcesadosDetallesComponent  implements OnInit {
     elemento?: elementos;
     procesados: procesados_imagenes[] = [];
     datos_graficas?: datos_graficas[];
+
+    showIrArriba: boolean = false;
+
+    
  
     ngOnInit(): void {
 
@@ -57,5 +63,5 @@ export class ProcesadosDetallesComponent  implements OnInit {
     return this.publicMedhodsService.getSeverityDispositivos(numero_dispositivos, huecos_esperados);
   }
 
-
+ 
 }

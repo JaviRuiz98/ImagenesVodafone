@@ -33,8 +33,6 @@ export class EditarTiendaComponent implements OnInit {
     this.getMueblesTienda();
   }
   ngOnChanges(): void {
-    console.log( this.tiendaSelected);
-
     if (this.verFormularioEditarTienda && this.verFormularioEditarTienda === true) {
       this.inicializarSteps();
       this.iniciarFormularioEditarTienda();

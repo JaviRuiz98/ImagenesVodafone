@@ -192,7 +192,6 @@ constructor() { }
       if (noProcesados){
         estadisticasResultados[7].valor = data.carteles.no_procesados || 0;
       }
-      console.log ('estadisticasResultados', estadisticasResultados);
 
     }
 
@@ -206,20 +205,22 @@ constructor() { }
 
 
       // Para `diferencia`, sumamos los valores en el arreglo a las categorías correspondientes
-      data.conteo_dispositivos.diferencia.forEach((diferencia) => {
-        if (diferencia === 0) {
-          estadisticasResultados[0].valor++;
-        } else if (diferencia === 1 || diferencia === 2) {
-          estadisticasResultados[1].valor++;
-        } else if (diferencia === 3 || diferencia === 4) {
-          estadisticasResultados[2].valor++;
-        } else if (diferencia >= 5) {
-          estadisticasResultados[3].valor++;
-        }
-      });
+      
+      estadisticasResultados[0].valor =  data.conteo_dispositivos.diferencia[0] ?? 0;
+      estadisticasResultados[1].valor =  data.conteo_dispositivos.diferencia[1] ?? 0 + data.conteo_dispositivos.diferencia[2] ?? 0;
+      estadisticasResultados[2].valor =  data.conteo_dispositivos.diferencia[3] ?? 0 + data.conteo_dispositivos.diferencia[4] ?? 0;
+      estadisticasResultados[3].valor =  this.get5Plus(data);
+
+      
+     
     }
     return estadisticasResultados;
   }
+
+  get5Plus(data: resultados_ordenados ) {
+    //obtener la longitud del subarray a partir del indice 5
+      return data.conteo_dispositivos.diferencia.slice(5).reduce((a, b) => a + b, 0);
+   }
                                   //no se que te llega, tipalo si puedes Raul
   public mapearEstadisticasEstados(data: any[]): datos_graficas[] {
     const estadisticasEstados = this.estadisticas_estados_auditoria;

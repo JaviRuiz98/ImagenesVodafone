@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
 import { datos_graficas } from 'src/app/interfaces/datos_graficas';
 import { format } from 'date-fns';
@@ -10,7 +10,7 @@ import { format } from 'date-fns';
   standalone: true,
   imports: [ChartModule],
 })
-export class SuperLineChartComponent implements OnInit {
+export class SuperLineChartComponent implements  OnChanges {
   @Input() titulo: string;
   @Input() data_grafica: datos_graficas[] = [];
 
@@ -20,14 +20,11 @@ export class SuperLineChartComponent implements OnInit {
 
   constructor( private cdRef: ChangeDetectorRef) {}
 
-  ngOnInit() {
-    this.initOptions();
-    this.initData();
-  }
+
 
   ngOnChanges(changes: SimpleChanges) {
+    this.initOptions();
     this.initData();
-    this.cdRef.detectChanges();
   }
 
 

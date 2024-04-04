@@ -13,6 +13,9 @@ import { datos_graficas, datos_graficas_multidatos } from 'src/app/interfaces/da
 })
 export class StackedBarComponent {
   @Input() datos: datos_graficas_multidatos;
+  @Input() horizontal:boolean = false;
+  @Input () hideLegend:boolean = false;
+  @Input () smallUWU: boolean = false;
 
   data: any;
   options: any;
@@ -26,6 +29,17 @@ export class StackedBarComponent {
     // Definir colores con opacidad para el interior de las barras
     const colorsInterior = {
         'orange': 'rgba(255, 165, 0, 0.4)',
+        'blue': 'rgba(0, 0, 255, 0.4)',
+        'yellow': 'rgba(255, 255, 0, 0.4)',
+        'purple': 'rgba(128, 0, 128, 0.4)',
+        'cyan': 'rgba(0, 255, 255, 0.4)',
+        'magenta': 'rgba(255, 0, 255, 0.4)',
+        'gray': 'rgba(128, 128, 128, 0.4)',
+        'brown': 'rgba(165, 42, 42, 0.4)',
+        'pink': 'rgba(255, 192, 203, 0.4)',
+        'lime': 'rgba(0, 255, 0, 0.4)',
+        'teal': 'rgba(0, 128, 128, 0.4)',
+        'maroon': 'rgba(128, 0, 0, 0.4)',
         'green': 'rgba(0, 128, 0, 0.4)',
         'red': 'rgba(255, 0, 0, 0.4)'
     };
@@ -33,6 +47,17 @@ export class StackedBarComponent {
     // Definir colores con opacidad total para los bordes
     const colorsBorde = {
         'orange': 'rgba(255, 165, 0, 1)',
+        'blue': 'rgba(0, 0, 255, 1)',
+        'yellow': 'rgba(255, 255, 0, 1)',
+        'purple': 'rgba(128, 0, 128, 1)',
+        'cyan': 'rgba(0, 255, 255, 1)',
+        'magenta': 'rgba(255, 0, 255, 1)',
+        'gray': 'rgba(128, 128, 128, 1)',
+        'brown': 'rgba(165, 42, 42, 1)',
+        'pink': 'rgba(255, 192, 203, 1)',
+        'lime': 'rgba(0, 255, 0, 1)',
+        'teal': 'rgba(0, 128, 128, 1)',
+        'maroon': 'rgba(128, 0, 0, 1)',
         'green': 'rgba(0, 128, 0, 1)',
         'red': 'rgba(255, 0, 0, 1)'
     };
@@ -54,9 +79,12 @@ export class StackedBarComponent {
     }
 
       this.options = {
+         indexAxis: this.horizontal == true ? 'y' : 'x',
+         responsive: this.smallUWU == true ? false : true,
           maintainAspectRatio: false,
           aspectRatio: 0.8,
           plugins: {
+            
               tooltips: {
                   mode: 'index',
                   intersect: false
@@ -68,10 +96,15 @@ export class StackedBarComponent {
               }
           },
           scales: {
+            
               x: {
+                
+                  display: this.hideLegend == false,
                   stacked: true,
                   ticks: {
-                      color: textColorSecondary
+                   
+                      color: textColorSecondary,
+                     
                   },
                   grid: {
                       color: surfaceBorder,
@@ -79,8 +112,10 @@ export class StackedBarComponent {
                   }
               },
               y: {
+                  display: this.hideLegend == false,
                   stacked: true,
                   ticks: {
+                   
                       color: textColorSecondary
                   },
                   grid: {
@@ -92,3 +127,4 @@ export class StackedBarComponent {
       };
   }
 }
+

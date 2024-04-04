@@ -217,9 +217,32 @@ export async function terminarAuditoria(req: Request, res: Response) {
     }
 }
 
+export async function getAuditoriasEnProgresoYTiendasTotales(req: Request, res: Response) {
+    try {
+        let periodo_fechas: Date[] = req.body.fechas;
+
+        if(periodo_fechas.length == 0) {
+            periodo_fechas[1] = new Date();
+        }
+
+        const num_auditorias_en_progreso = await auditoriaService.getAuditoriasEnProgreso(periodo_fechas);
+        const tiendas_totales = await tiendaService.contarTiendasTotales();
+
+        res.status(200).json({num_auditorias_en_progreso, tiendas_totales});
+
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+        console.log(error);
+    }
+}
+
 export async function getEstadisticasEstadosAuditoria(req: Request, res: Response) {
     try {
-        const periodo_fechas: Date[] = req.body.fechas;
+        let periodo_fechas: Date[] = req.body.fechas;
+
+        if(periodo_fechas.length == 0) {
+            periodo_fechas[1] = new Date();
+        }
 
         const id_estados_excluidos: number[] = [];
         const estados: estados_extended[] = await auditoriaService.getAllEstadosParaAuditorias(id_estados_excluidos, periodo_fechas);
@@ -232,6 +255,7 @@ export async function getEstadisticasEstadosAuditoria(req: Request, res: Respons
         res.status(200).json(estados);
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
+        console.log(error);
     }
 }
 
@@ -261,7 +285,7 @@ async function agruparAuditorias(auditorias: auditorias[], periodo_fechas: Date[
     if (periodo_fechas.length === 0) {
         fechaMin = new Date(Math.min(...auditorias.map(a => new Date(a.fecha).getTime())));
         // Para fechaMax considera tanto la fecha de creación como de finalización
-        fechaMax = new Date(Math.max(...auditorias.flatMap(a => [new Date(a.fecha).getTime(), a.fecha_fin ? new Date(a.fecha_fin).getTime() : 0])));
+        fechaMax = new Date();
     } else {
         fechaMin = new Date(periodo_fechas[0]);
         fechaMax = new Date(periodo_fechas[1]);
