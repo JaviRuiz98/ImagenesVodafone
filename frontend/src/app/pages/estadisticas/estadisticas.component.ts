@@ -117,7 +117,7 @@ export class EstadisticasComponent {
     if(!!this.periodo_fechas && this.periodo_fechas[1] !== null) {
       this.periodo_fechas[1] = new Date(this.periodo_fechas[1].getFullYear(), this.periodo_fechas[1].getMonth() + 1, 0);
       this.filtroState.updatePeriodoFechas(this.periodo_fechas);
-      console.log('fechas almacenadas en estado', this.periodo_fechas);
+      this.filtroState.loadSeconds(1);
     }
   }
 

@@ -50,9 +50,11 @@ export class EstadisticasMueblesComponent implements OnInit  {
  numProcesadosCategoria: datos_graficas[];
  numTotalProcesados: number = 0;
 
+ //Grid
  tableStateOptions =  [{label: 'Carteles', value: 'cartel'}, {label: 'Conteo de dispositivos', value: 'dispositivo'}];
  tableStateValue = 'cartel';
  emptyArrayCargandoTabla = Array.from({ length: 5 }).map((_, i) => `Item #${i}`);
+ loadingTables: boolean = true;
 
  //Filtros
  lastElementoIds: number[] = [];
@@ -116,10 +118,12 @@ export class EstadisticasMueblesComponent implements OnInit  {
       const estadisticas_length: resultados_ordenados = this.estadisticasMethods.fromOrdenadosElementosToOrdenados(estadisticas);
       this.estadisticas_resultados_carteles = [...this.estadisticasMethods.mapearEstadisticasResultados(estadisticas_length, "carteles", false)];
       this.estadisticas_resultados_conteo = [...this.estadisticasMethods.mapearEstadisticasResultados(estadisticas_length, "conteoDispositivos", false)];
-     
-
+      
+      this.loadingTables = true;
       this.initCarteles(elementos_ids,fechas);
       this.initConteoDispositivos(elementos_ids,fechas);
+      this.loadingTables = false;
+      
       this.initNumProcesadosCategoria (elementos_ids,fechas);
 
 

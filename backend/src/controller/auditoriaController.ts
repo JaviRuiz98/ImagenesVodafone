@@ -242,7 +242,6 @@ export async function getEstadisticasEstadosAuditoria(req: Request, res: Respons
 
         const id_estados_excluidos: number[] = [];
         const estados: estados_extended[] = await auditoriaService.getAllEstadosParaAuditorias(id_estados_excluidos, periodo_fechas);
-        console.log('estados1', estados);
 
 
         estados.map((estado) => {
@@ -250,7 +249,6 @@ export async function getEstadisticasEstadosAuditoria(req: Request, res: Respons
             estado.auditorias = [];
         })
 
-        console.log('estados2:', estados);
 
         res.status(200).json(estados);
     } catch (error) {

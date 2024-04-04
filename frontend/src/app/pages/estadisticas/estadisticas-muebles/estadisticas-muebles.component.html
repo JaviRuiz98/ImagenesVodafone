@@ -97,7 +97,7 @@
         </div>        
         <div class="card" *ngIf ="tableStateValue==='cartel'; else conteo">
 
-            <div *ngIf ="estadisticasCartel.length > 0; else cargandoTablaEstadistica">
+            <div *ngIf ="!loadingTables; else cargandoTablaEstadistica">
                 <p-table 
                 [value]="estadisticasCartel" 
                 [tableStyle]="{ 'min-width': '50rem' }"  
@@ -105,6 +105,10 @@
                 [scrollable]="true" [scrollHeight]="'calc(100vh - 204px)'"
                 [globalFilterFields]="['elemento.nombre']"
                 >
+
+                <ng-template pTemplate="emptymessage">
+                    No hay elementos, prueba con otros filtros
+                </ng-template>
                     <ng-template pTemplate="header">
                         <tr>
                             <th>Nombre</th>
@@ -156,13 +160,16 @@
         </div>
 
         <ng-template #conteo>
-            <div class="card" *ngIf ="estadisticasConteo.length > 0; else cargandoTablaEstadistica">
+            <div class="card" *ngIf ="!loadingTables; else cargandoTablaEstadistica">
                 <p-table 
                 [value]="estadisticasConteo"
                 [tableStyle]="{ 'min-width': '50rem' }" 
                 (sortFunction)="customSortConteo($event)" [customSort]="true" 
                  [globalFilterFields]="['elemento.nombre']"
                 [scrollable]="true" [scrollHeight]="'calc(100vh - 204px)'">
+                <ng-template pTemplate="emptymessage">
+                    No hay elementos, prueba con otros filtros
+                </ng-template>
                     <ng-template pTemplate="header">
                         <tr>
                             <th>Nombre</th>
