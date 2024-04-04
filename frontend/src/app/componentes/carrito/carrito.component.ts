@@ -30,7 +30,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
   imports: [
     CommonModule,
     DialogModule,
-    SelectorImagenesComponent,
+    SelectorImagenesComponent, // sobra
     InputTextModule,
     SidebarModule,
     DataViewModule,
@@ -49,16 +49,16 @@ export class CarritoComponent implements OnInit{
   @Input() sidebarVisible: boolean = false; //sin implementar
   @Input() productos_carrito: productos[] = [];
  // productos_carrito: productos[] = [];
-   
+  
   @Output() mostrarCarrito = new EventEmitter<boolean>();
   // @Output() nuevoElementoCreado = new EventEmitter<elementos>();
-  
+  array_cantidad_valida: boolean[];
   url_imagenes_productos: string = 'http://validador-vf.topdigital.local/imagenes/imagenesProducto/';
  
   total_carrito: number = 0;
 
   verPedidoRealizado: boolean = false;
-  id_tienda: number = 0;                                                //TO DO: obtener id desde las coockies del navegador 
+  id_tienda: number = 1;                                                //TO DO: obtener id desde las coockies del navegador 
  
   constructor( 
     private UniformesService: UniformesService,
@@ -75,8 +75,18 @@ export class CarritoComponent implements OnInit{
   }
 
   cambiarTotal(producto: productos){
+    if(producto.cantidad > 0 && producto.cantidad <= producto.caracteristica_seleccionada.stock){
+
+      this.array_cantidad_valida[this.productos_carrito.indexOf(producto)] = true;
+    }else{
+      this.array_cantidad_valida[this.productos_carrito.indexOf(producto)] = false;
+      this.productos_carrito[this.productos_carrito.indexOf(producto)].cantidad = 1;
+      producto.cantidad = 1;
+    }
+
+
     this.calcularTotalCarrito();
- 
+    
   }
 
   // tramitarPedido(){
@@ -87,6 +97,7 @@ export class CarritoComponent implements OnInit{
   ngOnInit(): void {
     this.calcularTotalCarrito();
     console.log('carrito', this.productos_carrito)
+    this.array_cantidad_valida = new Array(this.productos_carrito.length).fill(true);
   }
 
   ngOnChanges() {
@@ -122,15 +133,15 @@ export class CarritoComponent implements OnInit{
     this.UniformesService.tramitarPedido(this.productos_carrito, this.id_tienda).subscribe(
       (res: any)  => {
         if(res.message == 'ok'){
-          this.productos_carrito = [];
+          this.productos_carrito.length = 0;
           this.total_carrito = 0;
           this.messageService.add({severity:'success', summary: 'Confirmado', detail: 'Tramitado con exito'});
           this.verPedidoRealizado = true
-
+    
         }else{
           this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al tramitar el pedido: stock'});
         }
-      //  this.mostrarCarrito.emit(false);
+
     },
     error => {
       this.messageService.add({severity:'error', summary: 'Error', detail: 'Error al tramitar el pedido'});

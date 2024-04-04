@@ -24,6 +24,11 @@ import { PanelModule } from 'primeng/panel';
 import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { DropdownModule } from 'primeng/dropdown';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { GestionDePedidosComponent } from 'src/app/componentes/gestion-de-pedidos/gestion-de-pedidos.component';
+
 
 @NgModule({
   declarations: [
@@ -52,7 +57,11 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     CardModule,
     ChartModule,
     PanelModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    DropdownModule,
+    TableModule,
+    TagModule,
+    GestionDePedidosComponent
   ]
 })
 export class EstadisticasModule { }

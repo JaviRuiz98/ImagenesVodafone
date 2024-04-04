@@ -1,13 +1,15 @@
 import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
 import { UniformesService } from 'src/app/servicios/uniformes/uniformes.service';
 import { datos_graficas } from 'src/app/interfaces/datos_graficas';
-
+import { Table } from 'primeng/table';
 import { pedidos } from 'src/app/interfaces/pedidos';
 import { carrito } from 'src/app/interfaces/carrito';
 import { productos } from 'src/app/interfaces/productos';
 import { caracteristicas_productos } from 'src/app/interfaces/caracteristicas';
 import { constrainedMemory } from 'process';
-
+import { tienda } from 'src/app/interfaces/tienda';
+import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
+import { DatePipe } from '@angular/common';
 
 
 interface estadisticasUniforme {
@@ -31,12 +33,52 @@ interface estadisticasUniforme {
 
 export class EstadisticasUniformesComponent implements OnInit {
 
+//
+  loading: boolean = true;  
+  statuses!: any[];
+  selectedPedidos: pedidos = {
+    id: 0, 
+    id_tienda: 0,
+    fecha: new Date(),
+    fecha_entrega: null,
+    sfid: ''
+
+  }
+//
+
+
  
   productos_nombres = ['Forro', 'Polo', 'Pantalon', 'Tarjeta', 'Lanyard', 'Lanyard Practicas'];
 
   estadisticasPorTalla: estadisticasUniforme;
 
   rangeDates: Date[] | undefined;
+  
+  tiendaSeleccionada: tienda = {
+    id: 0,
+    cif: '',
+    razon_social: '',
+    tipo_distribuidor: '',
+    sfid: '',
+    nombre: '',
+    activo: false,
+    visible: false,
+    vodafone: false,
+    lowi: false,
+    canal: '',
+    tipo_pdv: '',
+    zona_geografica: '',
+    provincia: '',
+    poblacion: '',
+    cp: '',
+    pertenencia_mueble_tienda: [],
+    imagen_plano: {
+      id_imagen: 0,
+      url: ''
+    },
+  }
+
+  tiendas: tienda[] = [];
 
   pedidosTodos!: pedidos[];
   pedidosFiltrados!: pedidos[];
@@ -77,7 +119,7 @@ export class EstadisticasUniformesComponent implements OnInit {
   textColorSecondary = this.documentStyle.getPropertyValue('--text-color-secondary');
   surfaceBorder = this.documentStyle.getPropertyValue('--surface-border');
 
-  constructor(private uniformesService: UniformesService) {
+  constructor(private uniformesService: UniformesService, private tiendasService: TiendasService) {
     this.dataHombre = new Array(this.productos_nombres.length).fill(0);
     this.dataMujer = new Array(this.productos_nombres.length).fill(0);
     this.dataUnisex = new Array(this.productos_nombres.length).fill(0);
@@ -90,6 +132,7 @@ export class EstadisticasUniformesComponent implements OnInit {
   inicializar() {
     this.uniformesService.getPedidos().subscribe((pedidos) => {
       this.pedidosTodos = pedidos;
+      this.loading = false;
     })
 
     this.uniformesService.getCarrito().subscribe((carrito) => { //todos los items registrados en carritos
@@ -107,6 +150,13 @@ export class EstadisticasUniformesComponent implements OnInit {
 
     this.inicializaProductos();
     this.inicializaCaracteristicasProducto(); 
+    this.initTiendas() 
+  }
+
+  initTiendas() {
+    this.tiendasService.getAllTiendas().subscribe((data: tienda[]) => {
+      this.tiendas = data;
+    })
   }
 
 
@@ -123,7 +173,6 @@ export class EstadisticasUniformesComponent implements OnInit {
 
   }
  
-
   inicializaCaracteristicasProducto() {
     this.uniformesService.getCaracteristicas().subscribe(
       (caracteristicas: caracteristicas_productos[]) => {
@@ -137,18 +186,30 @@ export class EstadisticasUniformesComponent implements OnInit {
   }
 
 
-
+  onTiendaSelected(){
+    this.filtrarPorFecha();
+  }
 
   filtrarPorFecha() {
     if(this.rangeDates == undefined){return;}
+    this.dataHombre = new Array(this.productos_nombres.length).fill(0);
+    this.dataMujer = new Array(this.productos_nombres.length).fill(0);
+    this.dataUnisex = new Array(this.productos_nombres.length).fill(0);
+    this.productos_filtrados = [];
 
     this.pedidosFiltrados = [];
     this.carritoFiltrado = [];
+
+
     if (this.rangeDates) {
-      this.pedidosFiltrados = this.pedidosTodos.filter((pedido) => {
+
+      this.pedidosFiltrados = this.pedidosTodos.filter((pedido) => { //solo por fecha
         return new Date(pedido.fecha).getTime() >= new Date(this.rangeDates[0]).getTime() && new Date(pedido.fecha).getTime() <= new Date(this.rangeDates[1]).getTime();
       });
-      this.carritoFiltrado = [];
+      if(this.tiendaSeleccionada.id != 0){
+        this.pedidosFiltrados = this.pedidosFiltrados.filter(pedido => pedido.id_tienda === this.tiendaSeleccionada.id);
+      }
+ 
       this.pedidosFiltrados.forEach((pedido) => {
         const carritosFiltrados = this.carritoTodos.filter(carrito => carrito.id_pedido === pedido.id);
         this.carritoFiltrado = [...this.carritoFiltrado, ...carritosFiltrados];
@@ -196,9 +257,6 @@ export class EstadisticasUniformesComponent implements OnInit {
 
       })
       console.log(this.dataHombre, this.dataMujer, this.dataUnisex);
-
-      
-
       this.data = {
         labels: this.productos_nombres,
         datasets: [
@@ -224,7 +282,6 @@ export class EstadisticasUniformesComponent implements OnInit {
       };
       this.mostrarGrafica = true;
     }  
- 
   }
 
   mostrarInfo(nombre: string, genero: string) {
@@ -256,8 +313,9 @@ export class EstadisticasUniformesComponent implements OnInit {
 
   ngOnInit(): void {
 
-
-
+    this.rangeDates = [new Date('2024-01-01'), new Date()];
+    this.inicializar();
+ 
 
 
     this.options = {
@@ -294,11 +352,16 @@ export class EstadisticasUniformesComponent implements OnInit {
           }
 
       }
-  };
-
-    this.inicializar();
-
+    };
+    setTimeout(() => {
+      this.filtrarPorFecha();
+    },1300)
     console.log(this.pedidosTodos);
   }
+
+
+
+
+
 
 }

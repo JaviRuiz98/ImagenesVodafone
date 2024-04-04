@@ -1,104 +1,123 @@
-<div style="display: flex; flex-direction: row;  height: 230px; margin-top: 20px; width: 100%;">
-    <div class="card flex justify-content-left" style="width: 30%;" >
-        <p-card class="cardFiltros">
-            <h4>Filtrar por rango de fecha</h4>
+
+<app-gestion-de-pedidos></app-gestion-de-pedidos>
+
+<div style="display: flex; flex-direction: row; justify-content: space-around; align-items: center;  margin-top: 20px; width: 100%;">
+    <div class="flex: 1;" style="width: 25%;" >
+        <p-card class="cardFiltros" header="Filtrar por fecha:">  
             <p-calendar [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true"></p-calendar>
             <p-button label="Filtrar" (onClick)="filtrarPorFecha()"></p-button>
         </p-card>
     </div>
+  
+    <div class="flex: 1;" style="width: 20%;" >
+        <p-card class="cardFiltros" header="Filtrar por tienda:" > 
+            <p-dropdown 
+            [options]="tiendas" 
+            [(ngModel)]="tiendaSeleccionada"
+            (ngModelChange)="onTiendaSelected()"
+            optionLabel="sfid" 
+            [showClear]="true" 
+            placeholder="Selecciona tu tienda"
+            class="dropdown">
+        </p-dropdown>
+        </p-card>
+    </div>
  
- 
-</div>
+    <div class="flex: 1;" style="width: 40%;" >
 
- 
-<p-card *ngIf="1" header="Resumen:" [style]="{'margin-left': '20px',  'width': '40%', 'display': 'flex', 'flex-direction': 'row', 'align-items': 'center', 'justify-content': 'space-around', 'border-radius': '5px', 'border': '1px solid black', 'padding': '10px', 'font-size': '16px', 'background-color': '#fcfbdc'}">
- 
-    <div style="display: flex; flex-direction: row; justify-content: space-around;">
-        <div style="flex: 1; width: 33%;">
-            <table>
-                <tr>
-                    <td style="text-decoration: underline; display: block; margin-bottom: 5px;">
-                        <b> Hombre:  </b> 
-                    </td>
-                </tr>
-                <tr>
-                    <td style="display: flex; ">
-                        <li>Forro: {{ dataHombre[0] }}
-                            <i class="pi pi-info-circle" style="margin-left: 10px; justify-content: flex-end; color: #6568ff; cursor: pointer;" (mouseover)="mostrarInfo('Forro','Hombre')" (click)="op.toggle($event)"></i>
-                        </li>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="display: flex;">
-                        <li>Polo: {{ dataHombre[1] }}
 
-                        </li>
-                        <i class="pi pi-info-circle" style="margin-left: 10px;  justify-content: flex-end; color: #6568ff; cursor: pointer;" (mouseover)="mostrarInfo('Polo','Hombre')" (click)="op.toggle($event)"></i>
-                    </td>
-                </tr>
-                <tr>
-                    <li>Pantalón: {{ dataHombre[2] }}
-                        <i class="pi pi-info-circle" style="margin-left: 10px; color: #6568ff; cursor: pointer;" (mouseover)="mostrarInfo('Pantalon','Hombre')" (click)="op.toggle($event)"></i>
-                    </li>
-                </tr>
-            </table>
-        </div>
-        
-        <div style="flex: 1; width: 33%;">
-            <table> 
-                <tr>
-                    <td style="text-decoration: underline; display: block; margin-bottom: 5px;">
-                    <b> Mujer:  </b> 
-                    </td>
-                </tr>
-                <tr>
-                    <li>Forro: {{ dataMujer[0] }}
-                        <i class="pi pi-info-circle" style="margin-left: 10px; color: #6568ff; cursor: pointer;" (mouseover)="mostrarInfo('Forro','Mujer')" (click)="op.toggle($event)"></i>
-                    </li>
-                </tr>
-                <tr>
-                    <li>Polo: {{ dataMujer[1] }}
-                        <i class="pi pi-info-circle" style="margin-left: 10px; color: #6568ff; cursor: pointer;" (mouseover)="mostrarInfo('Polo','Mujer')" (click)="op.toggle($event)"></i>
-                    </li>
-                </tr>
-                <tr>
-                    <li>Pantalón: {{ dataMujer[2] }}
-                        <i class="pi pi-info-circle" style="margin-left: 10px; color: #6568ff; cursor: pointer;" (mouseover)="mostrarInfo('Pantalon','Mujer')" (click)="op.toggle($event)"></i>
-                    </li>
-                </tr>
-            </table>
-        </div>
+        <p-card class="cardFiltros" header="Resumen:" >
+            <div style="display: flex; flex-direction: row; justify-content: space-around;">
+                <div style="flex: 1; width: 33%;">
+                    <table>
+                        <tr>
+                            <td style="text-decoration: underline; display: block; margin-bottom: 5px;">
+                                <b> Hombre:  </b> 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="display: flex; ">
+                                <li>Forro: {{ dataHombre[0] }}
+                                    <i class="pi pi-info-circle" style="margin-left: 10px; justify-content: flex-end; color: #6568ff; cursor: pointer;" (mouseover)="mostrarInfo('Forro','Hombre')" (click)="op.toggle($event)"></i>
+                                </li>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="display: flex;">
+                                <li>Polo: {{ dataHombre[1] }}
+    
+                                </li>
+                                <i class="pi pi-info-circle" style="margin-left: 10px;  justify-content: flex-end; color: #6568ff; cursor: pointer;" (mouseover)="mostrarInfo('Polo','Hombre')" (click)="op.toggle($event)"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <li>Pantalón: {{ dataHombre[2] }}
+                                <i class="pi pi-info-circle" style="margin-left: 10px; color: #6568ff; cursor: pointer;" (mouseover)="mostrarInfo('Pantalon','Hombre')" (click)="op.toggle($event)"></i>
+                            </li>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div style="flex: 1; width: 33%;">
+                    <table> 
+                        <tr>
+                            <td style="text-decoration: underline; display: block; margin-bottom: 5px;">
+                            <b> Mujer:  </b> 
+                            </td>
+                        </tr>
+                        <tr>
+                            <li>Forro: {{ dataMujer[0] }}
+                                <i class="pi pi-info-circle" style="margin-left: 10px; color: #6568ff; cursor: pointer;" (mouseover)="mostrarInfo('Forro','Mujer')" (click)="op.toggle($event)"></i>
+                            </li>
+                        </tr>
+                        <tr>
+                            <li>Polo: {{ dataMujer[1] }}
+                                <i class="pi pi-info-circle" style="margin-left: 10px; color: #6568ff; cursor: pointer;" (mouseover)="mostrarInfo('Polo','Mujer')" (click)="op.toggle($event)"></i>
+                            </li>
+                        </tr>
+                        <tr>
+                            <li>Pantalón: {{ dataMujer[2] }}
+                                <i class="pi pi-info-circle" style="margin-left: 10px; color: #6568ff; cursor: pointer;" (mouseover)="mostrarInfo('Pantalon','Mujer')" (click)="op.toggle($event)"></i>
+                            </li>
+                        </tr>
+                    </table>
+                </div>
+    
+                <div style="flex: 1; flex-shrink: 0; width: 50%;">
+                    <table> 
+                        <td style="text-decoration: underline; display: block; margin-bottom: 5px;">
+                            <b> Útiles:  </b> 
+                        </td>
+                        <tr>
+                            <li>Tarjeta: {{ dataUnisex[3] }}</li>
+                        </tr>
+                        <tr>
+                            <li>Lanyard: {{ dataUnisex[4] }}</li>
+                        </tr>
+                        <tr>
+                            <li>Lanyard Practicas: {{ dataUnisex[5] }}</li>
+                        </tr>
+                    </table>
+                </div>
+    
+            </div> 
+            
+            <p-overlayPanel #op [showCloseIcon]="true">
+                <h3>De los cuales:</h3>
+                <div  *ngFor="let caracteristica of this.producto.caracteristicas_productos; let i = index" style="display: flex;  flex-direction: row; justify-content: space-around;">
+                
+                    Talla: {{this.producto.caracteristicas_productos[i].talla}}-> {{this.estadisticasPorTalla.totalPorTalla[i]}} uds.
+                </div>
+    
+            </p-overlayPanel>
+        </p-card>
 
-        <div style="flex: 1; flex-shrink: 0; width: 50%;">
-            <table> 
-                <td style="text-decoration: underline; display: block; margin-bottom: 5px;">
-                    <b> Útiles:  </b> 
-                </td>
-                <tr>
-                    <li>Tarjeta: {{ dataUnisex[3] }}</li>
-                </tr>
-                <tr>
-                    <li>Lanyard: {{ dataUnisex[4] }}</li>
-                </tr>
-                <tr>
-                    <li>Lanyard Practicas: {{ dataUnisex[5] }}</li>
-                </tr>
-            </table>
-        </div>
 
     </div> 
-    
-    <p-overlayPanel #op [showCloseIcon]="true">
-        <h3>De los cuales:</h3>
-        <div  *ngFor="let caracteristica of this.producto.caracteristicas_productos; let i = index" style="display: flex;  flex-direction: row; justify-content: space-around;">
-         
-            Talla: {{this.producto.caracteristicas_productos[i].talla}}-> {{this.estadisticasPorTalla.totalPorTalla[i]}} uds.
-        </div>
 
-    </p-overlayPanel>
-</p-card>
+</div>
  
-
-<div class="card" *ngIf="mostrarGrafica">
+<div class="card" *ngIf="mostrarGrafica" style="margin-top: 40px;">
     <p-chart type="bar" [data]="data" [options]="options"></p-chart>
 </div>
+ 
