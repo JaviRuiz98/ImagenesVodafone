@@ -1,16 +1,15 @@
 import { Component, EventEmitter, OnInit, Input, Output } from '@angular/core';
-import { UniformesService } from 'src/app/servicios/uniformes/uniformes.service';
-import { datos_graficas } from 'src/app/interfaces/datos_graficas';
-import { Table } from 'primeng/table';
+import { UniformesService } from 'src/app/servicios/uniformes/uniformes.service'; 
 import { pedidos } from 'src/app/interfaces/pedidos';
 import { carrito } from 'src/app/interfaces/carrito';
 import { productos } from 'src/app/interfaces/productos';
-import { caracteristicas_productos } from 'src/app/interfaces/caracteristicas';
-import { constrainedMemory } from 'process';
+import { caracteristicas_productos } from 'src/app/interfaces/caracteristicas'; 
 import { tienda } from 'src/app/interfaces/tienda';
-import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
-import { DatePipe } from '@angular/common';
+import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service'; 
 
+ 
+import { Observable } from 'rxjs';
+import { FiltroState } from 'src/app/state/estadisticas/elementoSeleccionados.state';
 
 interface estadisticasUniforme {
   total: number;
@@ -41,6 +40,7 @@ export class EstadisticasUniformesComponent implements OnInit {
     id_tienda: 0,
     fecha: new Date(),
     fecha_entrega: null,
+    estado: '',
     sfid: ''
 
   }
@@ -52,7 +52,7 @@ export class EstadisticasUniformesComponent implements OnInit {
 
   estadisticasPorTalla: estadisticasUniforme;
 
-  rangeDates: Date[] | undefined;
+
   
   tiendaSeleccionada: tienda = {
     id: 0,
@@ -118,13 +118,24 @@ export class EstadisticasUniformesComponent implements OnInit {
   textColor = this.documentStyle.getPropertyValue('--text-color');
   textColorSecondary = this.documentStyle.getPropertyValue('--text-color-secondary');
   surfaceBorder = this.documentStyle.getPropertyValue('--surface-border');
+//
 
-  constructor(private uniformesService: UniformesService, private tiendasService: TiendasService) {
+  public loading$: Observable<boolean>;
+  public periodo_fechas$: Observable<Date[]>;
+
+  rangeDates: Date[] | undefined;
+
+  constructor(private uniformesService: UniformesService, private tiendasService: TiendasService, private state: FiltroState) {
     this.dataHombre = new Array(this.productos_nombres.length).fill(0);
     this.dataMujer = new Array(this.productos_nombres.length).fill(0);
     this.dataUnisex = new Array(this.productos_nombres.length).fill(0);
+    this.setStateSelectors();
    }
-
+   private setStateSelectors() {
+    this.loading$ = this.state.loading$;
+    this.periodo_fechas$ = this.state.periodoFechas$;
+ 
+  }
 
   
 
@@ -300,12 +311,8 @@ export class EstadisticasUniformesComponent implements OnInit {
             this.estadisticasPorTalla.total += producto.cantidad;
           }
         }
-      
-      
       }
-
     })
-
     console.log(this.estadisticasPorTalla);
     this.mostrarInfoProducto = true;
   }
@@ -313,9 +320,17 @@ export class EstadisticasUniformesComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.rangeDates = [new Date('2024-01-01'), new Date()];
+
     this.inicializar();
- 
+    this.periodo_fechas$.subscribe(fechas => {
+    
+      this.rangeDates = fechas;
+      if(fechas.length == 0){
+        this.rangeDates = [new Date('2023-01-01'), new Date()];
+      }
+      this.filtrarPorFecha();
+
+    });
 
 
     this.options = {

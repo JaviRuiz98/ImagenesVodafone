@@ -28,6 +28,10 @@ export class UniformesService {
     return this.http.get<pedidos[]>(`${this.API_URI}/pedidos`);
   }
 
+  updatePedidos(pedido: pedidos): Observable<pedidos> {
+    return this.http.put<pedidos>(`${this.API_URI}/pedidos`, pedido);
+  }
+
   getCarrito(): Observable<carrito[]> {
     return this.http.get<carrito[]>(`${this.API_URI}/carritos`);
   }

@@ -26,8 +26,9 @@ import { TagModule } from 'primeng/tag';
 import { tienda } from 'src/app/interfaces/tienda';
 import { TiendasService } from 'src/app/servicios/tiendas/tiendas.service';
 import { pedidos } from 'src/app/interfaces/pedidos';
-import { carrito } from 'src/app/interfaces/carrito';
-import { UniformesComponent } from 'src/app/pages/uniformes/uniformes.component'; 
+import { OverlayPanelModule } from 'primeng/overlaypanel';  
+import { CalendarModule } from 'primeng/calendar';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
 @Component({
   selector: 'app-gestion-de-pedidos',
   templateUrl: './gestion-de-pedidos.component.html',
@@ -48,7 +49,10 @@ import { UniformesComponent } from 'src/app/pages/uniformes/uniformes.component'
     PanelModule,
     TableModule,
     DropdownModule,
-    TagModule
+    TagModule,
+    OverlayPanelModule,
+    CalendarModule,
+    ScrollPanelModule
   ]
 })
 
@@ -66,13 +70,22 @@ export class GestionDePedidosComponent implements OnInit{
     id_tienda: 0,
     fecha: new Date(),
     fecha_entrega: null,
-    sfid: ''
+    sfid: '',
+    estado: '',
   }
   pedidosTodos: pedidos[] = [];
+  pedidoActualizar: pedidos = {
+    id: 0,
+    id_tienda: 0,
+    fecha: new Date(),
+    fecha_entrega: undefined,
+    sfid: '',
+    estado: '', 
+  }
   tiendasTodas: tienda[] = [];
-
-
-  constructor(private uniformesService: UniformesService, private tiendasService: TiendasService){}
+  verActualizar = false;
+  fechaEntregaActualizar: Date | undefined;
+  constructor(private uniformesService: UniformesService, private tiendasService: TiendasService, private confirmationService: ConfirmationService, private messageService: MessageService){}
 
 
   inicializaPedidos(){
@@ -93,20 +106,35 @@ export class GestionDePedidosComponent implements OnInit{
     })
   }
 
+ 
+  actualizar_estado(pedido: pedidos) {
+    this.pedidoActualizar = pedido;
+
+ 
+
+    this.verActualizar = true;
+  }
+
+cancelaActualizarEstado(){
+  this.verActualizar = false;
+  this.messageService.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+}
+aceptaActualizarEstado(){
+  this.verActualizar = false;
+  this.uniformesService.updatePedidos(this.pedidoActualizar).subscribe(() => {
+    
+  })
+  this.messageService.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
+}
+
 
 
   ngOnInit(): void {
     this.inicializaPedidos();
 
 
-    this.statuses = [
-      { label: 'Unqualified', value: 'Entregado' }, //success
-      { label: 'Qualified', value: 'En tramite' },  //info
-      { label: 'New', value: 'Enviado' }, //warning
-      { label: 'Negotiation', value: 'Espera de pago' }, //danger
-      // { label: 'Renewal', value: 'renewal' },
-      // { label: 'Proposal', value: 'proposal' }
-   ];
+    this.statuses = ['Entregado', 'En tramite', 'Enviado', 'Espera de pago'];
+  
 
   }
 

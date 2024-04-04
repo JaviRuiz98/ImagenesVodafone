@@ -1,8 +1,5 @@
 
-
-
-
-<p-panel header="Pedidos" [style]="{width: '70%', margin: '0 auto'}" collapseIcon="pi pi-chevron-down" [toggleable]="true">
+<p-toast></p-toast>
     <p-table
         #dt1
         [value]="pedidosTodos"
@@ -52,7 +49,7 @@
                 </th>
                 <th pSortableColumn="fechaEntrega" style="min-width:10rem">
                     <div class="flex align-items-center">
-                        fechaEntrega
+                        Entrega
                         <p-sortIcon field="fechaEntrega"></p-sortIcon>
                         <p-columnFilter type="text" field="fechaEntrega" display="menu"></p-columnFilter>
                     </div>
@@ -71,7 +68,7 @@
                         </p-columnFilter>
                     </div>
                 </th>
-
+                <th></th>
     
             </tr>
         </ng-template>
@@ -87,21 +84,23 @@
                 </td>
     
                 <td>
-                    {{ pedido.fecha | date: 'MM/dd/yyyy' }}
+                    {{ pedido.fecha | date: 'dd/MM/yyyy' }}
                 </td>
                 <td  >
                     <div *ngIf="pedido.fecha_entrega; else sinFecha">
-                        {{ pedido.fecha_entrega | date: 'MM/dd/yyyy' }}
+                        {{ pedido.fecha_entrega | date: 'dd/MM/yyyy' }}
                     </div>
                     <ng-template #sinFecha  >
                        --------
                     </ng-template>
                 </td>
                 <td>
-                    <p-tag [value]="pedido.estado" [severity]="getSeverity(pedido.estado)"></p-tag>
+                    <p-tag [value]="pedido.estado" [severity]="getSeverity(pedido.estado)"  (click)="actualizar_estado(pedido)" (mouseover)="op.toggle($event)" [style]="{'cursor':'pointer'}" ></p-tag>
+
                 </td>
- 
-             
+                <td>
+                    <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" ></button>
+                </td>
             </tr>
         </ng-template>
         <ng-template pTemplate="emptymessage">
@@ -110,4 +109,31 @@
             </tr>
         </ng-template>
     </p-table>
-</p-panel>
+
+    <p-overlayPanel #op>
+        Actualizar estado
+    </p-overlayPanel>
+    <p-dialog *ngIf="verActualizar == true" header="Actualizar estado del pedido {{ pedidoActualizar.id }}"  [(visible)]="verActualizar" style="height:100px; width: 700px">
+ 
+            <div style="display: flex; flex-direction: row; justify-content: space-around; align-items: center;">
+                <h4 class="mb-0"> Estado: </h4>
+                <p-dropdown [options]="statuses" [(ngModel)]="pedidoActualizar.estado" [style]="{'overflow':'visible'}" ></p-dropdown>
+            </div>
+            <div class="flex flex-column align-items-center p-5 surface-overlay border-round" style="width: auto; height: auto"  *ngIf="pedidoActualizar.estado == 'Entregado' " > 
+                <h4 class="mb-0" > Fecha de entrega: {{ pedidoActualizar.fecha_entrega | date: 'dd/MM/yyyy' }} </h4>
+       
+                <p-calendar [style]="{'width':'500px', 'height':'405px'}" [(ngModel)]="this.pedidoActualizar.fecha_entrega" [inline]="true"></p-calendar>
+
+            </div>
+
+            <div style="display: flex; flex-direction: row; justify-content: space-between;  width: 100%; margin-top: 120px; ">
+                <button pButton  label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="cancelaActualizarEstado()"  ></button>
+                <button pButton  label="Actualizar" icon="pi pi-check" class="p-button-text" (click)="aceptaActualizarEstado()" ></button>
+            </div>
+            
+      
+
+    </p-dialog>
+ 
+
+

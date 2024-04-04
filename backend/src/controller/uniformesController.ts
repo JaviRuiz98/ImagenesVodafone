@@ -46,6 +46,16 @@ export async function getPedidos(__req: Request, res: Response) {
 }
 
 
+export async function actualizarPedido(req: Request, res: Response) {
+    try {
+        const pedido = req.body;
+        const pedidoActualizado = await uniformesService.updatePedidos(pedido);
+        res.status(200).json(pedidoActualizado);
+    }catch(error) {
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
 export async function getCarrito(__req: Request, res: Response) {
     try {
         const carrito = await uniformesService.getCarrito();

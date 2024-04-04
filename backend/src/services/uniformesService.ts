@@ -27,6 +27,23 @@ export const uniformesService = {
         }
     },
 
+    async updatePedidos(pedido: pedidos): Promise<pedidos> {
+      try {
+          const updatedPedidos = await db.pedidos.update({
+              where: {
+                  id: pedido.id
+              },
+              data: {
+                  estado: pedido.estado,
+                  fecha_entrega: pedido.fecha_entrega
+              }
+          })
+          return updatedPedidos
+      }  catch (error) {
+          console.log("Error:", error);
+          throw error;
+      }
+    },
     async  getImage(id_imagen: number): Promise<imagenes> {
         try {
           const image = await db.imagenes.findUnique({

@@ -4,7 +4,7 @@ export interface pedidos {
     id: number;
     id_tienda: number;
     fecha: Date;
-    fecha_entrega: Date;
-
+    fecha_entrega: Date | undefined | null;
+    estado: string;
     sfid: string;
 }
