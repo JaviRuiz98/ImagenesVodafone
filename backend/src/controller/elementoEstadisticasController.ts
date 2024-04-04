@@ -36,13 +36,19 @@ export async function getResumenEstadisticasElementos(
     res: Response
 ) {
     try {
-        const elementos_id: number [] | null = req.body.elementos_ids;
-        const elementos = await elementosService.getElementosWithProcesados(elementos_id);
+        const elementos_id: number [] | undefined = req.body.elementos_ids;
+        const fechas: Date[] | undefined= req.body.fechas;
+
+        const elementos = await elementosService.getElementosWithProcesados(elementos_id, undefined, fechas);
         const elementosConProcesados: elementosConProcesados[] =
             mapearElementosConProcesados(elementos);
 
+        //No me interesan los que no tienen procesados, los saco fuera
+        const elementosConProcesadosLimpios =  elementosConProcesados.filter((elemento: any) => {
+            return elemento.procesados_imagenes && elemento.procesados_imagenes.length > 0;
+        });
         const resultados_ordenados: resultados_ordenados_elementos =
-            getResumenEstadisticasConElementos(elementosConProcesados);
+            getResumenEstadisticasConElementos(elementosConProcesadosLimpios);
         res.status(200).json(resultados_ordenados);
     } catch (error) {
         console.log(error);
@@ -74,10 +80,11 @@ export const getElementosEstadisticas =
     (estadisticas: "carteles" | "conteo") =>
         async (req: Request, res: Response) => {
             try {
-                const elementos_id:number [] | null= req.body.elementos_ids;
+                const elementos_id:number [] | undefined= req.body.elementos_ids;
+                const fechas: Date[] | undefined = req.body.fechas;
 
                 const categoria = estadisticas == "carteles" ? 1 : 3;
-                const elementos = await elementosService.getElementosWithProcesados(elementos_id, categoria);
+                const elementos = await elementosService.getElementosWithProcesados(elementos_id, categoria, fechas);
                 const elementosConProcesados: elementosConProcesados[] =
                     mapearElementosConProcesados(elementos);
 
@@ -157,13 +164,14 @@ export async function getNumProcesadosByCategoria(req: Request, res: Response) {
         //- no harcodearlo bro
         //- ya tio, por el momento si
 
-        const elementos_id: number [] | null= req.body.elementos_ids;
-        const categoria_carterles: number = 1;
+        const elementos_id: number [] | undefined= req.body.elementos_ids;
+        const fechas: Date[] | undefined = req.body.fechas;
+        const categoria_carteles: number = 1;
         const categoria_conteo: number = 3;
 
 
-        const numProcesadosCarteles = await elementosService.getNumProcesadosByCategoria(categoria_carterles, elementos_id);
-        const numProcesadosConteo = await elementosService.getNumProcesadosByCategoria(categoria_conteo, elementos_id);
+        const numProcesadosCarteles = await elementosService.getNumProcesadosByCategoria(categoria_carteles, elementos_id, fechas);
+        const numProcesadosConteo = await elementosService.getNumProcesadosByCategoria(categoria_conteo, elementos_id, fechas);
 
         res.status(200).json({conteo_dispositivos: numProcesadosConteo, carteles: numProcesadosCarteles});
     } catch (error) {

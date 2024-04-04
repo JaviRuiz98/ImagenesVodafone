@@ -50,8 +50,8 @@
                 Respuestas mas comunes al procesar cada elemento
             </p-overlayPanel>
             <h3>Carteles <span class="pi pi-info-circle text-xl" (click)="infoCartelesGeneral.toggle($event)" style ="cursor: pointer; color:grey"></span></h3>
-            
-            <app-super-line-chart [data_grafica]="estadisticas_resultados_carteles" ></app-super-line-chart>
+            <app-barra-multiuso [showInfo]="false" [datos]="estadisticas_resultados_carteles" ></app-barra-multiuso>
+
         <!-- </div> -->
 
        
@@ -66,8 +66,9 @@
                 Diferencia entre dispositivos esperados y encontrados más comunes al procesar cada elemento
             </p-overlayPanel>
             <h3>Modelos (conteo de dispositivos) <span class="pi pi-info-circle text-xl" (click)="infoDispositivosGeneral.toggle($event)" style ="cursor: pointer; color:grey"></span></h3>
+            <app-barra-multiuso [showInfo]="false" [datos]="estadisticas_resultados_conteo" ></app-barra-multiuso>
 
-            <app-super-line-chart [data_grafica]="estadisticas_resultados_conteo" [titulo]="'Diferencia más común entre dispositivos esperados y encontrados al procesar cada elemento'"></app-super-line-chart>
+            <!-- <app-super-line-chart [data_grafica]="estadisticas_resultados_conteo" [titulo]="'Diferencia más común entre dispositivos esperados y encontrados al procesar cada elemento'"></app-super-line-chart> -->
         <!-- </div> -->
 
     </div>
@@ -97,13 +98,28 @@
         <div class="card" *ngIf ="tableStateValue==='cartel'; else conteo">
 
             <div *ngIf ="estadisticasCartel.length > 0; else cargandoTablaEstadistica">
-                <p-table [value]="estadisticasCartel" [tableStyle]="{ 'min-width': '50rem' }"   [scrollable]="true" [scrollHeight]="'calc(100vh - 204px)'">
+                <p-table 
+                [value]="estadisticasCartel" 
+                [tableStyle]="{ 'min-width': '50rem' }"  
+                (sortFunction)="customSortCartel($event)" [customSort]="true"  
+                [scrollable]="true" [scrollHeight]="'calc(100vh - 204px)'"
+                [globalFilterFields]="['elemento.nombre']"
+                >
                     <ng-template pTemplate="header">
                         <tr>
                             <th>Nombre</th>
                             <th></th>
                             <th> Resultados </th>
-                            <th>Procesados totales</th>
+                            <th pSortableColumn="cartel">Procesados totales <p-sortIcon field="procesados"></p-sortIcon></th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <p-columnFilter type="text" field="elemento.nombre"></p-columnFilter>
+                            </th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
                             <th></th>
                         </tr>
                     </ng-template>
@@ -141,7 +157,12 @@
 
         <ng-template #conteo>
             <div class="card" *ngIf ="estadisticasConteo.length > 0; else cargandoTablaEstadistica">
-                <p-table [value]="estadisticasConteo" [tableStyle]="{ 'min-width': '50rem' }"  [scrollable]="true" [scrollHeight]="'calc(100vh - 204px)'">
+                <p-table 
+                [value]="estadisticasConteo"
+                [tableStyle]="{ 'min-width': '50rem' }" 
+                (sortFunction)="customSortConteo($event)" [customSort]="true" 
+                 [globalFilterFields]="['elemento.nombre']"
+                [scrollable]="true" [scrollHeight]="'calc(100vh - 204px)'">
                     <ng-template pTemplate="header">
                         <tr>
                             <th>Nombre</th>
@@ -149,9 +170,18 @@
                             <th>Resultados</th>
                         
                           
-                            <th> Procesados totales</th>
+                            <th pSortableColumn="dispositivo">Procesados totales <p-sortIcon field="procesados"></p-sortIcon></th>
                             <th></th>
                         
+                        </tr>
+                        <tr>
+                            <th>
+                                <p-columnFilter type="text" field="elemento.nombre"></p-columnFilter>
+                            </th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-rowIndex="rowIndex" let-dispositivo>

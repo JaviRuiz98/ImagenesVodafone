@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { SortEvent } from 'primeng/api';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, Subscription, combineLatest, takeUntil } from 'rxjs';
 import { ProcesadosDetallesComponent } from 'src/app/componentes/procesados-detalles/procesados-detalles.component';
 import { datos_graficas, datos_graficas_multidatos } from 'src/app/interfaces/datos_graficas';
 import { elementos } from 'src/app/interfaces/elementos';
@@ -54,6 +55,7 @@ export class EstadisticasMueblesComponent implements OnInit  {
  emptyArrayCargandoTabla = Array.from({ length: 5 }).map((_, i) => `Item #${i}`);
 
  //Filtros
+ private subscripcionFiltroState: Subscription;
  filtrado: boolean = false;
  elementos_ids$: Observable<number[]>;
  fechas$: Observable<Date[]>;
@@ -67,15 +69,17 @@ export class EstadisticasMueblesComponent implements OnInit  {
  
  ngOnInit(): void {  
  
-  combineLatest([this.elementos_ids$, this.fechas$]).subscribe(([elementosIds, fechas]) => {
+  this.subscripcionFiltroState = combineLatest([this.elementos_ids$, this.fechas$]).subscribe(([elementosIds, fechas]) => {
     // this.filtroState.updateLoading(true);
     this.obtenerEstadisticas(elementosIds, fechas);
 
   });
     
-
-
  }
+
+ ngOnDestroy(): void {
+  this.subscripcionFiltroState.unsubscribe();
+}
 
 
 
@@ -225,6 +229,53 @@ getDataDispositivos( dispositivos: estadisticas_conteo_dispositivos): datos_graf
   }
 }
 
+customSortConteo(event: any): void {
+  const field = event.field;
+  const order = event.order; // 1 para ascendente, -1 para descendente
+
+  // Asumiendo que 'estadisticasConteo' es tu array de datos
+  this.estadisticasConteo.sort((data1, data2) => {
+    let value1 = this.getTotalDispositivos(data1); // Obtiene el valor para el primer elemento
+    let value2 = this.getTotalDispositivos(data2); // Obtiene el valor para el segundo elemento
+
+    let result = null;
+
+    if (value1 == null && value2 != null)
+      result = -1; // Considera null como menor que cualquier número
+    else if (value1 != null && value2 == null)
+      result = 1; // Considera cualquier número como mayor que null
+    else if (value1 == null && value2 == null)
+      result = 0; // Considera null igual a null
+    else
+      result = value1 < value2 ? -1 : (value1 > value2) ? 1 : 0; // Ordenamiento normal
+
+    return result * order; // Ajusta el resultado basándose en si es ascendente o descendente
+  });
+}
+
+customSortCartel(event: any): void {
+  const field = event.field;
+  const order = event.order; // 1 para ascendente, -1 para descendente
+
+  // Asumiendo que 'estadisticasConteo' es tu array de datos
+  this.estadisticasCartel.sort((data1, data2) => {
+    let value1 = this.getTotalCarteles(data1); // Obtiene el valor para el primer elemento
+    let value2 = this.getTotalCarteles(data2); // Obtiene el valor para el segundo elemento
+
+    let result = null;
+
+    if (value1 == null && value2 != null)
+      result = -1; // Considera null como menor que cualquier número
+    else if (value1 != null && value2 == null)
+      result = 1; // Considera cualquier número como mayor que null
+    else if (value1 == null && value2 == null)
+      result = 0; // Considera null igual a null
+    else
+      result = value1 < value2 ? -1 : (value1 > value2) ? 1 : 0; // Ordenamiento normal
+
+    return result * order; // Ajusta el resultado basándose en si es ascendente o descendente
+  });
+}
 
 
 
