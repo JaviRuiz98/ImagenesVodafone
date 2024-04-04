@@ -238,21 +238,24 @@ export async function getAuditoriasEnProgresoYTiendasTotales(req: Request, res: 
 
 export async function getEstadisticasEstadosAuditoria(req: Request, res: Response) {
     try {
-        const periodo_fechas: Date[] = req.body.fechas;
+        let periodo_fechas: Date[] = req.body.fechas;
+
+        if(periodo_fechas.length == 0) {
+            periodo_fechas[1] = new Date();
+        }
 
         const id_estados_excluidos: number[] = [];
         const estados: estados_extended[] = await auditoriaService.getAllEstadosParaAuditorias(id_estados_excluidos, periodo_fechas);
-
 
         estados.map((estado) => {
             estado.num_auditorias = estado.auditorias?.length;
             estado.auditorias = [];
         })
 
-
         res.status(200).json(estados);
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
+        console.log(error);
     }
 }
 

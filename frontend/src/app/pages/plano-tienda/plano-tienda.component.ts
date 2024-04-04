@@ -70,7 +70,6 @@ export class PlanoTiendaComponent implements OnInit {
 
   obtenerAnchuraBarra() {
     this.anchura_barra = this.localStorageService.getItem('anchura_componente_barra');
-    console.log('Anchura de la barra:', this.anchura_barra);
   }
 
   inicializarCanvas() {
@@ -89,7 +88,6 @@ export class PlanoTiendaComponent implements OnInit {
 
       this.anchura_plano = img.width;
       this.altura_plano = img.height;
-      console.log('Anchura:', this.anchura_plano, 'Altura:', this.altura_plano);
 
       const offsetX = (this.canvas.width - img.width * scale) / 2;
       const offsetY = (this.canvas.height - img.height * scale) / 2;
@@ -163,8 +161,6 @@ export class PlanoTiendaComponent implements OnInit {
           alto: targetRect.height / this.altura_plano,
           angulo: targetRect.angle
         }
-        console.log('datos_posicion_mueble: ', datos_posicion_mueble);
-        console.log('targetRect: ', targetRect);
         this.guardarDatosPosicionEnBaseDatos(datos_posicion_mueble);
         this.canvas.renderAll();
       }
@@ -174,7 +170,6 @@ export class PlanoTiendaComponent implements OnInit {
   guardarDatosPosicionEnBaseDatos(datos_posicion_mueble: posiciones_muebles_tienda) {
     this.tiendasService.guardarPosicionMueble(datos_posicion_mueble).subscribe(
       (data) => {
-        console.log('Posición del mueble guardada en la base de datos:', data);
 
         this.getMueblesTienda();
       }, (error) => {

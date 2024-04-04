@@ -119,7 +119,9 @@ export class UniformesComponent implements OnInit {
       stock: 0
     };
     this.cantidad_valida = true; 
-     
+    if(producto.caracteristicas_productos.length ==1 ) {
+       this.producto_seleccionado.caracteristica_seleccionada = producto.caracteristicas_productos[0];
+    }
   }
 
 
@@ -138,6 +140,7 @@ export class UniformesComponent implements OnInit {
   validarCantidades(producto: productos){
     if(producto.cantidad  >= producto.caracteristica_seleccionada.stock) {
       this.cantidad_valida = false;
+      producto.cantidad = 0;
     } else{
        this.cantidad_valida = true; 
       }
@@ -149,9 +152,6 @@ export class UniformesComponent implements OnInit {
     setTimeout(() => {
       this.productos = this.productosTodos.filter(producto => (producto.genero == 'Hombre') || (producto.genero == null));
     },1000)
-
- 
-
   }
 
   inicializaProductos() {

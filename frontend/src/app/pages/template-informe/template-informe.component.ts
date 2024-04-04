@@ -88,12 +88,10 @@ export class TemplateInformeComponent implements OnInit {
     this.url_imagenes_referencia = this.urlService.url_imagenes_referencia;
 
     this.id_auditoria_cifrada = this.route.snapshot.paramMap.get('id_auditoria_cifrada');
-    console.log('id_auditoria', this.id_auditoria_cifrada);
 
     this.informeService.getDatosInforme(this.id_auditoria_cifrada).subscribe(
       (data) => {
         this.informeData = data;
-        console.log('informeData', this.informeData);
 
         this.mapearResumenAuditoria();
 
@@ -143,7 +141,6 @@ export class TemplateInformeComponent implements OnInit {
   }
 
   generarDatosChart(datos_graficas: datos_graficas[]) {
-    console.log('datos_grafica', datos_graficas);
     for (const dato of this.informeData.datos_barra_progreso) {
       switch (dato) {
         case 0:
@@ -164,8 +161,6 @@ export class TemplateInformeComponent implements OnInit {
           break;
       }
     }
-    console.log('datos_grafica', datos_graficas);
-
     return [...datos_graficas];
   }
 }

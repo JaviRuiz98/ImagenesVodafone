@@ -48,6 +48,7 @@
                 <th>Id</th>
                 <th>SFID</th>
                 <th>Fecha inicio</th>
+                <th>Fecha fin</th>
                 <th>Estado</th> 
                 <th>Progreso</th>
                 <th>Prog. visual</th>
@@ -61,6 +62,7 @@
                 <td>{{ auditoria.id }}</td>    
                 <td>{{ auditoria?.tiendas?.sfid }}</td>            
                 <td>{{ publicMethodsService.formatDate(auditoria.fecha) }}</td>
+                <td>{{ publicMethodsService.formatDate(auditoria.fecha_fin) }}</td>
                 <td>
                     <p-tag [severity]="getSeverityEstadoAuditoria(auditoria.estados_auditoria.estado)">{{ auditoria.estados_auditoria.estado }}</p-tag>                    
                 </td>               

@@ -72,7 +72,6 @@ export async function updateTienda(req: Request, res: Response) {
             await tiendaService.desactivarPosicionesMueblesTienda(ids_per_mue_tien);
 
         }else if (borrarPlano == true){ //La borraremos unicamente si llega en el body un booleano que nos diga de borrarlo:
-            console.log(borrarPlano);
             const tienda = await tiendaService.getAllById(id_tienda);
             if (tienda[0].id_imagen_plano){
                 //Opcional eliminar del ftp
@@ -134,7 +133,6 @@ export async function guardarPosicionMueble(req: Request, res: Response) {
 export async function desactivarPosicionMueble(req: Request, res: Response) {
     try{
         const id_posicion_mueble = req.body.id_posicion_mueble;
-        console.log(id_posicion_mueble);
 
         await tiendaService.desactivarPosicionMueble(id_posicion_mueble);
 
@@ -168,9 +166,7 @@ export async function desactivarPosicionMueble(req: Request, res: Response) {
 
 export async function getTiendaBySfid(req: Request, res: Response) {
     try{
-        const sfid = req.params.sfid;
-        console.log(req.body);
-      
+        const sfid = req.params.sfid;      
 
         //obtiene las tiendas ordenadas por categoría_clause
         const tienda: tiendasConPlano | null = await tiendaService.getBySfid(sfid);
