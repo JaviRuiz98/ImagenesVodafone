@@ -40,9 +40,43 @@ export const elementosAuditoriaService = {
         }
     },
 
-    async getElementosAuditoriaConAuditoriasYUltimoProcesado(id_auditoria?: number): Promise<per_ele_aud_extended[]>  {
+    async getElementosAuditoriaConAuditoriasYUltimoProcesado(periodo_fechas?: [Date, Date]): Promise<per_ele_aud_extended[]>  {
         try {
-            const whereClause = id_auditoria != 0? { id_auditoria: id_auditoria } : { };
+            let whereClause = { };
+
+            if(periodo_fechas && periodo_fechas.length == 2) {
+                whereClause = {
+                    auditorias: {
+                        OR: [
+                            {
+                                OR: [ // en progreso
+                                    {
+                                        fecha: {
+                                            lte: periodo_fechas[1]
+                                        },
+                                        fecha_fin: {
+                                            gte: periodo_fechas[1]
+                                        }
+                                    },
+                                    {
+                                        fecha: {
+                                            lte: periodo_fechas[1]
+                                        },
+                                        fecha_fin: null                                        
+                                    }
+                                ]
+                            },
+                            { //finalizadas y caducadas
+                                fecha_fin: {
+                                    gte: periodo_fechas[0],
+                                    lte: periodo_fechas[1]
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+
             return db.pertenencia_elementos_auditoria.findMany({
                 where: whereClause,
                 include: {

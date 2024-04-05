@@ -101,9 +101,12 @@ function cuentaNoProcesados(elementos: per_ele_aud_extended[]): cuenta_no_proces
     return no_procesados;
 }
 
-export async function getPorcentajeProcesadoDadoEstadoAuditoria(_req: Request, res: Response) {
+export async function getPorcentajeProcesadoDadoEstadoAuditoria(req: Request, res: Response) {
     try {
-        const elementos_auditoria = await elementosAuditoriaService.getElementosAuditoriaConAuditoriasYUltimoProcesado();
+        const periodo_fechas: [Date, Date] = req.body.fechas;
+        console.log(periodo_fechas);
+
+        const elementos_auditoria = await elementosAuditoriaService.getElementosAuditoriaConAuditoriasYUltimoProcesado(periodo_fechas);
 
         let conteo_elementos_procesados_auditoria: conteo_elementos_procesados_auditoria = {
             en_progreso: {

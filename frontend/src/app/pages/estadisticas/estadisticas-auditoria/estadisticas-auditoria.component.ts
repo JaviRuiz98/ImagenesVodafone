@@ -52,7 +52,7 @@ export class EstadisticasAuditoriaComponent  {
 
       this.obtenerEstadisticasEstadosAuditoria(fechas);
       this.obtenerEstadisticasResultadosAuditoria(fechas);
-      this.obtenerEstadisticasProcesadosDadoEstadoAuditoria();
+      this.obtenerEstadisticasProcesadosDadoEstadoAuditoria(fechas);
       this.obtenerTiendasConAuditoriaEnProgreso(fechas);
       this.obtenerNumeroProcesadosDiarios(fechas);
       this.obtenerMovimientosAuditorias(fechas);
@@ -150,8 +150,8 @@ export class EstadisticasAuditoriaComponent  {
     );
   }
   
-  obtenerEstadisticasProcesadosDadoEstadoAuditoria() {
-    this.auditoriaService.getEstadisticasProcesadosDadoEstadoAuditoria().subscribe(
+  obtenerEstadisticasProcesadosDadoEstadoAuditoria(fechas: Date[]) {
+    this.auditoriaService.getEstadisticasProcesadosDadoEstadoAuditoria(fechas).subscribe(
       (data: conteo_elementos_procesados_auditoria) => {
         this.estadisticas_procesados_dado_estado = data;
 

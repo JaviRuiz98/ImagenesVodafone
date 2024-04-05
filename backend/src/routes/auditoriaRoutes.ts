@@ -28,7 +28,7 @@ router.post('/estadisticas/movimientos_auditorias', getMovimientosAuditorias);
 router.post('/estadisticas/en_progreso_y_tiendas_totales', getAuditoriasEnProgresoYTiendasTotales);
 router.post('/estadisticas/estados_auditoria', getEstadisticasEstadosAuditoria);
 router.post('/estadisticas/resultados_auditoria', getEstadisticasResultadosAuditoria);
-router.get('/estadisticas/porcentaje_completado', getPorcentajeProcesadoDadoEstadoAuditoria);
+router.post('/estadisticas/porcentaje_completado', getPorcentajeProcesadoDadoEstadoAuditoria);
 
 router.post('/nueva_auditoria',  createSingleAuditoria);
 router.post('/auditoria_global',  createAuditoriaGlobal);

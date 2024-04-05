@@ -72,8 +72,8 @@ export class AuditoriaService {
     return this.http.post<resultados_ordenados>(`${this.API_URI}/estadisticas/resultados_auditoria`, {fechas});
   }
 
-  getEstadisticasProcesadosDadoEstadoAuditoria(): Observable<conteo_elementos_procesados_auditoria> {
-    return this.http.get<conteo_elementos_procesados_auditoria>(`${this.API_URI}/estadisticas/porcentaje_completado`);
+  getEstadisticasProcesadosDadoEstadoAuditoria(fechas: Date[]): Observable<conteo_elementos_procesados_auditoria> {
+    return this.http.post<conteo_elementos_procesados_auditoria>(`${this.API_URI}/estadisticas/porcentaje_completado`, {fechas});
   }
 
   getMovimientosAuditorias(fechas: Date[]): Observable<conteo_movimientos_auditoria> {
