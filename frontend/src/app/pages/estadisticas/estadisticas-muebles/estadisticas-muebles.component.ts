@@ -247,9 +247,9 @@ getDataDispositivos( dispositivos: estadisticas_conteo_dispositivos): datos_graf
     leyenda: ['Imágen no válida','Correcto', 'Diferencia de 1 o 2', 'Diferencia de 3 o 4', 'Diferencia de 5 o más'], // Cada segmento de la barra
     datos: [
       [dispositivos.error ?? 0],
-      [dispositivos.diferencia[0] + dispositivos.diferencia[1] ?? 0],
-      [dispositivos.diferencia[1]  + dispositivos.diferencia[2]?? 0],
-      [dispositivos.diferencia[3] + dispositivos.diferencia[4] ?? 0],
+      [dispositivos.diferencia[0] ?? 0],
+      [dispositivos.diferencia[1] ?? 0 + dispositivos.diferencia[2] ?? 0],
+      [dispositivos.diferencia[3]  + dispositivos.diferencia[4]?? 0],
       [this.get5Plus(dispositivos)?? 0]
     ], // Los valores de cada segmento en la única barra
     color: ["gray", "green",  "yellow", "orange", "red"] // Colores para cada segmento
