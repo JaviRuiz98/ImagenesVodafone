@@ -131,7 +131,7 @@ constructor() { }
       color: 'red'
     },      
     {
-      etiqueta: 'Error',
+      etiqueta: 'Imágen no válida',
       valor: 0,
       color: 'purple'
     },
@@ -165,7 +165,7 @@ constructor() { }
       color: 'red'
     },      
     {
-      etiqueta: 'Error',
+      etiqueta: 'Imágen no válida',
       valor: 0,
       color: 'purple'
     },

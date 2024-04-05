@@ -115,20 +115,21 @@ function addElementoInResultadoByIdProbabilidadCartel(
       resultados.carteles.alta.push(elemento);
       break;
     case 3:
-      resultados.carteles.media.push(elemento);
-      break;
-    case 4:
-      resultados.carteles.baja.push(elemento);
-      break;
-    case 5:
-      resultados.carteles.muy_baja.push(elemento);
-      break;
-    case 6:
-      resultados.carteles.ninguna.push(elemento);
-      break;
-    case 7:
       resultados.carteles.otro_idioma.push(elemento);
       break;
+    case 4:
+      resultados.carteles.media.push(elemento);
+      break;
+    case 5:
+      resultados.carteles.baja.push(elemento);
+      break;
+    case 6:
+      resultados.carteles.muy_baja.push(elemento);
+      break;
+    case 7:
+      resultados.carteles.ninguna.push(elemento);
+      break;
+   
   }
 }
 

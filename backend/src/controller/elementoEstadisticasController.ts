@@ -116,11 +116,11 @@ function obtenerEstadisticasCarteles(
             elemento: elemento as elementos,
             muy_alta: probabilidades[0].count,
             alta: probabilidades[1].count,
+            otro_idioma: probabilidades[3].count,
             media: probabilidades[2].count,
-            baja: probabilidades[3].count,
-            muy_baja: probabilidades[4].count,
-            ninguna: probabilidades[5].count,
-            otro_idioma: probabilidades[6].count,
+            baja: probabilidades[4].count,
+            muy_baja: probabilidades[5].count,
+            ninguna: probabilidades[6].count,
         };
     });
 }
